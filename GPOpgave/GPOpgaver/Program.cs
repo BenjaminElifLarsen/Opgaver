@@ -8,7 +8,8 @@ namespace GPOpgaver
         {
             int[] test = new int[] { 1, 3, 4, 5, 6, 8, 9, 11 };
             Console.WriteLine(Opgaver.StepsInBinarySearch(test, 0, test.Length, 3)) ;
-            Opgaver.PowerRanger(4, 250, 1300);
+            Opgaver.PowerRanger(2, 49, 65);
+            Console.WriteLine(Opgaver.IncrementString("12foobar01002"));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Text;
 
@@ -45,10 +46,8 @@ namespace GPOpgaver
                 char[] chrs = s.ToCharArray();
                 byte pairs = (byte)Math.Floor((double)chrs.Length / 2d);
                 for (byte i = 0; i < pairs; i++)
-                {
                     if (s[i] != s[s.Length - 1 - i])
                         return false;
-                }
             }
             return true;
         }
@@ -140,17 +139,17 @@ namespace GPOpgaver
          * Remember that the range is inclusive. a < b will always be true.
          */
         public static int PowerRanger(int power, int min, int max)
-        { //return the number of numbers that lies between when raised
-            long value = 0;
-            long startValue = (long)min;
-            int steps = 1;
-            while(value < (long)max)
+        { //return the number of numbers that lies between when raised to power. E.g. how many numbers are between 10 and 100. Start with 0^power, 1^power etc.
+            int value = 0;
+            int startValue = 0;
+            int steps = 0;
+            while(value < max)
             {
-                steps++;
-                value = (long)Math.Pow(startValue, power);
-                startValue++;
+                value = (int)Math.Pow(startValue++, power);
+                if (value >= min && value <= max)
+                    steps++;
             }
-            return --steps;
+            return steps;
         }
         /*
          * Exercise 8.
@@ -161,8 +160,10 @@ namespace GPOpgaver
          */
         public static long Factorial(int n)
         {
-            throw new NotImplementedException();
-            //Write your solution here
+            //if (n == 0)
+            //    return 1;
+            //return n * Factorial(--n);
+            return n == 0 ? 1 : n * Factorial(--n);
         }
         /*
          * Exercise 9.
@@ -179,48 +180,82 @@ namespace GPOpgaver
             char[] chrs = txt.ToCharArray();
             List<List<char>> charListsNumbers = new List<List<char>>(1);
             List<List<char>> charListsLetters = new List<List<char>>(1);
+            charListsNumbers.Add(new List<char>());
+            charListsLetters.Add(new List<char>());
             foreach (char chr in chrs)
             {
                 if (firstLetter == null)
                     firstLetter = chr < 48 || chr > 57;
-                if (chr < 48 || chr > 57)
+                if (chr < 48 || chr > 57) { 
                     if (charListsLetters[pos].Count != 0 || charListsLetters[pos] != null)
                     {
                         charListsLetters[pos].Add(chr);
                         if (lastChar > 47 && lastChar < 58)
-                        {
-                            charListsNumbers.Add(new List<char>());
+                        { //if a there is a number before the letter and a letter after it will cut the word into two char lists instead of one char list. 
+                            charListsNumbers.Add(new List<char>()); //check if the next char (if there is one) is a number or not 
                             charListsLetters.Add(new List<char>());
                             pos++;
                         }
                     }
-                    else
-                    {
-                        charListsNumbers[pos].Add(chr);
-                    }
+                }
+                else
+                    charListsNumbers[pos].Add(chr);
                 lastChar = chr;
             }
-            string[] valueStrings = new string[charListsLetters.Count];
-            string[] wordStrings = new string[charListsNumbers.Count];
+            if (charListsLetters[charListsLetters.Count - 1].Count == 0)
+                charListsLetters.RemoveAt(charListsLetters.Count - 1);
+            if (charListsNumbers[charListsNumbers.Count - 1].Count == 0)
+                charListsNumbers.RemoveAt(charListsNumbers.Count - 1);
+
+            string[] wordStrings = new string[charListsLetters.Count];
+            string[] valueStrings = new string[charListsNumbers.Count];
             int stringPos = 0;
-            foreach (List<char> charList in charListsNumbers)
-            {
-                char[] number = charList.ToArray();
-                valueStrings[stringPos] = (double.Parse(new string(number)) + 1).ToString();
-                stringPos++;
-            }
+            if (charListsNumbers.Count != 0)
+                foreach (List<char> charList in charListsNumbers)
+                {
+                    char[] number = charList.ToArray();
+                    char[] valueCharArray = (double.Parse(new string(number)) + 1).ToString().ToCharArray();
+                    if(valueCharArray.Length < number.Length) //add trailing zeroes back if they are missing
+                    {
+                        byte zeroDifference = (byte)(number.Length - valueCharArray.Length);
+                        char[] zeroArray = new char[zeroDifference];
+                        for (byte i = 0; i < zeroDifference; i++)
+                            zeroArray[i] = '0';
+                        int length = zeroArray.Length + valueCharArray.Length;
+                        char[] temp_ = new char[length];
+                        for (int i = 0; i < length; i++)
+                        {
+                            if (i < zeroArray.Length)
+                                temp_[i] = zeroArray[i];
+                            else
+                                temp_[i] = valueCharArray[i - zeroArray.Length];
+                        }
+                        valueCharArray = temp_;
+                    }
+                    valueStrings[stringPos] = new string(valueCharArray);  
+                    stringPos++;
+                }
+            else
+                valueStrings = new string[] { "1" };
+
             stringPos = 0;
             foreach (List<char> charList in charListsLetters)
             {
                 char[] word = charList.ToArray();
                 wordStrings[stringPos] = new string(word);
                 stringPos++;
-
             }
+            string returnString = "";
             string[] start = (bool)firstLetter ? wordStrings : valueStrings;
-            string[] rest = !(bool)firstLetter ? valueStrings : wordStrings;
-            return start[0] + rest[0];
-            return (new string(chrs));
+            string[] rest = !(bool)firstLetter ? wordStrings : valueStrings;
+            for (int i = 0; i < start.Length; i++)
+            {
+                if (i < rest.Length)
+                    returnString += start[i] + rest[i];
+                else
+                    returnString += start[i];
+            }
+            return returnString;
         }
     }
 }
