@@ -173,8 +173,41 @@ namespace GPOpgaver
          */
         public static string IncrementString(string txt)
         {
-            throw new NotImplementedException();
-            //Write your solution here
+            int pos = 0;
+            char lastChar = (char)0;
+            char[] chrs = txt.ToCharArray();
+            List<List<char>> charListsNumbers = new List<List<char>>();
+            List<List<char>> charListsLetters = new List<List<char>>();
+            foreach (char chr in chrs)
+            {
+                if (chr < 48 || chr > 57)
+                    if (charListsNumbers[pos].Count != 0 || charListsNumbers[pos] != null)
+                    {
+                        charListsLetters[pos].Add(chr);
+                        if (lastChar > 47 && lastChar < 58)
+                            pos++;
+                    }
+                    else
+                    {
+                        charListsNumbers[pos].Add(chr);
+                    }
+                lastChar = chr;
+            }
+            string[] valueStrings = new string[pos];
+            int stringPos = 0;
+            foreach (List<char> charList in charListsNumbers)
+            {
+                char[] number = charList.ToArray();
+                valueStrings[stringPos] = (double.Parse(new string(number)) + 1).ToString();
+                stringPos++;
+            }
+            stringPos = 0;
+            foreach(List<char> charList in charListsLetters)
+            {
+                char[] word = charList.ToArray();
+
+            }
+            return (new string(chrs));
         }
     }
 }
