@@ -43,9 +43,8 @@ namespace GPOpgaver
         {
             if (s.Length > 1)
             {
-                char[] chrs = s.ToCharArray();
-                byte pairs = (byte)Math.Floor((double)chrs.Length / 2d);
-                for (byte i = 0; i < pairs; i++)
+                //byte pairs = (byte)Math.Floor((double)s.Length / 2d); //not needed, could just go to i and s.length-1-i is the same value using a while loop
+                for (byte i = 0; i < (byte)Math.Floor((double)s.Length / 2d); i++)
                     if (s[i] != s[s.Length - 1 - i])
                         return false;
             }
@@ -78,7 +77,7 @@ namespace GPOpgaver
             int stop = 1;
             if (arrayStart < arrayEnd)
             {
-                int[] tempArray_ = new int[arrayEnd-arrayStart];
+                int[] tempArray_ = new int[arrayEnd - arrayStart];
                 for (int i = arrayStart; i < arrayEnd; i++)
                 {
                     tempArray_[i - arrayStart] = integerArray[i];
@@ -86,7 +85,7 @@ namespace GPOpgaver
                 integerArray = tempArray_;
                 do
                 {
-                    int length = (int)Math.Round(integerArray.Length / 2d)-1;
+                    int length = (int)Math.Round(integerArray.Length / 2d) - 1;
                     int fullLength = integerArray.Length;
                     int[] array = integerArray;
                     if (integerArray[length] == searchFor)
@@ -143,7 +142,7 @@ namespace GPOpgaver
             int value = 0;
             int startValue = 0;
             int steps = 0;
-            while(value < max)
+            while (value < max)
             {
                 value = (int)Math.Pow(startValue++, power);
                 if (value >= min && value <= max)
@@ -175,6 +174,7 @@ namespace GPOpgaver
         public static string IncrementString(string txt)
         {
             int pos = 0;
+            int charPos = 0;
             char lastChar = (char)0;
             bool? firstLetter = null;
             char[] chrs = txt.ToCharArray();
@@ -186,21 +186,27 @@ namespace GPOpgaver
             {
                 if (firstLetter == null)
                     firstLetter = chr < 48 || chr > 57;
-                if (chr < 48 || chr > 57) { 
+                if (chr < 48 || chr > 57)
+                {
                     if (charListsLetters[pos].Count != 0 || charListsLetters[pos] != null)
                     {
                         charListsLetters[pos].Add(chr);
-                        if (lastChar > 47 && lastChar < 58)
-                        { //if a there is a number before the letter and a letter after it will cut the word into two char lists instead of one char list. 
-                            charListsNumbers.Add(new List<char>()); //check if the next char (if there is one) is a number or not 
-                            charListsLetters.Add(new List<char>());
-                            pos++;
+                        if (charPos != chrs.Length)
+                        {
+                            char nextChar = chrs[charPos + 1];
+                            if (nextChar > 47 && nextChar < 58)
+                            {
+                                charListsNumbers.Add(new List<char>());
+                                charListsLetters.Add(new List<char>());
+                                pos++;
+                            }
                         }
                     }
                 }
                 else
                     charListsNumbers[pos].Add(chr);
                 lastChar = chr;
+                charPos++;
             }
             if (charListsLetters[charListsLetters.Count - 1].Count == 0)
                 charListsLetters.RemoveAt(charListsLetters.Count - 1);
@@ -215,7 +221,7 @@ namespace GPOpgaver
                 {
                     char[] number = charList.ToArray();
                     char[] valueCharArray = (double.Parse(new string(number)) + 1).ToString().ToCharArray();
-                    if(valueCharArray.Length < number.Length) //add trailing zeroes back if they are missing
+                    if (valueCharArray.Length < number.Length) //add trailing zeroes back if they are missing
                     {
                         byte zeroDifference = (byte)(number.Length - valueCharArray.Length);
                         char[] zeroArray = new char[zeroDifference];
@@ -232,7 +238,7 @@ namespace GPOpgaver
                         }
                         valueCharArray = temp_;
                     }
-                    valueStrings[stringPos] = new string(valueCharArray);  
+                    valueStrings[stringPos] = new string(valueCharArray);
                     stringPos++;
                 }
             else
