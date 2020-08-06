@@ -191,7 +191,7 @@ namespace GPOpgaver
                     if (charListsLetters[pos].Count != 0 || charListsLetters[pos] != null)
                     {
                         charListsLetters[pos].Add(chr);
-                        if (charPos != chrs.Length)
+                        if (charPos != chrs.Length-1)
                         {
                             char nextChar = chrs[charPos + 1];
                             if (nextChar > 47 && nextChar < 58)
@@ -208,10 +208,17 @@ namespace GPOpgaver
                 lastChar = chr;
                 charPos++;
             }
-            if (charListsLetters[charListsLetters.Count - 1].Count == 0)
-                charListsLetters.RemoveAt(charListsLetters.Count - 1);
-            if (charListsNumbers[charListsNumbers.Count - 1].Count == 0)
-                charListsNumbers.RemoveAt(charListsNumbers.Count - 1);
+            for (int i = charListsLetters.Count - 1; i >= 0; i--)
+                if (charListsLetters[i].Count == 0)
+                    charListsLetters.RemoveAt(i);
+            //if (charListsLetters[charListsLetters.Count - 1].Count == 0)
+            //    charListsLetters.RemoveAt(charListsLetters.Count - 1);
+            //if (charListsNumbers[charListsNumbers.Count - 1].Count == 0)
+            //    charListsNumbers.RemoveAt(charListsNumbers.Count - 1);
+            for (int i = charListsNumbers.Count - 1; i >= 0; i--)
+                if (charListsNumbers[i].Count == 0)
+                    charListsNumbers.RemoveAt(i);
+
 
             string[] wordStrings = new string[charListsLetters.Count];
             string[] valueStrings = new string[charListsNumbers.Count];
@@ -219,26 +226,28 @@ namespace GPOpgaver
             if (charListsNumbers.Count != 0)
                 foreach (List<char> charList in charListsNumbers)
                 {
-                    char[] number = charList.ToArray();
-                    char[] valueCharArray = (double.Parse(new string(number)) + 1).ToString().ToCharArray();
-                    if (valueCharArray.Length < number.Length) //add trailing zeroes back if they are missing
-                    {
-                        byte zeroDifference = (byte)(number.Length - valueCharArray.Length);
-                        char[] zeroArray = new char[zeroDifference];
-                        for (byte i = 0; i < zeroDifference; i++)
-                            zeroArray[i] = '0';
-                        int length = zeroArray.Length + valueCharArray.Length;
-                        char[] temp_ = new char[length];
-                        for (int i = 0; i < length; i++)
+                    if(charList.Count != 0) { 
+                        char[] number = charList.ToArray();
+                        char[] valueCharArray = (double.Parse(new string(number)) + 1).ToString().ToCharArray();
+                        if (valueCharArray.Length < number.Length) //add trailing zeroes back if they are missing
                         {
-                            if (i < zeroArray.Length)
-                                temp_[i] = zeroArray[i];
-                            else
-                                temp_[i] = valueCharArray[i - zeroArray.Length];
-                        }
-                        valueCharArray = temp_;
+                            byte zeroDifference = (byte)(number.Length - valueCharArray.Length);
+                            char[] zeroArray = new char[zeroDifference];
+                            for (byte i = 0; i < zeroDifference; i++)
+                                zeroArray[i] = '0';
+                            int length = zeroArray.Length + valueCharArray.Length;
+                            char[] temp_ = new char[length];
+                            for (int i = 0; i < length; i++)
+                            {
+                                if (i < zeroArray.Length)
+                                    temp_[i] = zeroArray[i];
+                                else
+                                    temp_[i] = valueCharArray[i - zeroArray.Length];
+                            }
+                            valueCharArray = temp_;
+                            }
+                        valueStrings[stringPos] = new string(valueCharArray);
                     }
-                    valueStrings[stringPos] = new string(valueCharArray);
                     stringPos++;
                 }
             else
@@ -254,12 +263,15 @@ namespace GPOpgaver
             string returnString = "";
             string[] start = (bool)firstLetter ? wordStrings : valueStrings;
             string[] rest = !(bool)firstLetter ? wordStrings : valueStrings;
-            for (int i = 0; i < start.Length; i++)
+            int longestLength = start.Length > rest.Length ? start.Length : rest.Length;
+            for (int i = 0; i < longestLength; i++)
             {
-                if (i < rest.Length)
-                    returnString += start[i] + rest[i];
-                else
+                if (i < start.Length)
                     returnString += start[i];
+                if (i < rest.Length)
+                    returnString += rest[i];
+                //else
+                //    returnString += start[i];
             }
             return returnString;
         }
