@@ -57,15 +57,10 @@ namespace CleanCodeExersises
         public bool IsLoggedInClean(bool isNotloggedIn)
         {
             if(!isNotloggedIn)
-            {
                 Console.WriteLine("Succesfully logged in.");
-                return true;
-            }
             else
-            {
                 Console.WriteLine("Failed to logged in");
-                return false;
-            }
+            return !isNotloggedIn;
         }
         /*
          * Intermediate exercise
@@ -92,10 +87,9 @@ namespace CleanCodeExersises
         {
             const int age = 55;
             const int year = 10;
-            const bool isEligible = true;
             if (employee.Age > age)
                 if (employee.YearsEmployed > year)
-                    return employee.IsRetired = isEligible;
+                    return employee.IsRetired;
             return false;
         }
         

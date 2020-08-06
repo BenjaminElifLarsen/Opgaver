@@ -175,17 +175,24 @@ namespace GPOpgaver
         {
             int pos = 0;
             char lastChar = (char)0;
+            bool? firstLetter = null;
             char[] chrs = txt.ToCharArray();
-            List<List<char>> charListsNumbers = new List<List<char>>();
-            List<List<char>> charListsLetters = new List<List<char>>();
+            List<List<char>> charListsNumbers = new List<List<char>>(1);
+            List<List<char>> charListsLetters = new List<List<char>>(1);
             foreach (char chr in chrs)
             {
+                if (firstLetter == null)
+                    firstLetter = chr < 48 || chr > 57;
                 if (chr < 48 || chr > 57)
-                    if (charListsNumbers[pos].Count != 0 || charListsNumbers[pos] != null)
+                    if (charListsLetters[pos].Count != 0 || charListsLetters[pos] != null)
                     {
                         charListsLetters[pos].Add(chr);
                         if (lastChar > 47 && lastChar < 58)
+                        {
+                            charListsNumbers.Add(new List<char>());
+                            charListsLetters.Add(new List<char>());
                             pos++;
+                        }
                     }
                     else
                     {
@@ -193,7 +200,8 @@ namespace GPOpgaver
                     }
                 lastChar = chr;
             }
-            string[] valueStrings = new string[pos];
+            string[] valueStrings = new string[charListsLetters.Count];
+            string[] wordStrings = new string[charListsNumbers.Count];
             int stringPos = 0;
             foreach (List<char> charList in charListsNumbers)
             {
@@ -202,11 +210,16 @@ namespace GPOpgaver
                 stringPos++;
             }
             stringPos = 0;
-            foreach(List<char> charList in charListsLetters)
+            foreach (List<char> charList in charListsLetters)
             {
                 char[] word = charList.ToArray();
+                wordStrings[stringPos] = new string(word);
+                stringPos++;
 
             }
+            string[] start = (bool)firstLetter ? wordStrings : valueStrings;
+            string[] rest = !(bool)firstLetter ? valueStrings : wordStrings;
+            return start[0] + rest[0];
             return (new string(chrs));
         }
     }
