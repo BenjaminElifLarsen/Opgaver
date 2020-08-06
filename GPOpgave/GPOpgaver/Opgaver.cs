@@ -42,12 +42,10 @@ namespace GPOpgaver
         public static bool IsPalindrome(string s)
         {
             if (s.Length > 1)
-            {
                 //byte pairs = (byte)Math.Floor((double)s.Length / 2d); //not needed, could just go to i and s.length-1-i is the same value using a while loop
-                for (byte i = 0; i < (byte)Math.Floor((double)s.Length / 2d); i++)
+                for (byte i = 0; i < (byte)Math.Floor(s.Length / 2d); i++)
                     if (s[i] != s[s.Length - 1 - i])
                         return false;
-            }
             return true;
         }
         /*
@@ -58,13 +56,13 @@ namespace GPOpgaver
          */
         public static int StepsInLinearSearch(int searchFor, int[] intergerArray)
         {
-            int stop = 1;
+            int steps = 1;
             foreach (int interger in intergerArray)
                 if (searchFor == interger)
-                    return stop;
+                    return steps;
                 else
-                    stop++;
-            return stop;
+                    steps++;
+            return steps;
         }
         /*
          * Introduktion til Algoritmer
@@ -83,20 +81,20 @@ namespace GPOpgaver
                 integerArray = tempArray_;
                 do
                 {
-                    int length = (int)Math.Round(integerArray.Length / 2d) - 1;
+                    int halfLength = (int)Math.Round(integerArray.Length / 2d) - 1;
                     int fullLength = integerArray.Length;
                     int[] array = integerArray;
-                    if (integerArray[length] == searchFor)
+                    if (integerArray[halfLength] == searchFor)
                         return stop;
-                    else if (integerArray[length] < searchFor)
+                    else if (integerArray[halfLength] < searchFor)
                     {
-                        integerArray = new int[fullLength - length];
-                        for (int i = length; i < fullLength; i++)
-                            integerArray[i - length] = array[i];
+                        integerArray = new int[fullLength - halfLength];
+                        for (int i = halfLength; i < fullLength; i++)
+                            integerArray[i - halfLength] = array[i];
                     }
                     else
                     {
-                        integerArray = new int[length];
+                        integerArray = new int[halfLength];
                         for (int i = 0; i < integerArray.Length; i++)
                             integerArray[i] = array[i];
                     }
@@ -171,7 +169,8 @@ namespace GPOpgaver
          */
         public static string IncrementString(string txt)
         {
-            int pos = 0;
+            int posLetter = 0;
+            int posNumber = 0;
             int charPos = 0;
             char lastChar = (char)0;
             bool? firstLetter = null;
@@ -186,21 +185,34 @@ namespace GPOpgaver
                     firstLetter = chr < 48 || chr > 57;
                 if (chr < 48 || chr > 57)
                 {
-                    charListsLetters[pos].Add(chr);
+                    charListsLetters[posLetter].Add(chr);
                     if (charPos != chrs.Length - 1)
                     {
                         char nextChar = chrs[charPos + 1];
-                        if (nextChar > 47 && nextChar < 58)
+                        if (nextChar > 47 && nextChar < 58) //instead of only checking when a letter is the current char do the same for values
+                                                            //that is, if a value is current and next is letter, add new list to the charListLetters. 
+                                                            //If letter and next is a value, add a new list to the charListNumber. Also have a pos for letter list and a pos for number list. 
                         {
                             charListsNumbers.Add(new List<char>()); //it can allow the creation of empty lists, fix that. 
-                            charListsLetters.Add(new List<char>());
-                            pos++;
+                            posNumber++;
                         }
                     }
 
                 }
                 else
-                    charListsNumbers[pos].Add(chr);
+                {
+
+                    charListsNumbers[posNumber].Add(chr);
+                    if (charPos != chrs.Length - 1) { 
+                        char nextChar = chrs[charPos + 1];
+                        if(nextChar < 48 || nextChar > 57)
+                        {
+
+                            charListsLetters.Add(new List<char>());
+                            posLetter++;
+                        }
+                    }
+                }
                 lastChar = chr;
                 charPos++;
             }
@@ -267,8 +279,6 @@ namespace GPOpgaver
                     returnString += start[i];
                 if (i < rest.Length)
                     returnString += rest[i];
-                //else
-                //    returnString += start[i];
             }
             return returnString;
         }
