@@ -92,10 +92,10 @@ namespace CleanCodeExersises
         {
             const int age = 55;
             const int year = 10;
-            const bool isRetired = true;
+            const bool isEligible = true;
             if (employee.Age > age)
                 if (employee.YearsEmployed > year)
-                    return employee.IsRetired = isRetired;
+                    return employee.IsRetired = isEligible;
             return false;
         }
         
