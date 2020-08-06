@@ -169,16 +169,11 @@ namespace GPOpgaver
          */
         public static string IncrementString(string txt)
         {
-            //int posLetter = 0;
-            //int posNumber = 0;
             int charPos = 0;
-            char lastChar = (char)0;
             bool? firstLetter = null;
             char[] chrs = txt.ToCharArray();
             List<List<char>> charListsNumbers = new List<List<char>>();
             List<List<char>> charListsLetters = new List<List<char>>();
-            //charListsNumbers.Add(new List<char>());
-            //charListsLetters.Add(new List<char>());
             foreach (char chr in chrs)
             {
                 if (firstLetter == null)
@@ -194,11 +189,8 @@ namespace GPOpgaver
                     {
                         char nextChar = chrs[charPos + 1];
                         if (nextChar > 47 && nextChar < 58)
-                        {
-                            charListsNumbers.Add(new List<char>()); //it can allow the creation of empty lists, fix that. 
-                        }
+                            charListsNumbers.Add(new List<char>());  
                     }
-
                 }
                 else
                 {
@@ -207,27 +199,11 @@ namespace GPOpgaver
                     if (charPos != chrs.Length - 1) { 
                         char nextChar = chrs[charPos + 1];
                         if(nextChar < 48 || nextChar > 57)
-                        {
-
                             charListsLetters.Add(new List<char>());
-                            //posLetter++;
-                        }
                     }
                 }
-                lastChar = chr;
                 charPos++;
             }
-            //for (int i = charListsLetters.Count - 1; i >= 0; i--)
-            //    if (charListsLetters[i].Count == 0)
-            //        charListsLetters.RemoveAt(i);
-            ////if (charListsLetters[charListsLetters.Count - 1].Count == 0)
-            ////    charListsLetters.RemoveAt(charListsLetters.Count - 1);
-            ////if (charListsNumbers[charListsNumbers.Count - 1].Count == 0)
-            ////    charListsNumbers.RemoveAt(charListsNumbers.Count - 1);
-            //for (int i = charListsNumbers.Count - 1; i >= 0; i--)
-            //    if (charListsNumbers[i].Count == 0)
-            //        charListsNumbers.RemoveAt(i);
-
 
             string[] wordStrings = new string[charListsLetters.Count];
             string[] valueStrings = new string[charListsNumbers.Count];
@@ -239,7 +215,7 @@ namespace GPOpgaver
                     {
                         char[] number = charList.ToArray();
                         char[] valueCharArray = (double.Parse(new string(number)) + 1).ToString().ToCharArray();
-                        if (valueCharArray.Length < number.Length) //add trailing zeroes back if they are missing
+                        if (valueCharArray.Length < number.Length) //add leading zeroes back if they are missing
                         {
                             byte zeroDifference = (byte)(number.Length - valueCharArray.Length);
                             char[] zeroArray = new char[zeroDifference];
