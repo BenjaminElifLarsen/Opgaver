@@ -194,7 +194,6 @@ namespace GPOpgaver
                 }
                 else
                 {
-
                     charListsNumbers[charListsNumbers.Count-1].Add(chr);
                     if (charPos != chrs.Length - 1) { 
                         char nextChar = chrs[charPos + 1];
