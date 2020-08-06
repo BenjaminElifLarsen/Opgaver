@@ -79,9 +79,7 @@ namespace GPOpgaver
             {
                 int[] tempArray_ = new int[arrayEnd - arrayStart];
                 for (int i = arrayStart; i < arrayEnd; i++)
-                {
                     tempArray_[i - arrayStart] = integerArray[i];
-                }
                 integerArray = tempArray_;
                 do
                 {
@@ -103,7 +101,7 @@ namespace GPOpgaver
                             integerArray[i] = array[i];
                     }
                     stop++;
-                } while (true);
+                } while (integerArray.Length != 1);
             }
             return stop;
         }
@@ -178,8 +176,8 @@ namespace GPOpgaver
             char lastChar = (char)0;
             bool? firstLetter = null;
             char[] chrs = txt.ToCharArray();
-            List<List<char>> charListsNumbers = new List<List<char>>(1);
-            List<List<char>> charListsLetters = new List<List<char>>(1);
+            List<List<char>> charListsNumbers = new List<List<char>>();
+            List<List<char>> charListsLetters = new List<List<char>>();
             charListsNumbers.Add(new List<char>());
             charListsLetters.Add(new List<char>());
             foreach (char chr in chrs)
@@ -188,20 +186,18 @@ namespace GPOpgaver
                     firstLetter = chr < 48 || chr > 57;
                 if (chr < 48 || chr > 57)
                 {
-                    if (charListsLetters[pos].Count != 0 || charListsLetters[pos] != null)
+                    charListsLetters[pos].Add(chr);
+                    if (charPos != chrs.Length - 1)
                     {
-                        charListsLetters[pos].Add(chr);
-                        if (charPos != chrs.Length-1)
+                        char nextChar = chrs[charPos + 1];
+                        if (nextChar > 47 && nextChar < 58)
                         {
-                            char nextChar = chrs[charPos + 1];
-                            if (nextChar > 47 && nextChar < 58)
-                            {
-                                charListsNumbers.Add(new List<char>());
-                                charListsLetters.Add(new List<char>());
-                                pos++;
-                            }
+                            charListsNumbers.Add(new List<char>()); //it can allow the creation of empty lists, fix that. 
+                            charListsLetters.Add(new List<char>());
+                            pos++;
                         }
                     }
+
                 }
                 else
                     charListsNumbers[pos].Add(chr);
@@ -226,7 +222,8 @@ namespace GPOpgaver
             if (charListsNumbers.Count != 0)
                 foreach (List<char> charList in charListsNumbers)
                 {
-                    if(charList.Count != 0) { 
+                    if (charList.Count != 0)
+                    {
                         char[] number = charList.ToArray();
                         char[] valueCharArray = (double.Parse(new string(number)) + 1).ToString().ToCharArray();
                         if (valueCharArray.Length < number.Length) //add trailing zeroes back if they are missing
@@ -245,7 +242,7 @@ namespace GPOpgaver
                                     temp_[i] = valueCharArray[i - zeroArray.Length];
                             }
                             valueCharArray = temp_;
-                            }
+                        }
                         valueStrings[stringPos] = new string(valueCharArray);
                     }
                     stringPos++;
