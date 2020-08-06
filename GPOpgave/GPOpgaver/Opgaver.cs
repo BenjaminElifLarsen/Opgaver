@@ -72,7 +72,7 @@ namespace GPOpgaver
          */
         public static int StepsInBinarySearch(int[] integerArray, int arrayStart, int arrayEnd, int searchFor)
         {
-            int stop = 1;
+            int step = 1;
             if (arrayStart < arrayEnd)
             {
                 int[] tempArray_ = new int[arrayEnd - arrayStart];
@@ -85,12 +85,12 @@ namespace GPOpgaver
                     int fullLength = integerArray.Length;
                     int[] array = integerArray;
                     if (integerArray[halfLength] == searchFor)
-                        return stop;
+                        return step;
                     else if (integerArray[halfLength] < searchFor)
                     {
-                        integerArray = new int[fullLength - halfLength];
-                        for (int i = halfLength; i < fullLength; i++)
-                            integerArray[i - halfLength] = array[i];
+                        integerArray = new int[fullLength - halfLength -1];
+                        for (int i = halfLength+1; i < fullLength; i++)
+                            integerArray[i - halfLength-1] = array[i];
                     }
                     else
                     {
@@ -98,10 +98,10 @@ namespace GPOpgaver
                         for (int i = 0; i < integerArray.Length; i++)
                             integerArray[i] = array[i];
                     }
-                    stop++;
+                    step++;
                 } while (integerArray.Length != 1);
             }
-            return stop;
+            return step;
         }
         /*
          * Introduktion til Algoritmer
