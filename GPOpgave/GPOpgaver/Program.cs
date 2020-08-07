@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GPOpgaver
 {
@@ -11,6 +12,8 @@ namespace GPOpgaver
             Opgaver.PowerRanger(2, 49, 65);
             Console.WriteLine(Opgaver.IncrementString("foobar01002"));
             Console.WriteLine(Opgaver.StepsInBinarySearch(new int[] { 1, 2, 3, 4, 5 }, 0, 5, 3));
+            List<int> listA = new List<int> { 1, 2, 3, 5, 6, 8, 9 };
+            Opgaver.InsertSortedList(listA, 4);
         }
     }
 }
