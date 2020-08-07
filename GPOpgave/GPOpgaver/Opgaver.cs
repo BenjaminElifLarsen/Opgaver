@@ -125,7 +125,7 @@ namespace GPOpgaver
 
             int Recursive(int[] array, int start, int end, int search)
             {
-                int midPoint = (int)Math.Floor(start + (end - start) /  2d);
+                int midPoint = start + (end - start) /  2;
 
                 if (array[midPoint] == search)
                     return 1;
@@ -147,7 +147,10 @@ namespace GPOpgaver
         {
             for (int i = 0; i < sortedList.Count; i++)
                 if (sortedList[i] > insert)
-                    return i--;
+                {
+                    sortedList.Insert(i, insert);
+                    return i;
+                }
             return sortedList.Count;
         }
         /*
