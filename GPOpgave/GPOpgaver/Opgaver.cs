@@ -116,6 +116,11 @@ namespace GPOpgaver
                     Console.WriteLine(e);
                     return 0;
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return 0;
+                }
             }
 
             int Recursive(int[] array, int start, int end, int search)
