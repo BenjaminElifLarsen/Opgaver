@@ -70,38 +70,68 @@ namespace GPOpgaver
          * List all the steps used to search for 9 in the sequence 1, 3, 4, 5, 6, 8, 9, 11
          * Do this by completing the unit test for 4B
          */
-        public static int StepsInBinarySearch(int[] integerArray, int arrayStart, int arrayEnd, int searchFor)
+        public static int StepsInBinarySearch(int[] integerArray, int arrayStart, int arrayEnd, int searchFor, bool recursive = true)
         {
             int step = 1;
-            if (arrayStart < arrayEnd)
+            if (!recursive)
             {
-                int[] tempArray_ = new int[arrayEnd - arrayStart];
-                for (int i = arrayStart; i < arrayEnd; i++)
-                    tempArray_[i - arrayStart] = integerArray[i];
-                integerArray = tempArray_;
-                do
+                if (arrayStart < arrayEnd)
                 {
-                    int halfLength = (int)Math.Round(integerArray.Length / 2d) - 1;
-                    int fullLength = integerArray.Length;
-                    int[] array = integerArray;
-                    if (integerArray[halfLength] == searchFor)
-                        return step;
-                    else if (integerArray[halfLength] < searchFor)
+                    int[] tempArray_ = new int[arrayEnd - arrayStart];
+                    for (int i = arrayStart; i < arrayEnd; i++)
+                        tempArray_[i - arrayStart] = integerArray[i];
+                    integerArray = tempArray_;
+                    do
                     {
-                        integerArray = new int[fullLength - halfLength -1];
-                        for (int i = halfLength+1; i < fullLength; i++)
-                            integerArray[i - halfLength-1] = array[i];
-                    }
-                    else
-                    {
-                        integerArray = new int[halfLength];
-                        for (int i = 0; i < integerArray.Length; i++)
-                            integerArray[i] = array[i];
-                    }
-                    step++;
-                } while (integerArray.Length != 1);
+                        int halfLength = (int)Math.Round(integerArray.Length / 2d) - 1; //could also keep the original array and just use an index for the middle and indexes for the next start and end point to calculate the next "mid" point. 
+                        int fullLength = integerArray.Length; //so you are looking at less and less of the array, but does not spent time to do actually resizing.
+                        int[] array = integerArray; //also use recursive 
+                        if (integerArray[halfLength] == searchFor)
+                            return step;
+                        else if (integerArray[halfLength] < searchFor)
+                        {
+                            integerArray = new int[fullLength - halfLength - 1];
+                            for (int i = halfLength + 1; i < fullLength; i++)
+                                integerArray[i - halfLength - 1] = array[i];
+                        }
+                        else
+                        {
+                            integerArray = new int[halfLength];
+                            for (int i = 0; i < integerArray.Length; i++)
+                                integerArray[i] = array[i];
+                        }
+                        step++;
+                    } while (integerArray.Length != 1);
+                }
+                return step;
             }
-            return step;
+            else
+            {
+                try
+                {
+                    return Recursive(integerArray, arrayStart, arrayEnd, searchFor);
+                }
+                catch (CannotFindException e)
+                {
+                    Console.WriteLine(e);
+                    return 0;
+                }
+            }
+
+            int Recursive(int[] array, int start, int end, int search)
+            {
+                int midPoint = (int)Math.Floor(start + (end - start) /  2d);
+
+                if (array[midPoint] == search)
+                    return 1;
+                else if (midPoint == 0 || midPoint == array.Length-1)
+                    throw new CannotFindException(searchFor);
+                else if (array[midPoint] < search)
+                    return 1 + Recursive(array, start, midPoint + 1, search);
+                else
+                    return 1 + Recursive(array, start, midPoint - 1, search); 
+            }
+
         }
         /*
          * Introduktion til Algoritmer
@@ -260,5 +290,12 @@ namespace GPOpgaver
             }
             return returnString;
         }
+    }
+
+    class CannotFindException : Exception
+    {
+        public CannotFindException() { }
+
+        public CannotFindException(int value) : base(String.Format("Value {0} cannot be found.", value)) { }
     }
 }
