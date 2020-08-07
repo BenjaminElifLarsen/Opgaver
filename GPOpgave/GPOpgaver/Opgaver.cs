@@ -127,7 +127,7 @@ namespace GPOpgaver
                 else if (midPoint == 0 || midPoint == array.Length-1)
                     throw new CannotFindException(searchFor);
                 else if (array[midPoint] < search)
-                    return 1 + Recursive(array, start, midPoint + 1, search);
+                    return 1 + Recursive(array, midPoint + 1, end, search);
                 else
                     return 1 + Recursive(array, start, midPoint - 1, search); 
             }
