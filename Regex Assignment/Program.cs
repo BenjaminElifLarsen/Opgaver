@@ -18,26 +18,52 @@ namespace Regex_Assignment
     {
         static void Main(string[] args)
         {
-            string test = "Hey 1 there 3 how 9 is 5 it 0 going 2?";
-            Password.Test(test);
+            string test = "Hey 1 there 3 how 9 is 5 it 0 going 2? eH 12Db34";
+            Password.ValueTest(test);
+            Password.LetterLowerTest(test);
+            Password.PasswordChecker(test);
         }
     }
 
 
     public class Password
     {
-        static string testNumberString = "[0-9]*";
-        static string pattern = $@"{testNumberString}";
-        static Regex rg = new Regex(pattern);
+        static string valuesString = "[0-9]{1,}";
+        static string valuePattern = $@"{valuesString}";
+        static Regex rgValue = new Regex(valuePattern);
 
-        public static void Test(string text)
+        static string lowerLetterString = "[a-z]{1,}";
+        static string upperLetterString = "[A-Z]{1,}";
+        static string letterPattern = $@"{upperLetterString}|{lowerLetterString}";
+        static Regex rgLowerLetter = new Regex(letterPattern);
+
+        static string alphanumericalString = @"\w{1,24}";
+        static string combinationPattern = $@"{alphanumericalString}({valuesString}|{lowerLetterString}|{upperLetterString})";
+        static Regex rgPassword = new Regex(combinationPattern);
+
+        public static void ValueTest(string text)
         {
-            MatchCollection matches = rg.Matches(text);
-
-            foreach (var match in matches)
-                Console.WriteLine(match);
+            MatchCollection matches = rgValue.Matches(text);
+            WriteMatchOut(matches);
         }
 
+        public static void LetterLowerTest(string text)
+        {
+            MatchCollection matches = rgLowerLetter.Matches(text);
+            WriteMatchOut(matches);
+        }
+
+        public static void PasswordChecker(string text)
+        {
+            MatchCollection matches = rgPassword.Matches(text);
+            WriteMatchOut(matches);
+        }
+
+        private static void WriteMatchOut(MatchCollection matches)
+        {
+            foreach (Match match in matches)
+                Console.WriteLine(match);
+        }
     }
 
 
