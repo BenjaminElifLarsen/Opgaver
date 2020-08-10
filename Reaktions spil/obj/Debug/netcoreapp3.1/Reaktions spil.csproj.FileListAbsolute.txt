@@ -1,0 +1,4 @@
+C:\Users\Benjamin Elif Larsen\Desktop\Repo\Reaktions spil\obj\Debug\netcoreapp3.1\Reaktions spil.csprojAssemblyReference.cache
+C:\Users\Benjamin Elif Larsen\Desktop\Repo\Reaktions spil\obj\Debug\netcoreapp3.1\Reaktions spil.AssemblyInfoInputs.cache
+C:\Users\Benjamin Elif Larsen\Desktop\Repo\Reaktions spil\obj\Debug\netcoreapp3.1\Reaktions spil.AssemblyInfo.cs
+C:\Users\Benjamin Elif Larsen\Desktop\Repo\Reaktions spil\obj\Debug\netcoreapp3.1\Reaktions spil.csproj.CoreCompileInputs.cache
