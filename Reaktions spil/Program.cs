@@ -34,16 +34,51 @@ namespace Reaktions_spil
     {
         double countup = 0; //miliseconds
         ConsoleKey gameStart = ConsoleKey.W;
-        ConsoleKey player1ReactionKey = ConsoleKey.Enter;
+        ConsoleKey player1ReactionKey;
+        ConsoleKey player2ReactionKey;
         private static Random rnd = new Random();
         char sign = 'O';
         public Game()
         {
-            Run();
+            SingleRun();
         }
 
+        public void Menu()
+        {
+            const ConsoleKey singleplayer = ConsoleKey.D1;
+            const ConsoleKey multiplayer = ConsoleKey.D2;
+            ConsoleKey pressedKey = ConsoleKey.D3;
+            bool selected = false;
+            do
+            {
+                while (!Console.KeyAvailable) ;
+                pressedKey = Console.ReadKey(true).Key;
+                if(pressedKey == singleplayer || pressedKey == multiplayer))
+                        selected = true;
+
+                while (Console.KeyAvailable)
+                    Console.ReadKey(true); //flush the buffer
+
+            } while (!selected);
+            selected = false;
+            switch (pressedKey)
+            {
+                case singleplayer:
+                    SingleRun();
+                    break;
+
+                case multiplayer:
+                    MultiRun();
+                    break;
+            }
+        }
         
-        private void Run()
+        private void MultiRun()
+        {
+
+        }
+
+        private void SingleRun()
         {
             Console.WriteLine("Press {0} to start. {1}Pres {2} when you see {3}", gameStart, Environment.NewLine, player1ReactionKey, sign);
             do
