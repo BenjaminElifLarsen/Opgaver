@@ -174,11 +174,11 @@ namespace Reaktions_spil
                     {
                         while (!Console.KeyAvailable) ; 
                         ConsoleKey pressedKey = Console.ReadKey(true).Key;
-                        if(pressedKey == player1ReactionKey)
+                        if(pressedKey == player1ReactionKey && !player1Pressed)
                         {
                             player1Pressed = true;
                             player1Timer = Timer.TimePassed;
-                        }else if(pressedKey == player2ReactionKey)
+                        }else if(pressedKey == player2ReactionKey && !player2Pressed)
                         {
                             player2Pressed = true;
                             player2Timer = Timer.TimePassed;
