@@ -11,7 +11,9 @@ namespace Reaktions_spil
         }
     }
 
-
+    /// <summary>
+    /// Class containing variables, properties and functions needed for time keeping for the game.
+    /// </summary>
     public class Timer
     {
         private static DateTime time = new DateTime();
@@ -31,6 +33,9 @@ namespace Reaktions_spil
         public static double TimePassed { get => (DateTime.Now - startTime).TotalMilliseconds; }
     }
 
+    /// <summary>
+    /// Reaction game.
+    /// </summary>
     public class Game
     {
 
@@ -41,11 +46,18 @@ namespace Reaktions_spil
         ConsoleKey player2ReactionKey;
         private static Random rnd = new Random();
         char sign = 'O';
+
+        /// <summary>
+        /// Basic constructor. 
+        /// </summary>
         public Game()
         {
             Menu();
         }
 
+        /// <summary>
+        /// The game main menu. 
+        /// </summary>
         public void Menu()
         {
             const ConsoleKey singleplayer = ConsoleKey.D1;
@@ -92,6 +104,9 @@ namespace Reaktions_spil
             }
         }
         
+        /// <summary>
+        /// Displays the highscores. 
+        /// </summary>
         private void HighscoreDisplay()
         {
             Console.Clear();
@@ -103,18 +118,27 @@ namespace Reaktions_spil
             Wait();
         }
 
+        /// <summary>
+        /// Waits on a key press. 
+        /// </summary>
         private void Wait()
         {
             Console.WriteLine("Press any key to continue.");
             Console.ReadKey();
         }
 
+        /// <summary>
+        /// Flushes the buffer of Console.ReadKey
+        /// </summary>
         private void BufferFlush()
         {
             while (Console.KeyAvailable)
                 Console.ReadKey(true); //flush the buffer
         }
 
+        /// <summary>
+        /// Multipleplayer game loop.
+        /// </summary>
         private void MultiRun()
         {
             Console.Clear();
@@ -171,6 +195,9 @@ namespace Reaktions_spil
             Wait();
         }
 
+        /// <summary>
+        /// Singleplayer game loop.
+        /// </summary>
         private void SingleRun()
         {
             Console.Clear();
@@ -191,8 +218,7 @@ namespace Reaktions_spil
                     while (countup < timeToCountDown)
                     {
                         countup = Timer.TimePassed;
-                        while (Console.KeyAvailable)
-                            Console.ReadKey(true); //flush the buffer
+                        BufferFlush();
                     }
                     Console.WriteLine(sign);
                     Timer.SetTime();
@@ -203,14 +229,18 @@ namespace Reaktions_spil
                 }
 
 
-                while (Console.KeyAvailable)
-                    Console.ReadKey(true); //flush the buffer
+                BufferFlush();
 
             } while (!pressedStartKey);
             Wait();
 
         }
 
+
+        /// <summary>
+        /// Adds <paramref name="time"/> to the highscore at the correct location. If the highscore is above ten the last value(s) is/are removed. 
+        /// </summary>
+        /// <param name="time"></param>
         private static void AddHighScore(double time)
         {
             if (highscores.Count == 0)
