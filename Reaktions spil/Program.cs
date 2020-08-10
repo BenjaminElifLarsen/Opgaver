@@ -6,7 +6,7 @@ namespace Reaktions_spil
     {
         static void Main(string[] args)
         {
-
+            Game game = new Game();
         }
     }
 
@@ -22,7 +22,7 @@ namespace Reaktions_spil
 
         public static DateTime Time { get => time; }
 
-        public static DateTime SetTime()
+        public static void SetTime()
         {
             startTime = DateTime.Now;
         }
@@ -36,8 +36,8 @@ namespace Reaktions_spil
         ConsoleKey gameStart = ConsoleKey.W;
         ConsoleKey player1ReactionKey = ConsoleKey.Enter;
         private static Random rnd = new Random();
-
-        Game()
+        char sign = 'O';
+        public Game()
         {
             Run();
         }
@@ -45,7 +45,7 @@ namespace Reaktions_spil
         
         private void Run()
         {
-            Console.WriteLine("Press {0} to start.", gameStart);
+            Console.WriteLine("Press {0} to start. {1}Pres {2} when you see {3}", gameStart, Environment.NewLine, player1ReactionKey, sign);
             do
             {
                 
@@ -54,7 +54,7 @@ namespace Reaktions_spil
                 {
                     Timer.SetTime();
                     double playerTimer = 0;
-                    float timeToCountDown = rnd.Next(0, 8) + (rnd.Next(0, 1000) / 1000f);
+                    float timeToCountDown = (rnd.Next(0, 8) + (rnd.Next(0, 1000) / 1000f))*1000;
                     countup = 0;
                     while (countup < timeToCountDown)
                     {
@@ -62,7 +62,7 @@ namespace Reaktions_spil
                         while (Console.KeyAvailable)
                             Console.ReadKey(true); //flush the buffer
                     }
-                    Console.WriteLine('O');
+                    Console.WriteLine(sign);
                     Timer.SetTime();
                     while (!Console.KeyAvailable && Console.ReadKey(true).Key != player1ReactionKey) ;
                     playerTimer = Timer.TimePassed;
