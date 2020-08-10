@@ -186,6 +186,8 @@ namespace Reaktions_spil
 
                     } while (!player2Pressed || !player1Pressed);
                     Console.WriteLine("Player 1 time spent: {0} ms. {2}Player 2 time spent: {1} ms.", player1Timer, player2Timer, Environment.NewLine);
+                    string winner = player1Timer < player2Timer ? "Payer 1": "Player 2";
+                    Console.WriteLine("{0} won", winner);
                 }
 
 
