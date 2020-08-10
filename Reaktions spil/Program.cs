@@ -109,6 +109,12 @@ namespace Reaktions_spil
             Console.ReadKey();
         }
 
+        private void BufferFlush()
+        {
+            while (Console.KeyAvailable)
+                Console.ReadKey(true); //flush the buffer
+        }
+
         private void MultiRun()
         {
             Console.Clear();
@@ -136,8 +142,7 @@ namespace Reaktions_spil
                     while (countup < timeToCountDown)
                     {
                         countup = Timer.TimePassed;
-                        while (Console.KeyAvailable)
-                            Console.ReadKey(true); //flush the buffer
+                        BufferFlush();
                     }
                     Console.WriteLine(sign);
                     Timer.SetTime();
@@ -160,8 +165,7 @@ namespace Reaktions_spil
                 }
 
 
-                while (Console.KeyAvailable)
-                    Console.ReadKey(true); //flush the buffer
+                BufferFlush();
 
             } while (!pressedStartKey);
             Wait();
