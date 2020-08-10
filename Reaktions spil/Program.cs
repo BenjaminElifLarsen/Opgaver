@@ -131,7 +131,7 @@ namespace Reaktions_spil
                     Timer.SetTime();
                     double player1Timer = 0;
                     double player2Timer = 0;
-                    float timeToCountDown = (rnd.Next(0, 8) + (rnd.Next(0, 1000) / 1000f)) * 1000;
+                    float timeToCountDown = (rnd.Next(1, 8) + (rnd.Next(0, 1000) / 1000f)) * 1000;
                     countup = 0;
                     while (countup < timeToCountDown)
                     {
@@ -182,7 +182,7 @@ namespace Reaktions_spil
                     pressedStartKey = true;
                     Timer.SetTime();
                     double playerTimer = 0;
-                    float timeToCountDown = (rnd.Next(0, 8) + (rnd.Next(0, 1000) / 1000f))*1000;
+                    float timeToCountDown = (rnd.Next(1, 8) + (rnd.Next(0, 1000) / 1000f))*1000;
                     countup = 0;
                     while (countup < timeToCountDown)
                     {
