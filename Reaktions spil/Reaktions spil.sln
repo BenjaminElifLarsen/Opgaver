@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reaktions spil", "Reaktions spil.csproj", "{13877001-83A4-4C57-B8A4-FFFF636B8F9F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13877001-83A4-4C57-B8A4-FFFF636B8F9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13877001-83A4-4C57-B8A4-FFFF636B8F9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13877001-83A4-4C57-B8A4-FFFF636B8F9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13877001-83A4-4C57-B8A4-FFFF636B8F9F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8877601B-891C-4B1B-8A5C-D6141FD6EEA2}
+	EndGlobalSection
+EndGlobal
