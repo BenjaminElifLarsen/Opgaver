@@ -50,12 +50,13 @@ namespace Reaktions_spil
             const ConsoleKey exist = ConsoleKey.D3;
             ConsoleKey pressedKey = ConsoleKey.D4;
             bool selected = false;
-            while (true) { 
+            while (true) {
+                Console.WriteLine("Press {0} for singleplayer. Press {1} for multiplayer. Press {2} to shutdown.", singleplayer, multiplayer, exist);
                 do
                 {
                     while (!Console.KeyAvailable) ;
                     pressedKey = Console.ReadKey(true).Key;
-                    if(pressedKey == singleplayer || pressedKey == multiplayer)
+                    if(pressedKey == singleplayer || pressedKey == multiplayer || pressedKey == exist)
                             selected = true;
 
                     while (Console.KeyAvailable)
