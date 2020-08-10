@@ -172,7 +172,7 @@ namespace Reaktions_spil
                     Timer.SetTime();
                     do
                     {
-                        while (!Console.KeyAvailable) ; //slow at registrating the key(s) has/have been pressed. Enter seems as it need to be pressed twice, but in single player it does not...
+                        while (!Console.KeyAvailable) ; 
                         ConsoleKey pressedKey = Console.ReadKey(true).Key;
                         if(pressedKey == player1ReactionKey)
                         {
