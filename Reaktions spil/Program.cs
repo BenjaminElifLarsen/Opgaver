@@ -148,7 +148,7 @@ namespace Reaktions_spil
             bool player1Pressed = false;
             bool player2Pressed = false;
 
-            Console.WriteLine("Press {0} to start. {1}Player 1: Pres {2} when you see {4}. Player 2: Pres {3} when you see {4}."
+            Console.WriteLine("Press {0} to start. {1}Player 1: Pres {2} when you see {4}. {1}Player 2: Pres {3} when you see {4}."
                 , gameStart, Environment.NewLine, player1ReactionKey, player2ReactionKey, sign);
 
             do
