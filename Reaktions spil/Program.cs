@@ -39,13 +39,13 @@ namespace Reaktions_spil
     public class Game
     {
 
-        static List<double> highscores = new List<double>();
-        double countup = 0; //miliseconds
-        ConsoleKey gameStart = ConsoleKey.W;
-        ConsoleKey player1ReactionKey;
-        ConsoleKey player2ReactionKey;
+        private static List<double> highscores = new List<double>();
+        private double countup = 0; //miliseconds
+        private const ConsoleKey gameStart = ConsoleKey.W;
+        private ConsoleKey player1ReactionKey;
+        private ConsoleKey player2ReactionKey;
         private static Random rnd = new Random();
-        char sign = 'O';
+        private const char sign = 'O';
 
         /// <summary>
         /// Basic constructor. 
