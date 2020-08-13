@@ -10,7 +10,7 @@ namespace Regex_Assignment
      * contains min. 1 lowercase letter.
      * contains numbers from 0 to 9.
      * max two characters after each others are similar, e.g. aa is fine, but aaa is not.
-     * 
+     * supported special characters: ! @ # $ % ^ & * ( ) + = _ - { } [ ] : ; " ' ? < > , .
      */
 
 
@@ -21,8 +21,8 @@ namespace Regex_Assignment
             string test = "12Db34dweweEEww";
             //Password.ValueTest(test);
             //Password.LetterLowerTest(test);
-            Password.PasswordChecker(test);
-            Password.PasswordChecker("test1");
+            //Password.PasswordChecker(test);
+            Password.PasswordChecker("Pè7$areLove");
         }
     }
 
@@ -38,7 +38,7 @@ namespace Regex_Assignment
         static string letterPattern = $@"{upperLetterString}|{lowerLetterString}";
         static Regex rgLowerLetter = new Regex(letterPattern);
 
-        static string alphanumericalString = @"\w{6,24}";
+        static string alphanumericalString = @"[a-zA-Z \!\@\#\$\%\^\&\*\(\)\+\=\-\{\}\[\]\:\;\""\'\?\<\>\,\.]{1,24}";
         static string combinationPattern = $@"{alphanumericalString}({valuesString}|{lowerLetterString}|{upperLetterString})";
         static Regex rgPassword = new Regex(combinationPattern);
         static Regex rgPasswordLength = new Regex(alphanumericalString);
@@ -47,6 +47,7 @@ namespace Regex_Assignment
         static Regex rgPasswordUpper = new Regex("." + upperLetterString);
         static Regex rgPasswordLowerRepeat = new Regex(@"([a-zA-Z])\1{2,}");
         //static Regex rgPasswordUpperRepeat = new Regex(".[A-Z]{3}");
+        static Regex rgPasswordSpecial = new Regex(@"[\!\@\#\$\%\^\&\*\(\)\+\=\-\{\}\[\]\:\;\""\'\?\<\>\,\.]*");
 
         public static void ValueTest(string text)
         {
@@ -64,6 +65,8 @@ namespace Regex_Assignment
         {
             //MatchCollection matches = rgPassword.Matches(text);
             //MatchCollection matches = rgPasswordLength.Matches(text);
+            int length = text.Length;
+            MatchCollection match = rgPasswordLength.Matches(text);
             if (rgPasswordLength.IsMatch(text))
             
                 //MatchToString(ref text);
@@ -80,6 +83,7 @@ namespace Regex_Assignment
                         
                             if (!rgPasswordLowerRepeat.IsMatch(text))
                             
+                                if(rgPasswordSpecial.IsMatch(text))
                                 //if (!rgPasswordUpperRepeat.IsMatch(text))
                                 {
                                     Console.WriteLine(text);
