@@ -18,10 +18,11 @@ namespace Regex_Assignment
     {
         static void Main(string[] args)
         {
-            string test = "Hey 1 there 3 how 9 is 5 it 0 going 2? eH 12Db34";
-            Password.ValueTest(test);
-            Password.LetterLowerTest(test);
+            string test = "12Db34dweweEEww";
+            //Password.ValueTest(test);
+            //Password.LetterLowerTest(test);
             Password.PasswordChecker(test);
+            Password.PasswordChecker("test1");
         }
     }
 
@@ -37,9 +38,15 @@ namespace Regex_Assignment
         static string letterPattern = $@"{upperLetterString}|{lowerLetterString}";
         static Regex rgLowerLetter = new Regex(letterPattern);
 
-        static string alphanumericalString = @"\w{1,24}";
+        static string alphanumericalString = @"\w{6,24}";
         static string combinationPattern = $@"{alphanumericalString}({valuesString}|{lowerLetterString}|{upperLetterString})";
         static Regex rgPassword = new Regex(combinationPattern);
+        static Regex rgPasswordLength = new Regex(alphanumericalString);
+        static Regex rgPasswordValue = new Regex("." + valuePattern);
+        static Regex rgPasswordLower = new Regex("." + lowerLetterString);
+        static Regex rgPasswordUpper = new Regex("." + upperLetterString);
+        static Regex rgPasswordLowerRepeat = new Regex(@"([a-zA-Z])\1{2,}");
+        //static Regex rgPasswordUpperRepeat = new Regex(".[A-Z]{3}");
 
         public static void ValueTest(string text)
         {
@@ -53,10 +60,42 @@ namespace Regex_Assignment
             WriteMatchOut(matches);
         }
 
-        public static void PasswordChecker(string text)
+        public static bool PasswordChecker(string text)
         {
-            MatchCollection matches = rgPassword.Matches(text);
-            WriteMatchOut(matches);
+            //MatchCollection matches = rgPassword.Matches(text);
+            //MatchCollection matches = rgPasswordLength.Matches(text);
+            if (rgPasswordLength.IsMatch(text))
+            
+                //MatchToString(ref text);
+               // matches = rgPasswordValue.IsMatch(text);
+                if(rgPasswordValue.IsMatch(text))
+                
+                    //MatchToString(ref text);
+                    //matches = rgPasswordLower.Matches(text);
+                    if (rgPasswordLower.IsMatch(text))
+                    
+                        //MatchToString(ref text);
+                        //matches = rgPasswordUpper.Matches(text);
+                        if (rgPasswordUpper.IsMatch(text))
+                        
+                            if (!rgPasswordLowerRepeat.IsMatch(text))
+                            
+                                //if (!rgPasswordUpperRepeat.IsMatch(text))
+                                {
+                                    Console.WriteLine(text);
+
+                                    return true;
+                                }
+
+            return false;
+
+
+            //void MatchToString(ref string txt)
+            //{
+            //    txt = "";
+            //    foreach (Match match in matches)
+            //        txt += match.Value + " ";
+            //}
         }
 
         private static void WriteMatchOut(MatchCollection matches)
