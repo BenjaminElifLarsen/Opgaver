@@ -22,7 +22,7 @@ namespace Regex_Assignment
             //Password.ValueTest(test);
             //Password.LetterLowerTest(test);
             //Password.PasswordChecker(test);
-            Password.PasswordChecker("Pè7$areLove");
+            Password.PasswordChecker("P1zz@P1zz@P1zz@P1zz@P1zz@");
         }
     }
 
@@ -38,17 +38,17 @@ namespace Regex_Assignment
         static string letterPattern = $@"{upperLetterString}|{lowerLetterString}";
         static Regex rgLowerLetter = new Regex(letterPattern);
 
-        static string alphanumericalString = @"[a-zA-Z \!\@\#\$\%\^\&\*\(\)\+\=\-\{\}\[\]\:\;\""\'\?\<\>\,\.]{1,24}";
+        static string alphanumericalString = @"^[a-z A-Z 0-9 \!\@\#\$\%\^\&\*\(\)\+\=\-\{\}\[\]\:\;""\'\?\<\>\,\._]{6,24}$"; //6,24
         static string combinationPattern = $@"{alphanumericalString}({valuesString}|{lowerLetterString}|{upperLetterString})";
         static Regex rgPassword = new Regex(combinationPattern);
         static Regex rgPasswordLength = new Regex(alphanumericalString);
-        static Regex rgPasswordValue = new Regex("." + valuePattern);
-        static Regex rgPasswordLower = new Regex("." + lowerLetterString);
-        static Regex rgPasswordUpper = new Regex("." + upperLetterString);
+        static Regex rgPasswordValue = new Regex(valuePattern);
+        static Regex rgPasswordLower = new Regex(lowerLetterString);
+        static Regex rgPasswordUpper = new Regex(upperLetterString);
         static Regex rgPasswordLowerRepeat = new Regex(@"([a-zA-Z])\1{2,}");
         //static Regex rgPasswordUpperRepeat = new Regex(".[A-Z]{3}");
-        static Regex rgPasswordSpecial = new Regex(@"[\!\@\#\$\%\^\&\*\(\)\+\=\-\{\}\[\]\:\;\""\'\?\<\>\,\.]*");
-
+        static Regex rgPasswordSpecial = new Regex(@"[\!\@\#\$\%\^\&\*\(\)\+\=\-\{\}\[\]\:\;""\'\?\<\>\,\._]*");
+        static Regex rpPassworldTest = new Regex(@"[^a-zA-Z 0-9 \!\@\#\$\%\^\&\*\(\)\+\=\-\{\}\[\]\:\;""\'\?\<\>\,\._]{1}");
         public static void ValueTest(string text)
         {
             MatchCollection matches = rgValue.Matches(text);
@@ -67,7 +67,10 @@ namespace Regex_Assignment
             //MatchCollection matches = rgPasswordLength.Matches(text);
             int length = text.Length;
             MatchCollection match = rgPasswordLength.Matches(text);
-            if (rgPasswordLength.IsMatch(text))
+
+            if(!rpPassworldTest.IsMatch(text))
+
+            if (/*text.Length < 25 && text.Length > 5*/rgPasswordLength.IsMatch(text))
             
                 //MatchToString(ref text);
                // matches = rgPasswordValue.IsMatch(text);

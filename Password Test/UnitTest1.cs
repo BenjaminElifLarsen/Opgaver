@@ -15,7 +15,7 @@ namespace Password_Test
             Assert.False(Password.PasswordChecker("mypassword11")); //No uppercase
             Assert.False(Password.PasswordChecker("MYPASSWORD11")); //No lowercase
             Assert.False(Password.PasswordChecker("iLoveYou")); //No numbers
-            Assert.False(Password.PasswordChecker("P è 7$areLove"));
+            Assert.False(Password.PasswordChecker("Pè7$areLove"));
             Assert.False(Password.PasswordChecker("Repeeea7!"));
             // VALID PASSWORDS
             Assert.True(Password.PasswordChecker("H4(k+x0"));
