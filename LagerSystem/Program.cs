@@ -27,10 +27,10 @@ namespace LagerSystem
     {
         private static List<Ware> wares = new List<Ware>();
 
-        private static List<string[]> wareInformation = new List<string[]>();
 
         private static List<string[]> GetWareInformation()
         {
+            List<string[]> wareInformation = new List<string[]>();
             string[] information = new string[4]; //Name, ID, Amount, Type (class type that is, e.g. Liquid)
             foreach (Ware ware in wares)
             {
@@ -38,9 +38,9 @@ namespace LagerSystem
                 information[1] = ware.GetID;
                 information[2] = ware.GetAmount.ToString();
                 information[3] = ware.GetType().ToString(); //consider using reflection for the type
+                wareInformation.Add(information);
             }
-
-            throw new NotImplementedException();
+            return wareInformation;
         }
     }
 
