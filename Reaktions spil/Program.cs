@@ -319,9 +319,15 @@ namespace Reaktions_spil
                 while (pos <= highscoreCounter)
                 {
                     if (pos < highscoreCounter && highscores[pos] > time)
+                    {
                         highscores.Insert(pos, time);
+                        break;
+                    }
                     else if (pos == highscoreCounter && highscoreCounter < 10)
+                    {
                         highscores.Add(time);
+                        break;
+                    }
                     pos++;
                 }
 
