@@ -27,6 +27,7 @@ namespace LagerSystem
     {
         private static List<Ware> wares = new List<Ware>();
 
+        public static List<Ware> Ware { get => wares; set => wares = value; }
 
         private static List<string[]> GetWareInformation()
         {
@@ -44,12 +45,37 @@ namespace LagerSystem
         }
     }
 
+    public class WareCreator
+    {
+        private WarePublisher warePublisher;
+        private WareCreator() { }
+        public WareCreator(WarePublisher warePublisher)
+        {
+            warePublisher.RaiseCreateWareEvent += CreateWareEventHandler;
+            this.warePublisher = warePublisher;
+        }
+
+        protected void CreateWareEventHandler(object sender, ControlEvents.CreateWareEventArgs e)
+        {
+            
+            WareInformation.Ware.Add(new Liquids(e.Name,e.ID,e.Amount, warePublisher)); //needs to deal with different types
+        }
+
+        public void RemoveFromSubscription(WarePublisher warePublisher)
+        {
+            warePublisher.RaiseCreateWareEvent -= CreateWareEventHandler;
+        } 
+
+    }
+
+    
     abstract class Ware
     {
         string name;
         string id;
         uint amount;
 
+        [Ware("None")]
         public Ware(string name, string id, uint amount, WarePublisher warePublisher)
         {
             this.name = name;
@@ -96,6 +122,7 @@ namespace LagerSystem
 
     }
 
+    [Ware("Liquid")]
     sealed class Liquids : Ware
     {
         public Liquids(string name, string id, uint amount, WarePublisher warePublisher) : base(name, id, amount, warePublisher) { }
@@ -206,6 +233,16 @@ namespace LagerSystem
     }
 
 
+    public class WareAttribute : Attribute
+    {
+        private string type; 
+        public WareAttribute(string type)
+        {
+            this.type = type;
+        }
+        public string Type { get => type; }
+
+    }
 
 
 
