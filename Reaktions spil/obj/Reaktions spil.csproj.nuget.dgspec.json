@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\drage\\Source\\Repos\\Opgaver\\Reaktions spil\\Reaktions spil.csproj": {}
+    "C:\\Users\\drage\\source\\repos\\Opgaver\\Reaktions spil\\Reaktions spil.csproj": {}
   },
   "projects": {
-    "C:\\Users\\drage\\Source\\Repos\\Opgaver\\Reaktions spil\\Reaktions spil.csproj": {
+    "C:\\Users\\drage\\source\\repos\\Opgaver\\Reaktions spil\\Reaktions spil.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\drage\\Source\\Repos\\Opgaver\\Reaktions spil\\Reaktions spil.csproj",
+        "projectUniqueName": "C:\\Users\\drage\\source\\repos\\Opgaver\\Reaktions spil\\Reaktions spil.csproj",
         "projectName": "Reaktions spil",
-        "projectPath": "C:\\Users\\drage\\Source\\Repos\\Opgaver\\Reaktions spil\\Reaktions spil.csproj",
+        "projectPath": "C:\\Users\\drage\\source\\repos\\Opgaver\\Reaktions spil\\Reaktions spil.csproj",
         "packagesPath": "C:\\Users\\drage\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\drage\\Source\\Repos\\Opgaver\\Reaktions spil\\obj\\",
+        "outputPath": "C:\\Users\\drage\\source\\repos\\Opgaver\\Reaktions spil\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
