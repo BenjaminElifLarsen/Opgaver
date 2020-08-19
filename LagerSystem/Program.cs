@@ -70,8 +70,9 @@ namespace LagerSystem
 
         protected void CreateWareEventHandler(object sender, ControlEvents.CreateWareEventArgs e)
         {
-            
-            WareInformation.Ware.Add(new Liquids(e.Name,e.ID,e.Amount, warePublisher)); //needs to deal with different types
+            Type type = Type.GetType(e.Type);
+            if (type == Type.GetType("Liquids")) 
+                WareInformation.Ware.Add(new Liquids(e.Name,e.ID,e.Amount, warePublisher)); //needs to deal with different types
         }
 
         public void RemoveFromSubscription(WarePublisher warePublisher)
@@ -242,15 +243,17 @@ namespace LagerSystem
     {
         public class CreateWareEventArgs
         {
-            public CreateWareEventArgs(string name, string ID, uint amount)
+            public CreateWareEventArgs(string name, string ID, uint amount, string type = "None")
             {
                 Name = name;
                 this.ID = ID;
                 Amount = amount;
+                Type = type;
             }
             public string Name { get; set; }
             public string ID { get; set; }
             public uint Amount { get; set; }
+            public string Type { get; set; }
         }
 
         public class AddEventArgs
