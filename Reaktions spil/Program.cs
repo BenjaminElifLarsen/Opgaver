@@ -60,25 +60,10 @@ namespace Reaktions_spil
             const ConsoleKey multiplayerKey = ConsoleKey.D2;
             const ConsoleKey exitKey = ConsoleKey.D4;
             const ConsoleKey highscoreKey = ConsoleKey.D3;
-            char singleplayerControlChar = singleplayerKey.ToString()[singleplayerKey.ToString().Length - 1];
-            char multiplayerControlChar = multiplayerKey.ToString()[multiplayerKey.ToString().Length - 1];
-            char exitControlChar = highscoreKey.ToString()[highscoreKey.ToString().Length - 1];
-            char highscoreControlChar = exitKey.ToString()[exitKey.ToString().Length - 1];
-            ConsoleKey pressedKey;
-            bool selected = false;
+
             while (true) {
-                Console.Clear();
-                PrintOutMessage(String.Format("Press {0} for singleplayer. Press {1} for multiplayer. Press {2} for highscore. Press {3} to shutdown.",
-                    singleplayerControlChar, multiplayerControlChar, exitControlChar, highscoreControlChar));
-                do
-                {
-                    while (!Console.KeyAvailable) ;
-                    pressedKey = Console.ReadKey(true).Key;
-                    if(pressedKey == singleplayerKey || pressedKey == multiplayerKey || pressedKey == exitKey || pressedKey == highscoreKey)
-                            selected = true;
-                    BufferFlush();
-                } while (!selected);
-                selected = false;
+                Display();
+                ConsoleKey pressedKey = MenuKeyPressed();
                 switch (pressedKey)
                 {
                     case singleplayerKey:
@@ -97,6 +82,30 @@ namespace Reaktions_spil
                         HighscoreDisplay();
                         break;
                 }
+            }
+
+            void Display()
+            {
+                char singleplayerControlChar = singleplayerKey.ToString()[singleplayerKey.ToString().Length - 1];
+                char multiplayerControlChar = multiplayerKey.ToString()[multiplayerKey.ToString().Length - 1];
+                char exitControlChar = highscoreKey.ToString()[highscoreKey.ToString().Length - 1];
+                char highscoreControlChar = exitKey.ToString()[exitKey.ToString().Length - 1];
+
+                Console.Clear();
+                PrintOutMessage(String.Format("Press {0} for singleplayer. Press {1} for multiplayer. Press {2} for highscore. Press {3} to shutdown.",
+                    singleplayerControlChar, multiplayerControlChar, exitControlChar, highscoreControlChar));
+            }
+
+            ConsoleKey MenuKeyPressed()
+            {
+                do
+                {
+                    while (!Console.KeyAvailable) ;
+                    ConsoleKey key = Console.ReadKey(true).Key;
+                    if (key == singleplayerKey || key == multiplayerKey || key == exitKey || key == highscoreKey)
+                        return key;
+                    BufferFlush();
+                } while (true);
             }
         }
         
