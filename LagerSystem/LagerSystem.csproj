@@ -43,8 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControlEvents.cs" />
+    <Compile Include="Liquid.cs" />
+    <Compile Include="Menu.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Publisher.cs" />
+    <Compile Include="Ware.cs" />
+    <Compile Include="WareAttribute.cs" />
+    <Compile Include="WareCreator.cs" />
+    <Compile Include="WareInformation.cs" />
+    <Compile Include="WareModifier.cs" />
+    <Compile Include="WarePublisher.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
