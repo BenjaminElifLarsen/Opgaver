@@ -18,18 +18,23 @@ namespace LagerSystem
 
     class Program //move all of the different classes into their own files
     {
-        static void Main(string[] args)
+        static void Main(string[] args) //needs a system to ensure all IDs are unique
         {
         }
+    }
+
+    public class Menu
+    {
+
     }
 
     static class WareInformation
     {
         private static List<Ware> wares = new List<Ware>();
 
-        public static List<Ware> Ware { get => wares; set => wares = value; }
+        public static List<Ware> Ware { get => DeepCopy(wares); set => wares = value; } //the get should return a deep copy
 
-        private static List<string[]> GetWareInformation()
+        public static List<string[]> GetWareInformation()
         {
             List<string[]> wareInformation = new List<string[]>();
             string[] information = new string[4]; //Name, ID, Amount, Type (class type that is, e.g. Liquid)
@@ -42,6 +47,14 @@ namespace LagerSystem
                 wareInformation.Add(information);
             }
             return wareInformation;
+        }
+
+        private static List<T> DeepCopy<T>(List<T> wares) //move into its own class 
+        {
+            List<T> newList = new List<T>();
+            for (int i = 0; i < wares.Count; i++)
+                newList.Add(wares[i]);
+            return newList;
         }
     }
 
@@ -65,6 +78,38 @@ namespace LagerSystem
         {
             warePublisher.RaiseCreateWareEvent -= CreateWareEventHandler;
         } 
+
+    }
+
+    public class WareModifier
+    {
+
+        public static void AddToWare(string ID, uint amount)
+        {
+            Publisher.PubWare.AddToWare(ID, amount);
+        }
+
+        public static void RemoveFromWare(string ID, uint amount)
+        {
+            Publisher.PubWare.RemoveFromWare(ID, amount);
+        }
+
+        /// <summary>
+        /// ... Returns true if the item was found and removed else false
+        /// </summary>
+        /// <param name="ID">The ID of the ware to remove</param>
+        /// <returns>Returns true if the item was found and removed else false</returns>
+        public static bool RemoveWare(string ID)
+        {
+            List<string[]> wares = WareInformation.GetWareInformation();
+            for (int i = wares.Count; i >=0; i--)
+                if(wares[i][1] == ID)
+                {
+                    WareInformation.Ware.RemoveAt(i);
+                    return true;
+                }
+            return false;
+        }
 
     }
 
