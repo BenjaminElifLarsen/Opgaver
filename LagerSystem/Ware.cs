@@ -11,7 +11,7 @@ namespace LagerSystem
     {
         string name;
         string id;
-        uint amount;
+        uint amount; //should a negative unit amount be allowed? E.g. more units ordered than there are? 
 
         public Ware(string name, string id, uint amount, WarePublisher warePublisher)
         {

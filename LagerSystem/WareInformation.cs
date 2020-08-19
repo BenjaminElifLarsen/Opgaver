@@ -10,7 +10,7 @@ namespace LagerSystem
     {
         private static List<Ware> wares = new List<Ware>();
 
-        public static List<Ware> Ware { get => DeepCopy(wares); set => wares = value; } //the get should return a deep copy
+        public static List<Ware> Ware { get => Support.DeepCopy(wares); set => wares = value; } //the get should return a deep copy
 
         public static List<string[]> GetWareInformation()
         {
@@ -27,12 +27,6 @@ namespace LagerSystem
             return wareInformation;
         }
 
-        private static List<T> DeepCopy<T>(List<T> wares) //move into its own class 
-        {
-            List<T> newList = new List<T>();
-            for (int i = 0; i < wares.Count; i++)
-                newList.Add(wares[i]);
-            return newList;
-        }
+
     }
 }

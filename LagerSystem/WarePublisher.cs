@@ -29,6 +29,11 @@ namespace LagerSystem
                 eventHandler.Invoke(this, e);
         }
 
+        /// <summary>
+        /// Adds unit <paramref name="amount"/> to the ware with the specific <paramref name="ID"/>.
+        /// </summary>
+        /// <param name="ID">The ID of the ware</param>
+        /// <param name="amount">The amount of units to add.</param>
         public void AddToWare(string ID, uint amount)
         {
             OnAddingToWare(new ControlEvents.AddEventArgs(ID, amount));
@@ -41,6 +46,11 @@ namespace LagerSystem
                 eventHandler.Invoke(this, e);
         }
 
+        /// <summary>
+        /// Remove unit <paramref name="amount"/> from the ware with the specific <paramref name="ID"/>.
+        /// </summary>
+        /// <param name="ID">The ID of the ware</param>
+        /// <param name="amount">The amount of units to add.</param>
         public void RemoveFromWare(string ID, uint amount)
         {
             OnRemovingFomWare(new ControlEvents.RemoveEventArgs(ID, amount));

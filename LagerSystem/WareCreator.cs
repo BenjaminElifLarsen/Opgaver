@@ -16,6 +16,24 @@ namespace LagerSystem
             this.warePublisher = warePublisher;
         }
 
+        public void CreateWare()
+        {
+
+        }
+
+        public string CreateID()
+        {
+            Console.WriteLine("Enter ID");
+            string ID_;
+            do
+            {
+                ID_ = Console.ReadLine();
+            } while (Support.UniqueID(ID_));
+
+            throw new NotImplementedException();
+        }
+
+
         protected void CreateWareEventHandler(object sender, ControlEvents.CreateWareEventArgs e)
         {
             Type type = Type.GetType(e.Type);
