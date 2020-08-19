@@ -11,3 +11,14 @@ C:\Users\Benjamin Elif Larsen\Desktop\Repo\Reaktions spil\bin\Debug\netcoreapp3.
 C:\Users\Benjamin Elif Larsen\Desktop\Repo\Reaktions spil\obj\Debug\netcoreapp3.1\Reaktions spil.dll
 C:\Users\Benjamin Elif Larsen\Desktop\Repo\Reaktions spil\obj\Debug\netcoreapp3.1\Reaktions spil.pdb
 C:\Users\Benjamin Elif Larsen\Desktop\Repo\Reaktions spil\obj\Debug\netcoreapp3.1\Reaktions spil.genruntimeconfig.cache
+C:\Users\drage\Source\Repos\Opgaver\Reaktions spil\bin\Debug\netcoreapp3.1\Reaktions spil.exe
+C:\Users\drage\Source\Repos\Opgaver\Reaktions spil\bin\Debug\netcoreapp3.1\Reaktions spil.deps.json
+C:\Users\drage\Source\Repos\Opgaver\Reaktions spil\bin\Debug\netcoreapp3.1\Reaktions spil.runtimeconfig.json
+C:\Users\drage\Source\Repos\Opgaver\Reaktions spil\bin\Debug\netcoreapp3.1\Reaktions spil.runtimeconfig.dev.json
+C:\Users\drage\Source\Repos\Opgaver\Reaktions spil\bin\Debug\netcoreapp3.1\Reaktions spil.dll
+C:\Users\drage\Source\Repos\Opgaver\Reaktions spil\bin\Debug\netcoreapp3.1\Reaktions spil.pdb
+C:\Users\drage\Source\Repos\Opgaver\Reaktions spil\obj\Debug\netcoreapp3.1\Reaktions spil.csprojAssemblyReference.cache
+C:\Users\drage\Source\Repos\Opgaver\Reaktions spil\obj\Debug\netcoreapp3.1\Reaktions spil.AssemblyInfoInputs.cache
+C:\Users\drage\Source\Repos\Opgaver\Reaktions spil\obj\Debug\netcoreapp3.1\Reaktions spil.AssemblyInfo.cs
+C:\Users\drage\Source\Repos\Opgaver\Reaktions spil\obj\Debug\netcoreapp3.1\Reaktions spil.dll
+C:\Users\drage\Source\Repos\Opgaver\Reaktions spil\obj\Debug\netcoreapp3.1\Reaktions spil.pdb
