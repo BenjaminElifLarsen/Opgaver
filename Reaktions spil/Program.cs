@@ -243,12 +243,12 @@ namespace Reaktions_spil
         }
 
         /// <summary>
-        /// Counts up to a random time period from 1000 and up to 7999 miliseconds.  
+        /// Counts up to a random time period from 1000 and up to 8000 miliseconds.  
         /// </summary>
         private void CountUp()
         {
             Timer timer = new Timer();
-            float timeToCountDown = (rnd.Next(1, 7)*1000 + (rnd.Next(0, 1999)));
+            float timeToCountDown = (rnd.Next(1, 7)*1000 + (rnd.Next(0, 1000)));
             double countup = 0;
             timer.SetTime();
             while (countup < timeToCountDown)
@@ -314,7 +314,7 @@ namespace Reaktions_spil
         }
 
         /// <summary>
-        /// Adds <paramref name="time"/> to the highscore at the correct location. If the highscore is above ten the last value(s) is/are removed. 
+        /// Adds <paramref name="time"/> to the highscore at the correct location. If the highscore count is above ten the last value(s) is/are removed. 
         /// </summary>
         /// <param name="time">The time to add to the highscore</param>
         private void AddHighScore(double time)
