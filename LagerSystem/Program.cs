@@ -16,10 +16,31 @@ namespace LagerSystem
     //Det skal være muligt at se en liste over varer i databasen
     //Det er ikke nødvendigt at gemme i filer eller databaser
 
-    class Program
+    class Program //move all of the different classes into their own files
     {
         static void Main(string[] args)
         {
+        }
+    }
+
+    static class WareInformation
+    {
+        private static List<Ware> wares = new List<Ware>();
+
+        private static List<string[]> wareInformation = new List<string[]>();
+
+        private static List<string[]> GetWareInformation()
+        {
+            string[] information = new string[4]; //Name, ID, Amount, Type (class type that is, e.g. Liquid)
+            foreach (Ware ware in wares)
+            {
+                information[0] = ware.GetName;
+                information[1] = ware.GetID;
+                information[2] = ware.GetAmount.ToString();
+                information[3] = ware.GetType().ToString(); //consider using reflection for the type
+            }
+
+            throw new NotImplementedException();
         }
     }
 
@@ -29,16 +50,20 @@ namespace LagerSystem
         string id;
         uint amount;
 
-        public Ware(string name, string id, uint amount)
+        public Ware(string name, string id, uint amount, WarePublisher warePublisher)
         {
             this.name = name;
             this.id = id;
             this.amount = amount;
+            warePublisher.RaiseAddEvent += AddAmountEventHandler;
+            warePublisher.RaiseRemoveEvent += RemoveAmountEvnetHandler;
         }
 
-        public uint Amount { get => amount; set => amount = value; }
+        public string GetName { get => name; }
 
-        public string ID { get => id; }
+        public uint GetAmount { get => amount; }
+
+        public string GetID { get => id; }
 
         protected virtual void Add(uint amount)
         {
@@ -52,27 +77,28 @@ namespace LagerSystem
 
         protected void AddAmountEventHandler(object sender, ControlEvents.AddEventArgs e)
         {
-            if (e.ID == this.ID)
+            if (e.ID == this.id)
                 Add(e.AmountToAdd);
         }
 
         protected void RemoveAmountEvnetHandler(object sender, ControlEvents.RemoveEventArgs e)
         {
-            if (e.ID == this.ID)
+            if (e.ID == this.id)
                 Remove(e.AmountToRemove);
         }
 
-        public void RemoveSubscriptions()
+        public void RemoveSubscriptions(WarePublisher warePublisher)
         {
-
+            warePublisher.RaiseAddEvent -= AddAmountEventHandler;
+            warePublisher.RaiseRemoveEvent -= RemoveAmountEvnetHandler;
         }
 
 
     }
 
-    class Liquids : Ware
+    sealed class Liquids : Ware
     {
-        public Liquids(string name, string id, uint amount) : base(name, id, amount) { }
+        public Liquids(string name, string id, uint amount, WarePublisher warePublisher) : base(name, id, amount, warePublisher) { }
 
 
     }
