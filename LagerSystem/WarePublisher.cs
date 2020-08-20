@@ -17,9 +17,9 @@ namespace LagerSystem
         public delegate void removeEventHandler(object sender, ControlEvents.RemoveEventArgs args);
         public event removeEventHandler RaiseRemoveEvent;
 
-        public void CreateWare(string name, string id, uint amount)
+        public void CreateWare(/*string name, string id, uint amount*/)
         {
-            OnCreatingWare(new ControlEvents.CreateWareEventArgs(name, id, amount));
+            OnCreatingWare(new ControlEvents.CreateWareEventArgs(/*name, id, amount*/));
         }
 
         protected virtual void OnCreatingWare(ControlEvents.CreateWareEventArgs e)

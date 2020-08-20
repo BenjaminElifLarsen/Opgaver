@@ -35,6 +35,18 @@ namespace LagerSystem
             return true;
         }
 
+        public static void WaitOnKeyInput()
+        {
+            Console.ReadKey(true);
+            BufferFlush();
+        }
+
+        private static void BufferFlush()
+        {
+            while (Console.KeyAvailable)
+                Console.ReadKey(true);
+        }
+
 
     }
 }

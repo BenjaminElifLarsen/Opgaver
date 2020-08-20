@@ -8,12 +8,12 @@ namespace LagerSystem
 {
     public class Publisher
     {
-        private static WarePublisher warePublisher;
+        private static WarePublisher warePublisher = new WarePublisher();
 
         public Publisher()
         {
-            if (warePublisher == null) ;
-            warePublisher = new WarePublisher();
+            //if (warePublisher == null)
+            //warePublisher = new WarePublisher();
         }
 
         public static WarePublisher PubWare { get => warePublisher; }
