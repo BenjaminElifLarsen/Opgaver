@@ -46,6 +46,7 @@ namespace LagerSystem
 
         private void WareCreateMenu()
         {
+            WareCreator creator = new WareCreator(Publisher.PubWare);
             Publisher.PubWare.CreateWare();
         } 
 

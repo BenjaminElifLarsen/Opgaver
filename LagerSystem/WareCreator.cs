@@ -19,9 +19,10 @@ namespace LagerSystem
         public void CreateWare() //at some point, either after all information has been added or after each, ask if it/they is/are correct and if they want to reenter information.
         { //have a creation menu where the user can select which entry they want to enter when they want to and they can first finish when all entries have been entered. Also add a "back" option
 
-            string ID;
-            string name;
-            uint? amount;
+            string ID = null;
+            string name = null;
+            string type = null;
+            uint? amount = null;
             bool goBack = false;
             string title = "Ware Creation";
             string[] options = new string[] { "Name", "ID", "Type", "Amount", "Finalise", "Back" }; //if Back is select and Finalise the program should ask for confirmation.
@@ -31,32 +32,51 @@ namespace LagerSystem
                 switch (answer)
                 {
                     case 0:
+                        name = EnterName();
                         break;
 
                     case 1:
+                        ID = CreateID();
                         break;
 
                     case 2:
+                        type = SelectType();
                         break;
 
                     case 3:
+                        amount = EnterAmount();
                         break;
 
                     case 4:
-                        break;
+                        if (ID != null && name != null && type != null && amount != null)
+                        {
+                            Confirmation();
+                            //create ware
+                        }
+                        else
+                            MissingInformationPrint(ID, name, type, amount);
+                            break;
 
                     case 5:
+                        goBack = Confirmation();
+                        //go back
                         break;
                 }
 
             } while (!goBack);
 
-            ID = CreateID();
-            name = EnterName();
-            amount = EnterAmount();
+            RemoveFromSubscription(warePublisher);
         }
 
+        private void MissingInformationPrint(string id, string name, string type, uint? amount)
+        {
+            throw new NotImplementedException();
+        }
 
+        private bool Confirmation()
+        {
+            throw new NotImplementedException();
+        }
 
         private string EnterName()
         {
