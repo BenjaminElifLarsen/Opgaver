@@ -115,7 +115,7 @@ namespace LagerSystem
         {
             string ID_;
             Console.Clear();
-            Console.WriteLine("Enter Valid Product ID"); //have requirements for the ID and use REGEX to check after, e.g. min. 1 letter, 1 number, min size of 6 and maximum size of 20
+            Console.WriteLine("Enter Valid Product ID"); //have requirements for the ID and use REGEX to check after, e.g. min. 1 letter, 1 number, min size of 4 and maximum size of 18
             Support.ActiveCursor();
             do
             {
@@ -139,7 +139,7 @@ namespace LagerSystem
         }
 
 
-        protected void CreateWareEventHandler(object sender, ControlEvents.CreateWareEventArgs e) //instead of calling this here, call it in the main menu and change CreateWareEventArgs to not contain any parameters
+        protected void CreateWareEventHandler(object sender, ControlEvents.CreateWareEventArgs e) 
         {
             CreateWare();
             //Type type = Type.GetType(e.Type);
@@ -147,7 +147,7 @@ namespace LagerSystem
             //    WareInformation.Ware.Add(new Liquids(e.Name, e.ID, e.Amount, warePublisher)); //needs to deal with different types, maybe just use polymorphy or a combination?
         }
 
-        public void RemoveFromSubscription(WarePublisher warePublisher)
+        private void RemoveFromSubscription(WarePublisher warePublisher)
         {
             warePublisher.RaiseCreateWareEvent -= CreateWareEventHandler;
         }
