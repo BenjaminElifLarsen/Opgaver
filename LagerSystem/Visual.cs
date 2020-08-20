@@ -18,11 +18,13 @@ namespace LagerSystem
         {
             byte hoveredOver = 0;
             bool selected = false;
+            Support.DeactiveCursor();
             do
             {
                 MenuDisplay(options, hoveredOver);
                 hoveredOver = MenuSelection(ref selected, options.Length, hoveredOver);
             } while (!selected);
+            Support.ActiveCursor();
             return hoveredOver;
         }
 
@@ -68,9 +70,41 @@ namespace LagerSystem
                     Console.WriteLine(options[n]);
         }
 
-        public static void WareDisplay(List<string[]> Information)
+        public static void WareDisplay(List<string[]> information)
         {
+            Console.Clear();
+            Support.DeactiveCursor();
 
+            string[] titles = new string[] { "Name", "ID", "Type", "Amount" };
+            int[] xLocation = new int[] {20, 16, 10, 10 };
+            int totalLength = 0;
+            foreach (int length in xLocation)
+                totalLength += length;
+            foreach (string title in titles)
+                totalLength += title.Length + 2;
+            for(int n = 0; n < titles.Length; n++)
+            {
+                Console.Write(titles[n] + " ".PadLeft(xLocation[n]) + "| ");
+            }
+            string underline = Pad(totalLength, '-');
+            int yLocation = 0;
+            Console.CursorLeft = 0;
+            for(int n = 0; n < information.Count; n++)
+            {
+                string[] wareInfo = information[n];
+                string wareInformation = wareInfo[0] + Pad(xLocation[0] - 1, addToo: "|") + wareInfo[1] + Pad(xLocation[1] - 1, addToo: "|") + 
+                    wareInfo[3] + Pad(xLocation[2] - 1, addToo: "|") + wareInfo[2] + Pad(xLocation[3] - 1, addToo: "|");
+                Console.CursorTop = ++yLocation;
+                Console.WriteLine(underline + Environment.NewLine + wareInformation);   
+            }
+            Console.CursorTop = ++yLocation;
+            Console.WriteLine(underline);
+            Support.ActiveCursor();
+
+            string Pad(int value, char padding = ' ', string addToo = "")
+            {
+                return addToo.PadLeft(value,padding);
+            }
         }
 
         public static void SetScreenSize(int x, int y)

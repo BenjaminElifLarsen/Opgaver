@@ -47,6 +47,15 @@ namespace LagerSystem
                 Console.ReadKey(true);
         }
 
+        public static void ActiveCursor()
+        {
+            Console.CursorVisible = true;
+        }
+
+        public static void DeactiveCursor()
+        {
+            Console.CursorVisible = false;
+        }
 
     }
 }
