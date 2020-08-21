@@ -134,9 +134,9 @@ namespace LagerSystem
             {
                 do
                 {
-                    ID_ = Console.ReadLine().Trim();
+                    ID_ = Console.ReadLine().Trim(); 
                 } while (!ValidID(ID_));
-            } while (!Support.UniqueID(ID_));
+            } while (!Support.UniqueID(ID_)); //needs to inform if the ID is already in use
             Support.DeactiveCursor();
             return ID_;
         }

@@ -8,7 +8,7 @@ namespace LagerSystem
 {
     static class WareInformation
     {
-        private static List<Ware> wares = new List<Ware>(); //have a class for storaging the ware list
+        private static List<Ware> wares = new List<Ware>(); //have a class for storaging/manipulating the ware list
 
         public static List<Ware> Ware { get => Support.DeepCopy(wares); set => wares = value; } 
 
@@ -17,7 +17,9 @@ namespace LagerSystem
             List<string[]> wareInformation = new List<string[]>();
             foreach (Ware ware in wares)
             {
-                string[] information = new string[4]; 
+                string[] information = new string[4]; //use reflection to find these values, e.g. each Ware function/property contains something like 
+                //[Data(isData:bool,dataType:string] [Data(true,"Name")] or [Data(true,"ID")] and then here they are put in array after the order of the dataTypes. 
+                //Also the storage class should contain functions/properties that only return specific values, e.g. IDs or Names
                 information[0] = ware.GetName;
                 information[1] = ware.GetID;
                 information[2] = ware.GetAmount.ToString();
