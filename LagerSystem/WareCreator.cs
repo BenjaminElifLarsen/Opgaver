@@ -141,6 +141,11 @@ namespace LagerSystem
             return ID_;
         }
 
+        private bool UniqueID(string IDToCheck)
+        {
+            throw new NotImplementedException();
+        }
+
         private bool ValidID(string IDToCheck)
         {
             if (!RegexControl.IsValidLength(IDToCheck))
