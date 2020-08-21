@@ -901,16 +901,6 @@
         "build": {
           "build/netcoreapp1.0/xunit.runner.visualstudio.props": {}
         }
-      },
-      "Regex Assignment/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v3.1",
-        "compile": {
-          "bin/placeholder/Regex Assignment.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Regex Assignment.dll": {}
-        }
       }
     }
   },
@@ -3504,36 +3494,35 @@
         "xunit.runner.visualstudio.2.4.0.nupkg.sha512",
         "xunit.runner.visualstudio.nuspec"
       ]
-    },
-    "Regex Assignment/1.0.0": {
-      "type": "project",
-      "path": "../Regex Assignment/Regex Assignment.csproj",
-      "msbuildProject": "../Regex Assignment/Regex Assignment.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
+      "C:\\Users\\drage\\source\\repos\\Opgaver\\Regex Assignment\\Regex Assignment.csproj",
       "Microsoft.NET.Test.Sdk >= 16.5.0",
-      "Regex Assignment >= 1.0.0",
       "coverlet.collector >= 1.2.0",
       "xunit >= 2.4.0",
       "xunit.runner.visualstudio >= 2.4.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Benjamin Elif Larsen\\.nuget\\packages\\": {}
+    "C:\\Users\\drage\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Benjamin Elif Larsen\\Desktop\\Repo\\Password Test\\Password Test.csproj",
+      "projectUniqueName": "C:\\Users\\drage\\source\\repos\\Opgaver\\Password Test\\Password Test.csproj",
       "projectName": "Password Test",
-      "projectPath": "C:\\Users\\Benjamin Elif Larsen\\Desktop\\Repo\\Password Test\\Password Test.csproj",
-      "packagesPath": "C:\\Users\\Benjamin Elif Larsen\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Benjamin Elif Larsen\\Desktop\\Repo\\Password Test\\obj\\",
+      "projectPath": "C:\\Users\\drage\\source\\repos\\Opgaver\\Password Test\\Password Test.csproj",
+      "packagesPath": "C:\\Users\\drage\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\drage\\source\\repos\\Opgaver\\Password Test\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Benjamin Elif Larsen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\drage\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3546,8 +3535,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "C:\\Users\\Benjamin Elif Larsen\\Desktop\\Repo\\Regex Assignment\\Regex Assignment.csproj": {
-              "projectPath": "C:\\Users\\Benjamin Elif Larsen\\Desktop\\Repo\\Regex Assignment\\Regex Assignment.csproj"
+            "C:\\Users\\drage\\source\\repos\\Opgaver\\Regex Assignment\\Regex Assignment.csproj": {
+              "projectPath": "C:\\Users\\drage\\source\\repos\\Opgaver\\Regex Assignment\\Regex Assignment.csproj"
             }
           }
         }
@@ -3593,8 +3582,19 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.301\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.102\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1105",
+      "level": "Error",
+      "message": "Unable to find project information for 'C:\\Users\\drage\\source\\repos\\Opgaver\\Regex Assignment\\Regex Assignment.csproj'. If you are using Visual Studio, this may be because the project is unloaded or not part of the current solution so please run a restore from the command-line. Otherwise, the project file may be invalid or missing targets required for restore.",
+      "libraryId": "C:\\Users\\drage\\source\\repos\\Opgaver\\Regex Assignment\\Regex Assignment.csproj",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
 }

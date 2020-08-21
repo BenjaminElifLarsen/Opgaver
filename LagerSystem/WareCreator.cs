@@ -122,15 +122,40 @@ namespace LagerSystem
                 do
                 {
                     ID_ = Console.ReadLine();
-                } while (ValidID(ID_));
-            } while (Support.UniqueID(ID_));
+                } while (!ValidID(ID_));
+            } while (!Support.UniqueID(ID_));
             Support.DeactiveCursor();
             return ID_;
         }
 
         private bool ValidID(string IDToCheck)
         {
-            throw new NotImplementedException();
+            if (!RegexControl.IsValidLength(IDToCheck))
+            {
+                Console.WriteLine("Invalid: Wrong Length, min = 6, max = 16");
+                return false;
+            }
+            if (!RegexControl.IsValidValues(IDToCheck))
+            {
+                Console.WriteLine("Invalid: No numbers");
+                return false;
+            }
+            if (!RegexControl.IsValidLettersLower(IDToCheck))
+            {
+                Console.WriteLine("Invalid: No lowercase letters");
+                return false;
+            }
+            if (!RegexControl.IsValidLettersUpper(IDToCheck))
+            {
+                Console.WriteLine("Invalid: No uppercase letters");
+                return false;
+            }
+            if(!RegexControl.IsValidSpecial(IDToCheck))
+            {
+                Console.WriteLine("Invalid: No special symbols: {0}", RegexControl.GetSpecialSigns);
+                return false;
+            }
+            return true;
         }
 
         private string SelectType()
