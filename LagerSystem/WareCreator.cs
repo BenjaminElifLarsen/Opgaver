@@ -52,14 +52,15 @@ namespace LagerSystem
                         break;
 
                     case 4:
-                        if (ID != null && name != null && type != null && amount != null)
+                        if (!MissingInformation(ID, name, type, amount)) //put this if-statment and its contect into a function
                         {
-                            Confirmation();
-                            //create ware
+                            goBack = Confirmation();
+                            if (goBack)
+                            {
+                                //create ware
+                            }
                         }
-                        else
-                            MissingInformationPrint(ID, name, type, amount);
-                            break;
+                        break;
 
                     case 5:
                         goBack = Confirmation();
@@ -72,9 +73,34 @@ namespace LagerSystem
             RemoveFromSubscription(warePublisher);
         }
 
-        private void MissingInformationPrint(string id, string name, string type, uint? amount)
+        /// <summary>
+        /// Checks if any of the parameters are void and prints out information about which are void. Returns false if no information is missing.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="type"></param>
+        /// <param name="amount"></param>
+        private bool MissingInformation(string id, string name, string type, uint? amount)
         {
-            throw new NotImplementedException();
+            string baseMessage = "The following is missing: ";
+            string missing = baseMessage;
+            if (id == null)
+                missing += "ID ";
+            if (name == null)
+                missing += "Name ";
+            if (type == null)
+                missing += "Type ";
+            if (amount == null)
+                missing += "Amount ";
+            if (baseMessage == missing)
+                return false;
+            else
+            {
+                Console.Clear();
+                Console.WriteLine(missing);
+                Support.WaitOnKeyInput();
+                return true;
+            }
         }
 
         private bool Confirmation()
