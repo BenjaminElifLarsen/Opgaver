@@ -103,9 +103,15 @@ namespace LagerSystem
             }
         }
 
+        /// <summary>
+        /// Asks if an user is sure about their choice. If yes it returns true, else false.
+        /// </summary>
+        /// <returns></returns>
         private bool Confirmation()
         {
-            throw new NotImplementedException();
+            string message = "Are you sure?";
+            byte response = Visual.MenuRun(new string[] {"Yes","No" });
+            return response == 0 ? true : false;
         }
 
         private string EnterName()
@@ -147,7 +153,7 @@ namespace LagerSystem
             {
                 do
                 {
-                    ID_ = Console.ReadLine();
+                    ID_ = Console.ReadLine().Trim();
                 } while (!ValidID(ID_));
             } while (!Support.UniqueID(ID_));
             Support.DeactiveCursor();

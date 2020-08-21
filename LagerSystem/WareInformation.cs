@@ -27,6 +27,10 @@ namespace LagerSystem
             return wareInformation;
         }
 
+        public static void AddWare()
+        {
+            wares.Add(new Liquids("Test", "ID-55t", 25, Publisher.PubWare));
+        }
 
     }
 }

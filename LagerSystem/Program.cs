@@ -21,6 +21,7 @@ namespace LagerSystem
         static void Main(string[] args) //needs a system to ensure all IDs are unique
         {
             Menu menu = new Menu();
+            WareInformation.AddWare();
             menu.MainMenu();
         }
     }
