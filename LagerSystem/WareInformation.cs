@@ -41,6 +41,7 @@ namespace LagerSystem
             for (int i = wares.Count - 1; i >= 0; i--)
                 if (wares[i].GetID == ID)
                 {
+                    wares[i].RemoveSubscriptions(Publisher.PubWare);
                     wares.RemoveAt(i);
                 }
             return false;

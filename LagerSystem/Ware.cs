@@ -51,7 +51,7 @@ namespace LagerSystem
                 Remove(e.AmountToRemove);
         }
 
-        public void RemoveSubscriptions(WarePublisher warePublisher)
+        public void RemoveSubscriptions(WarePublisher warePublisher) //move this parameter into the class scope
         {
             warePublisher.RaiseAddEvent -= AddAmountEventHandler;
             warePublisher.RaiseRemoveEvent -= RemoveAmountEvnetHandler;
