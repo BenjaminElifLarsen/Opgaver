@@ -35,6 +35,16 @@ namespace LagerSystem
             return true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="IDToCheck"></param>
+        /// <returns>Returns true if ID exist, else false.</returns>
+        public static bool IDExist(string IDToCheck)
+        {
+            return !UniqueID(IDToCheck);
+        }
+
         public static void WaitOnKeyInput()
         {
             Console.ReadKey(true);

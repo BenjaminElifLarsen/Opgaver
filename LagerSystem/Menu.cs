@@ -73,7 +73,14 @@ namespace LagerSystem
 
         private void WareRemoveAmountMenu()
         {
-            WareModifier.RemoveFromWare(CollectID(), CollectAmount());
+            string ID = CollectID();
+            if (Support.IDExist(ID)) 
+                WareModifier.RemoveFromWare(ID, CollectAmount());
+            else
+            {
+                Console.WriteLine("ID does not exist");
+                Support.WaitOnKeyInput();
+            }
         }
 
         private uint CollectAmount() //WareCreator.EnterAmount does what this should do, so consider moving the code of that function into a Support function and then call that function from here and WareCreator.EnterAmount
