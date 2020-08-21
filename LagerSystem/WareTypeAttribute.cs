@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace LagerSystem
 {
-    public class WareAttribute : Attribute
+    public class WareTypeAttribute : Attribute
     {
         private string type;
-        public WareAttribute(string type)
+        public WareTypeAttribute(string type)
         {
             this.type = type;
         }

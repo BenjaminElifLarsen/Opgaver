@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LagerSystem
 {
-    [Ware("None")] //Ware is abstract and cannot be initiolasedwskdlwd
+    [WareType("None")] //Ware is abstract and cannot be initiolasedwskdlwd
     abstract class Ware
     {
         string name;

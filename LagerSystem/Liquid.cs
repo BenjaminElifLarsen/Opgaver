@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LagerSystem
 {
-    [Ware("Liquid")]
+    [WareType("Liquid")]
     sealed class Liquids : Ware
     {
         public Liquids(string name, string id, uint amount, WarePublisher warePublisher) : base(name, id, amount, warePublisher) { }
