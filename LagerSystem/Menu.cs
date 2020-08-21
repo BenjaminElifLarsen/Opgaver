@@ -42,6 +42,9 @@ namespace LagerSystem
         private void WareChangeMenu()
         {
             string[] options = new string[] { "Remove Ware", "Add To Ware", "Remove From Ware" };
+            Publisher.PubWare.RemoveFromWare("ID-55t",1);
+            Publisher.PubWare.AddToWare("ID-55t2",1);
+
         }
 
         private void WareCreateMenu()
