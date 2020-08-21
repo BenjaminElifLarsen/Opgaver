@@ -51,7 +51,7 @@ namespace LagerSystem
             BufferFlush();
         }
 
-        private static void BufferFlush()
+        public static void BufferFlush()
         {
             while (Console.KeyAvailable)
                 Console.ReadKey(true);

@@ -37,6 +37,7 @@ namespace LagerSystem
         {
             while (!Console.KeyAvailable) ;
             ConsoleKey key = Console.ReadKey(true).Key;
+            Support.BufferFlush();
             if(key == ConsoleKey.Enter)
             {
                 selected = true;
