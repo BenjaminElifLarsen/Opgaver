@@ -88,16 +88,15 @@ namespace LagerSystem
             }
             string underline = Pad(totalLength, '-');
             int yLocation = 0;
-            Console.CursorLeft = 0;
+            Console.WriteLine();
             for(int n = 0; n < information.Count; n++)
             {
                 string[] wareInfo = information[n];
-                string wareInformation = wareInfo[0] + Pad(xLocation[0] - 1, addToo: "|") + wareInfo[1] + Pad(xLocation[1] - 1, addToo: "|") + 
-                                         wareInfo[3] + Pad(xLocation[2] - 1, addToo: "|") + wareInfo[2] + Pad(xLocation[3] - 1, addToo: "|");
-                Console.CursorTop = ++yLocation;
-                Console.WriteLine(underline + Environment.NewLine + wareInformation);   
+                string wareInformation = wareInfo[0] + Pad(xLocation[0], addToo: "|") + wareInfo[1] + Pad(xLocation[1], addToo: "|") + 
+                                         wareInfo[3] + Pad(xLocation[2], addToo: "|") + wareInfo[2] + Pad(xLocation[3], addToo: "|");
+                Console.WriteLine(underline + Environment.NewLine + wareInformation);
+                Console.CursorTop += 1;
             }
-            Console.CursorTop = 2 + yLocation;
             Console.WriteLine(underline);
             Support.ActiveCursor();
 

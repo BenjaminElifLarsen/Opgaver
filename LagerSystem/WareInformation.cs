@@ -15,9 +15,9 @@ namespace LagerSystem
         public static List<string[]> GetWareInformation()
         {
             List<string[]> wareInformation = new List<string[]>();
-            string[] information = new string[4]; //Name, ID, Amount, Type (class type that is, e.g. Liquid)
             foreach (Ware ware in wares)
             {
+                string[] information = new string[4]; //Name, ID, Amount, Type (class type that is, e.g. Liquid)
                 information[0] = ware.GetName;
                 information[1] = ware.GetID;
                 information[2] = ware.GetAmount.ToString();
@@ -30,6 +30,7 @@ namespace LagerSystem
         public static void AddWare()
         {
             wares.Add(new Liquids("Test", "ID-55t", 25, Publisher.PubWare));
+            wares.Add(new Liquids("Superproduct", "ID-55t2", 1, Publisher.PubWare));
         }
 
         private static string FindTypeAttribute(Ware ware )
