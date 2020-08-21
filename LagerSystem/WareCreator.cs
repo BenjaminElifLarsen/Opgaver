@@ -24,11 +24,11 @@ namespace LagerSystem
             string type = null;
             uint? amount = null;
             bool goBack = false;
-            string title = "Ware Creation";
+            string title = "Ware Creation Menu";
             string[] options = new string[] { "Name", "ID", "Type", "Amount", "Finalise", "Back" }; //if Back is select and Finalise the program should ask for confirmation.
             do
             {
-                byte answer = Visual.MenuRun(options);
+                byte answer = Visual.MenuRun(options, title);
                 switch (answer)
                 {
                     case 0:
@@ -110,7 +110,7 @@ namespace LagerSystem
         private bool Confirmation()
         {
             string message = "Are you sure?";
-            byte response = Visual.MenuRun(new string[] {"Yes","No" });
+            byte response = Visual.MenuRun(new string[] {"Yes","No" }, message);
             return response == 0 ? true : false;
         }
 

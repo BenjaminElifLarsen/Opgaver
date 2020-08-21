@@ -13,10 +13,11 @@ namespace LagerSystem
         /// </summary>
         public void MainMenu()
         {
+            string title = "Main Menu";
             string[] menuOptions = new string[] {"Storage","Add Ware","Change Ware", "Exit" };
             do
             {
-                byte answer = Visual.MenuRun(menuOptions);
+                byte answer = Visual.MenuRun(menuOptions, title);
                 switch (answer)
                 {
                     case 0:
@@ -41,22 +42,31 @@ namespace LagerSystem
 
         private void WareChangeMenu()
         {
+            bool run = true;
+            string title = "Ware Change Menu";
             string[] options = new string[] { "Remove Ware", "Add To Ware", "Remove From Ware", "Back" };
-            byte response = Visual.MenuRun(options);
-            switch (response)
+            do
             {
-                case 0:
-                    WareRemoveMenu();
-                    break;
+                byte response = Visual.MenuRun(options, title);
+                switch (response)
+                {
+                    case 0:
+                        WareRemoveMenu(); //these should loop the menu until "Back" is selected. 
+                        break;
 
-                case 1:
-                    WareAddAmountMenu();
-                    break;
+                    case 1:
+                        WareAddAmountMenu();
+                        break;
 
-                case 2:
-                    WareRemoveAmountMenu();
-                    break;
-            }
+                    case 2:
+                        WareRemoveAmountMenu();
+                        break;
+
+                    case 3:
+                        run = false;
+                        break;
+                }
+            } while (run);
         }
 
         private void WareRemoveMenu()

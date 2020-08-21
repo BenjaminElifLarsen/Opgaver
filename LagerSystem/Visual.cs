@@ -14,14 +14,14 @@ namespace LagerSystem
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public static byte MenuRun(string[] options)
+        public static byte MenuRun(string[] options, string title = null)
         {
             byte hoveredOver = 0;
             bool selected = false;
             Support.DeactiveCursor();
             do
             {
-                MenuDisplay(options, hoveredOver);
+                MenuDisplay(options, hoveredOver, title);
                 hoveredOver = MenuSelection(ref selected, options.Length, hoveredOver);
             } while (!selected);
             Support.ActiveCursor();
@@ -56,9 +56,11 @@ namespace LagerSystem
         /// </summary>
         /// <param name="options"></param>
         /// <param name="currentHoveredOver"></param>
-        private static void MenuDisplay(string[] options, byte currentHoveredOver = 0) 
+        private static void MenuDisplay(string[] options, byte currentHoveredOver = 0, string title = null) 
         {
             Console.Clear();
+            if (title != null)
+                Console.WriteLine(title);
             for (int n = 0; n < options.Length; n++)
                 if (n == currentHoveredOver)
                 {
@@ -89,13 +91,13 @@ namespace LagerSystem
             string underline = "|"; //+ Pad(totalLength, '-');
             foreach (int xloc in xLocation)
                 underline += Pad(increasement, '-', "|");
-            int yLocation = 0;
+            //int yLocation = 0;
             Console.WriteLine(Pad(increasement - titles[titles.Length-1].Length-2,' ') + "|" + Environment.NewLine + underline);
             for(int n = 0; n < information.Count; n++)
             {
                 string[] wareInfo = information[n];
-                string wareInformation = ""; //wareInfo[0] + Pad(xLocation[0] - wareInfo[0].Length, addToo: "|") + wareInfo[1] + Pad(xLocation[1] - wareInfo[1].Length, addToo: "|") + 
-                                             //wareInfo[3] + Pad(xLocation[2] - wareInfo[2].Length, addToo: "|") + wareInfo[2] + Pad(xLocation[3] - wareInfo[3].Length, addToo: "|");
+                //string wareInformation = //wareInfo[0] + Pad(xLocation[0] - wareInfo[0].Length, addToo: "|") + wareInfo[1] + Pad(xLocation[1] - wareInfo[1].Length, addToo: "|") + 
+                                           //wareInfo[3] + Pad(xLocation[2] - wareInfo[2].Length, addToo: "|") + wareInfo[2] + Pad(xLocation[3] - wareInfo[3].Length, addToo: "|");
                 for (int m = 0; m < wareInfo.Length; m++)
                 {
                     Console.CursorLeft = xLocation[m];
