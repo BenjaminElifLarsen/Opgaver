@@ -93,11 +93,11 @@ namespace LagerSystem
             {
                 string[] wareInfo = information[n];
                 string wareInformation = wareInfo[0] + Pad(xLocation[0] - 1, addToo: "|") + wareInfo[1] + Pad(xLocation[1] - 1, addToo: "|") + 
-                    wareInfo[3] + Pad(xLocation[2] - 1, addToo: "|") + wareInfo[2] + Pad(xLocation[3] - 1, addToo: "|");
+                                         wareInfo[3] + Pad(xLocation[2] - 1, addToo: "|") + wareInfo[2] + Pad(xLocation[3] - 1, addToo: "|");
                 Console.CursorTop = ++yLocation;
                 Console.WriteLine(underline + Environment.NewLine + wareInformation);   
             }
-            Console.CursorTop = ++yLocation;
+            Console.CursorTop = 2 + yLocation;
             Console.WriteLine(underline);
             Support.ActiveCursor();
 
