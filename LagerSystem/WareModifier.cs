@@ -26,14 +26,7 @@ namespace LagerSystem
         /// <returns>Returns true if the item was found and removed else false</returns>
         public static bool RemoveWare(string ID)
         {
-            List<string[]> wares = WareInformation.GetWareInformation();
-            for (int i = wares.Count -1; i >= 0; i--)
-                if (wares[i][1] == ID)
-                {
-                    WareInformation.Ware.RemoveAt(i);
-                    return true;
-                }
-            return false;
+            return WareInformation.RemoveWare(ID);
         }
 
     }

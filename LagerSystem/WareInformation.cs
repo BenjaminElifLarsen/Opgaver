@@ -33,6 +33,16 @@ namespace LagerSystem
             wares.Add(new Liquids("Superproduct", "ID-55t2", 1, Publisher.PubWare));
         }
 
+        public static bool RemoveWare(string ID) //when storage class has been added move this function to it
+        {
+            for (int i = wares.Count - 1; i >= 0; i--)
+                if (wares[i].GetID == ID)
+                {
+                    wares.RemoveAt(i);
+                }
+            return false;
+        }
+
         private static string FindTypeAttribute(Ware ware )
         {
 
