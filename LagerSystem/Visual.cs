@@ -64,12 +64,15 @@ namespace LagerSystem
             for (int n = 0; n < options.Length; n++)
                 if (n == currentHoveredOver)
                 {
+                    Console.CursorLeft = 2;
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine(options[n]);
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-                else
+                else { 
+                    Console.CursorLeft = 1;
                     Console.WriteLine(options[n]);
+                }
         }
 
         public static void WareDisplay(List<string[]> information)
