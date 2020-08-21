@@ -75,33 +75,42 @@ namespace LagerSystem
             Console.Clear();
             Support.DeactiveCursor();
 
-            string[] titles = new string[] { "Name", "ID", "Type", "Amount" };
-            int[] xLocation = new int[] {20, 16, 10, 10 };
-            int totalLength = 0;
-            foreach (int length in xLocation)
-                totalLength += length;
-            foreach (string title in titles)
-                totalLength += title.Length + 2;
+            string[] titles = new string[] { "Name", "ID", "Amount", "Type" };
+            int[] xLocation = new int[titles.Length];
+            byte increasement = 20;
+            //int totalLength = xLocation[xLocation.Length-1];
+            for (int n = 1; n < xLocation.Length; n++)
+                xLocation[n] = increasement * n;
             for(int n = 0; n < titles.Length; n++)
             {
-                Console.Write(titles[n] + " ".PadLeft(xLocation[n]) + "| ");
+                Console.CursorLeft = xLocation[n];
+                Console.Write("| " + titles[n]);
             }
-            string underline = Pad(totalLength, '-');
+            string underline = "|"; //+ Pad(totalLength, '-');
+            foreach (int xloc in xLocation)
+                underline += Pad(increasement, '-', "|");
             int yLocation = 0;
-            Console.WriteLine();
+            Console.WriteLine(Pad(increasement - titles[titles.Length-1].Length-2,' ') + "|" + Environment.NewLine + underline);
             for(int n = 0; n < information.Count; n++)
             {
                 string[] wareInfo = information[n];
-                string wareInformation = wareInfo[0] + Pad(xLocation[0], addToo: "|") + wareInfo[1] + Pad(xLocation[1], addToo: "|") + 
-                                         wareInfo[3] + Pad(xLocation[2], addToo: "|") + wareInfo[2] + Pad(xLocation[3], addToo: "|");
-                Console.WriteLine(underline + Environment.NewLine + wareInformation);
-                Console.CursorTop += 1;
+                string wareInformation = ""; //wareInfo[0] + Pad(xLocation[0] - wareInfo[0].Length, addToo: "|") + wareInfo[1] + Pad(xLocation[1] - wareInfo[1].Length, addToo: "|") + 
+                                             //wareInfo[3] + Pad(xLocation[2] - wareInfo[2].Length, addToo: "|") + wareInfo[2] + Pad(xLocation[3] - wareInfo[3].Length, addToo: "|");
+                for (int m = 0; m < wareInfo.Length; m++)
+                {
+                    Console.CursorLeft = xLocation[m];
+                    Console.Write("| " + wareInfo[m]);
+                }
+                Console.Write(Pad(increasement-wareInfo[wareInfo.Length-1].Length-2)+"|");
+                Console.WriteLine(Environment.NewLine + underline);
+                //Console.CursorTop += 1;
             }
-            Console.WriteLine(underline);
+            //Console.WriteLine(underline);
             Support.ActiveCursor();
 
             string Pad(int value, char padding = ' ', string addToo = "")
             {
+                value = value < 0 ? 0 : value;
                 return addToo.PadLeft(value,padding);
             }
         }
