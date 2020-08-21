@@ -35,7 +35,8 @@ namespace LagerSystem
 
         protected virtual void Remove(uint amount)
         {
-            this.amount -= amount;
+            if(amount != 0)
+                this.amount -= amount;
         }
 
         protected void AddAmountEventHandler(object sender, ControlEvents.AddEventArgs e)
