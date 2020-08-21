@@ -21,7 +21,7 @@ namespace LagerSystem
                 information[0] = ware.GetName;
                 information[1] = ware.GetID;
                 information[2] = ware.GetAmount.ToString();
-                information[3] = ware.GetType().ToString(); //consider using reflection for the type
+                information[3] = ware.GetType().ToString().Split('.')[1]; //consider using reflection for the type
                 wareInformation.Add(information);
             }
             return wareInformation;
