@@ -42,8 +42,6 @@ namespace LagerSystem
         private void WareChangeMenu()
         {
             string[] options = new string[] { "Remove Ware", "Add To Ware", "Remove From Ware", "Back" };
-            Publisher.PubWare.RemoveFromWare("ID-55t",1);
-            Publisher.PubWare.AddToWare("ID-55t2",1);
             byte response = Visual.MenuRun(options);
             switch (response)
             {
@@ -63,12 +61,26 @@ namespace LagerSystem
 
         private void WareRemoveMenu()
         {
-            WareModifier.RemoveWare(CollectID());
+            string ID = CollectID();
+            if (Support.IDExist(ID))
+                WareModifier.RemoveWare(ID);
+            else
+            {
+                Console.WriteLine("ID does not exist");
+                Support.WaitOnKeyInput();
+            }
         }
 
         private void WareAddAmountMenu()
         {
-            WareModifier.AddToWare(CollectID(),CollectAmount());
+            string ID = CollectID();
+            if (Support.IDExist(ID))
+                WareModifier.AddToWare(ID,CollectAmount());
+            else
+            {
+                Console.WriteLine("ID does not exist");
+                Support.WaitOnKeyInput();
+            }
         }
 
         private void WareRemoveAmountMenu()
