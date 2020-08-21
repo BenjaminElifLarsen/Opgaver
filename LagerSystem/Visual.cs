@@ -17,12 +17,12 @@ namespace LagerSystem
         public static byte MenuRun(string[] options, string title = null)
         {
             byte hoveredOver = 0;
-            bool selected = false;
+            bool selected;
             Support.DeactiveCursor();
             do
             {
                 MenuDisplay(options, hoveredOver, title);
-                hoveredOver = MenuSelection(ref selected, options.Length, hoveredOver);
+                hoveredOver = MenuSelection(out selected, options.Length, hoveredOver);
             } while (!selected);
             Support.ActiveCursor();
             return hoveredOver;
@@ -33,7 +33,7 @@ namespace LagerSystem
         /// </summary>
         /// <param name="selected"></param>
         /// <returns>Returns the currently hovered over array position. Comnbined with the ref parameter <c>selected</c> to check if enter key has been pressed. </returns>
-        private static byte MenuSelection(ref bool selected, int optionAmount, byte currentHoveredOver = 0)
+        private static byte MenuSelection(out bool selected, int optionAmount, byte currentHoveredOver = 0)
         {
             while (!Console.KeyAvailable) ;
             ConsoleKey key = Console.ReadKey(true).Key;
