@@ -114,33 +114,14 @@ namespace LagerSystem
             return response == 0 ? true : false;
         }
 
-        private string EnterName()
+        private string EnterName(string message = "Enter Product Name")
         {
-            string name;
-            Console.Clear();
-            Console.WriteLine("Enter Product Name");
-            Support.ActiveCursor();
-            do
-            {
-                name = Console.ReadLine().Trim();
-            } while (name == null || name == "");
-            Support.DeactiveCursor();
-            return name;
+            return Support.CollectString(message);
         }
 
-        private uint EnterAmount()
+        private uint EnterAmount(string message = "Enter Amount")
         {
-            uint value;
-            string valueString;
-            Console.Clear();
-            Console.WriteLine("Enter Amount");
-            Support.ActiveCursor();
-            do
-            {
-                valueString = Console.ReadLine();
-            } while (!uint.TryParse(valueString, out value));
-            Support.DeactiveCursor();
-            return value;
+            return Support.EnterAmount(message);
         }
 
         private string CreateID()

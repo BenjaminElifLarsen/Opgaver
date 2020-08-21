@@ -78,12 +78,12 @@ namespace LagerSystem
 
         private uint CollectAmount() //WareCreator.EnterAmount does what this should do, so consider moving the code of that function into a Support function and then call that function from here and WareCreator.EnterAmount
         {
-            throw new NotImplementedException();
+            return Support.EnterAmount("Enter Amount");
         }
 
         private string CollectID()
         {
-            throw new NotImplementedException();
+            return Support.CollectString("Enter ID");
         }
 
         private void WareCreateMenu()

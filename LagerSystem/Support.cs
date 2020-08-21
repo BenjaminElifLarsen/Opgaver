@@ -57,5 +57,34 @@ namespace LagerSystem
             Console.CursorVisible = false;
         }
 
+        public static uint EnterAmount(string message)
+        {
+            uint value;
+            string valueString;
+            Console.Clear();
+            Console.WriteLine(message);
+            ActiveCursor();
+            do
+            {
+                valueString = Console.ReadLine();
+            } while (!uint.TryParse(valueString, out value));
+            DeactiveCursor();
+            return value;
+        }
+
+        public static string CollectString(string message)
+        {
+            string name;
+            Console.Clear();
+            Console.WriteLine(message);
+            ActiveCursor();
+            do
+            {
+                name = Console.ReadLine().Trim();
+            } while (name == null || name == "");
+            DeactiveCursor();
+            return name;
+        }
+
     }
 }
