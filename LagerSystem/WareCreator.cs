@@ -186,11 +186,11 @@ namespace LagerSystem
         {
             string[] possibleTypes = FindWareTypes().ToArray(); //should handle an empty list
 
-            return possibleTypes[0];
+            return possibleTypes[1];
             //throw new NotImplementedException(); //use reflection to find all types.
         }
 
-        private List<string> FindWareTypes()
+        private List<string> FindWareTypes() //move into Support
         {
             List<string> typeList = new List<string>();
             Type[] types = Assembly.GetExecutingAssembly().GetTypes(); //finds all types in the executing assembly
