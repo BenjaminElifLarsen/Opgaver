@@ -9,12 +9,12 @@ namespace LagerSystem
     public class WareModifier
     {
 
-        public static void AddToWare(string ID, uint amount)
+        public static void AddToWare(string ID, int amount)
         {
             Publisher.PubWare.AddToWare(ID, amount);
         }
 
-        public static void RemoveFromWare(string ID, uint amount)
+        public static void RemoveFromWare(string ID, int amount)
         {
             Publisher.PubWare.RemoveFromWare(ID, amount);
         }

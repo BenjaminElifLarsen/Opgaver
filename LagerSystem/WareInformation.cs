@@ -29,7 +29,7 @@ namespace LagerSystem
             return wareInformation;
         }
 
-        public static void AddWareTEst(string name, string id, string type, uint amount) //move later to its final class 
+        public static void AddWareTEst(string name, string id, string type, int amount) //move later to its final class 
         {
             Type test = Type.GetType("LagerSystem."+type);
             wares.Add((Ware)Activator.CreateInstance(test, new object[]{name,id,amount, Publisher.PubWare }));

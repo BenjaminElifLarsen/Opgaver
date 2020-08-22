@@ -34,7 +34,7 @@ namespace LagerSystem
         /// </summary>
         /// <param name="ID">The ID of the ware</param>
         /// <param name="amount">The amount of units to add.</param>
-        public void AddToWare(string ID, uint amount)
+        public void AddToWare(string ID, int amount)
         {
             OnAddingToWare(new ControlEvents.AddEventArgs(ID, amount));
         }
@@ -51,7 +51,7 @@ namespace LagerSystem
         /// </summary>
         /// <param name="ID">The ID of the ware</param>
         /// <param name="amount">The amount of units to add.</param>
-        public void RemoveFromWare(string ID, uint amount)
+        public void RemoveFromWare(string ID, int amount)
         {
             OnRemovingFomWare(new ControlEvents.RemoveEventArgs(ID, amount));
         }

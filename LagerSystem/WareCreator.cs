@@ -23,7 +23,7 @@ namespace LagerSystem
             string ID = null;
             string name = null;
             string type = null;
-            uint? amount = null;
+            int? amount = null;
             bool goBack = false;
             string title = "Ware Creation Menu";
             string[] options = new string[] { "Name", "ID", "Type", "Amount", "Finalise", "Back" }; //if Back is select and Finalise the program should ask for confirmation.
@@ -58,7 +58,7 @@ namespace LagerSystem
                             goBack = Confirmation();
                             if (goBack)
                             {
-                                WareInformation.AddWareTEst(name,ID,type,(uint)amount);
+                                WareInformation.AddWareTEst(name,ID,type,(int)amount);
                             }
                         }
                         break;
@@ -81,7 +81,7 @@ namespace LagerSystem
         /// <param name="name"></param>
         /// <param name="type"></param>
         /// <param name="amount"></param>
-        private bool MissingInformation(string id, string name, string type, uint? amount)
+        private bool MissingInformation(string id, string name, string type, int? amount)
         {
             string baseMessage = "The following is missing: ";
             string missing = baseMessage;
@@ -120,7 +120,7 @@ namespace LagerSystem
             return Support.CollectString(message);
         }
 
-        private uint EnterAmount(string message = "Enter Amount")
+        private int EnterAmount(string message = "Enter Amount")
         {
             return Support.EnterAmount(message);
         }

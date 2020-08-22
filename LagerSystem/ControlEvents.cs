@@ -25,24 +25,24 @@ namespace LagerSystem
 
         public class AddEventArgs
         {
-            public AddEventArgs(string ID, uint amountToAdd)
+            public AddEventArgs(string ID, int amountToAdd)
             {
                 this.ID = ID;
                 this.AmountToAdd = amountToAdd;
             }
             public string ID { get; set; }
-            public uint AmountToAdd { get; set; }
+            public int AmountToAdd { get; set; }
         }
 
         public class RemoveEventArgs
         {
-            public RemoveEventArgs(string ID, uint amountToRemove)
+            public RemoveEventArgs(string ID, int amountToRemove)
             {
                 this.ID = ID;
                 this.AmountToRemove = amountToRemove;
             }
             public string ID { get; set; }
-            public uint AmountToRemove { get; set; }
+            public int AmountToRemove { get; set; }
         }
 
     }

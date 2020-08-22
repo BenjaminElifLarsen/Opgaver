@@ -9,7 +9,7 @@ namespace LagerSystem
     [WareType("Electronic")]
     sealed class Electronic : Ware
     {
-        public Electronic(string name, string id, uint amount, WarePublisher warePublisher) : base(name, id, amount, warePublisher)
+        public Electronic(string name, string id, int amount, WarePublisher warePublisher) : base(name, id, amount, warePublisher)
         {
         }
     }

@@ -67,9 +67,9 @@ namespace LagerSystem
             Console.CursorVisible = false;
         }
 
-        public static uint EnterAmount(string message)
+        public static int EnterAmount(string message)
         {
-            uint value;
+            int value;
             string valueString;
             Console.Clear();
             Console.WriteLine(message);
@@ -77,7 +77,7 @@ namespace LagerSystem
             do
             {
                 valueString = Console.ReadLine();
-            } while (!uint.TryParse(valueString, out value));
+            } while (!int.TryParse(valueString, out value));
             DeactiveCursor();
             return value;
         }

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace LagerSystem
 {
+    /// <summary>
+    /// ... The value needs to be same as class name
+    /// </summary>
     public class WareTypeAttribute : Attribute
     {
         private string type;

@@ -11,9 +11,9 @@ namespace LagerSystem
     {
         string name;
         string id;
-        uint amount; //should a negative unit amount be allowed? E.g. more units ordered than there are? 
+        int amount; //should a negative unit amount be allowed? E.g. more units ordered than there are? 
 
-        public Ware(string name, string id, uint amount, WarePublisher warePublisher)
+        public Ware(string name, string id, int amount, WarePublisher warePublisher)
         {
             this.name = name;
             this.id = id;
@@ -24,16 +24,16 @@ namespace LagerSystem
 
         public string GetName { get => name; }
 
-        public uint GetAmount { get => amount; }
+        public int GetAmount { get => amount; }
 
         public string GetID { get => id; }
 
-        protected virtual void Add(uint amount)
+        protected virtual void Add(int amount)
         {
             this.amount += amount;
         }
 
-        protected virtual void Remove(uint amount)
+        protected virtual void Remove(int amount)
         {
             if(amount != 0)
                 this.amount -= amount;
