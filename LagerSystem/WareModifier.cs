@@ -6,14 +6,26 @@ using System.Threading.Tasks;
 
 namespace LagerSystem
 {
+    /// <summary>
+    /// Contains functions to modify, add wares and remove wares
+    /// </summary>
     public class WareModifier
     {
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="amount"></param>
         public static void AddToWare(string ID, int amount)
         {
             Publisher.PubWare.AddToWare(ID, amount);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="amount"></param>
         public static void RemoveFromWare(string ID, int amount)
         {
             Publisher.PubWare.RemoveFromWare(ID, amount);

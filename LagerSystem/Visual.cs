@@ -76,12 +76,16 @@ namespace LagerSystem
                 }
         }
 
+        /// <summary>
+        /// Displays 
+        /// </summary>
+        /// <param name="information"></param>
         public static void WareDisplay(List<string[]> information)
         {
             Console.Clear();
             Support.DeactiveCursor();
 
-            string[] titles = new string[] { "Name", "ID", "Amount", "Type" };
+            string[] titles = new string[] { "Name", "ID", "Amount", "Type" }; //can use reflection to find the specific methods/properties in different classes. Can use strings parameters to display different values using param string
             int[] xLocation = new int[titles.Length];
             byte increasement = 20;
             //int totalLength = xLocation[xLocation.Length-1];
