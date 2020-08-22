@@ -107,7 +107,7 @@ namespace LagerSystem
         /// Asks if an user is sure about their choice. If yes it returns true, else false.
         /// </summary>
         /// <returns></returns>
-        private bool Confirmation()
+        private bool Confirmation() //move into Support
         {
             string message = "Are you sure?";
             byte response = Visual.MenuRun(new string[] {"Yes","No" }, message);
@@ -136,14 +136,19 @@ namespace LagerSystem
                 {
                     ID_ = Console.ReadLine().Trim(); 
                 } while (!ValidID(ID_));
-            } while (!Support.UniqueID(ID_)); //needs to inform if the ID is already in use
+            } while (!UniqueID(ID_)); //needs to inform if the ID is already in use
             Support.DeactiveCursor();
             return ID_;
         }
 
         private bool UniqueID(string IDToCheck)
         {
-            throw new NotImplementedException();
+            if (!Support.UniqueID(IDToCheck))
+            {
+                Console.WriteLine("ID is not unique. Enter a new ID");
+                return false;
+            }
+            return true;
         }
 
         private bool ValidID(string IDToCheck)

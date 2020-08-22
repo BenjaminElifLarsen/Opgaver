@@ -26,6 +26,7 @@ namespace LagerSystem
         /// <returns>Returns true if the item was found and removed else false</returns>
         public static bool RemoveWare(string ID)
         {
+            //Have a confirmation
             return WareInformation.RemoveWare(ID);
         }
 
