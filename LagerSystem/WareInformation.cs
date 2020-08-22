@@ -29,6 +29,12 @@ namespace LagerSystem
             return wareInformation;
         }
 
+        public static void AddWareTEst(string name, string id, string type, uint amount) //move later to its final class 
+        {
+            Type test = Type.GetType("LagerSystem."+type);
+            wares.Add((Ware)Activator.CreateInstance(test, new object[]{name,id,amount, Publisher.PubWare }));
+        }
+
         public static void AddWare() //when storage class has been added move this function to it
         {
             wares.Add(new Liquids("Test", "ID-55t", 25, Publisher.PubWare));

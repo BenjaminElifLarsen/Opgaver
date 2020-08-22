@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -57,7 +58,7 @@ namespace LagerSystem
                             goBack = Confirmation();
                             if (goBack)
                             {
-                                //create ware
+                                WareInformation.AddWareTEst(name,ID,type,(uint)amount);
                             }
                         }
                         break;
@@ -128,7 +129,7 @@ namespace LagerSystem
         {
             string ID_;
             Console.Clear();
-            Console.WriteLine("Enter Valid Product ID"); //have requirements for the ID and use REGEX to check after, e.g. min. 1 letter, 1 number, min size of 4 and maximum size of 18
+            Console.WriteLine("Enter Valid Product ID"); 
             Support.ActiveCursor();
             do
             {
@@ -136,7 +137,7 @@ namespace LagerSystem
                 {
                     ID_ = Console.ReadLine().Trim(); 
                 } while (!ValidID(ID_));
-            } while (!UniqueID(ID_)); //needs to inform if the ID is already in use
+            } while (!UniqueID(ID_)); 
             Support.DeactiveCursor();
             return ID_;
         }
@@ -183,16 +184,34 @@ namespace LagerSystem
 
         private string SelectType()
         {
-            throw new NotImplementedException(); //use reflection to find all types.
+            string[] possibleTypes = FindWareTypes().ToArray(); //should handle an empty list
+
+            return possibleTypes[0];
+            //throw new NotImplementedException(); //use reflection to find all types.
+        }
+
+        private List<string> FindWareTypes()
+        {
+            List<string> typeList = new List<string>();
+            Type[] types = Assembly.GetExecutingAssembly().GetTypes(); //finds all types in the executing assembly
+            foreach (Type type in types)
+            {
+                List<Attribute> attrs = type.GetCustomAttributes().ToList(); //converts their custom attributes to a list
+                if(!type.IsAbstract) //ensures the base class is not a "valid" type since it is abstract
+                    foreach (Attribute attr in attrs) 
+                        if (attr is WareTypeAttribute info) //is the attribute the correct one
+                        {
+                            typeList.Add(info.Type); //add to list
+                            break;
+                        }
+                }
+            return typeList;
         }
 
 
         protected void CreateWareEventHandler(object sender, ControlEvents.CreateWareEventArgs e) 
         {
             CreateWare();
-            //Type type = Type.GetType(e.Type);
-            //if (type == Type.GetType("Liquids"))
-            //    WareInformation.Ware.Add(new Liquids(e.Name, e.ID, e.Amount, warePublisher)); //needs to deal with different types, maybe just use polymorphy or a combination?
         }
 
         private void RemoveFromSubscription(WarePublisher warePublisher)
