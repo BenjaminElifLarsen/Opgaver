@@ -48,7 +48,7 @@ namespace LagerSystem
         public static void AddWare() //when storage class has been added move this function to it
         {
             wares.Add(new Liquid("Test", "ID-55t", 25, Publisher.PubWare));
-            wares.Add(new Electronic("Toaster", "ID-123Q", 2, Publisher.PubWare));
+            wares.Add(new Electronic("Toaster", "ID-123q", 2, Publisher.PubWare));
             wares.Add(new Liquid("Superproduct", "ID-55t2", 1, Publisher.PubWare));
         }
 

@@ -186,7 +186,7 @@ namespace LagerSystem
         {
             string[] possibleTypes = FindWareTypes().ToArray(); //should handle an empty list
 
-            return possibleTypes[1];
+            return possibleTypes[Visual.MenuRun(possibleTypes,"Select Type")];
             //throw new NotImplementedException(); //use reflection to find all types.
         }
 
