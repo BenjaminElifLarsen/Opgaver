@@ -115,16 +115,30 @@ namespace LagerSystem
             return response == 0 ? true : false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
         private string EnterName(string message = "Enter Product Name")
         {
             return Support.CollectString(message);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
         private int EnterAmount(string message = "Enter Amount")
         {
             return Support.EnterAmount(message);
         }
 
+        /// <summary>
+        /// Allows the user to create a new ID while ensuring the ID is valid and unique. 
+        /// </summary>
+        /// <returns></returns>
         private string CreateID()
         {
             string ID_;
@@ -142,6 +156,11 @@ namespace LagerSystem
             return ID_;
         }
 
+        /// <summary>
+        /// Checks if an ID is unique or not. If not unique it will informs the user about it.
+        /// </summary>
+        /// <param name="IDToCheck">ID to check.</param>
+        /// <returns>Returns true if the ID is unique else false.</returns>
         private bool UniqueID(string IDToCheck)
         {
             if (!Support.UniqueID(IDToCheck))
@@ -152,6 +171,11 @@ namespace LagerSystem
             return true;
         }
 
+        /// <summary>
+        /// Checks if <paramref name="IDToCheck"/> is valid.
+        /// </summary>
+        /// <param name="IDToCheck"></param>
+        /// <returns></returns>
         private bool ValidID(string IDToCheck)
         {
             if (!RegexControl.IsValidLength(IDToCheck))
