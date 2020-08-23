@@ -8,10 +8,20 @@ namespace LagerSystem
 {
     static class WareInformation
     {
+        /// <summary>
+        /// Llist contains all wares
+        /// </summary>
         private static List<Ware> wares = new List<Ware>(); //have a class for storaging/manipulating the ware list
 
+        /// <summary>
+        /// Gets a deep-copy of all wares.
+        /// </summary>
         public static List<Ware> Ware { get => Support.DeepCopy(wares); set => wares = value; } 
 
+        /// <summary>
+        /// Gets ...
+        /// </summary>
+        /// <returns></returns>
         public static List<string[]> GetWareInformation()
         {
             List<string[]> wareInformation = new List<string[]>();
@@ -42,6 +52,11 @@ namespace LagerSystem
             wares.Add(new Liquid("Superproduct", "ID-55t2", 1, Publisher.PubWare));
         }
 
+        /// <summary>
+        /// Removes the ware with the <paramref name="ID"/>. Returns true if the ware was found and removed, else false.
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
         public static bool RemoveWare(string ID) //when storage class has been added move this function to it
         {
             for (int i = wares.Count - 1; i >= 0; i--)
@@ -49,11 +64,17 @@ namespace LagerSystem
                 {
                     wares[i].RemoveSubscriptions(Publisher.PubWare);
                     wares.RemoveAt(i);
+                    return true;
                 }
             return false;
         }
 
-        private static string FindTypeAttribute(Ware ware )
+        /// <summary>
+        /// Finds and returns a string with all attributes of <c>WareTypeAttribute</c> belonging to <paramref name="ware"/>.
+        /// </summary>
+        /// <param name="ware"></param>
+        /// <returns></returns>
+        private static string FindTypeAttribute(Ware ware ) //could it be modified to find different Attributes?
         {
 
             string typeString = "";
