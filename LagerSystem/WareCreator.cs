@@ -31,27 +31,31 @@ namespace LagerSystem
             string[] displayOptions = Support.DeepCopy(options);
             do
             {
-                byte answer = Visual.MenuRun(options, title);
+                byte answer = Visual.MenuRun(displayOptions, title);
                 switch (answer)
                 {
                     case 0:
                         name = EnterName();
-                        options[0]  += ": " + name;
+                        displayOptions[0] = options[0];
+                        displayOptions[0]  += ": " + name;
                         break;
 
                     case 1:
                         ID = CreateID();
-                        options[1] += ": " + ID;
+                        displayOptions[1] = options[1];
+                        displayOptions[1] += ": " + ID;
                         break;
 
                     case 2:
                         type = SelectType();
-                        options[2] += ": " + type;
+                        displayOptions[2] = options[2];
+                        displayOptions[2] += ": " + type;
                         break;
 
                     case 3:
                         amount = EnterAmount();
-                        options[3] += ": " + amount;
+                        displayOptions[3] = options[3];
+                        displayOptions[3] += ": " + amount;
                         break;
 
                     case 4:
