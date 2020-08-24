@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,6 @@ namespace LagerSystem
     [WareType("HotLiquid")]
     class HotLiquid : Liquid
     {
-        private double minTemp;
-        private double maxTemp;
         public HotLiquid(string name, string id, int amount, WarePublisher warePublisher) : base(name, id, amount, warePublisher)
         {
         }
@@ -21,10 +20,6 @@ namespace LagerSystem
             this.maxTemp = maxTemp;
         }
 
-        public double MinimumTemperatur { get => minTemp; }
-    
-        public double MaximumTemperatur { get => maxTemp; }
-
-
+        
     }
 }
