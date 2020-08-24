@@ -12,7 +12,7 @@ namespace LagerSystem
     public static class Support
     {
         /// <summary>
-        /// Deep copy for lists
+        /// Deep copy for lists.
         /// </summary>
         /// <typeparam name="T">Generic data type.</typeparam>
         /// <param name="wares">The list to do deep copy of.</param>
@@ -25,9 +25,18 @@ namespace LagerSystem
             return newList;
         }
 
+        /// <summary>
+        /// Deep copy for arrays.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="wares"></param>
+        /// <returns></returns>
         public static T[] DeepCopy<T>(T[] wares)
         {
-            throw new NotImplementedException();
+            T[] newArray = new T[wares.Length];
+            for (int i = 0; i < wares.Length; i++)
+                newArray[i] = wares[i];
+            return newArray;
         }
 
         /// <summary>
