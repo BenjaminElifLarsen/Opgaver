@@ -41,11 +41,18 @@ namespace LagerSystem
 
         public static void AddWareTEst(string name, string id, string type, int amount) //move later to its final class 
         {
+            if(type.Split(' ').Length != 1)
+            {
+                string[] split = type.Split(' ');
+                type = "";
+                foreach (string typing in split)
+                    type += typing;
+            }
             Type test = Type.GetType("LagerSystem."+type);
             wares.Add((Ware)Activator.CreateInstance(test, new object[]{name,id,amount, Publisher.PubWare }));
         }
 
-        public static void AddWare() //when storage class has been added move this function to it
+        public static void AddWareDefault() //when storage class has been added move this function to it
         {
             wares.Add(new Liquid("Test", "ID-55t", 25, Publisher.PubWare));
             wares.Add(new Electronic("Toaster", "ID-123q", 2, Publisher.PubWare));
