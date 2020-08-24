@@ -39,7 +39,14 @@ namespace LagerSystem
             return wareInformation;
         }
 
-        public static void AddWareTEst(string name, string id, string type, int amount) //move later to its final class 
+        /// <summary>
+        /// Adds a new ware of <paramref name="type"/> with the values of <paramref name="name"/>, <paramref name="id"/> and <paramref name="amount"/>
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="id"></param>
+        /// <param name="type"></param>
+        /// <param name="amount"></param>
+        public static void AddWare(string name, string id, string type, int amount) //move later to its final class 
         {
             if(type.Split(' ').Length != 1)
             {

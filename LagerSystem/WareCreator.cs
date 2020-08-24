@@ -64,7 +64,7 @@ namespace LagerSystem
                             goBack = Confirmation();
                             if (goBack)
                             {
-                                WareInformation.AddWareTEst(name,ID,type,(int)amount);
+                                WareInformation.AddWare(name,ID,type,(int)amount);
                             }
                         }
                         break;
