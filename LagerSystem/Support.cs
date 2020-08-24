@@ -25,6 +25,11 @@ namespace LagerSystem
             return newList;
         }
 
+        public static T[] DeepCopy<T>(T[] wares)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Checks if <paramref name="IDToCheck"/> is already in use. Returns false if it does else false.
         /// </summary>
