@@ -40,10 +40,10 @@ namespace LagerSystem
         }
 
         /// <summary>
-        /// Checks if <paramref name="IDToCheck"/> is already in use. Returns false if it does else false.
+        /// Checks if <paramref name="IDToCheck"/> is already in use. Returns false if it does else true.
         /// </summary>
         /// <param name="IDToCheck">The ID to check against other wares' ID.</param>
-        /// <returns></returns>
+        /// <returns>Returns false if <paramref name="IDToCheck"/> is not unique else true.</returns>
         public static bool UniqueID(string IDToCheck)
         {
             List<string[]> information = WareInformation.GetWareInformation();

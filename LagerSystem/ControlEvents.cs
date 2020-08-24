@@ -10,17 +10,9 @@ namespace LagerSystem
     {
         public class CreateWareEventArgs
         {
-            public CreateWareEventArgs(/*string name, string ID, uint amount, string type = "None"*/)
+            public CreateWareEventArgs()
             {
-                //Name = name;
-                //this.ID = ID;
-                //Amount = amount;
-                //Type = type;
             }
-            //public string Name { get; set; }
-            //public string ID { get; set; }
-            //public uint Amount { get; set; }
-            //public string Type { get; set; }
         }
 
         public class AddEventArgs
