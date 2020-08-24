@@ -27,6 +27,7 @@ namespace LagerSystem
             bool goBack = false;
             string title = "Ware Creation Menu";
             string[] options = new string[] { "Name", "ID", "Type", "Amount", "Finalise", "Back" }; //if Back is select and Finalise the program should ask for confirmation.
+            //make a deep copy of the options and overwrite its value. Need to overwrite an entry before the value is added to an entry
             do
             {
                 byte answer = Visual.MenuRun(options, title);
