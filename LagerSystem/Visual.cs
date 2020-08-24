@@ -36,7 +36,7 @@ namespace LagerSystem
         private static byte MenuSelection(out bool selected, int optionAmount, byte currentHoveredOver = 0)
         {
             while (!Console.KeyAvailable) ;
-            ConsoleKey key = Console.ReadKey(true).Key;
+            ConsoleKey key = Console.ReadKey(true).Key; //have an event for keyboard 
             Support.BufferFlush();
             if(key == ConsoleKey.Enter)
             {
@@ -106,7 +106,7 @@ namespace LagerSystem
                 string[] wareInfo = information[n];
                 //string wareInformation = //wareInfo[0] + Pad(xLocation[0] - wareInfo[0].Length, addToo: "|") + wareInfo[1] + Pad(xLocation[1] - wareInfo[1].Length, addToo: "|") + 
                                            //wareInfo[3] + Pad(xLocation[2] - wareInfo[2].Length, addToo: "|") + wareInfo[2] + Pad(xLocation[3] - wareInfo[3].Length, addToo: "|");
-                for (int m = 0; m < wareInfo.Length; m++)
+                for (int m = 0; m < wareInfo.Length; m++) //make it find the longest word in each catergory and use the length plus something for the placement of | in all lines for that category (have a function for this)
                 {
                     Console.CursorLeft = xLocation[m];
                     Console.Write("| " + wareInfo[m]);

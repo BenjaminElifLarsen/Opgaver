@@ -12,9 +12,10 @@ namespace LagerSystem
     [WareType("None")] //Ware is abstract and cannot be initialisated
     abstract class Ware
     {
-        string name;
-        string id;
-        int amount; //should a negative unit amount be allowed? E.g. more units ordered than there are? 
+        protected string name;
+        protected string id;
+        protected int amount; //should a negative unit amount be allowed? E.g. more units ordered than there are? 
+        protected string information;
 
         private Ware() { }
 
@@ -37,6 +38,8 @@ namespace LagerSystem
         /// </summary>
         public int GetAmount { get => amount; }
 
+        public string GetInformation { get => information; }
+
         /// <summary>
         /// Gets the ID of the ware.
         /// </summary>
@@ -51,6 +54,11 @@ namespace LagerSystem
         {
             if(amount != 0)
                 this.amount -= amount;
+        }
+
+        protected virtual void AddInformation(string info)
+        {
+            information = info;
         }
 
         /// <summary>
@@ -84,7 +92,6 @@ namespace LagerSystem
             warePublisher.RaiseAddEvent -= AddAmountEventHandler;
             warePublisher.RaiseRemoveEvent -= RemoveAmountEvnetHandler;
         }
-
 
     }
 }
