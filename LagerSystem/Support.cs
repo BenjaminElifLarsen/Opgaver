@@ -28,9 +28,9 @@ namespace LagerSystem
         /// <summary>
         /// Deep copy for arrays.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="wares"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">Generic data type.</typeparam>
+        /// <param name="wares">The array to do deep copy of.</param>
+        /// <returns>Returns an identical version of <paramref name="wares"/> but referencing to different memory.</returns>
         public static T[] DeepCopy<T>(T[] wares)
         {
             T[] newArray = new T[wares.Length];
