@@ -30,7 +30,7 @@ namespace LagerSystem
         /// <param name="name"></param>
         /// <param name="id"></param>
         /// <param name="amount"></param>
-        /// <param name="maxTemp"></param>
+        /// <param name="maxTemp"></param> //max temp would also be the boilingPoint
         /// <param name="minTemp"></param>
         /// <param name="warePublisher"></param>
         public Liquid(string name, string id, int amount, double maxTemp, double minTemp, float? boilingPoint, WarePublisher warePublisher) : base(name, id, amount, warePublisher)

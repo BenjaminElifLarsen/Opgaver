@@ -15,7 +15,7 @@ namespace LagerSystem
         protected string name;
         protected string id;
         protected int amount; //should a negative unit amount be allowed? E.g. more units ordered than there are? 
-        protected string information;
+        protected string information = "Missing";
 
         private Ware() { }
 
