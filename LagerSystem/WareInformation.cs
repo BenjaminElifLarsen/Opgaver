@@ -64,7 +64,7 @@ namespace LagerSystem
             wares.Add(new Liquid("Test", "ID-55t", 25, Publisher.PubWare));
             wares.Add(new Electronic("Toaster", "ID-123q", 2, Publisher.PubWare));
             wares.Add(new Liquid("Superproduct", "ID-55t2", 1, Publisher.PubWare));
-            wares.Add(new CombustibleLiquid("FOOF", "ID-5q1", 10, -57, -163, 1, -57, null, Publisher.PubWare));
+            wares.Add(new CombustibleLiquid("FOOF", "ID-5q1", 10, -163, 1, -57, null, Publisher.PubWare));
         }
 
         /// <summary>

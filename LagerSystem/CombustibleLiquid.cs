@@ -43,7 +43,7 @@ namespace LagerSystem
         /// <param name="maxTemp"></param>
         /// <param name="boilingPoint"></param>
         /// <param name="warePublisher"></param>
-        public CombustibleLiquid(string name, string id, int amount, double minTemp, double maxTemp, float? boilingPoint, WarePublisher warePublisher) : base(name, id, amount, maxTemp, minTemp, boilingPoint, warePublisher)
+        public CombustibleLiquid(string name, string id, int amount, double minTemp, float? boilingPoint, WarePublisher warePublisher) : base(name, id, amount, minTemp, boilingPoint, warePublisher)
         {
             category = null;
             flashPoint = null;
@@ -61,19 +61,19 @@ namespace LagerSystem
         /// <param name="boilingPoint"></param>
         /// <param name="flashPoint"></param>
         /// <param name="warePublisher"></param>
-        public CombustibleLiquid(string name, string id, int amount, double minTemp, double maxTemp, byte category, float boilingPoint, float?[] flashPoint, WarePublisher warePublisher) : base(name, id, amount, maxTemp, minTemp, boilingPoint, warePublisher)
+        public CombustibleLiquid(string name, string id, int amount, double minTemp, byte category, float boilingPoint, float?[] flashPoint, WarePublisher warePublisher) : base(name, id, amount, minTemp, boilingPoint, warePublisher)
         {
             this.category = category;
             this.flashPoint = flashPoint;
         }
 
         /// <summary>
-        /// ... null indicates the category has not been set.
+        /// Gets the category of the liquid. Null indicates the category has not been set.
         /// </summary>
         public float? GetCategory { get => category; }
 
         /// <summary>
-        /// ... null indicates the flashpoint has not been set. 
+        /// Gets the flash point of the liquid. Null indicates the flashpoint has not been set. 
         /// </summary>
         public float?[] GetFlashPoint { get => flashPoint; }
 

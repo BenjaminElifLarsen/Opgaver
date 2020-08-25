@@ -10,7 +10,6 @@ namespace LagerSystem
     class Liquid : Ware
     {
         protected double minTemp;
-        protected double maxTemp;
         protected float? boilingPoint;
         protected bool @volatile;
         /// <summary>
@@ -30,13 +29,11 @@ namespace LagerSystem
         /// <param name="name"></param>
         /// <param name="id"></param>
         /// <param name="amount"></param>
-        /// <param name="maxTemp"></param> //max temp would also be the boilingPoint
         /// <param name="minTemp"></param>
         /// <param name="warePublisher"></param>
-        public Liquid(string name, string id, int amount, double maxTemp, double minTemp, float? boilingPoint, WarePublisher warePublisher) : base(name, id, amount, warePublisher)
+        public Liquid(string name, string id, int amount, double minTemp, float? boilingPoint, WarePublisher warePublisher) : base(name, id, amount, warePublisher)
         {
             this.minTemp = minTemp;
-            this.maxTemp = maxTemp;
             this.boilingPoint = boilingPoint;
         }
 
@@ -44,11 +41,6 @@ namespace LagerSystem
         /// Gets the minimum temperature the materiale is liquid at.
         /// </summary>
         public double MinimumTemperatur { get => minTemp; }
-
-        /// <summary>
-        /// Gets the maximum temperature the materiale is liquid at. 
-        /// </summary>
-        public double MaximumTemperatur { get => maxTemp; }
 
         /// <summary>
         /// ... null indicates the boiling point has not been set.
