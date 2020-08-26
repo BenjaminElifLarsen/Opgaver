@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,11 @@ namespace LagerSystem
             warePublisher.RaiseRemoveEvent += RemoveAmountEvnetHandler;
         }
 
+        public Ware(string name, string id, string information, int amount, WarePublisher warePublisher) : this(name, id, amount, warePublisher)
+        {
+            this.information = information;
+        }
+
         /// <summary>
         /// Gets the name of the ware.
         /// </summary>
@@ -38,6 +44,9 @@ namespace LagerSystem
         /// </summary>
         public int GetAmount { get => amount; }
 
+        /// <summary>
+        /// Gets the ware information
+        /// </summary>
         public string GetInformation { get => information; }
 
         /// <summary>
@@ -45,11 +54,19 @@ namespace LagerSystem
         /// </summary>
         public string GetID { get => id; }
 
+        /// <summary>
+        /// Add the <paramref name="amount"/> to the unit amount of the ware.
+        /// </summary>
+        /// <param name="amount"></param>
         protected virtual void Add(int amount)
         {
             this.amount += amount;
         }
 
+        /// <summary>
+        /// Removes the <paramref name="amount"/> from the unit amount of the ware.
+        /// </summary>
+        /// <param name="amount"></param>
         protected virtual void Remove(int amount)
         {
             if(amount != 0)
