@@ -20,6 +20,13 @@ namespace LagerSystem
 
         private Ware() { }
 
+        /// <summary>
+        /// Default Ware constructor.
+        /// </summary>
+        /// <param name="name">The name of the ware.</param>
+        /// <param name="id">The ID of the ware.</param>
+        /// <param name="amount">The unit amount of the ware.</param>
+        /// <param name="warePublisher">The ...</param>
         public Ware(string name, string id, int amount, WarePublisher warePublisher)
         {
             this.name = name;
@@ -29,6 +36,14 @@ namespace LagerSystem
             warePublisher.RaiseRemoveEvent += RemoveAmountEvnetHandler;
         }
 
+        /// <summary>
+        /// Default Ware consturctor with product information added.
+        /// </summary>
+        /// <param name="name">The name of the ware.</param>
+        /// <param name="id">The ID of the ware.</param>
+        /// <param name="information">Information about the ware.</param>
+        /// <param name="amount">The unit amount of the ware.</param>
+        /// <param name="warePublisher">...</param>
         public Ware(string name, string id, string information, int amount, WarePublisher warePublisher) : this(name, id, amount, warePublisher)
         {
             this.information = information;
