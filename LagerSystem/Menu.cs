@@ -11,7 +11,7 @@ namespace LagerSystem
         /// <summary>
         /// Runs the main menu of the storage system.
         /// </summary>
-        public void MainMenu()
+        public void MainMenu() //put WareCreateMenu and WareChangeMenu into a sub menu. 
         {
             string title = "Main Menu";
             string[] menuOptions = new string[] {"Storage","Add Ware","Change Ware", "Exit" };
