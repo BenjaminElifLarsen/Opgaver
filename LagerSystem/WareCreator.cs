@@ -61,7 +61,7 @@ namespace LagerSystem
                     case 4:
                         if (!MissingInformation(ID, name, type, amount)) //put this if-statment and its contect into a function
                         {
-                            goBack = Confirmation();
+                            goBack = Support.Confirmation();
                             if (goBack)
                             {
                                 WareInformation.AddWare(name,ID,type,(int)amount);
@@ -70,7 +70,7 @@ namespace LagerSystem
                         break;
 
                     case 5:
-                        goBack = Confirmation();
+                        goBack = Support.Confirmation();
                         //go back
                         break;
                 }
@@ -110,16 +110,7 @@ namespace LagerSystem
             }
         }
 
-        /// <summary>
-        /// Asks if an user is sure about their choice. If yes it returns true, else false.
-        /// </summary>
-        /// <returns></returns>
-        private bool Confirmation() //move into Support
-        {
-            string message = "Are you sure?";
-            byte response = Visual.MenuRun(new string[] {"Yes","No" }, message);
-            return response == 0 ? true : false;
-        }
+ 
 
         /// <summary>
         /// 

@@ -138,5 +138,16 @@ namespace LagerSystem
             return name;
         }
 
+        /// <summary>
+        /// Asks if an user is sure about their choice. If yes it returns true, else false.
+        /// </summary>
+        /// <returns></returns>
+        public static bool Confirmation() 
+        {
+            string message = "Are you sure?";
+            byte response = Visual.MenuRun(new string[] { "Yes", "No" }, message);
+            return response == 0 ? true : false;
+        }
+
     }
 }

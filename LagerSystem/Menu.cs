@@ -73,7 +73,16 @@ namespace LagerSystem
         {
             string ID = CollectID();
             if (Support.IDExist(ID))
-                WareModifier.RemoveWare(ID);
+                if(WareModifier.RemoveWare(ID))
+                {
+                    Console.WriteLine("{0} was removed.", ID);
+                    Support.WaitOnKeyInput();
+                }
+                else
+                {
+                    Console.WriteLine("Removal was canceled or failed in removing {0}.", ID); //figure out how to do this better. 
+                    Support.WaitOnKeyInput();
+                }
             else
             {
                 Console.WriteLine("ID does not exist");
