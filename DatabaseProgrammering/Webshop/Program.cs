@@ -8,9 +8,11 @@ namespace Webshop
         static void Main(string[] args)
         {
             SQLet.ConnectSQLite("Webshop.db");
-            SQLet.Execute(@"INSERT INTO Log (Message,Type,Date) 
-                          Values('First!',1,'01-01-2001');");
-            
+            string text = "Bob";
+            int value = 3;
+            SQLet.Execute($@"INSERT INTO Log (Message,Type,Date) 
+                          Values('{text}',{value},'{DateTime.Now}');");
+
             Console.WriteLine("Hello World!");
             Console.ReadKey();
         }
