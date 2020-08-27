@@ -75,17 +75,22 @@ namespace LagerSystem
             if (Support.IDExist(ID))
                 if(WareModifier.RemoveWare(ID))
                 {
-                    Console.WriteLine("{0} was removed.", ID);
-                    Support.WaitOnKeyInput();
+                    ProgressInformer("{0} was removed.", ID);
                 }
                 else
                 {
-                    Console.WriteLine("Removal was canceled or failed in removing {0}.", ID); //figure out how to do this better. 
-                    Support.WaitOnKeyInput();
+                    ProgressInformer("{0} was not removed.", ID);
                 }
             else
             {
                 Console.WriteLine("ID does not exist");
+                Support.WaitOnKeyInput();
+            }
+
+            void ProgressInformer(string message, string part)
+            {
+                Console.Clear();
+                Console.WriteLine(message, part); //figure out how to do this better. 
                 Support.WaitOnKeyInput();
             }
         }
