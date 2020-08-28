@@ -146,7 +146,7 @@ namespace LagerSystem
         {
             string message = "Are you sure?";
             byte response = Visual.MenuRun(new string[] { "Yes", "No" }, message);
-            return response == 0 ? true : false;
+            return response == 0;
         }
 
     }
