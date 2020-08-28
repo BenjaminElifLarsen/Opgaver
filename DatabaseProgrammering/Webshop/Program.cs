@@ -28,7 +28,9 @@ namespace Webshop
                 //Console.WriteLine(sql, columns[0], name, columns[1], rnd.Next(1,7), columns[2], DateTime.Now);
                 SQLet.Execute(String.Format(sql, columns[0], name, columns[1], rnd.Next(1, 7), columns[2], DateTime.Now));
             }
-        
+
+            string sqlDelete = "Delete from Log where Date Like '28-08-20%'";
+            SQLet.Execute(sqlDelete);
         
         }
     }
