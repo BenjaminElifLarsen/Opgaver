@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using TECHCOOL;
 
 namespace Webshop
@@ -86,6 +87,13 @@ namespace Webshop
                 string[][] test = SQLet.GetArray(String.Format(sqlSelect, selectedColumns));
                 DisplaySelect(test);
             }
+        }
+
+        static void SelectLogMessage2(string column)
+        {
+            string sqlSelect = "Select {0} From Log";
+            Result result = SQLet.GetResult(String.Format(sqlSelect, column));
+            Console.WriteLine(result[0][column]);
         }
 
         static void DisplaySelect(string[][] text)
