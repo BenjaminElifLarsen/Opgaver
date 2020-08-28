@@ -17,6 +17,8 @@ namespace LagerSystem
             this.warePublisher = warePublisher;
         }
 
+        //static WareCreator() { Publisher.PubWare.RaiseCreateWareEvent += CreateWareEventHandler;}
+
         private void CreateWare() //at some point, either after all information has been added or after each, ask if it/they is/are correct and if they want to reenter information.
         { //have a creation menu where the user can select which entry they want to enter when they want to and they can first finish when all entries have been entered. Also add a "back" option
 
