@@ -13,7 +13,7 @@ namespace Webshop
             SQLet.ConnectSQLite("Webshop.db");
             Console.Write("Enter log message: ");
             InsertLogMessage(Console.ReadLine(), rnd.Next(1, 7));
-            Console.Write("Enter log delete condition: Where ");
+            Console.Write("Enter log entry delete condition: Where ");
             DeleteLogMessage(Console.ReadLine());
             //string text = "Bob";
             //int value = rnd.Next(1,10);
