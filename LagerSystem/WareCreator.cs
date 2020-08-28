@@ -63,8 +63,8 @@ namespace LagerSystem
                     case 4:
                         if (!MissingInformation(ID, name, type, amount)) //put this if-statment and its contect into a function
                         {
-                            goBack = Support.Confirmation();
-                            if (goBack)
+                            goBack = Support.Confirmation(); //if the type contains multiple constructors with extra parameters ask the user if they want to fill out more information 
+                            if (goBack)//(they can select a specific constructor and then fill out the specific parameters that are extra). 
                             {
                                 WareInformation.AddWare(name,ID,type,(int)amount);
                             }
