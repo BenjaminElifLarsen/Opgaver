@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TECHCOOL;
 
 namespace Webshop
@@ -15,6 +16,29 @@ namespace Webshop
             InsertLogMessage(Console.ReadLine(), rnd.Next(1, 7));
             Console.Write("Enter log entry delete condition: Where ");
             DeleteLogMessage(Console.ReadLine());
+            Console.Write("Enter log column to update: ");
+            string column = Console.ReadLine();
+            Console.Write("Enter new value: ");
+            string value = Console.ReadLine();
+            Console.Write("Enter log update condition: Where");
+            string condition = Console.ReadLine();
+            UpdateLogMessage(column, value, condition);
+            List<string> selectingColumns = new List<string>();
+            ConsoleKey key;
+            do
+            {
+                Console.WriteLine("Press {0} to exit entering columns", ConsoleKey.D1);
+                key = Console.ReadKey(true).Key;
+                if(key != ConsoleKey.D1)
+                {
+                    Console.Write("Enter column: ");
+                    string text = Console.ReadLine();
+                    if(text != "")
+                        selectingColumns.Add(text);
+                }
+                Console.Write(Environment.NewLine);
+            } while (key != ConsoleKey.D1);
+            SelectLogMessage(selectingColumns.ToArray());
             //string text = "Bob";
             //int value = rnd.Next(1,10);
             //SQLet.Execute($@"INSERT INTO Log (Message,Type,Date) 
@@ -43,6 +67,33 @@ namespace Webshop
 
             //SQLet.Execute(String.Format(sql, columns[0], Console.ReadLine(), columns[1], rnd.Next(1, 7), columns[2], DateTime.Now));
             //Console.WriteLine(Console.ReadKey(true).Key);
+        }
+
+        static void SelectLogMessage(params string[] columns)
+        {
+            if(columns.Length != 0)
+            {
+                string selectedColumns = "";
+                for (int i = 0; i < columns.Length; i++)
+                {
+                    selectedColumns += columns[i];
+                    if (i != columns.Length - 1)
+                        selectedColumns += ",";
+                }
+
+                string sqlSelect = "Select {0} From Log";
+                SQLet.Execute(String.Format(sqlSelect, selectedColumns));
+            }
+        }
+
+        static void UpdateLogMessage/*<T>*/(string column, string value, string condition)
+        {
+            if (column != "LOG_ID")
+            {
+                string sqlUpdate = "Update Log Set {0} = '{1}' where {2}";
+                SQLet.Execute(String.Format(sqlUpdate, column, value, condition));
+            }
+               
         }
 
         static void DeleteLogMessage(string condition)
