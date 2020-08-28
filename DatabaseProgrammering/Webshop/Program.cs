@@ -82,7 +82,23 @@ namespace Webshop
                 }
 
                 string sqlSelect = "Select {0} From Log";
-                SQLet.Execute(String.Format(sqlSelect, selectedColumns));
+                //SQLet.Execute(String.Format(sqlSelect, selectedColumns));
+                string[][] test = SQLet.GetArray(String.Format(sqlSelect, selectedColumns));
+                DisplaySelect(test);
+            }
+        }
+
+        static void DisplaySelect(string[][] text)
+        {
+            int pos = 1;
+            foreach(string[] stringArray in text)
+            {
+                Console.WriteLine("Row {0}", pos++);
+                foreach(string str in stringArray)
+                {
+                    Console.Write(str + " | ");
+                }
+                Console.Write(Environment.NewLine);
             }
         }
 
