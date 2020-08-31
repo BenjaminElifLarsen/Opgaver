@@ -33,7 +33,7 @@ namespace HighScore_OOB
                 int pos = 0;
                 while (pos <= highscoreCounter)
                 {
-                    if (pos < highscoreCounter && highscoreList[pos].GetScore > score)
+                    if (pos < highscoreCounter && highscoreList[pos].GetScore < score)
                     {
                         highscoreList.Insert(pos, (new HighScore<int>(username, score)));
                         break;

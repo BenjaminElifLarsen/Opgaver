@@ -75,11 +75,6 @@ namespace HighScore_OOB
                 return currentHoveredOver;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="options"></param>
-        /// <param name="currentHoveredOver"></param>
         private static void MenuDisplay(string[] options, byte currentHoveredOver = 0, string title = null)
         {
             Console.Clear();

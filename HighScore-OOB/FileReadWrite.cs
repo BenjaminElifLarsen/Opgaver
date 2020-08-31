@@ -39,7 +39,7 @@ namespace HighScore_OOB
             using (StreamWriter file = new StreamWriter(pathFile))
             {
                 for (int n = 0; n < highScores.Count; n++)
-                    file.WriteLine(highScores[n].GetUsername + ":" + highScores[n].GetScore);
+                    file.WriteLine("{0}:{1}", highScores[n].GetUsername, highScores[n].GetScore);
             }
         }
 
@@ -49,16 +49,13 @@ namespace HighScore_OOB
             string pathFile = Path.Combine(pathway, filename + filetype);
             //Type test = typeof(T);
             string[] lines = File.ReadAllLines(pathFile);
-            for(int n = 0; n < lines.Length; n++)
-            {
-                string[] parts = lines[n].Split(':');
-                highScores.Add(new HighScore<int>(parts[0], int.Parse(parts[1])));
-            }
+            if(lines.Length > 1 || (lines.Length == 1 && lines[0] != ""))
+                for(int n = 0; n < lines.Length; n++)
+                {
+                    string[] parts = lines[n].Split(':');
+                    highScores.Add(new HighScore<int>(parts[0], int.Parse(parts[1])));
+                }
             return highScores;
-            //using (FileStream fs = File.OpenRead(pathFile))
-            //{
-            //    
-            //}
 
         }
 

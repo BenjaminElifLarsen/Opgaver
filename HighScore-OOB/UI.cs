@@ -26,7 +26,7 @@ namespace HighScore_OOB
             Console.ForegroundColor = ConsoleColor.White;
             for (int n = 0; n < highScores.Count; n++)
             {
-                Console.WriteLine(highScores[n].GetUsername + ": " + highScores[n].GetScore);
+                Console.WriteLine("{0} : {1}",highScores[n].GetUsername,highScores[n].GetScore);
             }
             Console.ReadKey(true);
             Console.Clear();
