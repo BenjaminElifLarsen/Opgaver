@@ -43,9 +43,9 @@ namespace HighScore_OOB
             }
         }
 
-        public void Read/*<T>*/(out List<HighScore<int>> highScores)
+        public List<HighScore<int>> Read/*<T>*/()
         {
-            highScores = new List<HighScore<int>>();
+            List<HighScore<int>> highScores = new List<HighScore<int>>();
             string pathFile = Path.Combine(pathway, filename + filetype);
             //Type test = typeof(T);
             string[] lines = File.ReadAllLines(pathFile);
@@ -54,7 +54,7 @@ namespace HighScore_OOB
                 string[] parts = lines[n].Split(':');
                 highScores.Add(new HighScore<int>(parts[0], int.Parse(parts[1])));
             }
-
+            return highScores;
             //using (FileStream fs = File.OpenRead(pathFile))
             //{
             //    

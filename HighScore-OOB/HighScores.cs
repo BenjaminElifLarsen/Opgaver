@@ -6,15 +6,18 @@ namespace HighScore_OOB
 {
     public class HighScores
     {
-        List<HighScore<int>> highscoreList = new List<HighScore<int>>();
+        List<HighScore<int>> highscoreList;
         int maxLength;
 
         public HighScores()
         {
+            highscoreList = new List<HighScore<int>>();
             maxLength = 10;
         }
 
-        public List<HighScore<int>> GetHighScoreList { get => highscoreList; }
+        public List<HighScore<int>> HighScoreList { get => highscoreList; set => highscoreList = value; }
+
+
 
         public int MaxHighScoreLength { get => maxLength; set { maxLength = value; Trim(); } }
 
