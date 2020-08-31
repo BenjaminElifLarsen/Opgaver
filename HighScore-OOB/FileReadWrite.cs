@@ -35,11 +35,13 @@ namespace HighScore_OOB
 
         public void Write<T>(List<HighScore<T>> highScores)
         {
-            string pathFile = Path.Combine(pathway, filename + filetype);
-            using (StreamWriter file = new StreamWriter(pathFile))
-            {
-                for (int n = 0; n < highScores.Count; n++)
-                    file.WriteLine("{0}:{1}", highScores[n].GetUsername, highScores[n].GetScore);
+            if(highScores.Count > 0) { 
+                string pathFile = Path.Combine(pathway, filename + filetype);
+                using (StreamWriter file = new StreamWriter(pathFile))
+                {
+                    for (int n = 0; n < highScores.Count; n++)
+                        file.WriteLine("{0}:{1}", highScores[n].GetUsername, highScores[n].GetScore);
+                }
             }
         }
 
