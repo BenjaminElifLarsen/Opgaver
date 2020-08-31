@@ -38,7 +38,6 @@ namespace HighScore_OOB
             else
                 Console.WriteLine("No highscores.");
             Console.ReadKey(true);
-            Console.Clear();
         }
     }
 }

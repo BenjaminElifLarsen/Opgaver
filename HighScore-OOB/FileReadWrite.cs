@@ -56,7 +56,8 @@ namespace HighScore_OOB
             if(lines.Length > 1 || (lines.Length == 1 && lines[0] != ""))
                 for(int n = 0; n < lines.Length; n++)
                 {
-                    if(lines[0] != "") { 
+                    if(lines[0] != "") 
+                    { 
                         string[] parts = lines[n].Split(':');
                         highScores.Add(new HighScore<int>(parts[0], int.Parse(parts[1])));
                     }
