@@ -6,8 +6,8 @@ namespace HighScore_OOB
 {
     public class HighScores
     {
-        List<HighScore<int>> highscoreList;
-        int maxLength;
+        private List<HighScore<int>> highscoreList;
+        private int maxLength;
 
         public HighScores()
         {
