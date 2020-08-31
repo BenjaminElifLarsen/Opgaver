@@ -8,7 +8,7 @@ namespace HighScore_OOB
     public class UI
     {
 
-        public void EnterScore(HighScores highScores)
+        public void EnterScore(HighScoreList highScores)
         {
             Console.Clear();
             Console.Write("Enter Username: ");

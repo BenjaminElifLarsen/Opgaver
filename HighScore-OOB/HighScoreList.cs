@@ -1,21 +1,23 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace HighScore_OOB
 {
-    public class HighScores
+    public class HighScoreList : IComparer<HighScore<int>>
     {
         private List<HighScore<int>> highscoreList;
         private int maxLength;
 
-        public HighScores()
+        public HighScoreList()
         {
             highscoreList = new List<HighScore<int>>();
             maxLength = 10;
         }
 
-        public List<HighScore<int>> HighScoreList { get => highscoreList; set => highscoreList = value; }
+        public List<HighScore<int>> ScoreList { get => highscoreList; set => highscoreList = value; }
 
 
 
@@ -48,6 +50,11 @@ namespace HighScore_OOB
 
             }
             Trim();
+        }
+
+        public int Compare(HighScore<int> x, HighScore<int> y)
+        {//lecture stuff
+            return x.GetScore >= y.GetScore ? 1: -1;
         }
 
         private void Trim()

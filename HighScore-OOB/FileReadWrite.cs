@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Linq;
 
 namespace HighScore_OOB
 {
@@ -62,9 +63,19 @@ namespace HighScore_OOB
                         highScores.Add(new HighScore<int>(parts[0], int.Parse(parts[1])));
                     }
                 }
+            //highScores = SortingTest(highScores);
             return highScores;
 
         }
+
+        //private List<HighScore<T>> SortingTest<T>(List<HighScore<T>> highScores)
+        //{
+        //    //HighScore<int> highScore1 = new HighScore<int>("", 1);
+        //    //HighScore<int> highScore2 = new HighScore<int>("", 2);
+        //    //var test = highScores.OrderBy((highScore1, highScore2) => highScore1.GetScore.CompareTo(highScore2.GetScore));
+        //    //highScores.Sort(new HighScoreList());
+        //    return highScores;
+        //}
 
     }
 }

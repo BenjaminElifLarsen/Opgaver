@@ -7,17 +7,17 @@ namespace HighScore_OOB
     class Menu
     {
         FileReadWrite fileRW;
-        HighScores highScores;
+        HighScoreList highScores;
         UI ui;
 
         public Menu() 
         {
             fileRW = new FileReadWrite();
-            highScores = new HighScores();
+            highScores = new HighScoreList();
             ui = new UI();
         }
 
-        public Menu(UI ui, FileReadWrite fileReadWrite, HighScores highScore)
+        public Menu(UI ui, FileReadWrite fileReadWrite, HighScoreList highScore)
         {
             this.ui = ui;
             this.fileRW = fileReadWrite;
@@ -36,13 +36,13 @@ namespace HighScore_OOB
                         ui.EnterScore(highScores);
                         break;
                     case 1:
-                        ui.Display(highScores.HighScoreList);
+                        ui.Display(highScores.ScoreList);
                         break;
                     case 2:
-                        fileRW.Write(highScores.HighScoreList);
+                        fileRW.Write(highScores.ScoreList);
                         break;
                     case 3:
-                        highScores.HighScoreList = fileRW.Read();
+                        highScores.ScoreList = fileRW.Read();
                         break;
                     case 4:
                         Environment.Exit(0);
