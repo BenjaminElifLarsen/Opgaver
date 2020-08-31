@@ -46,6 +46,7 @@ namespace HighScore_OOB
             } while (true);
         }
 
+
         public static byte MenuRun(string[] options, string title = null)
         {
             byte hoveredOver = 0;
@@ -57,6 +58,7 @@ namespace HighScore_OOB
             } while (!selected);
             return hoveredOver;
         }
+
         private static byte MenuSelection(out bool selected, int optionAmount, byte currentHoveredOver = 0)
         {
             while (!Console.KeyAvailable) ;

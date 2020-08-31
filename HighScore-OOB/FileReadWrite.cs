@@ -51,6 +51,8 @@ namespace HighScore_OOB
             string pathFile = Path.Combine(pathway, filename + filetype);
             //Type test = typeof(T);
             string[] lines = File.ReadAllLines(pathFile);
+            //var test = File.ReadAllText(pathFile);
+            //var test2 = Environment.NewLine;
             if(lines.Length > 1 || (lines.Length == 1 && lines[0] != ""))
                 for(int n = 0; n < lines.Length; n++)
                 {
