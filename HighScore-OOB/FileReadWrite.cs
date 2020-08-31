@@ -33,28 +33,26 @@ namespace HighScore_OOB
                 using (FileStream fs = File.Create(pathFile)) ;
         }
 
-        public void Write<T>(List<string> usernames, List<T> scores)
+        public void Write<T>(List<HighScore<T>> highScores)
         {
             string pathFile = Path.Combine(pathway, filename + filetype);
             using (StreamWriter file = new StreamWriter(pathFile))
             {
-                for (int n = 0; n < usernames.Count; n++)
-                    file.WriteLine(usernames[n] + ":" + scores[n]);
+                for (int n = 0; n < highScores.Count; n++)
+                    file.WriteLine(highScores[n].GetUsername + ":" + highScores[n].GetScore);
             }
         }
 
-        public void Read/*<T>*/(out List<string> usernames, out List<int> scores)
+        public void Read/*<T>*/(out List<HighScore<int>> highScores)
         {
-            usernames = new List<string>();
-            scores = new List<int>();
+            highScores = new List<HighScore<int>>();
             string pathFile = Path.Combine(pathway, filename + filetype);
             //Type test = typeof(T);
             string[] lines = File.ReadAllLines(pathFile);
             for(int n = 0; n < lines.Length; n++)
             {
                 string[] parts = lines[n].Split(':');
-                usernames.Add(parts[0]);
-                scores.Add(int.Parse(parts[1]));
+                highScores.Add(new HighScore<int>(parts[0], int.Parse(parts[1])));
             }
 
             //using (FileStream fs = File.OpenRead(pathFile))

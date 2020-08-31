@@ -8,12 +8,12 @@ namespace HighScore_OOB
     public class UI
     {
 
-
-        public void Display<T>(List<string> usernames, List<T> scores)
+        public void Display<T>(List<HighScore<T>> highScores)
         {
-            for (int n = 0; n < usernames.Count; n++)
+            Console.ForegroundColor = ConsoleColor.White;
+            for (int n = 0; n < highScores.Count; n++)
             {
-                Console.WriteLine(usernames[n] + ": " + scores[n]);
+                Console.WriteLine(highScores[n].GetUsername + ": " + highScores[n].GetScore);
             }
         }
     }
