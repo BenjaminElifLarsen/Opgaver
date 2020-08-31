@@ -6,7 +6,7 @@ using System.Text;
 
 namespace HighScore_OOB
 {
-    public class HighScoreList : IComparer<HighScore<int>>
+    public class HighScoreList : //IComparer<HighScore<int>>
     {
         private List<HighScore<int>> highscoreList;
         private int maxLength;
@@ -18,8 +18,6 @@ namespace HighScore_OOB
         }
 
         public List<HighScore<int>> ScoreList { get => highscoreList; set => highscoreList = value; }
-
-
 
         public int MaxHighScoreLength { get => maxLength; set { maxLength = value; Trim(); } }
 
@@ -52,10 +50,10 @@ namespace HighScore_OOB
             Trim();
         }
 
-        public int Compare(HighScore<int> x, HighScore<int> y)
-        {//lecture stuff
-            return x.GetScore >= y.GetScore ? 1: -1;
-        }
+        //public int Compare(HighScore<int> x, HighScore<int> y)
+        //{//lecture stuff
+        //    return x.GetScore >= y.GetScore ? 1: -1;
+        //}
 
         private void Trim()
         {
