@@ -9,6 +9,7 @@ namespace LagerSystem
     public class Publisher
     {
         private static WarePublisher warePublisher = new WarePublisher();
+        private static KeyPublisher keyPublisher = new KeyPublisher();
 
         public Publisher()
         {
@@ -17,5 +18,6 @@ namespace LagerSystem
         }
 
         public static WarePublisher PubWare { get => warePublisher; }
+        public static KeyPublisher PubKey { get => KeyPublisher; }
     }
 }

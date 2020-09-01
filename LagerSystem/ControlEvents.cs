@@ -37,5 +37,15 @@ namespace LagerSystem
             public int AmountToRemove { get; set; }
         }
 
+        public class KeyEventArgs
+        {
+            public KeyEventArgs(ConsoleKey key)
+            {
+                Key = key;
+            }
+            public ConsoleKey Key { get; set; }
+        }
+
+
     }
 }
