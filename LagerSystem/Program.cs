@@ -22,6 +22,7 @@ namespace LagerSystem
         {
             Menu menu = new Menu();
             WareInformation.AddWareDefault();
+            Input.RunInputThread();
             menu.MainMenu();
         }
     }

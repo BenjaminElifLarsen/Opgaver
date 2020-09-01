@@ -10,8 +10,7 @@ namespace LagerSystem
     static public class Input
     {
 
-
-        public static void RunInput()
+        public static void RunInputThread()
         {
             Thread inputThread = new Thread(InputRun);
         }
