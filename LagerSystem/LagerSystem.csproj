@@ -46,6 +46,7 @@
     <Compile Include="ControlEvents.cs" />
     <Compile Include="Electronic.cs" />
     <Compile Include="CombustibleLiquid.cs" />
+    <Compile Include="KeyPublisher.cs" />
     <Compile Include="Liquid.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Program.cs" />
