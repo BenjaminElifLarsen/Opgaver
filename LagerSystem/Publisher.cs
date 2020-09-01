@@ -18,6 +18,6 @@ namespace LagerSystem
         }
 
         public static WarePublisher PubWare { get => warePublisher; }
-        public static KeyPublisher PubKey { get => KeyPublisher; }
+        public static KeyPublisher PubKey { get => keyPublisher; }
     }
 }
