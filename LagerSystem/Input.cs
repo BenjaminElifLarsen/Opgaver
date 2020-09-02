@@ -13,6 +13,8 @@ namespace LagerSystem
         public static void RunInputThread()
         {
             Thread inputThread = new Thread(InputRun);
+            inputThread.Name = "Input Thread";
+            inputThread.Start();
         }
 
         static private void InputRun()
