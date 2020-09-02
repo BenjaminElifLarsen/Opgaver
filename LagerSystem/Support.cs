@@ -11,6 +11,13 @@ namespace LagerSystem
     /// </summary>
     public static class Support
     {
+        private static ConsoleKey key;
+
+        static Support()
+        {
+            Publisher.PubKey.RaiseKeyPressEvent += KeyEvnetHandler;
+        }
+
         /// <summary>
         /// Deep copy for lists.
         /// </summary>
@@ -70,7 +77,9 @@ namespace LagerSystem
         /// </summary>
         public static void WaitOnKeyInput()
         {
-            Console.ReadKey(true);
+            key = new ConsoleKey();
+            while (key == new ConsoleKey()) ;
+            key = new ConsoleKey();
             BufferFlush();
         }
 
@@ -147,6 +156,11 @@ namespace LagerSystem
             string message = "Are you sure?";
             byte response = Visual.MenuRun(new string[] { "Yes", "No" }, message);
             return response == 0;
+        }
+
+        private static void KeyEvnetHandler(object sender, ControlEvents.KeyEventArgs e)
+        {
+            key = e.Key;
         }
 
     }
