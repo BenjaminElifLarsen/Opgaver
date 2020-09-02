@@ -28,7 +28,8 @@ namespace LagerSystem
             Support.DeactiveCursor();
             do
             {
-                MenuDisplay(options, hoveredOver, title);
+                MenuDisplay(options, hoveredOver, title); //have an byte for the old value and only paint the old value and the new value if they are not the same, maybe the old value should be 
+                //a nullable bye? E.g. if oldValue is null skip the repaint of the old value and oldvalue will only be null when MenuDisplay is called the first time.
                 hoveredOver = MenuSelection(out selected, options.Length, hoveredOver);
             } while (!selected);
             Support.ActiveCursor();
