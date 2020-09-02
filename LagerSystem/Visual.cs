@@ -11,6 +11,11 @@ namespace LagerSystem
 
         private static ConsoleKey key;
 
+        static Visual()
+        {
+            Publisher.PubKey.RaiseKeyPressEvent += KeyEvnetHandler;
+        }
+
         /// <summary>
         /// Runs the menu and retuns the selected entry point of <paramref name="options"/>.
         /// </summary>
@@ -37,8 +42,9 @@ namespace LagerSystem
         /// <returns>Returns the currently hovered over array position. Comnbined with the ref parameter <c>selected</c> to check if enter key has been pressed. </returns>
         private static byte MenuSelection(out bool selected, int optionAmount, byte currentHoveredOver = 0)
         {
-            while (!Console.KeyAvailable) ;
-            ConsoleKey key = Console.ReadKey(true).Key; //have an event for keyboard 
+            key = new ConsoleKey();
+            while (key == new ConsoleKey()) ;
+            //ConsoleKey key = Console.ReadKey(true).Key; //have an event for keyboard 
             Support.BufferFlush();
             if(key == ConsoleKey.Enter)
             {
@@ -52,6 +58,7 @@ namespace LagerSystem
                 return --currentHoveredOver;
             else
                 return currentHoveredOver;
+            key = new ConsoleKey();
         }
 
         /// <summary>
@@ -133,11 +140,9 @@ namespace LagerSystem
             Console.WindowHeight = y;
         }
 
-        private static ConsoleKey KeyEvnetHandler(object sender, ControlEvents.KeyEventArgs e)
+        private static void KeyEvnetHandler(object sender, ControlEvents.KeyEventArgs e)
         {
-
-
-
+            key = e.Key;
         }
 
     }
