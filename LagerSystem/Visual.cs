@@ -9,6 +9,8 @@ namespace LagerSystem
     public static class Visual
     {
 
+        private static ConsoleKey key;
+
         /// <summary>
         /// Runs the menu and retuns the selected entry point of <paramref name="options"/>.
         /// </summary>
@@ -129,6 +131,13 @@ namespace LagerSystem
         {
             Console.WindowWidth = x;
             Console.WindowHeight = y;
+        }
+
+        private static ConsoleKey KeyEvnetHandler(object sender, ControlEvents.KeyEventArgs e)
+        {
+
+
+
         }
 
     }

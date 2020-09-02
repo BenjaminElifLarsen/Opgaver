@@ -150,7 +150,6 @@ namespace LagerSystem
             Support.WaitOnKeyInput();
         }
 
-        
 
 
 
