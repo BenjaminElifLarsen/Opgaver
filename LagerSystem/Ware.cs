@@ -84,7 +84,6 @@ namespace LagerSystem
         /// <param name="amount"></param>
         protected virtual void Remove(int amount)
         {
-            if(amount != 0)
                 this.amount -= amount;
         }
 
