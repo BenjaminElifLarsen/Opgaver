@@ -48,7 +48,6 @@ namespace LagerSystem
         {
             key = new ConsoleKey();
             while (key == new ConsoleKey()) ;
-            //ConsoleKey key = Console.ReadKey(true).Key; //have an event for keyboard 
             Support.BufferFlush();
             if(key == ConsoleKey.Enter)
             {
@@ -90,9 +89,15 @@ namespace LagerSystem
                 }
         }
 
+        /// <summary>
+        /// Ensures only the part of the menu that should be changed is updated. 
+        /// </summary>
+        /// <param name="options"></param>
+        /// <param name="oldHoveredOver"></param>
+        /// <param name="currentHoveredOver"></param>
         private static void MenuDisplayUpdater(string[] options, ref byte? oldHoveredOver, byte currentHoveredOver = 0)
         {
-            Console.CursorTop = 1;
+            Console.CursorTop = 1; //consider not having oldHoveredOver as a nullable byte. 
             if(oldHoveredOver != currentHoveredOver)
             {
                 byte currentLength = (byte)options[currentHoveredOver].Length;
