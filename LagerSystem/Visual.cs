@@ -73,7 +73,10 @@ namespace LagerSystem
         {
             Console.Clear();
             if (title != null)
+            {
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine(title);
+            }
             Console.CursorTop = 1;
             for (int n = 0; n < options.Length; n++)
                 if (n == currentHoveredOver)
@@ -108,7 +111,7 @@ namespace LagerSystem
                 Console.WriteLine(options[currentHoveredOver]);
 
                 if(oldHoveredOver != null) { 
-                    byte oldLength = (byte)options[(byte)oldHoveredOver].Length;
+                    byte oldLength = (byte)options[(byte)oldHoveredOver].Length; //consider functioning this and the above 
                     Console.CursorTop = (byte)oldHoveredOver + 1;
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.Write(" ".PadLeft(oldLength+2));
