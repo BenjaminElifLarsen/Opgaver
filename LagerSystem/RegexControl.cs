@@ -19,7 +19,7 @@ namespace LagerSystem
         private static Regex rgLettersUpper = new Regex("[A-Z]{1,}");
         private static Regex rgLength = new Regex("^[a-z A-Z 0-9" + specialSigns + "]{6,16}$");
 
-        public static string GetSpecialSigns { get => specialSigns; } //it returns \ which it should not, since they are not valid.
+        public static string GetSpecialSigns { get => specialSigns.Replace("\\",""); }
 
         /// <summary>
         /// Uses Regex to ensure <paramref name="text"/> is of a specific length of valid signs.
