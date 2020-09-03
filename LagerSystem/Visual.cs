@@ -24,13 +24,16 @@ namespace LagerSystem
         public static byte MenuRun(string[] options, string title = null)
         {
             byte hoveredOver = 0;
+            byte? oldHoveredOver = 0;
             bool selected;
             Support.DeactiveCursor();
+            MenuDisplay(options, hoveredOver, title);
             do
             {
-                MenuDisplay(options, hoveredOver, title); //have an byte for the old value and only paint the old value and the new value if they are not the same, maybe the old value should be 
+                //have an byte for the old value and only paint the old value and the new value if they are not the same, maybe the old value should be 
                 //a nullable bye? E.g. if oldValue is null skip the repaint of the old value and oldvalue will only be null when MenuDisplay is called the first time.
                 hoveredOver = MenuSelection(out selected, options.Length, hoveredOver);
+                MenuDisplayUpdater(options, ref oldHoveredOver, hoveredOver);
             } while (!selected);
             Support.ActiveCursor();
             return hoveredOver;
@@ -72,6 +75,7 @@ namespace LagerSystem
             Console.Clear();
             if (title != null)
                 Console.WriteLine(title);
+            Console.CursorTop = 1;
             for (int n = 0; n < options.Length; n++)
                 if (n == currentHoveredOver)
                 {
@@ -84,6 +88,30 @@ namespace LagerSystem
                     Console.CursorLeft = 1;
                     Console.WriteLine(options[n]);
                 }
+        }
+
+        private static void MenuDisplayUpdater(string[] options, ref byte? oldHoveredOver, byte currentHoveredOver = 0)
+        {
+            Console.CursorTop = 1;
+            if(oldHoveredOver != currentHoveredOver)
+            {
+                byte currentLength = (byte)options[currentHoveredOver].Length;
+                Console.CursorTop = currentHoveredOver + 1;
+                Console.Write(" ".PadLeft(currentLength + 2));
+                Console.CursorLeft = 2;
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(options[currentHoveredOver]);
+
+                if(oldHoveredOver != null) { 
+                    byte oldLength = (byte)options[(byte)oldHoveredOver].Length;
+                    Console.CursorTop = (byte)oldHoveredOver + 1;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write(" ".PadLeft(oldLength+2));
+                    Console.CursorLeft = 1;
+                    Console.WriteLine(options[(byte)oldHoveredOver]);
+                }
+                oldHoveredOver = currentHoveredOver;
+            }
         }
 
         /// <summary>
