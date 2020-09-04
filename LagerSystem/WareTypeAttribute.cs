@@ -12,10 +12,12 @@ namespace LagerSystem
     public class WareTypeAttribute : Attribute
     {
         private string type;
+
         public WareTypeAttribute(string type)
         {
             this.type = type;
         }
+
         public string Type { get => type; }
 
     }

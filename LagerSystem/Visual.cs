@@ -100,25 +100,11 @@ namespace LagerSystem
         /// <param name="currentHoveredOver"></param>
         private static void MenuDisplayUpdater(string[] options, ref byte oldHoveredOver, byte currentHoveredOver = 0)
         {
-            Console.CursorTop = 1; //consider not having oldHoveredOver as a nullable byte. 
+            Console.CursorTop = 1; 
             if(oldHoveredOver != currentHoveredOver)
             {
-                //byte currentLength = (byte)options[currentHoveredOver].Length;
-                //Console.CursorTop = currentHoveredOver + 1;
-                //Console.Write(" ".PadLeft(currentLength + 2));
-                //Console.CursorLeft = 2;
-                //Console.ForegroundColor = ConsoleColor.Red;
-                //Console.WriteLine(options[currentHoveredOver]);
                 Paint(2, currentHoveredOver, ConsoleColor.Red, options[currentHoveredOver]);
                 Paint(1, oldHoveredOver, ConsoleColor.White, options[oldHoveredOver]);
-                //if(oldHoveredOver != null) { 
-                //    byte oldLength = (byte)options[(byte)oldHoveredOver].Length; //consider functioning this and the above 
-                //    Console.CursorTop = (byte)oldHoveredOver + 1;
-                //    Console.ForegroundColor = ConsoleColor.White;
-                //    Console.Write(" ".PadLeft(oldLength+2));
-                //    Console.CursorLeft = 1;
-                //    Console.WriteLine(options[(byte)oldHoveredOver]);
-                //}
                 oldHoveredOver = currentHoveredOver;
             }
 
