@@ -37,16 +37,22 @@ namespace LagerSystem
             this.boilingPoint = boilingPoint;
         }
 
+        [WareSeacheable("Minimum Temperature")]
         /// <summary>
         /// Gets the minimum temperature the materiale is liquid at.
         /// </summary>
-        public double MinimumTemperatur { get => minTemp; }
+        public double MinimumTemperature { get => minTemp; }
 
+        [WareSeacheable("Boiling Point")]
         /// <summary>
         /// ... null indicates the boiling point has not been set.
         /// </summary>
         public float? GetBoilingPoint { get => boilingPoint; }
 
+        [WareSeacheable("Volatile")]
+        /// <summary>
+        /// 
+        /// </summary>
         public bool IsVolatile { get => @volatile; }
 
 

@@ -49,21 +49,25 @@ namespace LagerSystem
             this.information = information;
         }
 
+        [WareSeacheable("Name")]
         /// <summary>
         /// Gets the name of the ware.
         /// </summary>
         public string GetName { get => name; }
 
+        [WareSeacheable("Amount")]
         /// <summary>
         /// Gets the amount of the ware.
         /// </summary>
         public int GetAmount { get => amount; }
 
+        [WareSeacheable("Information")]
         /// <summary>
         /// Gets the ware information
         /// </summary>
         public string GetInformation { get => information; }
 
+        [WareSeacheable("ID")]
         /// <summary>
         /// Gets the ID of the ware.
         /// </summary>

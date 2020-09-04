@@ -67,11 +67,13 @@ namespace LagerSystem
             this.flashPoint = flashPoint;
         }
 
+        [WareSeacheable("Category")]
         /// <summary>
         /// Gets the category of the liquid. Null indicates the category has not been set.
         /// </summary>
         public float? GetCategory { get => category; }
 
+        [WareSeacheable("Flash Point")]
         /// <summary>
         /// Gets the flash point of the liquid. Null indicates the flashpoint has not been set. 
         /// </summary>

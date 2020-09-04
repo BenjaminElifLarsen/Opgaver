@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace LagerSystem
 {
-    public class WarePropertiesAttributes : Attribute
+    public class WareSeacheableAttribute : Attribute
     {
         private string property;
 
-        public WarePropertiesAttributes(string property)
+        public WareSeacheableAttribute(string property)
         {
             this.property = property;
         }
