@@ -37,7 +37,7 @@ namespace LagerSystem
                 information[3] = FindTypeAttribute(ware);//ware.GetType().ToString().Split('.')[1]; //consider using reflection for the type, since the namespace is returned
                 wareInformation.Add(information);
             }
-            FindSearchableAttributes(typeof(CombustibleLiquid));
+            //FindSearchableAttributes(typeof(CombustibleLiquid));
             return wareInformation;
         }
 
@@ -105,25 +105,27 @@ namespace LagerSystem
         /// <summary>
         /// 
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="type"></param>
+        /// <param name="type">The type to find all searchable attributse of.</param>
         /// <returns></returns>
-        private static string FindSearchableAttributes(Type type)
+        private static List<string> FindSearchableAttributes(Type type)
         {
-            string typeString = ""; //maybe return a dictionary for the data type of he property.
+            List<string> properties = new List<string>();
+            //string typeString = ""; //maybe return a dictionary for the data type of the property to know what the user can enter.
             PropertyInfo[] propertyInfos = type.GetProperties();
             //Attribute[] attributes = type.GetMethods();
-            foreach(PropertyInfo propertyInfo in propertyInfos)
+            foreach (PropertyInfo propertyInfo in propertyInfos)
                 foreach (Attribute attre in propertyInfo.GetCustomAttributes())
                     if (attre is WareSeacheableAttribute info)
-                        typeString += info.Property + " ";
-            return typeString;
+                        properties.Add(info.Property);
+                        //typeString += info.Property + " ";
+            
+            return properties;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="type"></param>
+        /// <param name="type">The type to find all constructors of.</param>
         private static void FindConstructors(Type type)
         {
             List<List<string>> constructors = new List<List<string>>();
