@@ -37,6 +37,8 @@ namespace LagerSystem
                 information[3] = FindTypeAttribute(ware);//ware.GetType().ToString().Split('.')[1]; //consider using reflection for the type, since the namespace is returned
                 wareInformation.Add(information);
             }
+            FindSearchableAttributes(typeof(CombustibleLiquid));
+            FindConstructors(typeof(CombustibleLiquid));
             return wareInformation;
         }
 
@@ -124,14 +126,15 @@ namespace LagerSystem
         private static void FindConstructors(Type type)
         {
             List<List<string>> constructors = new List<List<string>>();
-            ConstructorInfo[] constructorInfos = type.GetConstructors(BindingFlags.Public);
+            ConstructorInfo[] constructorInfos = type.GetConstructors();
             foreach (ConstructorInfo constructorInfo in constructorInfos)
             {
                 constructors.Add(new List<string>());
 
                 foreach (ParameterInfo parameterInfo in constructorInfo.GetParameters())
                 {
-                    constructors[constructors.Count - 1].Add(parameterInfo.Name);
+                    if(parameterInfo.ParameterType != typeof(WarePublisher))
+                        constructors[constructors.Count - 1].Add(parameterInfo.Name);
                 }
             }
 
