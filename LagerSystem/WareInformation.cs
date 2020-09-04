@@ -100,5 +100,16 @@ namespace LagerSystem
             return typeString;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="ware"></param>
+        /// <returns></returns>
+        private static string FindSearchableAttributes<T>(T ware)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
