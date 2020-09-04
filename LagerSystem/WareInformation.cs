@@ -93,7 +93,6 @@ namespace LagerSystem
         /// <returns></returns>
         private static string FindTypeAttribute(Ware ware ) //could it be modified to find different Attributes?
         {
-
             string typeString = "";
             Attribute[] attributes = Attribute.GetCustomAttributes(ware.GetType());
             foreach (Attribute attr in attributes)
