@@ -24,7 +24,7 @@ namespace LagerSystem
         public static byte MenuRun(string[] options, string title = null)
         {
             byte hoveredOver = 0;
-            byte? oldHoveredOver = 0;
+            byte oldHoveredOver = 0;
             bool selected;
             Support.DeactiveCursor();
             MenuDisplay(options, hoveredOver, title);
@@ -98,27 +98,38 @@ namespace LagerSystem
         /// <param name="options"></param>
         /// <param name="oldHoveredOver"></param>
         /// <param name="currentHoveredOver"></param>
-        private static void MenuDisplayUpdater(string[] options, ref byte? oldHoveredOver, byte currentHoveredOver = 0)
+        private static void MenuDisplayUpdater(string[] options, ref byte oldHoveredOver, byte currentHoveredOver = 0)
         {
             Console.CursorTop = 1; //consider not having oldHoveredOver as a nullable byte. 
             if(oldHoveredOver != currentHoveredOver)
             {
-                byte currentLength = (byte)options[currentHoveredOver].Length;
-                Console.CursorTop = currentHoveredOver + 1;
-                Console.Write(" ".PadLeft(currentLength + 2));
-                Console.CursorLeft = 2;
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(options[currentHoveredOver]);
-
-                if(oldHoveredOver != null) { 
-                    byte oldLength = (byte)options[(byte)oldHoveredOver].Length; //consider functioning this and the above 
-                    Console.CursorTop = (byte)oldHoveredOver + 1;
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.Write(" ".PadLeft(oldLength+2));
-                    Console.CursorLeft = 1;
-                    Console.WriteLine(options[(byte)oldHoveredOver]);
-                }
+                //byte currentLength = (byte)options[currentHoveredOver].Length;
+                //Console.CursorTop = currentHoveredOver + 1;
+                //Console.Write(" ".PadLeft(currentLength + 2));
+                //Console.CursorLeft = 2;
+                //Console.ForegroundColor = ConsoleColor.Red;
+                //Console.WriteLine(options[currentHoveredOver]);
+                Paint(2, currentHoveredOver, ConsoleColor.Red, options[currentHoveredOver]);
+                Paint(1, oldHoveredOver, ConsoleColor.White, options[oldHoveredOver]);
+                //if(oldHoveredOver != null) { 
+                //    byte oldLength = (byte)options[(byte)oldHoveredOver].Length; //consider functioning this and the above 
+                //    Console.CursorTop = (byte)oldHoveredOver + 1;
+                //    Console.ForegroundColor = ConsoleColor.White;
+                //    Console.Write(" ".PadLeft(oldLength+2));
+                //    Console.CursorLeft = 1;
+                //    Console.WriteLine(options[(byte)oldHoveredOver]);
+                //}
                 oldHoveredOver = currentHoveredOver;
+            }
+
+            void Paint(byte indent, byte y, ConsoleColor colour, string text)
+            {
+                byte length = (byte)text.Length;
+                Console.CursorTop = y + 1;
+                Console.Write(" ".PadLeft(length + 2));
+                Console.ForegroundColor = colour;
+                Console.CursorLeft = indent;
+                Console.WriteLine(text);
             }
         }
 
