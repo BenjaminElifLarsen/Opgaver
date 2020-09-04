@@ -38,7 +38,6 @@ namespace LagerSystem
                 wareInformation.Add(information);
             }
             FindSearchableAttributes(typeof(CombustibleLiquid));
-            FindConstructors(typeof(CombustibleLiquid));
             return wareInformation;
         }
 
@@ -111,11 +110,13 @@ namespace LagerSystem
         /// <returns></returns>
         private static string FindSearchableAttributes(Type type)
         {
-            string typeString = "";
-            Attribute[] attributes = Attribute.GetCustomAttributes(type);
-            foreach (Attribute attre in attributes)
-                if (attre is WareSeacheableAttribute info)
-                    typeString += info.Property + " ";
+            string typeString = ""; //maybe return a dictionary for the data type of he property.
+            PropertyInfo[] propertyInfos = type.GetProperties();
+            //Attribute[] attributes = type.GetMethods();
+            foreach(PropertyInfo propertyInfo in propertyInfos)
+                foreach (Attribute attre in propertyInfo.GetCustomAttributes())
+                    if (attre is WareSeacheableAttribute info)
+                        typeString += info.Property + " ";
             return typeString;
         }
 
