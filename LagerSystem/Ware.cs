@@ -36,6 +36,7 @@ namespace LagerSystem
             warePublisher.RaiseRemoveEvent += RemoveAmountEvnetHandler;
         }
 
+        //have attributes for constructors, if Type does not contain a way to find them
         /// <summary>
         /// Default Ware consturctor with product information added.
         /// </summary>

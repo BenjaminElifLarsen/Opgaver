@@ -57,6 +57,7 @@
     <Compile Include="Support.cs" />
     <Compile Include="Visual.cs" />
     <Compile Include="Ware.cs" />
+    <Compile Include="WarePropertiesAttribute.cs" />
     <Compile Include="WareTypeAttribute.cs" />
     <Compile Include="WareCreator.cs" />
     <Compile Include="WareInformation.cs" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -104,11 +105,36 @@ namespace LagerSystem
         /// 
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="ware"></param>
+        /// <param name="type"></param>
         /// <returns></returns>
-        private static string FindSearchableAttributes<T>(T ware)
+        private static string FindSearchableAttributes(Type type)
         {
-            throw new NotImplementedException();
+            string typeString = "";
+            Attribute[] attributes = Attribute.GetCustomAttributes(type);
+            foreach (Attribute attre in attributes)
+                if (attre is WareSeacheableAttribute info)
+                    typeString += info.Property + " ";
+            return typeString;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type"></param>
+        private static void FindConstructors(Type type)
+        {
+            List<List<string>> constructors = new List<List<string>>();
+            ConstructorInfo[] constructorInfos = type.GetConstructors(BindingFlags.Public);
+            foreach (ConstructorInfo constructorInfo in constructorInfos)
+            {
+                constructors.Add(new List<string>());
+
+                foreach (ParameterInfo parameterInfo in constructorInfo.GetParameters())
+                {
+                    constructors[constructors.Count - 1].Add(parameterInfo.Name);
+                }
+            }
+
         }
 
     }
