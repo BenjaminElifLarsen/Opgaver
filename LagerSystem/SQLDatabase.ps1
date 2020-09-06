@@ -12,3 +12,4 @@ Insert Into Inventory Values
     ('ID-5q1','FOOF',10, 'Combustible Liquid')
 Go
 Quit
+exit 
