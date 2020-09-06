@@ -4,7 +4,7 @@ docker exec -it SQLStorageSystem "bash"
 Create Database StorageDB
 Go
 Use StorageDB
-Create Table Inventory (ID NVARCHAR(50), name NVARCHAR(50), amount INT, Type NVARCHAR(50))
+Create Table Inventory (ID NVARCHAR(16), name NVARCHAR(255), amount INT, Type NVARCHAR(255))
 Insert Into Inventory Values
     ('ID-55t','Test',25, 'Liquid'),
     ('ID-123q','Toaster',2, 'Electronic'),
