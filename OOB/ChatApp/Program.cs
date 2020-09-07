@@ -6,30 +6,39 @@ namespace ChatApp
     {
         static void Main(string[] args)
         {
+            SQLControl.SQLConnect();
             Run();
         }
 
         static public void Run()
         {
-            string[] options = new string[] { "Add Message", "Remove Message", "See Message(s)", "Exit" };
+            string[] options = new string[] { "Login", "Add Message","Update Message", "Remove Message", "See Message(s)", "Exit" };
             do
             {
                 byte selected = Menu.MenuRun(options);
                 switch (selected)
                 {
                     case 0:
+                        Login.RunLogin();
+                    break;
+                    
+                    case 1:
                         Message.AddMessage();
                     break;
 
-                    case 1:
-                        Message.RemoveMessage();
-                    break;
-
                     case 2:
-                        Message.SeeMessage();
+                        Message.UpdateMessage();
                     break;
 
                     case 3:
+                        Message.RemoveMessage();
+                    break;
+
+                    case 4:
+                        Message.SeeMessage();
+                    break;
+
+                    case 5:
                         Environment.Exit(0);
                     break;
                 }
