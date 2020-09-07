@@ -15,7 +15,7 @@ namespace ChatApp
             string[] options = new string[] { "Login", "Add Message","Update Message", "Remove Message", "See Message(s)", "Exit" };
             do
             {
-                byte selected = Menu.MenuRun(options);
+                byte selected = Menu.MenuRun(options, UserDirectory.GetUserName);
                 switch (selected)
                 {
                     case 0:

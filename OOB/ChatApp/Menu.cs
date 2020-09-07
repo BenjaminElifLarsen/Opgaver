@@ -20,6 +20,7 @@ namespace ChatApp
                 MenuDisplayUpdater(options, ref oldHoveredOver, hoveredOver);
             } while (!selected);
             Console.CursorVisible = true;
+            while (Console.KeyAvailable) { Console.ReadKey(true); }
             return hoveredOver;
         }
 

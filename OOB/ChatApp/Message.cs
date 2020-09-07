@@ -72,6 +72,7 @@ namespace ChatApp
                 Console.Clear();
             } while (columns == "");
             SQLControl.SQLGetMessages(columns);
+            Console.Write("Press a Key");
             Console.Read();
         }
 

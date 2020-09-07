@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TECHCOOL;
 
 namespace ChatApp
 {
@@ -13,7 +14,7 @@ namespace ChatApp
             string[] options = new string[] { "New Login", "Old Login", "Back" };
             do
             {
-                byte answer = Menu.MenuRun(options);
+                byte answer = Menu.MenuRun(options, UserDirectory.GetUserName);
                 switch (answer)
                 {
                     case 0:
@@ -21,7 +22,7 @@ namespace ChatApp
                         break;
 
                     case 1:
-                        UserDirectory.SetUserName = SetLogin();
+                        SetLogin();
                         break;
 
                     case 2:
@@ -31,7 +32,7 @@ namespace ChatApp
             } while (run);
         }
 
-        static public string SetLogin()
+        static public void SetLogin()
         {
             string username = "";
             do
@@ -39,12 +40,11 @@ namespace ChatApp
                 Console.Clear();
                 Console.WriteLine("Enter Login");
                 username = Console.ReadLine();
-                if (UserDirectory.DoesLoginExist(username))
+                if (!UserDirectory.DoesLoginExist(username))
                     UserDirectory.SetUserName = username;
                 else
                     UserDirectory.SetUserName = "Guest";
             } while (username == "");
-            throw new NotImplementedException();
         }
 
         static public string CreateLogin()
@@ -57,6 +57,7 @@ namespace ChatApp
                     Console.Clear();
                     Console.Write("Username: ");
                     username = Console.ReadLine().Trim();
+                    SQLet.Execute($"Use Chat Insert Into User_Information(UserName,UserPassword) Values('{username}','Test123.')");
                 } while (!UserDirectory.DoesLoginExist(username));
             } while (username == "");
 
