@@ -11,8 +11,8 @@ namespace LagerSystem
     {
         public static void CreateDockerDatabase()
         {
-            PowerShell ps = PowerShell.Create();
-            ps.AddScript("SQLDatabase.ps1").Invoke();
+            PowerShell ps = PowerShell.Create(); //needs to either add the database part of the script into the image as a linux bash script or make Powershell call into the SQL after creating the container and run the codes.
+            ps.AddScript("SQLDatabase.ps1").Invoke(); //also, will not need the -it 
         }
     }
 }

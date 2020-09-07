@@ -10,7 +10,7 @@ Create Database StorageDB
 Go
 
 Use StorageDB
-Create Table Inventory (ID NVARCHAR(16), name NVARCHAR(255), amount INT, Type NVARCHAR(255))
+Create Table Inventory (ID NVARCHAR(4,16) Not null Primary Key, name NVARCHAR(255) Not null , amount INT Not null , Type NVARCHAR(255) Not null )
 Insert Into Inventory Values
     ('ID-55t','Test',25, 'Liquid'),
     ('ID-123q','Toaster',2, 'Electronic'),
@@ -23,6 +23,11 @@ Create User ProgramDatabaseUser For ProgramUser
 Alter role db_datawriter Add Member ProgramDatabaseUser
 Alter role db_datareader Add Member ProgramDatabaseUser
 Go
+
+Use StorageDB
+Select * From Inventory
+Goexit
+
 
 Quit
  
