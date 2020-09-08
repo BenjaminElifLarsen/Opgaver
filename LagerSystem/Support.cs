@@ -113,7 +113,7 @@ namespace LagerSystem
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        public static int EnterAmount(string message)
+        public static int CollectValue(string message)
         {
             int value;
             string valueString;
@@ -129,7 +129,7 @@ namespace LagerSystem
         }
 
         /// <summary>
-        /// Aks the user to collect a string and returns it if it is not null or empty.
+        /// Ask the user to collect a string and returns it if it is not null or empty.
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>

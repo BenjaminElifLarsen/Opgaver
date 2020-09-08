@@ -131,7 +131,7 @@ namespace LagerSystem
         /// <returns></returns>
         private int EnterAmount(string message = "Enter Amount")
         {
-            return Support.EnterAmount(message);
+            return Support.CollectValue(message);
         }
 
         /// <summary>
