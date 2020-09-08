@@ -33,6 +33,13 @@ namespace LagerSystem
             flashPoint = null;
         }
 
+        public CombustibleLiquid(string name, string id, string information, int amount, WarePublisher warePublisher) : base(name, id, information, amount, warePublisher)
+        {
+            category = null;
+            boilingPoint = null;
+            flashPoint = null;
+        }
+
         /// <summary>
         /// Basic liquid constructor, derived from Liquid. Category and flashPoints need to be given after. 
         /// </summary>
@@ -40,10 +47,15 @@ namespace LagerSystem
         /// <param name="id"></param>
         /// <param name="amount"></param>
         /// <param name="minTemp"></param>
-        /// <param name="maxTemp"></param>
         /// <param name="boilingPoint"></param>
         /// <param name="warePublisher"></param>
         public CombustibleLiquid(string name, string id, int amount, double minTemp, float? boilingPoint, WarePublisher warePublisher) : base(name, id, amount, minTemp, boilingPoint, warePublisher)
+        {
+            category = null;
+            flashPoint = null;
+        }
+
+        public CombustibleLiquid(string name, string id, string information, int amount, double minTemp, float? boilingPoint, WarePublisher warePublisher) : base(name, id, information, amount, minTemp, boilingPoint, warePublisher)
         {
             category = null;
             flashPoint = null;
@@ -56,12 +68,17 @@ namespace LagerSystem
         /// <param name="id"></param>
         /// <param name="amount"></param>
         /// <param name="minTemp"></param>
-        /// <param name="maxTemp"></param>
         /// <param name="category"></param>
         /// <param name="boilingPoint"></param>
         /// <param name="flashPoint"></param>
         /// <param name="warePublisher"></param>
         public CombustibleLiquid(string name, string id, int amount, double minTemp, byte category, float boilingPoint, float?[] flashPoint, WarePublisher warePublisher) : base(name, id, amount, minTemp, boilingPoint, warePublisher)
+        {
+            this.category = category;
+            this.flashPoint = flashPoint;
+        }
+
+        public CombustibleLiquid(string name, string id, string information, int amount, double minTemp, byte category, float boilingPoint, float?[] flashPoint, WarePublisher warePublisher) : base(name, id, information, amount, minTemp, boilingPoint, warePublisher)
         {
             this.category = category;
             this.flashPoint = flashPoint;

@@ -12,5 +12,9 @@ namespace LagerSystem
         public Electronic(string name, string id, int amount, WarePublisher warePublisher) : base(name, id, amount, warePublisher)
         {
         }
+
+        public Electronic(string name, string id, string information, int amount, WarePublisher warePublisher) : base(name, id, information, amount, warePublisher)
+        {
+        }
     }
 }
