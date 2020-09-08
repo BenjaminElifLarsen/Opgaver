@@ -57,8 +57,10 @@ namespace ChatApp
             Console.Clear();
             Console.WriteLine("Please Enter the Password");
             string password = Console.ReadLine();
-            string[][] passwordOfUser = SQLet.GetArray($"Select UserPassword From User_Information where UserName = '{login}'");
-            if (password == passwordOfUser[0][0])
+            password = HashConverter.StringToHash(password);
+            string[][] passwordOfUser = SQLet.GetArray($"Select * From User_Information Where UserName = '{login}' And UserPassword = '{password}'");
+            
+            if (HashConverter.StringToHash(password) == passwordOfUser[0][0])
                 return true;
             return false;
         }
@@ -84,7 +86,7 @@ namespace ChatApp
                 password = Console.ReadLine().Trim();
             } while (password == "");
 
-            SQLet.Execute($"Use {SQLControl.GetDatabaseName} Insert Into User_Information(UserName,UserPassword) Values('{username}','{password}')");
+            SQLet.Execute($"Use {SQLControl.GetDatabaseName} Insert Into User_Information(UserName,UserPassword) Values('{username}','{HashConverter.StringToHash(password)}')");
 
             return username;
         }
