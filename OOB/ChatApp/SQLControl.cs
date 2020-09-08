@@ -42,7 +42,7 @@ namespace ChatApp
                          Message NVARCHAR(255) Not Null, Time NVARCHAR(255) Not Null);
 
                          Insert Into User_Information(UserName,UserPassword,Admin_level)
-                         Values('Benjamin','Test123.',9)
+                         Values('Admin','Test123.',9)
                     END
                 End
             ");
