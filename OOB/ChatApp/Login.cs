@@ -60,7 +60,7 @@ namespace ChatApp
             password = HashConverter.StringToHash(password);
             string[][] passwordOfUser = SQLet.GetArray($"Select * From User_Information Where UserName = '{login}' And UserPassword = '{password}'");
             
-            if (HashConverter.StringToHash(password) == passwordOfUser[0][0])
+            if (passwordOfUser.Length > 0)
                 return true;
             return false;
         }
