@@ -41,10 +41,26 @@ namespace ChatApp
                 Console.WriteLine("Enter Login");
                 username = Console.ReadLine();
                 if (!UserDirectory.DoesLoginExist(username))
-                    UserDirectory.SetUserName = username;
+                {
+                    if (EnterPassword(username))
+                        UserDirectory.SetUserName = username;
+                    else
+                        UserDirectory.SetUserName = "Guest";
+                }
                 else
                     UserDirectory.SetUserName = "Guest";
             } while (username == "");
+        }
+
+        static private bool EnterPassword(string login)
+        {
+            Console.Clear();
+            Console.WriteLine("Please Enter the Password");
+            string password = Console.ReadLine();
+            string[][] passwordOfUser = SQLet.GetArray($"Select UserPassword From User_Information where UserName = '{login}'");
+            if (password == passwordOfUser[0][0])
+                return true;
+            return false;
         }
 
         static public string CreateLogin()
@@ -57,9 +73,18 @@ namespace ChatApp
                     Console.Clear();
                     Console.Write("Username: ");
                     username = Console.ReadLine().Trim();
-                    SQLet.Execute($"Use Chat Insert Into User_Information(UserName,UserPassword) Values('{username}','Test123.')");
-                } while (!UserDirectory.DoesLoginExist(username));
+                    } while (!UserDirectory.DoesLoginExist(username));
             } while (username == "");
+
+            string password = "";
+            do
+            {
+                Console.Clear();
+                Console.Write("Password: ");
+                password = Console.ReadLine().Trim();
+            } while (password == "");
+
+            SQLet.Execute($"Use Chat Insert Into User_Information(UserName,UserPassword) Values('{username}','{password}')");
 
             return username;
         }
