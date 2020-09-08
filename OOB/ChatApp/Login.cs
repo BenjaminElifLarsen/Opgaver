@@ -84,7 +84,7 @@ namespace ChatApp
                 password = Console.ReadLine().Trim();
             } while (password == "");
 
-            SQLet.Execute($"Use Chat Insert Into User_Information(UserName,UserPassword) Values('{username}','{password}')");
+            SQLet.Execute($"Use {SQLControl.GetDatabaseName} Insert Into User_Information(UserName,UserPassword) Values('{username}','{password}')");
 
             return username;
         }
