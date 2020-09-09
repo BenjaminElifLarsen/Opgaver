@@ -72,10 +72,13 @@ namespace ChatApp
             {
                 do
                 {
-                    Console.Clear();
-                    Console.Write("Username: ");
-                    username = Console.ReadLine().Trim();
-                    } while (!UserDirectory.DoesLoginExist(username));
+                    do
+                    {
+                        Console.Clear();
+                        Console.Write("Username: ");
+                        username = Console.ReadLine().Trim();
+                    } while (ValidUserName(username));
+                } while (!UserDirectory.DoesLoginExist(username));
             } while (username == "");
 
             string password = "";
@@ -89,6 +92,36 @@ namespace ChatApp
             SQLet.Execute($"Use {SQLControl.GetDatabaseName} Insert Into User_Information(UserName,UserPassword) Values('{username}','{HashConverter.StringToHash(password)}')");
 
             return username;
+        }
+
+        static private bool ValidUserName(string IDToCheck)
+        {
+            if (!RegexControl.IsValidLength(IDToCheck))
+            {
+                Console.WriteLine("Invalid: Wrong Length, min = 6, max = 16");
+                return false;
+            }
+            if (!RegexControl.IsValidValues(IDToCheck))
+            {
+                Console.WriteLine("Invalid: No numbers");
+                return false;
+            }
+            if (!RegexControl.IsValidLettersLower(IDToCheck))
+            {
+                Console.WriteLine("Invalid: No lowercase letters");
+                return false;
+            }
+            if (!RegexControl.IsValidLettersUpper(IDToCheck))
+            {
+                Console.WriteLine("Invalid: No uppercase letters");
+                return false;
+            }
+            if (!RegexControl.IsValidSpecial(IDToCheck))
+            {
+                Console.WriteLine("Invalid: No special symbols: {0}", RegexControl.GetSpecialSigns);
+                return false;
+            }
+            return true;
         }
 
     }
