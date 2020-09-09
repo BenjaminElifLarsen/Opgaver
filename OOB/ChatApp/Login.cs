@@ -74,10 +74,10 @@ namespace ChatApp
                 {
                     do
                     {
-                        Console.Clear();
                         Console.Write("Username: ");
                         username = Console.ReadLine().Trim();
-                    } while (ValidUserName(username));
+                        Console.Clear();
+                    } while (!ValidUserName(username));
                 } while (!UserDirectory.DoesLoginExist(username));
             } while (username == "");
 
