@@ -105,8 +105,9 @@ namespace ChatApp
                 string[] timeParts = dateTimeParts[1].Split(':');
                 DateTime oldTime = new DateTime(int.Parse(dateParts[2]), int.Parse(dateParts[1]), int.Parse(dateParts[0]), int.Parse(timeParts[0]), int.Parse(timeParts[1]), int.Parse(timeParts[2]));
                 string time = oldTime.ToLocalTime().ToString();
-                if ((DateTime.Now - oldTime).TotalDays < 1)
-                    text[n][0] = time.Split(' ')[1];
+                int days = (int)(DateTime.Now - oldTime).TotalDays;
+                if (days > 1)
+                    text[n][0] = days + " days at " + time.Split(' ')[1];
                 else
                     text[n][0] = time;
                 //Console.WriteLine("Row {0}", pos++);
