@@ -21,6 +21,7 @@ namespace ChatApp
             } while (!selected);
             Console.CursorVisible = true;
             while (Console.KeyAvailable) { Console.ReadKey(true); }
+            Support.ClearBuffer();
             return hoveredOver;
         }
 

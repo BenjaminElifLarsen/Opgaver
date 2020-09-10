@@ -17,10 +17,7 @@ namespace ChatApp
                 message = Console.ReadLine().Trim();
             } while (message == "");
             string time = DateTime.UtcNow.ToString();
-            if(!RegexControl.ContainsDrop(message))
-                SQLControl.SQLAddMessage(message, time);
-            else
-                Support.FoundForbiddenWord();
+            SQLControl.SQLAddMessage(message.Replace('\'',' '), time);
         }
 
         static public void RemoveMessage()
@@ -63,10 +60,7 @@ namespace ChatApp
                 Console.Write("Enter Message_Information entry condition: Where ");
                 whereToUpdate = Console.ReadLine().Trim();
             } while (whereToUpdate == "");
-            if (!RegexControl.ContainsDrop(columnToUpdate) && !RegexControl.ContainsDrop(valueToUpdate) && !RegexControl.ContainsDrop(whereToUpdate))
-                SQLControl.SQLAlterMessage(columnToUpdate, valueToUpdate, whereToUpdate);
-            else
-                Support.ClearBuffer();
+                SQLControl.SQLAlterMessage(columnToUpdate.Replace('\'',' '), valueToUpdate.Replace('\'', ' '), whereToUpdate.Replace('\'', ' '));
         }
 
         static public void SeeMessage()
