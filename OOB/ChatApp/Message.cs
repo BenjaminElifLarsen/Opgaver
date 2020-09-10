@@ -57,7 +57,10 @@ namespace ChatApp
                 Console.Write("Enter Message_Information entry condition: Where ");
                 whereToUpdate = Console.ReadLine().Trim();
             } while (whereToUpdate == "");
-            SQLControl.SQLAlterMessage(columnToUpdate, valueToUpdate, whereToUpdate);
+            if (!RegexControl.ContainsDrop(columnToUpdate) && !RegexControl.ContainsDrop(valueToUpdate) && !RegexControl.ContainsDrop(whereToUpdate))
+                SQLControl.SQLAlterMessage(columnToUpdate, valueToUpdate, whereToUpdate);
+            else
+                Support.ClearBuffer();
         }
 
         static public void SeeMessage()

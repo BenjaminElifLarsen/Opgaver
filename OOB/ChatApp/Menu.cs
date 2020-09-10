@@ -34,7 +34,7 @@ namespace ChatApp
                         break;
 
                     case 3:
-                        UserDirectory.ShowUser();
+                        UserDirectory.ShowUser(9);
                         break;
 
                     case 4:
@@ -102,7 +102,7 @@ namespace ChatApp
                         break;
 
                     case 4:
-                        UserDirectory.ShowUser();
+                        UserDirectory.ShowUser(9);
                         break;
 
                     case 5:

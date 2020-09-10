@@ -17,7 +17,7 @@ namespace ChatApp
         private static Regex rgLettersUpper = new Regex("[A-Z]{1,}");
         private static Regex rgLength = new Regex("^[a-z A-Z 0-9]{4,16}$");
         private static Regex rgLengthPassword = new Regex("^[a-z A-Z 0-9" + specialSigns + "]{8,26}$");
-
+        private static Regex rgForbiddenWords = new Regex(@"\bDrop\b",RegexOptions.IgnoreCase);
         public static string GetSpecialSigns { get => specialSigns.Replace("\\", ""); }
 
         /// <summary>
@@ -73,6 +73,11 @@ namespace ChatApp
         public static bool IsValidSpecial(string text)
         {
             return rgSpeical.IsMatch(text);
+        }
+
+        public static bool ContainsDrop(string text)
+        {
+            return rgForbiddenWords.IsMatch(text);
         }
     }
 }

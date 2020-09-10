@@ -43,7 +43,7 @@ namespace ChatApp
         static public void AlterUser()
         {
             Console.Clear();
-            string[] users = SQLControl.SQLGetUsers();
+            string[] users = SQLControl.SQLGetUsers(9);
             if(users.Length != 0)
             {
                 DisplayUsers();
@@ -66,7 +66,10 @@ namespace ChatApp
 
                     case 1:
                         Console.Write("Enter New User Name: ");
-                        response = Console.ReadLine();
+                        do
+                        {
+                            response = Console.ReadLine();
+                        } while (!Login.ValidUserName(response));
                         command = "UserName";
                         sql = $"Use {SQLControl.GetDatabaseName}; Update User_Information Set {command} = '{response}' where UserName = '{username}'";
                         break;
@@ -97,7 +100,7 @@ namespace ChatApp
                 do
                 {
                     selectedName = Console.ReadLine();
-                } while (selectedName == "");
+                } while (selectedName == "" || !UserExist(selectedName));
                 return selectedName;
             }
         }
@@ -105,7 +108,7 @@ namespace ChatApp
         static public void RemoveUser()
         {
             Console.Clear();
-            string[] users = SQLControl.SQLGetUsers();
+            string[] users = SQLControl.SQLGetUsers(9);
             if(users.Length != 0)
             {
                 foreach (string user in users)
@@ -115,17 +118,17 @@ namespace ChatApp
                 do
                 {
                     username = Console.ReadLine();
-                } while (username == "");
+                } while (username == "" || !UserExist(username));
                 SQLControl.SQLRemoveUser(username);
             }
             else
                 Console.WriteLine("No Users Permitted to be showned");
         }
 
-        static public void ShowUser()
+        static public void ShowUser(int adminlevel)
         {
             Console.Clear();
-            string[] users = SQLControl.SQLGetUsers();
+            string[] users = SQLControl.SQLGetUsers(adminlevel);
             if (users.Length != 0)
             {
                 foreach (string user in users)
@@ -134,6 +137,15 @@ namespace ChatApp
             else
                 Console.WriteLine("No Users Permitted to be showned");
             Console.ReadKey();
+        }
+
+        static public bool UserExist(string username)
+        {
+            string[] users = SQLControl.SQLGetUsers(9);
+            foreach (string user in users)
+                if (user == username)
+                    return true;
+            return false;
         }
 
     }

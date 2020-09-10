@@ -131,7 +131,7 @@ namespace ChatApp
 
         }
 
-        static private bool ValidUserName(string usernameToCheck)
+        static public bool ValidUserName(string usernameToCheck)
         {
             if (!RegexControl.IsValidLength(usernameToCheck))
             {
@@ -167,13 +167,13 @@ namespace ChatApp
                     }
                 }
                 else
-                if(Console.CursorLeft != 0)
-                {
-                    Console.CursorLeft = Console.CursorLeft - 1;
-                    Console.Write(' ');
-                    Console.CursorLeft = Console.CursorLeft - 1;
-                    text.RemoveAt(text.Count - 1);
-                }
+                    if(Console.CursorLeft != 0)
+                    {
+                        Console.CursorLeft -= 1;
+                        Console.Write(' ');
+                        Console.CursorLeft -= 1;
+                        text.RemoveAt(text.Count - 1);
+                    }
             } while (key.Key != ConsoleKey.Enter);
 
             return new string(text.ToArray()) ;

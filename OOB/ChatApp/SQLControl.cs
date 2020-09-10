@@ -52,9 +52,9 @@ namespace ChatApp
             ");
         }
 
-        public static string[] SQLGetUsers()
+        public static string[] SQLGetUsers(int adminLevel)
         {
-            string[][] array = SQLet.GetArray($"Use {GetDatabaseName}; Select UserName From User_Information Where Admin_Level != 9 Or Admin_level IS Null"); 
+            string[][] array = SQLet.GetArray($"Use {GetDatabaseName}; Select UserName From User_Information Where Admin_Level < {adminLevel} Or Admin_level IS Null"); 
             string[] usernames = new string[array.GetLength(0)];
             for (int n = 0; n < usernames.Length; n++)
                 usernames[n] = array[n][0];
