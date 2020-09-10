@@ -19,6 +19,7 @@ namespace ChatApp
         private static Regex rgLengthPassword = new Regex("[a-z A-Z 0-9" + specialSigns + "]{8,26}");
         private static Regex rgForbiddenWords = new Regex(@"\bDrop\b",RegexOptions.IgnoreCase);
         private static Regex rgForbiddenSigns = new Regex("[^a-z ^A-Z ^0-9 ^" + specialSigns + "]{1,}");
+        private static Regex rgSingleQuote = new Regex("[\' ]{2,}");
         public static string GetSpecialSigns { get => specialSigns.Replace("\\", ""); }
 
         /// <summary>
@@ -99,6 +100,16 @@ namespace ChatApp
         public static bool ContainsForbiddenSigns(string text)
         {
             return rgForbiddenSigns.IsMatch(text);
+        }
+
+        /// <summary>
+        /// Uses Regex to check if <paramref name="text"/> contains two or more single quotes. 
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static bool ContainsSingleQuouteMark(string text)
+        {
+            return rgSingleQuote.IsMatch(text);
         }
     }
 }

@@ -23,6 +23,11 @@ namespace ChatApp
             //bool test3 = RegexControl.ContainsForbiddenSigns("ø");
             //bool test4 = RegexControl.ContainsForbiddenSigns("123 ø ");
             //bool test5 = RegexControl.ContainsForbiddenSigns(" Æble ");
+            bool test1 = RegexControl.ContainsSingleQuouteMark("\'");
+            bool test2 = RegexControl.ContainsSingleQuouteMark("\' \'");
+            bool test3 = RegexControl.ContainsSingleQuouteMark("\'\'");
+            bool test4 = RegexControl.ContainsSingleQuouteMark("d \' d \' d");
+            bool test5 = RegexControl.ContainsSingleQuouteMark("\' \' \'");
 
             Menu.MainMenu();
         }
