@@ -57,8 +57,8 @@ namespace ChatApp
             string password = "";
             Console.Clear();
             Console.WriteLine("Please Enter the Password");
-            password = Console.ReadLine();
-            
+            password = HiddenText();
+
             password = HashConverter.StringToHash(password);
             string[][] passwordOfUser = SQLet.GetArray($"Use {SQLControl.GetDatabaseName}; Select * From User_Information Where UserName = '{login}' And UserPassword = '{password}'");
             
@@ -90,7 +90,7 @@ namespace ChatApp
                 do
                 {
                     Console.WriteLine("Please Enter the Password");
-                    password = Console.ReadLine();
+                    password = HiddenText();
                     Console.Clear();
                 } while (!ValidPassword(password));
             } while (password == "");
@@ -149,6 +149,32 @@ namespace ChatApp
                 return false;
             }
             return true;
+        }
+
+        public static string HiddenText()
+        {
+            List<char> text = new List<char>(); ;
+            ConsoleKeyInfo key;
+            do
+            {
+                key = Console.ReadKey(true);
+                if (key.Key != ConsoleKey.Backspace)
+                {
+                    Console.Write('*');
+                    if (key.Key != ConsoleKey.Enter)
+                        text.Add(key.KeyChar);
+                }
+                else
+                if(Console.CursorLeft != 0)
+                {
+                    Console.CursorLeft = Console.CursorLeft - 1;
+                    Console.Write(' ');
+                    Console.CursorLeft = Console.CursorLeft - 1;
+                    text.RemoveAt(text.Count - 1);
+                }
+            } while (key.Key != ConsoleKey.Enter);
+
+            return new string(text.ToArray()) ;
         }
 
     }

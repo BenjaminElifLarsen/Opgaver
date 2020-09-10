@@ -73,7 +73,7 @@ namespace ChatApp
 
                     case 2:
                         Console.Write("Enter New Password: ");
-                        response = Console.ReadLine();
+                        response = Login.HiddenText();
                         command = "UserPassword";
                         sql = $"Use {SQLControl.GetDatabaseName}; Update User_Information Set {command} = '{HashConverter.StringToHash(response)}' where UserName = '{username}'";
                         break;
