@@ -17,10 +17,11 @@ namespace ChatApp
         private static Regex rgLettersUpper = new Regex("[A-Z]{1,}");
         private static Regex rgLength = new Regex("[a-z A-Z 0-9]{4,16}");
         private static Regex rgLengthPassword = new Regex("[a-z A-Z 0-9" + specialSigns + "]{8,26}");
-        private static Regex rgForbiddenWords = new Regex(@"\bDrop\b",RegexOptions.IgnoreCase);
+        private static Regex rgForbiddenWords = new Regex(@"\bDrop|Alter|Add|Remove\b",RegexOptions.IgnoreCase);
         private static Regex rgForbiddenSigns = new Regex("[^a-z ^A-Z ^0-9 ^" + specialSigns + "]{1,}");
         private static Regex rgSingleQuote = new Regex("[\' ]{2,}");
         public static string GetSpecialSigns { get => specialSigns.Replace("\\", ""); }
+        public static string GetForbiddenWords { get => rgForbiddenWords.ToString().Replace(@"\b", "").Replace("|",", "); }
 
         /// <summary>
         /// Uses Regex to ensure <paramref name="text"/> is of a specific length of valid signs.
@@ -87,7 +88,7 @@ namespace ChatApp
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static bool ContainsDrop(string text)
+        public static bool ContainsForbiddenWords(string text)
         {
             return rgForbiddenWords.IsMatch(text);
         }

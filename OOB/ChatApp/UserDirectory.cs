@@ -21,7 +21,7 @@ namespace ChatApp
 
         static public bool DoesLoginExist(string login) //should check the database and find the different usernames
         {
-            if (!RegexControl.ContainsDrop(login))
+            if (!RegexControl.ContainsForbiddenWords(login))
             {
                 Result result = SQLet.GetResult($"Use {SQLControl.GetDatabaseName}; Select Distinct UserName From User_Information");
                 for (int i = 0; i < result.Count; i++)
@@ -88,7 +88,7 @@ namespace ChatApp
                         sql = $"Use {SQLControl.GetDatabaseName}; Update User_Information Set {command} = '{HashConverter.StringToHash(response)}' where UserName = '{username}'";
                         break;
                 }
-                if(!RegexControl.ContainsDrop(sql))
+                if(!RegexControl.ContainsForbiddenWords(sql))
                     SQLControl.SQLAlterUser(sql);
                 else
                     Support.FoundForbiddenWord();

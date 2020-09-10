@@ -30,7 +30,7 @@ namespace ChatApp
                 Console.Write("Enter Message_Information entry condition: Where ");
                 toRemove = Console.ReadLine().Trim();
             } while (toRemove == "");
-            if (!RegexControl.ContainsDrop(toRemove))
+            if (!RegexControl.ContainsForbiddenWords(toRemove))
                 SQLControl.SQLRemoveMessage(toRemove);
             else
                 Support.FoundForbiddenWord();
