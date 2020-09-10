@@ -122,7 +122,11 @@ namespace ChatApp
             if(users.Length != 0)
             {
                 foreach (string user in users)
+                {
                     Console.Write(user + '\t');
+                    if (Console.CursorLeft >= Console.WindowWidth - 10)
+                        Console.SetCursorPosition(0, Console.CursorTop++);
+                }
                 Console.Write(Environment.NewLine + "Enter Username: ");
                 string username = "";
                 do

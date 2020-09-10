@@ -63,7 +63,7 @@ namespace ChatApp
 
         public static void SQLRemoveUser(string username)
         {
-            string sql = $"Use {GetDatabaseName}; Delete from User_Information where UserName = {username}";
+            string sql = $"Use {GetDatabaseName}; Delete from User_Information where UserName = '{username}'";
             Thread SQLTread = new Thread(ThreadedControl);
             SQLTread.Start(sql);
         }
