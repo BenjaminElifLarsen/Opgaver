@@ -160,9 +160,11 @@ namespace ChatApp
                 key = Console.ReadKey(true);
                 if (key.Key != ConsoleKey.Backspace)
                 {
-                    Console.Write('*');
                     if (key.Key != ConsoleKey.Enter)
+                    {
                         text.Add(key.KeyChar);
+                        Console.Write('*');
+                    }
                 }
                 else
                 if(Console.CursorLeft != 0)
