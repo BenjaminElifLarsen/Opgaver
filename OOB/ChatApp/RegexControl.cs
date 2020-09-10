@@ -91,6 +91,11 @@ namespace ChatApp
             return rgForbiddenWords.IsMatch(text);
         }
 
+        /// <summary>
+        /// Uses Regex to check if <paramref name="text"/> contains one or more forbidden signs 
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public static bool ContainsForbiddenSigns(string text)
         {
             return rgForbiddenSigns.IsMatch(text);
