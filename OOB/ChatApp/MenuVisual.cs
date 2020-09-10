@@ -17,7 +17,7 @@ namespace ChatApp
             do
             {
                 hoveredOver = MenuSelection(out selected, options.Length, hoveredOver);
-                MenuDisplayUpdater(options, ref oldHoveredOver, hoveredOver);
+                MenuDisplay(options, ref oldHoveredOver, hoveredOver);
             } while (!selected);
             Console.CursorVisible = true;
             while (Console.KeyAvailable) { Console.ReadKey(true); }
@@ -67,7 +67,7 @@ namespace ChatApp
                 }
         }
 
-        private static void MenuDisplayUpdater(string[] options, ref byte oldHoveredOver, byte currentHoveredOver = 0)
+        private static void MenuDisplay(string[] options, ref byte oldHoveredOver, byte currentHoveredOver = 0)
         {
             Console.CursorTop = 1;
             if (oldHoveredOver != currentHoveredOver)

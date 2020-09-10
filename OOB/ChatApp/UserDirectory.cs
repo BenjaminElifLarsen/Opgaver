@@ -146,7 +146,10 @@ namespace ChatApp
             if (users.Length != 0)
             {
                 foreach (string user in users)
-                    Console.Write(user + '\t');
+                {
+                    if (Console.CursorLeft >= Console.WindowWidth - 10)
+                        Console.SetCursorPosition(0, Console.CursorTop++);
+                }
             }
             else
                 Console.WriteLine("No Users Permitted to be showned");
