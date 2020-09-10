@@ -15,9 +15,10 @@ namespace ChatApp
         private static Regex rgValues = new Regex("[0-9]{1,}");
         private static Regex rgLettersLower = new Regex("[a-z]{1,}");
         private static Regex rgLettersUpper = new Regex("[A-Z]{1,}");
-        private static Regex rgLength = new Regex("^[a-z A-Z 0-9]{4,16}$");
-        private static Regex rgLengthPassword = new Regex("^[a-z A-Z 0-9" + specialSigns + "]{8,26}$");
+        private static Regex rgLength = new Regex("[a-z A-Z 0-9]{4,16}");
+        private static Regex rgLengthPassword = new Regex("[a-z A-Z 0-9" + specialSigns + "]{8,26}");
         private static Regex rgForbiddenWords = new Regex(@"\bDrop\b",RegexOptions.IgnoreCase);
+        private static Regex rgForbiddenSigns = new Regex("[^a-z ^A-Z ^0-9 ^" + specialSigns + "]{1,}");
         public static string GetSpecialSigns { get => specialSigns.Replace("\\", ""); }
 
         /// <summary>
@@ -30,6 +31,11 @@ namespace ChatApp
             return rgLength.IsMatch(text);
         }
 
+        /// <summary>
+        /// Uses Regex to ensure <paramref name="text"/> is of a specific length of valid signs. Used for passwords. 
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public static bool IsValidPasswordLength(string text)
         {
             return rgLengthPassword.IsMatch(text);
@@ -75,9 +81,19 @@ namespace ChatApp
             return rgSpeical.IsMatch(text);
         }
 
+        /// <summary>
+        /// Uses Regex to check if <paramref name="text"/> contains one or more forbidden words. 
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public static bool ContainsDrop(string text)
         {
             return rgForbiddenWords.IsMatch(text);
+        }
+
+        public static bool ContainsForbiddenSigns(string text)
+        {
+            return rgForbiddenSigns.IsMatch(text);
         }
     }
 }

@@ -18,6 +18,11 @@ namespace ChatApp
             //bool test3 = RegexControl.ContainsDrop("drop");
             //bool test4 = RegexControl.ContainsDrop("Drop Table");
             //bool test5 = RegexControl.ContainsDrop("where Username = 5; Drop Database");
+            //bool test1 = RegexControl.ContainsForbiddenSigns(".,");
+            //bool test2 = RegexControl.ContainsForbiddenSigns("123");
+            //bool test3 = RegexControl.ContainsForbiddenSigns("ø");
+            //bool test4 = RegexControl.ContainsForbiddenSigns("123 ø ");
+            //bool test5 = RegexControl.ContainsForbiddenSigns(" Æble ");
 
             Menu.MainMenu();
         }

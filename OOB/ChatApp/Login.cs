@@ -127,6 +127,11 @@ namespace ChatApp
                 Console.WriteLine("Invalid: No special symbols: {0}", RegexControl.GetSpecialSigns);
                 return false;
             }
+            if (RegexControl.ContainsForbiddenSigns(passwordToCheck))
+            {
+                Console.WriteLine("Invalid: Use of non-permitted signs");
+                return false;
+            }
             return true;
 
         }
@@ -146,6 +151,11 @@ namespace ChatApp
             if (!RegexControl.IsValidLettersUpper(usernameToCheck))
             {
                 Console.WriteLine("Invalid: No uppercase letters");
+                return false;
+            }
+            if (RegexControl.ContainsForbiddenSigns(usernameToCheck))
+            {
+                Console.WriteLine("Invalid: Use of non-permitted signs");
                 return false;
             }
             return true;
