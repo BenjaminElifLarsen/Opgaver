@@ -15,18 +15,16 @@ namespace ChatApp
             SQLet.ConnectSqlServer(database, "BENJAMIN-ELIF-L\\MSSQLSERVER02");
         }
 
-
-
         public static void SQLCreateDatabase()
         {
-            //    SQLet.Execute($@"
-            //        If Not Exists(Select 1 From sys.databases Where name = '{GetDatabaseName}')
-            //        Begin 
-            //            Create Database {GetDatabaseName};
-            //        End
-            //    ");
-            string databaseCreationSQL = String.Format(@"If Not Exists(Select 1 From sys.databases Where name = '{0}') Begin Create Database {0}; End", GetDatabaseName);
-            SQLet.Execute(databaseCreationSQL);
+            SQLet.Execute($@"
+                    If Not Exists(Select 1 From sys.databases Where name = '{GetDatabaseName}')
+                    Begin 
+                        Create Database {GetDatabaseName};
+                    End
+                ");
+            //string databaseCreationSQL = String.Format(@"If Not Exists(Select 1 From sys.databases Where name = '{0}') Begin Create Database {0}; End", GetDatabaseName);
+            //SQLet.Execute(databaseCreationSQL);
 
             string password = HashConverter.StringToHash("admin");
             SQLet.Execute($@"
@@ -56,7 +54,7 @@ namespace ChatApp
 
         public static string[] SQLGetUsers()
         {
-            string[][] array = SQLet.GetArray($"Use {GetDatabaseName}; Select UserName From User_Information");
+            string[][] array = SQLet.GetArray($"Use {GetDatabaseName}; Select UserName From User_Information Where Admin_level Is Null"); 
             string[] usernames = new string[array.GetLength(0)];
             for (int n = 0; n < usernames.Length; n++)
                 usernames[n] = array[n][0];
@@ -104,6 +102,7 @@ namespace ChatApp
                 Console.Write(Environment.NewLine);
             }
         }
+
         public static void SQLRemoveMessage(string data)
         {
             string sql = $"Use {GetDatabaseName}; Delete from Message_Information where {data}";

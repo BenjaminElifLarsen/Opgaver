@@ -10,8 +10,7 @@ namespace ChatApp
     {
         static private Dictionary<string, User> users = new Dictionary<string, User>();
         static private string loggedInUser;
-        static private int loggedInID; 
-        
+
         static public string GetUserName { get => loggedInUser; }
         static public string SetUserName { set => loggedInUser = value; }
         static public int GetUserID { get => FindID(loggedInUser); }
@@ -45,72 +44,97 @@ namespace ChatApp
         {
             Console.Clear();
             string[] users = SQLControl.SQLGetUsers();
-            foreach (string user in users)
-                Console.Write(user + '\t');
-            Console.Write(Environment.NewLine + "Enter Username: ");
-            string username = "";
-            do
+            if(users.Length != 0)
             {
-                username = Console.ReadLine();
+                DisplayUsers();
+                string username = SelectUser();
 
+                string[] options = new string[] { "Admin Level", "User name", "Password" };
+                byte answer = Menu.MenuRun(options);
+                string response = "";
+                string command = "";
+                Console.Clear();
+                string sql = "";
+                switch (answer)
+                {
+                    case 0:
+                        Console.Write("Enter Admin Level: ");
+                        response = Console.ReadLine();
+                        command = "Admin_level";
+                        sql = $"Update User_Information Set {command} = {response} where UserName = '{username}'";
+                        break;
 
-            } while (username == "");
-            string[] options = new string[] {"Admin Level", "User name", "Password" };
-            byte answer = Menu.MenuRun(options);
-            string response = "";
-            string command = "";
-            Console.Clear();
-            string sql = "";
-            switch (answer)
-            {
-                case 0:
-                    Console.Write("Enter Admin Level: ");
-                    response = Console.ReadLine();
-                    command = "Admin_level";
-                    sql = $"Update User_Information Set {command} = {response} where UserName = '{username}'";
-                    break;
+                    case 1:
+                        Console.Write("Enter New User Name: ");
+                        response = Console.ReadLine();
+                        command = "UserName";
+                        sql = $"Update User_Information Set {command} = '{response}' where UserName = '{username}'";
+                        break;
 
-                case 1:
-                    Console.Write("Enter New User Name: ");
-                    response = Console.ReadLine();
-                    command = "UserName";
-                    sql = $"Update User_Information Set {command} = '{response}' where UserName = '{username}'";
-                    break;
+                    case 2:
+                        Console.WriteLine("Enter New Password: ");
+                        response = Console.ReadLine();
+                        command = "UserPassword";
+                        sql = $"Update User_Information Set {command} = '{HashConverter.StringToHash(response)}' where UserName = '{username}'";
+                        break;
+                }
+                //Debug.WriteLine(sql);
+                SQLControl.SQLAlterUser(sql);
 
-                case 2:
-                    Console.WriteLine("Enter New Password: ");
-                    response = Console.ReadLine();
-                    command = "UserPassword";
-                    sql = $"Update User_Information Set {command} = '{HashConverter.StringToHash(response)}' where UserName = '{username}'";
-                    break;
             }
-            //Debug.WriteLine(sql);
-            SQLControl.SQLAlterUser(sql);
+            else
+                Console.WriteLine("No Users Permitted to be showned");
+
+            void DisplayUsers()
+            {
+
+                foreach (string user in users)
+                    Console.Write(user + '\t');
+                Console.Write(Environment.NewLine + "Enter Username: ");
+            }
+
+            string SelectUser()
+            {
+                string selectedName = "";
+                do
+                {
+                    selectedName = Console.ReadLine();
+                } while (selectedName == "");
+                return selectedName;
+            }
         }
 
         static public void RemoveUser()
         {
             Console.Clear();
             string[] users = SQLControl.SQLGetUsers();
-            foreach (string user in users)
-                Console.Write(user + '\t');
-            Console.Write(Environment.NewLine + "Enter Username: ");
-            string username = "";
-            do
+            if(users.Length != 0)
             {
-                username = Console.ReadLine();
-
-
-            } while (username == "");
-            SQLControl.SQLRemoveUser(username);
+                foreach (string user in users)
+                    Console.Write(user + '\t');
+                Console.Write(Environment.NewLine + "Enter Username: ");
+                string username = "";
+                do
+                {
+                    username = Console.ReadLine();
+                } while (username == "");
+                SQLControl.SQLRemoveUser(username);
+            }
+            else
+                Console.WriteLine("No Users Permitted to be showned");
         }
 
         static public void ShowUser()
         {
             Console.Clear();
             string[] users = SQLControl.SQLGetUsers();
-            foreach (string user in users)
-                Console.Write(user + '\t');
+            if (users.Length != 0)
+            {
+                foreach (string user in users)
+                    Console.Write(user + '\t');
+            }
+            else
+                Console.WriteLine("No Users Permitted to be showned");
             Console.ReadKey();
         }
 
