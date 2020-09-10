@@ -14,7 +14,7 @@ namespace ChatApp
             string[] options = new string[] { "New Login", "Old Login", "Back" };
             do
             {
-                byte answer = Menu.MenuRun(options, UserDirectory.GetUserName);
+                byte answer = MenuVisual.MenuRun(options, UserDirectory.GetUserName);
                 switch (answer)
                 {
                     case 0:
@@ -60,7 +60,7 @@ namespace ChatApp
             password = Console.ReadLine();
             
             password = HashConverter.StringToHash(password);
-            string[][] passwordOfUser = SQLet.GetArray($"Select * From User_Information Where UserName = '{login}' And UserPassword = '{password}'");
+            string[][] passwordOfUser = SQLet.GetArray($"Use {SQLControl.GetDatabaseName}; Select * From User_Information Where UserName = '{login}' And UserPassword = '{password}'");
             
             if (passwordOfUser.Length > 0)
                 return true;
@@ -95,7 +95,7 @@ namespace ChatApp
                 } while (!ValidPassword(password));
             } while (password == "");
 
-            SQLet.Execute($"Use {SQLControl.GetDatabaseName} Insert Into User_Information(UserName,UserPassword) Values('{username}','{HashConverter.StringToHash(password)}')");
+            SQLet.Execute($"Use {SQLControl.GetDatabaseName}; Insert Into User_Information(UserName,UserPassword) Values('{username}','{HashConverter.StringToHash(password)}')");
 
             return username;
         }

@@ -63,15 +63,16 @@ namespace ChatApp
         static public void SeeMessage()
         {
             Console.Clear();
-            string columns = "";
-            do
-            {
-                Console.Clear();
-                Console.Write("Enter Columns ");
-                columns = Console.ReadLine().Trim();
-                Console.Clear();
-            } while (columns == "");
-            SQLControl.SQLGetMessages(columns);
+            //string columns = "";
+            //do
+            //{
+            //    Console.Clear();
+            //    Console.Write("Enter Columns ");
+            //    columns = Console.ReadLine().Trim();
+            //    Console.Clear();
+            //} while (columns == "");
+            //SQLControl.SQLGetMessages(columns);
+            SQLControl.SQLGetMessages();
             Console.Write("Press a Key");
             Console.Read();
         }

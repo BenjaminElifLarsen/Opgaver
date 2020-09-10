@@ -21,7 +21,7 @@ namespace ChatApp
 
         static public bool DoesLoginExist(string login) //should check the database and find the different usernames
         {
-            Result result = SQLet.GetResult($"Select Distinct UserName From User_Information");
+            Result result = SQLet.GetResult($"Use {SQLControl.GetDatabaseName}; Select Distinct UserName From User_Information");
             for (int i = 0; i < result.Count; i++)
             {
                 if(login == result[i]["UserName"])
@@ -34,7 +34,7 @@ namespace ChatApp
         {
             if(GetUserName != "Guest")
             { 
-                string[][] IDs = SQLet.GetArray($"Select UserID From User_Information where UserName = '{login}'");
+                string[][] IDs = SQLet.GetArray($"Use {SQLControl.GetDatabaseName}; Select UserID From User_Information where UserName = '{login}'");
                 return int.Parse(IDs[0][0]);
             }
             return 0;
@@ -50,7 +50,7 @@ namespace ChatApp
                 string username = SelectUser();
 
                 string[] options = new string[] { "Admin Level", "User name", "Password" };
-                byte answer = Menu.MenuRun(options);
+                byte answer = MenuVisual.MenuRun(options);
                 string response = "";
                 string command = "";
                 Console.Clear();
@@ -61,24 +61,23 @@ namespace ChatApp
                         Console.Write("Enter Admin Level: ");
                         response = Console.ReadLine();
                         command = "Admin_level";
-                        sql = $"Update User_Information Set {command} = {response} where UserName = '{username}'";
+                        sql = $"Use {SQLControl.GetDatabaseName}; Update User_Information Set {command} = {response} where UserName = '{username}'";
                         break;
 
                     case 1:
                         Console.Write("Enter New User Name: ");
                         response = Console.ReadLine();
                         command = "UserName";
-                        sql = $"Update User_Information Set {command} = '{response}' where UserName = '{username}'";
+                        sql = $"Use {SQLControl.GetDatabaseName}; Update User_Information Set {command} = '{response}' where UserName = '{username}'";
                         break;
 
                     case 2:
-                        Console.WriteLine("Enter New Password: ");
+                        Console.Write("Enter New Password: ");
                         response = Console.ReadLine();
                         command = "UserPassword";
-                        sql = $"Update User_Information Set {command} = '{HashConverter.StringToHash(response)}' where UserName = '{username}'";
+                        sql = $"Use {SQLControl.GetDatabaseName}; Update User_Information Set {command} = '{HashConverter.StringToHash(response)}' where UserName = '{username}'";
                         break;
                 }
-                //Debug.WriteLine(sql);
                 SQLControl.SQLAlterUser(sql);
 
             }
@@ -87,7 +86,6 @@ namespace ChatApp
 
             void DisplayUsers()
             {
-
                 foreach (string user in users)
                     Console.Write(user + '\t');
                 Console.Write(Environment.NewLine + "Enter Username: ");

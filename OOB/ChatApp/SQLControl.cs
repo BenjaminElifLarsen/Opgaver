@@ -54,7 +54,7 @@ namespace ChatApp
 
         public static string[] SQLGetUsers()
         {
-            string[][] array = SQLet.GetArray($"Use {GetDatabaseName}; Select UserName From User_Information Where Admin_level Is Null"); 
+            string[][] array = SQLet.GetArray($"Use {GetDatabaseName}; Select UserName From User_Information Where Admin_Level != 9 Or Admin_level IS Null"); 
             string[] usernames = new string[array.GetLength(0)];
             for (int n = 0; n < usernames.Length; n++)
                 usernames[n] = array[n][0];
@@ -81,6 +81,12 @@ namespace ChatApp
             SQLTread.Start(sql);
         }
 
+        public static void SQLGetMessages()
+        {
+            string[][] result = SQLet.GetArray($"Use {GetDatabaseName}; Select Time, UserName, Message From Message_Information inner join User_Information on User_Information.UserID = Message_Information.UserID;");
+            DisplaySelect(result, "|Time | User | Message |");
+        }
+
         public static void SQLGetMessages(string column)
         {
             string[][] result = SQLet.GetArray($"Use {GetDatabaseName}; Select {column} From Message_Information");
@@ -91,11 +97,21 @@ namespace ChatApp
         {
             //int pos = 1;
             Console.WriteLine(message);
-            foreach (string[] stringArray in text)
+
+            for(int n = 0; n < text.Length; n++)
             {
+                string[] dateTimeParts = text[n][0].Split(' ');
+                string[] dateParts = dateTimeParts[0].Split('-');
+                string[] timeParts = dateTimeParts[1].Split(':');
+                DateTime oldTime = new DateTime(int.Parse(dateParts[2]), int.Parse(dateParts[1]), int.Parse(dateParts[0]), int.Parse(timeParts[0]), int.Parse(timeParts[1]), int.Parse(timeParts[2]));
+                string time = oldTime.ToLocalTime().ToString();
+                if (oldTime.Date == DateTime.Now.Date)
+                    text[n][0] = time.Split(' ')[1];
+                else
+                    text[n][0] = time;
                 //Console.WriteLine("Row {0}", pos++);
                 Console.Write("| ");
-                foreach (string str in stringArray)
+                foreach (string str in text[n])
                 {
                     Console.Write(str + " | ");
                 }
@@ -112,14 +128,32 @@ namespace ChatApp
 
         public static void SQLAlterMessage(string column, string value, string condition)
         {
-            string sql = $"Use {GetDatabaseName}; Update Message_Information Set {column} = {value} where {condition}";
-            Thread SQLTread = new Thread(ThreadedControl);
-            SQLTread.Start(sql);
+            try 
+            { 
+                string sql = $"Use {GetDatabaseName}; Update Message_Information Set {column} = {value} where {condition}";
+                Thread SQLTread = new Thread(ThreadedControl);
+                SQLTread.Start(sql);
+            }
+            catch (Microsoft.Data.SqlClient.SqlException e)
+            {
+                Console.WriteLine(e);
+                Console.ReadKey();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+                Console.Read();
+            }
         }
 
         private static void ThreadedControl(object sql)
         {
             SQLet.Execute((string)sql);
+        }
+
+        public static string[][] GetUserInformation(string username, string info)
+        {
+            return SQLet.GetArray($"Use {GetDatabaseName}; Select {info} from User_Information where UserName = {username};");
         }
     }
 }
