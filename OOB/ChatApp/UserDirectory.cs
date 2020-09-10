@@ -147,6 +147,7 @@ namespace ChatApp
             {
                 foreach (string user in users)
                 {
+                    Console.WriteLine(user);
                     if (Console.CursorLeft >= Console.WindowWidth - 10)
                         Console.SetCursorPosition(0, Console.CursorTop++);
                 }
