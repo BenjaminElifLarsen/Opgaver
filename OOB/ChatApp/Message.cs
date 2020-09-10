@@ -48,6 +48,8 @@ namespace ChatApp
                 Console.Write("Enter Message_Information entry condition: Column = ");
                 columnToUpdate = Console.ReadLine().Trim();
             } while (columnToUpdate == "");
+            if (RegexControl.ContainsSingleQuouteMark(columnToUpdate))
+                columnToUpdate = Support.SanitiseSingleQuotes(columnToUpdate);
             string valueToUpdate = "";
             do
             {
@@ -55,6 +57,8 @@ namespace ChatApp
                 Console.Write("Enter Message_Information entry condition: New Value = ");
                 valueToUpdate = Console.ReadLine().Trim();
             } while (valueToUpdate == "");
+            if (RegexControl.ContainsSingleQuouteMark(valueToUpdate))
+                valueToUpdate = Support.SanitiseSingleQuotes(valueToUpdate);
             string whereToUpdate = "";
             do
             {
@@ -62,7 +66,9 @@ namespace ChatApp
                 Console.Write("Enter Message_Information entry condition: Where ");
                 whereToUpdate = Console.ReadLine().Trim();
             } while (whereToUpdate == "");
-                SQLControl.SQLAlterMessage(columnToUpdate.Replace('\'',' '), valueToUpdate.Replace('\'', ' '), whereToUpdate.Replace('\'', ' '));
+            if (RegexControl.ContainsSingleQuouteMark(whereToUpdate))
+                whereToUpdate = Support.SanitiseSingleQuotes(whereToUpdate);
+            SQLControl.SQLAlterMessage(columnToUpdate, valueToUpdate, whereToUpdate);
         }
 
         static public void SeeMessage()
