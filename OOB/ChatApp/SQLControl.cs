@@ -86,7 +86,7 @@ namespace ChatApp
 
         static void DisplaySelect(string[][] text, string message)
         {
-            int pos = 1;
+            //int pos = 1;
             Console.WriteLine(message);
             foreach (string[] stringArray in text)
             {

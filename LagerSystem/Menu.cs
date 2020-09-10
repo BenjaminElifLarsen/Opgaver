@@ -125,7 +125,7 @@ namespace LagerSystem
         /// <returns></returns>
         private int CollectAmount() //WareCreator.EnterAmount does what this should do, so consider moving the code of that function into a Support function and then call that function from here and WareCreator.EnterAmount
         {
-            return Support.EnterAmount("Enter Amount");
+            return Support.CollectValue("Enter Amount");
         }
 
         /// <summary>
