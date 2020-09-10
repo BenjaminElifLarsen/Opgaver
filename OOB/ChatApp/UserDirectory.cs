@@ -19,10 +19,8 @@ namespace ChatApp
             loggedInUser = "Guest";
         }
 
-        static public bool DoesLoginExist(string login) //should check the database and find the different usernames
+        static public bool DoesLoginExist(string login)
         {
-            if (!RegexControl.ContainsForbiddenWords(login))
-            {
                 Result result = SQLet.GetResult($"Use {SQLControl.GetDatabaseName}; Select Distinct UserName From User_Information");
                 for (int i = 0; i < result.Count; i++)
                 {
@@ -30,10 +28,6 @@ namespace ChatApp
                         return false;
                 }
                 return true;
-            }
-            else
-                Support.FoundForbiddenWord();
-            return false;
         }
 
         static private int FindID(string login)

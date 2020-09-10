@@ -20,7 +20,7 @@ namespace ChatApp
                 Console.ReadKey(true);
         }
 
-        public static string SanitiseSingleQuoutes(string text)
+        public static string SanitiseSingleQuotes(string text)
         {
             List<char> sanitised = new List<char>();
             foreach(char chr in text)
@@ -28,7 +28,6 @@ namespace ChatApp
                 sanitised.Add(chr);
                 if(chr == '\'')
                 {
-                    sanitised.Add('\'');
                     sanitised.Add('\'');
                 }
             }

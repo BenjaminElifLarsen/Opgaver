@@ -17,7 +17,9 @@ namespace ChatApp
                 message = Console.ReadLine().Trim();
             } while (message == "");
             string time = DateTime.UtcNow.ToString();
-            SQLControl.SQLAddMessage(message.Replace('\'',' '), time);
+            if (RegexControl.ContainsSingleQuouteMark(message))
+                message = Support.SanitiseSingleQuotes(message);
+            SQLControl.SQLAddMessage(message, time);
         }
 
         static public void RemoveMessage()

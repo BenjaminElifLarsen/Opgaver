@@ -95,9 +95,7 @@ namespace ChatApp
                 } while (!ValidPassword(password));
             } while (password == "");
             if (RegexControl.ContainsForbiddenWords(username))
-            {
-                //find the 's and add '' around each them 
-            }
+                Support.SanitiseSingleQuotes(username);
 
             SQLet.Execute($"Use {SQLControl.GetDatabaseName}; Insert Into User_Information(UserName,UserPassword) Values('{username}','{HashConverter.StringToHash(password)}')");
 

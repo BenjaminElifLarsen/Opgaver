@@ -19,7 +19,7 @@ namespace ChatApp
         private static Regex rgLengthPassword = new Regex("[a-z A-Z 0-9" + specialSigns + "]{8,26}");
         private static Regex rgForbiddenWords = new Regex(@"\bDrop|Alter|Add|Remove\b",RegexOptions.IgnoreCase);
         private static Regex rgForbiddenSigns = new Regex("[^a-z ^A-Z ^0-9 ^" + specialSigns + "]{1,}");
-        private static Regex rgSingleQuote = new Regex("[\' ]{2,}");
+        private static Regex rgSingleQuote = new Regex("[']{1,}");
         public static string GetSpecialSigns { get => specialSigns.Replace("\\", ""); }
         public static string GetForbiddenWords { get => rgForbiddenWords.ToString().Replace(@"\b", "").Replace("|",", "); }
 
