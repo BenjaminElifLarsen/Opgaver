@@ -6,7 +6,7 @@ namespace ChatApp
     {
         static void Main(string[] args)
         {
-            SQLControl.SQLConnect();
+            SQLControl.SQLConnect("master");
             SQLControl.SQLCreateDatabase();
             Run();
         }

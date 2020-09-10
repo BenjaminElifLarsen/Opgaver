@@ -54,9 +54,11 @@ namespace ChatApp
 
         static private bool EnterPassword(string login)
         {
+            string password = "";
             Console.Clear();
             Console.WriteLine("Please Enter the Password");
-            string password = Console.ReadLine();
+            password = Console.ReadLine();
+            
             password = HashConverter.StringToHash(password);
             string[][] passwordOfUser = SQLet.GetArray($"Select * From User_Information Where UserName = '{login}' And UserPassword = '{password}'");
             
@@ -67,6 +69,7 @@ namespace ChatApp
 
         static public string CreateLogin()
         {
+            Console.Clear();
             string username = "";
             do
             {
@@ -80,13 +83,16 @@ namespace ChatApp
                     } while (!ValidUserName(username));
                 } while (!UserDirectory.DoesLoginExist(username));
             } while (username == "");
-
+            Console.Clear();
             string password = "";
             do
             {
-                Console.Clear();
-                Console.Write("Password: ");
-                password = Console.ReadLine().Trim();
+                do
+                {
+                    Console.WriteLine("Please Enter the Password");
+                    password = Console.ReadLine();
+                    Console.Clear();
+                } while (!ValidPassword(password));
             } while (password == "");
 
             SQLet.Execute($"Use {SQLControl.GetDatabaseName} Insert Into User_Information(UserName,UserPassword) Values('{username}','{HashConverter.StringToHash(password)}')");
@@ -94,31 +100,52 @@ namespace ChatApp
             return username;
         }
 
-        static private bool ValidUserName(string IDToCheck)
+        static private bool ValidPassword(string passwordToCheck)
         {
-            if (!RegexControl.IsValidLength(IDToCheck))
+            if (!RegexControl.IsValidPasswordLength(passwordToCheck))
             {
-                Console.WriteLine("Invalid: Wrong Length, min = 6, max = 16");
+                Console.WriteLine("Invalid: Wrong Length, min = 8, max = 26");
                 return false;
             }
-            if (!RegexControl.IsValidValues(IDToCheck))
+            if (!RegexControl.IsValidValues(passwordToCheck))
             {
                 Console.WriteLine("Invalid: No numbers");
                 return false;
             }
-            if (!RegexControl.IsValidLettersLower(IDToCheck))
+            if (!RegexControl.IsValidLettersLower(passwordToCheck))
             {
                 Console.WriteLine("Invalid: No lowercase letters");
                 return false;
             }
-            if (!RegexControl.IsValidLettersUpper(IDToCheck))
+            if (!RegexControl.IsValidLettersUpper(passwordToCheck))
             {
                 Console.WriteLine("Invalid: No uppercase letters");
                 return false;
             }
-            if (!RegexControl.IsValidSpecial(IDToCheck))
+            if (!RegexControl.IsValidSpecial(passwordToCheck))
             {
                 Console.WriteLine("Invalid: No special symbols: {0}", RegexControl.GetSpecialSigns);
+                return false;
+            }
+            return true;
+
+        }
+
+        static private bool ValidUserName(string usernameToCheck)
+        {
+            if (!RegexControl.IsValidLength(usernameToCheck))
+            {
+                Console.WriteLine("Invalid: Wrong Length, min = 4, max = 16");
+                return false;
+            }
+            if (!RegexControl.IsValidLettersLower(usernameToCheck))
+            {
+                Console.WriteLine("Invalid: No lowercase letters");
+                return false;
+            }
+            if (!RegexControl.IsValidLettersUpper(usernameToCheck))
+            {
+                Console.WriteLine("Invalid: No uppercase letters");
                 return false;
             }
             return true;

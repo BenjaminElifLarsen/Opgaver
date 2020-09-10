@@ -81,11 +81,10 @@ namespace ChatApp
                     Console.WriteLine("Enter New Password: ");
                     response = Console.ReadLine();
                     command = "UserPassword";
-                    sql = $"Update User_Information Set {command} = '{response}' where UserName = '{username}'";
+                    sql = $"Update User_Information Set {command} = '{HashConverter.StringToHash(response)}' where UserName = '{username}'";
                     break;
             }
-            
-            Debug.WriteLine(sql);
+            //Debug.WriteLine(sql);
             SQLControl.SQLAlterUser(sql);
         }
 
