@@ -17,7 +17,10 @@ namespace ChatApp
                 message = Console.ReadLine().Trim();
             } while (message == "");
             string time = DateTime.UtcNow.ToString();
-            SQLControl.SQLAddMessage(message, time);
+            if(!RegexControl.ContainsDrop(message))
+                SQLControl.SQLAddMessage(message, time);
+            else
+                Support.FoundForbiddenWord();
         }
 
         static public void RemoveMessage()
@@ -30,7 +33,10 @@ namespace ChatApp
                 Console.Write("Enter Message_Information entry condition: Where ");
                 toRemove = Console.ReadLine().Trim();
             } while (toRemove == "");
-            SQLControl.SQLRemoveMessage(toRemove);
+            if (!RegexControl.ContainsDrop(toRemove))
+                SQLControl.SQLRemoveMessage(toRemove);
+            else
+                Support.FoundForbiddenWord();
         }
 
         static public void UpdateMessage()
