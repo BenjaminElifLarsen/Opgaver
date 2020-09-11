@@ -10,9 +10,9 @@ namespace ChatApp
     {
         public static string GetDatabaseName { get => "ChatTest"; }
 
-        public static void SQLConnect(string database)
+        public static void SQLConnect(string database, string servername = "BENJAMIN-ELIF-L\\MSSQLSERVER02")
         {
-            SQLet.ConnectSqlServer(database, "BENJAMIN-ELIF-L\\MSSQLSERVER02");
+            SQLet.ConnectSqlServer(database, servername,"SA","Password123.");
         }
 
         public static void SQLCreateDatabase()
@@ -100,7 +100,7 @@ namespace ChatApp
 
             for(int n = 0; n < text.Length; n++)
             {
-                string[] dateTimeParts = text[n][0].Split(' ');
+                string[] dateTimeParts = text[n][0].Split(' '); //needs to ensure the familiy is the same 
                 string[] dateParts = dateTimeParts[0].Split('-');
                 string[] timeParts = dateTimeParts[1].Split(':');
                 DateTime oldTime = new DateTime(int.Parse(dateParts[2]), int.Parse(dateParts[1]), int.Parse(dateParts[0]), int.Parse(timeParts[0]), int.Parse(timeParts[1]), int.Parse(timeParts[2]));
