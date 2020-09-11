@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Src": {
+      "commandName": "Project",
+      "workingDirectory": "C:\\Users\\frank\\Documents\\GitRepro\\Teaching\\Misc\\Docker\\Ubuntu\\DotNetCore\\Src"
+    }
+  }
+}
