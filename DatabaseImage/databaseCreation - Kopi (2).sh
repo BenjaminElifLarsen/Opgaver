@@ -1,5 +1,5 @@
 ﻿#!/bin/bash
-/opt/mssql-tools/bin/sqlcmd -S localhost,1433 -U SA -P "Password123."
+/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "Password123."
 Create Database StorageDB
 Go
 Use StorageDB

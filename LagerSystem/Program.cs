@@ -20,6 +20,7 @@ namespace LagerSystem
     {
         static void Main(string[] args) //needs a system to ensure all IDs are unique
         {
+            //DatabaseCreation.CreateDockerDatabase(); //needs to inform the user that they will need to run the powershell script before running the program if they want to use the SQL database
             Menu menu = new Menu();
             WareInformation.AddWareDefault();
             Input.RunInputThread();
