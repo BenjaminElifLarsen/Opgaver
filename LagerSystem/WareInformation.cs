@@ -125,7 +125,7 @@ namespace LagerSystem
         /// 
         /// </summary>
         /// <param name="type">The type to find all constructors of.</param>
-        private static void FindConstructors(Type type)
+        public static List<List<string>> FindConstructors(Type type)
         {
             List<List<string>> constructors = new List<List<string>>();
             ConstructorInfo[] constructorInfos = type.GetConstructors();
@@ -139,7 +139,7 @@ namespace LagerSystem
                         constructors[constructors.Count - 1].Add(parameterInfo.Name);
                 }
             }
-
+            return constructors;
         }
 
     }

@@ -67,6 +67,20 @@ namespace LagerSystem
                             if (goBack)//(they can select a specific constructor and then fill out the specific parameters that are extra). 
                             {
                                 WareInformation.AddWare(name,ID,type,(int)amount);
+                                if (type.Split(' ').Length != 1) //move into a function since it so far is needed two places
+                                {
+                                    string[] split = type.Split(' ');
+                                    type = "";
+                                    foreach (string typing in split)
+                                        type += typing;
+                                }
+                                if(ConstructorsExist(Type.GetType("LagerSystem." + type)))
+                                    if(ExtraConstructorMenu())
+                                    {
+
+                                    }
+                                    else
+                                        WareInformation.AddWare(name, ID, type, (int)amount);
                             }
                         }
                         break;
@@ -81,6 +95,20 @@ namespace LagerSystem
 
             RemoveFromSubscription(warePublisher);
         }
+
+        private bool ExtraConstructorMenu()
+        {
+            string title = "Do you want to add more information?";
+            string[] options = new string[] {"Yes","No" };
+            byte answer = Visual.MenuRun(options, title);
+        }
+
+        private bool ConstructorsExist(Type type)
+        {
+            return WareInformation.FindConstructors(type).Count > 1;
+            throw new NotImplementedException();
+        }
+
 
         /// <summary>
         /// Checks if any of the parameters are void and prints out information about which are void. Returns false if no information is missing.
