@@ -19,5 +19,9 @@ namespace ChatApp
             this.userID = userID;
         }
 
+        public string UserName { get => userName; }
+        public int UserID { get => userID; }
+
+
     }
 }

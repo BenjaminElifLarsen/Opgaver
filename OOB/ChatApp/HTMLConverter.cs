@@ -8,10 +8,16 @@ namespace ChatApp
     {
 
 
-        public string StringMessageToHTMLMessage(string[] message) //Time, UserName, Message
+        public static string StringMessageToHTMLMessage(Message message) //Time, UserName, Message
         {
-            return $"<div class=\"messageRow\"><p><p class=\"{message[0]}\">10:11 <span class=\"username\">{message[1]}: </p></span><span class=\"message\">{message[2]}</span></p></div>";
+            return String.Format(@"<div class=""messageRow""><p><p class=""messageTime"">{0} <span class=""username"">{1}</span></p><p><span class=""message"">{2}</span></p></div>",message.TimeSincePost,message.UserName,message.Text);
         }
+
+        public static string UsernameToHTMLUsername(User user)
+        {
+            return $"<li>{user.UserName}</li>";
+        }
+
 
     }
 }

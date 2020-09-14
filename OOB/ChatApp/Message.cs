@@ -5,91 +5,80 @@ using System.Text;
 
 namespace ChatApp
 {
-    static class Message
+    class Message
     {
-        static public void AddMessage()
+        public int? MessageID { get; set; }
+        public int UserID { get; set; }
+        public string Text { get; set; }
+        public string UserName { get; set; }
+        public DateTime Time { get; set; }
+        public string TimeSincePost { get; set; }
+        
+        public Message(string text, int userID)
         {
-            Console.Clear();
-
-            string message = "";
-            do
-            {
-                Console.Clear();
-                message = Console.ReadLine().Trim();
-            } while (message == "");
-            string time = DateTime.UtcNow.ToString(new CultureInfo("da-DK"));
-            if (RegexControl.ContainsSingleQuouteMark(message))
-                message = Support.SanitiseSingleQuotes(message);
-            SQLControl.SQLAddMessage(message, time);
+            UserID = userID;
+            Text = text;
         }
 
-        static public void RemoveMessage()
+        public Message(string username, string text, string time)
         {
-            Console.Clear();
-            string toRemove = "";
-            do
-            {
-                Console.Clear();
-                Console.Write("Enter Message_Information entry condition: Where ");
-                toRemove = Console.ReadLine().Trim();
-            } while (toRemove == "");
-            if (!RegexControl.ContainsForbiddenWords(toRemove))
-                SQLControl.SQLRemoveMessage(toRemove);
-            else
-                Support.FoundForbiddenWord();
+            UserName = username;
+            Text = text;
+            Time = TimeConverter(time);
+        }
+        public Message(string text, int messageID, int userID)
+        {
+            Text = text;
+            Time = DateTime.Now;
+            MessageID = messageID;
+            UserID = userID;
         }
 
-        static public void UpdateMessage()
+        public Message(string username, string text, int messageID, int userID)
         {
-            Console.Clear();
-            string columnToUpdate = "";
-            do
-            {
-                Console.Clear();
-                Console.Write("Enter Message_Information entry condition: Column = ");
-                columnToUpdate = Console.ReadLine().Trim();
-            } while (columnToUpdate == "");
-            if (RegexControl.ContainsSingleQuouteMark(columnToUpdate))
-                columnToUpdate = Support.SanitiseSingleQuotes(columnToUpdate);
-            string valueToUpdate = "";
-            do
-            {
-                Console.Clear();
-                Console.Write("Enter Message_Information entry condition: New Value = ");
-                valueToUpdate = Console.ReadLine().Trim();
-            } while (valueToUpdate == "");
-            if (RegexControl.ContainsSingleQuouteMark(valueToUpdate))
-                valueToUpdate = Support.SanitiseSingleQuotes(valueToUpdate);
-            string whereToUpdate = "";
-            do
-            {
-                Console.Clear();
-                Console.Write("Enter Message_Information entry condition: Where ");
-                whereToUpdate = Console.ReadLine().Trim();
-            } while (whereToUpdate == "");
-            if (RegexControl.ContainsSingleQuouteMark(whereToUpdate))
-                whereToUpdate = Support.SanitiseSingleQuotes(whereToUpdate);
-            SQLControl.SQLAlterMessage(columnToUpdate, valueToUpdate, whereToUpdate);
+            UserName = username;
+            Text = text;
+            Time = DateTime.Now;
+            MessageID = messageID;
+            UserID = userID;
+        }
+        
+        public Message(string username, string text, string time, int messageID)
+        {
+            UserName = username;
+            Text = text;
+            Time = TimeConverter(time);
+            MessageID = messageID;
         }
 
-        static public void SeeMessage()
+        public Message(string username, string text, string time, int messageID, int userID)
         {
-            Console.Clear();
-            //string columns = "";
-            //do
-            //{
-            //    Console.Clear();
-            //    Console.Write("Enter Columns ");
-            //    columns = Console.ReadLine().Trim();
-            //    Console.Clear();
-            //} while (columns == "");
-            //SQLControl.SQLGetMessages(columns);
-            SQLControl.SQLGetMessages();
-            Console.Write("Press a Key");
-            Console.Read();
+            UserName = username;
+            Text = text;
+            Time = TimeConverter(time);
+            MessageID = messageID;
+            UserID = userID;
         }
+
+        private DateTime TimeConverter(string text)
+        {
+            string[] dateTimeParts = text.Split(' ');
+            string[] dateParts = dateTimeParts[0].Split('-');
+            string[] timeParts = dateTimeParts[1].Split(':');
+            return new DateTime(int.Parse(dateParts[2]), int.Parse(dateParts[1]), int.Parse(dateParts[0]), int.Parse(timeParts[0]), int.Parse(timeParts[1]), int.Parse(timeParts[2])).ToLocalTime();
+        }
+
+        public void Insert()
+        {
+            SQLControl.SQLAddMessage(Text, Time.ToUniversalTime().ToString(new CultureInfo("da-DK")));
+        }
+
+        public void Delete()
+        {
+            SQLControl.SQLRemoveMessage($"Message = '{Text}'");
+        }
+
+
 
     }
-
-
 }

@@ -8,7 +8,7 @@ namespace ChatApp
     {
         public static void MainMenu()
         {
-            string[] options = new string[] { "Login", "Public Control", "Admin Control", "Show Users", "Exit" };
+            string[] options = new string[] { "Login", "Public Control", "Admin Control", "Show Users", "Exit", "Test" };
             do
             {
                 byte selected = MenuVisual.MenuRun(options, UserDirectory.GetUserName);
@@ -40,6 +40,10 @@ namespace ChatApp
                     case 4:
                         Environment.Exit(0);
                         break;
+
+                    case 5:
+                        Web.GetHTMLMessages(SQLControl.SQLGetMessages());
+                        break;
                 }
             } while (true);
         } 
@@ -56,7 +60,7 @@ namespace ChatApp
                     
                     case 0:
                         if (GotPermission(UserDirectory.GetUserName, null))
-                            Message.AddMessage();
+                            Messages.AddMessage();
                         else
                         {
                             Console.Clear();
@@ -66,7 +70,7 @@ namespace ChatApp
                         break;
 
                     case 1:
-                        Message.SeeMessage();
+                        Messages.SeeMessage();
                         break;
 
                     case 2:
@@ -86,11 +90,11 @@ namespace ChatApp
                 switch (selected)
                 {
                     case 0:
-                        Message.UpdateMessage();
+                        Messages.UpdateMessage();
                         break;
 
                     case 1:
-                        Message.RemoveMessage();
+                        Messages.RemoveMessage();
                         break;
 
                     case 2:

@@ -8,7 +8,7 @@ namespace ChatApp
 {
     static class UserDirectory
     {
-        static private Dictionary<string, User> users = new Dictionary<string, User>();
+        //static private Dictionary<string, User> users = new Dictionary<string, User>();
         static private string loggedInUser;
 
         static public string GetUserName { get => loggedInUser; }

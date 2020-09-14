@@ -22,7 +22,7 @@ namespace ChatApp
                     selected = options[answer];
                 }
                 SQLControl.SQLConnect("master", selected, windowLogin);
-            }while (SQLControl.SQLCreateDatabase());
+            }while (!SQLControl.SQLCreateDatabase());
             Run();
         }
 

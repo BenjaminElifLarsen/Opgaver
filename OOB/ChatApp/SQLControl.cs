@@ -84,6 +84,15 @@ namespace ChatApp
             return usernames;
         }
 
+        public static List<User> SQLGetUsers()
+        {
+            string[][] array = SQLet.GetArray($"Use {GetDatabaseName}; Select UserName, UserID From User_Information Where Admin_Level < {9} Or Admin_level IS Null");
+            List<User> usernames = new List<User>();
+            foreach (string[] strings in array)
+                usernames.Add(new User(strings[0], int.Parse(strings[1])));
+            return usernames;
+        }
+
         public static void SQLRemoveUser(string username)
         {
             string sql = $"Use {GetDatabaseName}; Delete from User_Information where UserName = '{username}'";
@@ -104,32 +113,28 @@ namespace ChatApp
             SQLTread.Start(sql);
         }
 
-        public static void SQLGetMessages()
+        public static void SQLGetMessagesAndDisplay() //change at some point
         {
             string[][] result = SQLet.GetArray($"Use {GetDatabaseName}; Select Time, UserName, Message From Message_Information inner join User_Information on User_Information.UserID = Message_Information.UserID;");
-            DisplaySelect(result, "|Time | User | Message |");
+            Support.DisplaySelect(result, "|Time | User | Message |");
+        }
+
+        public static List<Message> SQLGetMessages()
+        {
+            string[][] messagesString = SQLet.GetArray($"Use {GetDatabaseName}; Select Time, UserName, Message, MessageID, Message_Information.UserID From Message_Information inner join User_Information on User_Information.UserID = Message_Information.UserID;"); ;
+            List<Message> messageList = new List<Message>();
+            foreach (string[] message in messagesString)
+                messageList.Add(new Message(message[1], message[2], message[0], int.Parse(message[3]),int.Parse(message[4])));
+
+            return messageList;//SQLet.GetArray($"Use {GetDatabaseName}; Select Time, UserName, Message From Message_Information inner join User_Information on User_Information.UserID = Message_Information.UserID;");
         }
 
         public static void SQLGetMessages(string column)
         {
             string[][] result = SQLet.GetArray($"Use {GetDatabaseName}; Select {column} From Message_Information");
-            DisplaySelect(result, column);
+            Support.DisplaySelect(result, column);
         }
 
-        static void DisplaySelect(string[][] text, string message)
-        {
-            //int pos = 1;
-            Console.WriteLine(message);
-            text = Support.MessagePrepare(text);
-            for(int n = 0; n < text.Length; n++)
-            {
-                foreach (string str in text[n])
-                {
-                    Console.Write(str + " | ");
-                }
-                Console.Write(Environment.NewLine);
-            }
-        }
 
         public static void SQLRemoveMessage(string data)
         {
