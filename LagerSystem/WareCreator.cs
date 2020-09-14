@@ -77,7 +77,7 @@ namespace LagerSystem
                                 if(ConstructorsExist(Type.GetType("LagerSystem." + type)))
                                     if(ExtraConstructorMenu())
                                     {
-
+                                        SelectedConsturctor(Type.GetType("LagerSystem." + type));
                                     }
                                     else
                                         WareInformation.AddWare(name, ID, type, (int)amount);
@@ -94,6 +94,28 @@ namespace LagerSystem
             } while (!goBack);
 
             RemoveFromSubscription(warePublisher);
+        }
+
+
+        private object SelectedConsturctor(Type type)
+        {
+            List<List<string>> consturctors = WareInformation.FindConstructors(type);
+            List<string> existAlready = new List<string>() {"name","amount","id" };
+            Console.Clear();
+            Console.WriteLine("Enter number to select information amount"); //need to remove variables that has already been entered
+            for (int n = 0; n < consturctors.Count; n++)
+            {
+                Console.Write(n + ": ");
+                for (int m = 0; m < consturctors[n].Count; m++)
+                {
+                    if(!existAlready.Contains(consturctors[n][m]))
+                    Console.Write(consturctors[n][m] + " ");
+                }
+                Console.WriteLine();
+
+            }
+
+            throw new NotImplementedException();
         }
 
         private bool ExtraConstructorMenu()
