@@ -10,10 +10,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="index.html">
+    <None Update="HTML\indexBase.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="style.css">
+    <None Update="HTML\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="HTML\style.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

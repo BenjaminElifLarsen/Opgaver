@@ -70,6 +70,8 @@ namespace ChatApp
 
         public void Insert()
         {
+            if (RegexControl.ContainsSingleQuouteMark(Text))
+                Text = Support.SanitiseSingleQuotes(Text);
             SQLControl.SQLAddMessage(Text, Time.ToUniversalTime().ToString(new CultureInfo("da-DK")));
         }
 

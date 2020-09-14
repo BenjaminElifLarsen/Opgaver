@@ -71,7 +71,7 @@ namespace ChatApp
 
             for (int n = 0; n < text.Count; n++)
             {
-                string[] dateTimeParts = text[0].Time.ToString().Split(' ');
+                string[] dateTimeParts = text[n].Time.ToString().Split(' ');
                 string[] dateParts = dateTimeParts[0].Split('-');
                 string[] timeParts = dateTimeParts[1].Split(':');
                 DateTime oldTime = new DateTime(int.Parse(dateParts[2]), int.Parse(dateParts[1]), int.Parse(dateParts[0]), int.Parse(timeParts[0]), int.Parse(timeParts[1]), int.Parse(timeParts[2])).ToLocalTime();

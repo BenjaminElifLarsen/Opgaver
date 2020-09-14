@@ -42,7 +42,7 @@ namespace ChatApp
                         break;
 
                     case 5:
-                        Web.GetHTMLMessages(SQLControl.SQLGetMessages());
+                        Webpage.GetHTMLMessages(SQLControl.SQLGetMessages());
                         break;
                 }
             } while (true);
