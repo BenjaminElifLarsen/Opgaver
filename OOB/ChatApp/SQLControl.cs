@@ -10,9 +10,13 @@ namespace ChatApp
     {
         public static string GetDatabaseName { get => "ChatTest"; }
 
-        public static void SQLConnect(string database, string servername = "BENJAMIN-ELIF-L\\MSSQLSERVER02")
+        public static void SQLConnect(string database, string servername = "BENJAMIN-ELIF-L\\MSSQLSERVER02", bool windowLogin = true)
         {
-            SQLet.ConnectSqlServer(database, servername,"SA","Password123.");
+            if(windowLogin)
+                SQLet.ConnectSqlServer(database, servername);
+            else
+                SQLet.ConnectSqlServer(database, servername,"SA","Password123.");
+
         }
 
         public static void SQLCreateDatabase()

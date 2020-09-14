@@ -6,7 +6,20 @@ namespace ChatApp
     {
         static void Main(string[] args)
         {
-            SQLControl.SQLConnect("master","localHost,1433");
+            string[] options = new string[] { "BENJAMIN-ELIF-L\\MSSQLSERVER02", "localHost,1433", "Write Self" };
+            byte answer = MenuVisual.MenuRun(options);
+            string selected;
+            bool windowLogin = false;
+            Console.Clear();
+            if (answer == 2)
+                selected = Console.ReadLine();
+            else
+            {
+                if (answer == 0)
+                    windowLogin = true;
+                selected = options[answer];
+            }
+            SQLControl.SQLConnect("master", selected, windowLogin);
             SQLControl.SQLCreateDatabase();
             Run();
         }
