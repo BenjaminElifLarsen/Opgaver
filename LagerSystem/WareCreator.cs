@@ -101,6 +101,7 @@ namespace LagerSystem
             string title = "Do you want to add more information?";
             string[] options = new string[] {"Yes","No" };
             byte answer = Visual.MenuRun(options, title);
+            return answer == 0;
         }
 
         private bool ConstructorsExist(Type type)
