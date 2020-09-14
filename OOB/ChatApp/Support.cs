@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace ChatApp
@@ -33,6 +34,36 @@ namespace ChatApp
             }
 
             return new string(sanitised.ToArray());
+        }
+
+
+        public static string[][] MessagePrepare(string[][] text)
+        {
+
+            for (int n = 0; n < text.Length; n++)
+            {
+                string[] dateTimeParts = text[n][0].Split(' ');
+                string[] dateParts = dateTimeParts[0].Split('-');
+                string[] timeParts = dateTimeParts[1].Split(':');
+                DateTime oldTime = new DateTime(int.Parse(dateParts[2]), int.Parse(dateParts[1]), int.Parse(dateParts[0]), int.Parse(timeParts[0]), int.Parse(timeParts[1]), int.Parse(timeParts[2])).ToLocalTime();
+                string time = oldTime.ToLocalTime().ToString();
+                float days = (float)(DateTime.Now - oldTime).TotalDays;
+                if (days > 1)
+                {
+                    string[] dayParts = days.ToString(new CultureInfo("da-DK")).Split(',');
+                    string daysShort;
+                    string shortDay = dayParts[0] + "," + dayParts[1][0];
+                    if (float.Parse(shortDay) - (int)days != 0)
+                        daysShort = dayParts[0] + "." + dayParts[1][0];
+                    else
+                        daysShort = dayParts[0];
+                    text[n][0] = daysShort + " days at " + time.Split(' ')[1];
+                }
+                else
+                    text[n][0] = time;
+                //Console.WriteLine("Row {0}", pos++);
+            }
+            return text;
         }
     }
 }
