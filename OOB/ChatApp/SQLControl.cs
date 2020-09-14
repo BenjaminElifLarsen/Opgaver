@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Text;
 using System.Threading;
 using TECHCOOL;
@@ -19,41 +21,51 @@ namespace ChatApp
 
         }
 
-        public static void SQLCreateDatabase() //can encounter the exception of connection force closed by the host of the connection
+        public static bool SQLCreateDatabase() //can encounter the exception of connection force closed by the host of the connection
         {
-            SQLet.Execute($@"
-                    If Not Exists(Select 1 From sys.databases Where name = '{GetDatabaseName}')
-                    Begin 
-                        Create Database {GetDatabaseName};
+            try { 
+                SQLet.Execute($@"
+                        If Not Exists(Select 1 From sys.databases Where name = '{GetDatabaseName}')
+                        Begin 
+                            Create Database {GetDatabaseName};
+                        End
+                    ");
+                //string databaseCreationSQL = String.Format(@"If Not Exists(Select 1 From sys.databases Where name = '{0}') Begin Create Database {0}; End", GetDatabaseName);
+                //SQLet.Execute(databaseCreationSQL);
+
+                string password = HashConverter.StringToHash("admin");
+                SQLet.Execute($@"
+                    If Exists(Select 1 From sys.databases Where name = '{GetDatabaseName}')
+                    Begin
+                        Use {GetDatabaseName}
+                        iF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES Where Table_Type='BASE Table' And Table_Name='User_Information')
+                        Begin
+                            Create Table User_Information
+                            (UserID Int Not Null Primary Key Identity(1,1), 
+                             UserName NVARCHAR(16) Not Null Unique,
+                             UserPassword NVARCHAR(256) Not null, Admin_level Int null);
+                        End
+                        iF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES Where Table_Type='BASE Table' And Table_Name='Message_Information')
+                        BEGIN
+                             Create Table Message_Information
+                            (MessageID Int Not Null Primary Key IDENTITY(1,1), 
+                             UserID Int Not Null Constraint FK_userID_message FOREIGN KEY REFERENCES User_Information(UserID) On Delete Cascade On Update Cascade,
+                             Message NVARCHAR(255) Not Null, Time NVARCHAR(255) Not Null);
+
+                             Insert Into User_Information(UserName,UserPassword,Admin_level)
+                             Values('Admin','{password}',9)
+                        END
                     End
                 ");
-            //string databaseCreationSQL = String.Format(@"If Not Exists(Select 1 From sys.databases Where name = '{0}') Begin Create Database {0}; End", GetDatabaseName);
-            //SQLet.Execute(databaseCreationSQL);
-
-            string password = HashConverter.StringToHash("admin");
-            SQLet.Execute($@"
-                If Exists(Select 1 From sys.databases Where name = '{GetDatabaseName}')
-                Begin
-                    Use {GetDatabaseName}
-                    iF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES Where Table_Type='BASE Table' And Table_Name='User_Information')
-                    Begin
-                        Create Table User_Information
-                        (UserID Int Not Null Primary Key Identity(1,1), 
-                         UserName NVARCHAR(16) Not Null Unique,
-                         UserPassword NVARCHAR(256) Not null, Admin_level Int null);
-                    End
-                    iF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES Where Table_Type='BASE Table' And Table_Name='Message_Information')
-                    BEGIN
-                         Create Table Message_Information
-                        (MessageID Int Not Null Primary Key IDENTITY(1,1), 
-                         UserID Int Not Null Constraint FK_userID_message FOREIGN KEY REFERENCES User_Information(UserID) On Delete Cascade On Update Cascade,
-                         Message NVARCHAR(255) Not Null, Time NVARCHAR(255) Not Null);
-
-                         Insert Into User_Information(UserName,UserPassword,Admin_level)
-                         Values('Admin','{password}',9)
-                    END
-                End
-            ");
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Could not establish connection to the database, please retry.");
+                Debug.WriteLine(e);
+                Console.ReadKey();
+                return false;
+            }
         }
 
         public static string[] SQLGetUsers(int adminLevel)
@@ -104,14 +116,23 @@ namespace ChatApp
 
             for(int n = 0; n < text.Length; n++)
             {
-                string[] dateTimeParts = text[n][0].Split(' '); //needs to ensure the familiy is the same 
+                string[] dateTimeParts = text[n][0].Split(' '); 
                 string[] dateParts = dateTimeParts[0].Split('-');
                 string[] timeParts = dateTimeParts[1].Split(':');
-                DateTime oldTime = new DateTime(int.Parse(dateParts[2]), int.Parse(dateParts[1]), int.Parse(dateParts[0]), int.Parse(timeParts[0]), int.Parse(timeParts[1]), int.Parse(timeParts[2]));
+                DateTime oldTime = new DateTime(int.Parse(dateParts[2]), int.Parse(dateParts[1]), int.Parse(dateParts[0]), int.Parse(timeParts[0]), int.Parse(timeParts[1]), int.Parse(timeParts[2])).ToLocalTime();
                 string time = oldTime.ToLocalTime().ToString();
-                int days = (int)(DateTime.Now - oldTime).TotalDays;
+                float days = (float)(DateTime.Now - oldTime).TotalDays;
                 if (days > 1)
-                    text[n][0] = days + " days at " + time.Split(' ')[1];
+                {
+                    string[] dayParts = days.ToString(new CultureInfo("da-DK")).Split(',');
+                    string daysShort;
+                    string shortDay = dayParts[0] + "," + dayParts[1][0];
+                    if (float.Parse(shortDay) - (int)days != 0)
+                        daysShort = dayParts[0] + "." + dayParts[1][0];
+                    else
+                        daysShort = dayParts[0];
+                    text[n][0] = daysShort + " days at " + time.Split(' ')[1];
+                }
                 else
                     text[n][0] = time;
                 //Console.WriteLine("Row {0}", pos++);
