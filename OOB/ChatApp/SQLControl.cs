@@ -19,7 +19,7 @@ namespace ChatApp
 
         }
 
-        public static void SQLCreateDatabase()
+        public static void SQLCreateDatabase() //can encounter the exception of connection force closed by the host of the connection
         {
             SQLet.Execute($@"
                     If Not Exists(Select 1 From sys.databases Where name = '{GetDatabaseName}')
