@@ -142,5 +142,11 @@ namespace LagerSystem
             return constructors;
         }
 
+        public static Dictionary<string,Type> FindConstructorParameters(Type type, string[] extraParameters)
+        {
+            return null;
+            throw new NotImplementedException();
+        }
+
     }
 }

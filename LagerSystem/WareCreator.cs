@@ -77,7 +77,8 @@ namespace LagerSystem
                                 if(ConstructorsExist(Type.GetType("LagerSystem." + type)))
                                     if(ExtraConstructorMenu())
                                     {
-                                        SelectedConsturctor(Type.GetType("LagerSystem." + type));
+                                        string extraParameters = SelectConsturctor(Type.GetType("LagerSystem." + type));
+                                        ArquiringInformation(Type.GetType("LagerSystem." + type), extraParameters);
                                     }
                                     else
                                         WareInformation.AddWare(name, ID, type, (int)amount);
@@ -97,7 +98,7 @@ namespace LagerSystem
         }
 
 
-        private object SelectedConsturctor(Type type)
+        private string SelectConsturctor(Type type)
         {
             List<List<string>> ctorsFromClass = WareInformation.FindConstructors(type);
             List<string> baseCtorVariables = new List<string>() {"name","amount","id" };
@@ -119,11 +120,11 @@ namespace LagerSystem
             }
             tempCtors.RemoveAll(IsEmpty);
             ctorArray = tempCtors.ToArray();
-            Visual.MenuRun(ctorArray, "Test"); //<- move this into its own function
-            var test = EnterExtraInformation<string>("Information");
-            var test2 = EnterExtraInformation<Int32>("Amount");
-            var test3 = EnterExtraInformation<Int32?>("Amount");
-            throw new NotImplementedException();
+            return tempCtors[Visual.MenuRun(ctorArray, "Test")]; //<- move this into its own function
+            //var test = EnterExtraInformation<string>("Information");
+            //var test2 = EnterExtraInformation<Int32>("Amount");
+            //var test3 = EnterExtraInformation<Int32?>("Amount");
+            //throw new NotImplementedException();
 
             bool IsEmpty(string str)
             {
@@ -131,9 +132,46 @@ namespace LagerSystem
             }
         }
 
-        private t EnterExtraInformation<t>(string information) //need to catch cases where it cannot convert, e.g. converting "12q" to an int32. Also need to deal with an empty string (it should just return null
+
+        private void ArquiringInformation(Type type, string extraParameters)
         {
-            //TypeCode typeCode = Type.GetTypeCode(type);
+            Dictionary<string, Type> parameters = new Dictionary<string, Type>(); //= WareInformation.FindConstructorParameters(type, extraParameters.Split(' '));
+            parameters.Add("amount", typeof(int));
+            parameters.Add("name", typeof(string)) ;
+            object[] parameterValues = new object[2];//[parameters.Count];
+            string[] parameterNames = new string[] { "amount", "name" };// parameters.Keys.ToArray<string>();
+            Type parameterType;
+            for (int i = 0; i < parameterValues.Length; i++)
+            {
+                parameterType = parameters[parameterNames[i]];
+                if (parameterType.IsValueType)
+                {
+                    //var t;// = Activator.CreateInstance(parameterType);
+                    var test = typeof(WareCreator);
+                    var test3 = test.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static); 
+                    var test2 = test3.MakeGenericMethod(parameterType);
+                    parameterValues[i] = test2.Invoke(null, new object[] { parameterNames[i] }); //https://stackoverflow.com/questions/54679223/c-sharp-getting-type-out-of-a-string-variable-and-using-it-in-generic-method
+                    //parameterValues[i] = EnterExtraInformation(parameterNames[i], t);
+                }
+                else
+                {
+                    //var t = "";
+                    var test = typeof(WareCreator);
+                    var test3 = test.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static);
+                    var test2 = test3.MakeGenericMethod(parameterType);
+                    parameterValues[i] = test2.Invoke(null, new object[] { parameterNames[i] }); //https://stackoverflow.com/questions/54679223/c-sharp-getting-type-out-of-a-string-variable-and-using-it-in-generic-method
+                    //parameterValues[i] = EnterExtraInformation(parameterNames[i], t);
+                }
+
+            }
+
+        }
+
+
+        private static t EnterExtraInformation<t>(string information) //need to catch cases where it cannot convert, e.g. converting "12q" to an int32. Also need to deal with an empty string (it should just return null
+        {
+            //TypeCode typeCode = Type.GetTypeCode(type); //https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.typeconverter?view=netcore-3.1
+            Console.Clear();
             Console.WriteLine("Please Enter {0}",information);
             string value = Console.ReadLine();
             try
