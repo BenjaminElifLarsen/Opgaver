@@ -74,7 +74,7 @@ namespace ChatApp
                 string[] dateTimeParts = text[n].Time.ToString().Split(' ');
                 string[] dateParts = dateTimeParts[0].Split('-');
                 string[] timeParts = dateTimeParts[1].Split(':');
-                DateTime oldTime = new DateTime(int.Parse(dateParts[2]), int.Parse(dateParts[1]), int.Parse(dateParts[0]), int.Parse(timeParts[0]), int.Parse(timeParts[1]), int.Parse(timeParts[2])).ToLocalTime();
+                DateTime oldTime = new DateTime(int.Parse(dateParts[2]), int.Parse(dateParts[1]), int.Parse(dateParts[0]), int.Parse(timeParts[0]), int.Parse(timeParts[1]), int.Parse(timeParts[2]));
                 string time = oldTime.ToLocalTime().ToString();
                 float days = (float)(DateTime.Now - oldTime).TotalDays;
                 if (days > 1)
