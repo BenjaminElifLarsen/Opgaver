@@ -161,7 +161,7 @@ namespace LagerSystem
                     var test2 = test3.MakeGenericMethod(parameterType);
                     parameterValues[i] = test2.Invoke(null, new object[] { parameterNames[i] }); //https://stackoverflow.com/questions/54679223/c-sharp-getting-type-out-of-a-string-variable-and-using-it-in-generic-method
                     //parameterValues[i] = EnterExtraInformation(parameterNames[i], t);
-                }
+                } //two things to look into, dynamic type and whether it is possible to get a var which type is the type of the parameter inside an object
 
             }
 
