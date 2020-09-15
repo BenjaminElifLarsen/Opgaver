@@ -163,5 +163,22 @@ namespace LagerSystem
             key = e.Key;
         }
 
+
+        /// <summary>
+        /// https://stackoverflow.com/questions/1749966/c-sharp-how-to-determine-whether-a-type-is-a-number
+        /// </summary>
+        private static HashSet<Type> NumericalTypes = new HashSet<Type>
+        {
+            typeof(int),
+            typeof(float)
+        };
+
+        public static bool IsNumericalType(Type type)
+        {
+            return NumericalTypes.Contains(type) || NumericalTypes.Contains(Nullable.GetUnderlyingType(type));
+        }
+
+
+
     }
 }
