@@ -112,8 +112,17 @@ namespace LagerSystem
                     Console.Write(consturctors[n][m] + " ");
                 }
                 Console.WriteLine();
-
             }
+            var test = EnterExtraInformation<string>("Information");
+            var test2 = EnterExtraInformation<Int32>("Amount");
+            throw new NotImplementedException();
+        }
+
+        private t EnterExtraInformation<t>(string information) //need to catch cases where it cannot convert, e.g. converting "12q" to an int32
+        {
+            //TypeCode typeCode = Type.GetTypeCode(type);
+            Console.WriteLine("Please Enter {0}",information);
+            return (t)Convert.ChangeType(Console.ReadLine(), typeof(t));
 
             throw new NotImplementedException();
         }
