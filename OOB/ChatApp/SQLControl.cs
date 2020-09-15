@@ -34,7 +34,7 @@ namespace ChatApp
                 //SQLet.Execute(databaseCreationSQL);
 
                 string password = HashConverter.StringToHash("admin");
-                SQLet.Execute($@"
+                string cmd = $@"
                     If Exists(Select 1 From sys.databases Where name = '{GetDatabaseName}')
                     Begin
                         Use {GetDatabaseName}
@@ -45,18 +45,42 @@ namespace ChatApp
                              UserName NVARCHAR(16) Not Null Unique,
                              UserPassword NVARCHAR(256) Not null, Admin_level Int null);
                         End
+
+
+                        iF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES Where Table_Type='BASE Table' And Table_Name='Channel_Information')
+                        BEGIN
+                             Create Table Channel_Information
+                            (ChannelID Int Not Null Primary Key IDENTITY(1,1), 
+                             Name NVARCHAR(255) Not Null);
+                        END
+
                         iF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES Where Table_Type='BASE Table' And Table_Name='Message_Information')
                         BEGIN
                              Create Table Message_Information
                             (MessageID Int Not Null Primary Key IDENTITY(1,1), 
                              UserID Int Not Null Constraint FK_userID_message FOREIGN KEY REFERENCES User_Information(UserID) On Delete Cascade On Update Cascade,
-                             Message NVARCHAR(255) Not Null, Time NVARCHAR(255) Not Null);
+                             Message NVARCHAR(255) Not Null, Time NVARCHAR(255) Not Null,
+                             ChannelID Int Null Constraint FK_channelID_message FOREIGN KEY REFERENCES channel_Information(ChannelID) On Delete Cascade On Update Cascade);
+                            
+                            Insert Into User_Information(UserName,UserPassword,Admin_level)
+                            Values('Admin','{password}',9);
+                        END;
 
-                             Insert Into User_Information(UserName,UserPassword,Admin_level)
-                             Values('Admin','{password}',9)
-                        END
+                        IF Object_ID('dbo.LatestMessages') is null
+                        Begin
+                            DECLARE @v_ViewCreateStatement VARCHAR(MAX) = '
+                            Create View LatestMessages as Select Top 30 Time, UserName, Message, MessageID, Message_Information.UserID From Message_Information inner join User_Information on User_Information.UserID = Message_Information.UserID;
+                            '
+                            EXEC(@v_ViewCreateStatement)
+                        End
+                   
                     End
-                ");
+                ";
+                Console.WriteLine(cmd);
+                SQLet.Execute(cmd);
+
+
+
                 return true;
             }
             catch (Microsoft.Data.SqlClient.SqlException e)
