@@ -24,13 +24,6 @@ namespace ChatApp
             string message = "";
             foreach (string str in GenerateMessagesWithHTML(messages))
                 message += str;
-            //string test = GetHTMLUsers(SQLControl.SQLGetUsers());
-            //string test3 = HttpUtility.HtmlEncode("\"test\"");
-            //string test4 = System.Net.WebUtility.HtmlEncode("\"test\"");
-            //List<string> htmlCodeIndex = ReadHtmlPage("indexBase");
-            //Console.Clear();
-            //display(htmlCodeIndex);
-            //WriteHTMLPage(htmlCodeIndex, "index");
             return message;
             
         }
@@ -42,7 +35,7 @@ namespace ChatApp
             Replace(htmlStrings, "{{users}}", users);
         }
 
-        private static string[] GenerateMessagesWithHTML(List<Message> nonHTMLMessage) //make private when tested and the rest of the web is working.
+        private static string[] GenerateMessagesWithHTML(List<Message> nonHTMLMessage) 
         {
             nonHTMLMessage = Support.MessageTimePrepare(nonHTMLMessage);
             string[] messagesWithHTML = new string[nonHTMLMessage.Count];
@@ -71,7 +64,6 @@ namespace ChatApp
 
         private static string[] GenerateUsernameWithHTML(List<User> nonHTML)
         {
-            //List<string> nonHTML = SQLControl.SQLGetUsers();
             string[] usernamesWithHTML = new string[nonHTML.Count];
             for (int n = 0; n < usernamesWithHTML.Length; n++)
                 usernamesWithHTML[n] = HTMLConverter.UsernameToHTMLUsername(nonHTML[n]);
@@ -103,7 +95,6 @@ namespace ChatApp
         {
             using(StreamWriter file = new StreamWriter(@$".\HTML\{page}.html",false))
             {
-
                 foreach (string str in htmlLines)
                     file.WriteLine(str);
             }
