@@ -9,7 +9,7 @@ namespace LagerSystem
 {
     public class WareCreator
     {
-        private WarePublisher warePublisher;
+        private readonly WarePublisher warePublisher;
         private WareCreator() { }
         public WareCreator(WarePublisher warePublisher)
         {
@@ -99,30 +99,54 @@ namespace LagerSystem
 
         private object SelectedConsturctor(Type type)
         {
-            List<List<string>> consturctors = WareInformation.FindConstructors(type);
-            List<string> existAlready = new List<string>() {"name","amount","id" };
+            List<List<string>> ctorsFromClass = WareInformation.FindConstructors(type);
+            List<string> baseCtorVariables = new List<string>() {"name","amount","id" };
             Console.Clear();
+            List<string> tempCtors = new List<string>();
+            string[] ctorArray;// = new string[consturctors.Count];
             Console.WriteLine("Enter number to select information amount"); //need to remove variables that has already been entered
-            for (int n = 0; n < consturctors.Count; n++)
+            for (int n = 0; n < ctorsFromClass.Count; n++)
             {
-                Console.Write(n + ": ");
-                for (int m = 0; m < consturctors[n].Count; m++)
+                tempCtors.Add("");
+                //Console.Write(n + ": ");
+                for (int m = 0; m < ctorsFromClass[n].Count; m++)
                 {
-                    if(!existAlready.Contains(consturctors[n][m]))
-                    Console.Write(consturctors[n][m] + " ");
+                    if (!baseCtorVariables.Contains(ctorsFromClass[n][m]))
+                        tempCtors[tempCtors.Count - 1] += ctorsFromClass[n][m] + " ";
+                            //Console.Write(consturctors[n][m] + " ");
                 }
-                Console.WriteLine();
+                //Console.WriteLine();
             }
+            tempCtors.RemoveAll(IsEmpty);
+            ctorArray = tempCtors.ToArray();
+            Visual.MenuRun(ctorArray, "Test"); //<- move this into its own function
             var test = EnterExtraInformation<string>("Information");
             var test2 = EnterExtraInformation<Int32>("Amount");
+            var test3 = EnterExtraInformation<Int32?>("Amount");
             throw new NotImplementedException();
+
+            bool IsEmpty(string str)
+            {
+                return str == null || str == "";
+            }
         }
 
-        private t EnterExtraInformation<t>(string information) //need to catch cases where it cannot convert, e.g. converting "12q" to an int32
+        private t EnterExtraInformation<t>(string information) //need to catch cases where it cannot convert, e.g. converting "12q" to an int32. Also need to deal with an empty string (it should just return null
         {
             //TypeCode typeCode = Type.GetTypeCode(type);
             Console.WriteLine("Please Enter {0}",information);
-            return (t)Convert.ChangeType(Console.ReadLine(), typeof(t));
+            string value = Console.ReadLine();
+            try
+            {
+                return (t)Convert.ChangeType(value, typeof(t));
+            }
+            catch
+            {
+                if (Nullable.GetUnderlyingType(typeof(t)) != null)
+                    return default(t);
+                else
+                    throw new InvalidCastException();
+            }
 
             throw new NotImplementedException();
         }
