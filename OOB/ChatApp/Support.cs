@@ -86,10 +86,11 @@ namespace ChatApp
                         daysShort = dayParts[0] + "." + dayParts[1][0];
                     else
                         daysShort = dayParts[0];
-                    text[n].TimeSincePost = daysShort + " days at " + time.Split(' ')[1];
+
+                    text[n].TimeSincePost = daysShort + " days at " + timeParts[0]+":"+ timeParts[1];
                 }
                 else
-                    text[n].TimeSincePost = time;
+                    text[n].TimeSincePost = timeParts[0] + ":" + timeParts[1];
                 //Console.WriteLine("Row {0}", pos++);
             }
             return text;

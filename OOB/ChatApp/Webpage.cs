@@ -8,23 +8,38 @@ namespace ChatApp
 {
     class Webpage
     {
+        public static string GetHTML(List<Message> messages)
+        {
+            string html = "";
+            List<string> htmlCodeIndex = ReadHtmlPage("indexBase");
+            string htmlMessages = GetHTMLMessages(messages);
+            string htmlUsers = GetHTMLUsers(SQLControl.SQLGetUsers());
+            Replacer(htmlCodeIndex, htmlUsers, htmlMessages);
+            WriteHTMLPage(htmlCodeIndex, "index");
+            return html;
+        }
 
-        public static string GetHTMLMessages(List<Message> messages)
+        private static string GetHTMLMessages(List<Message> messages)
         {
             string message = "";
             foreach (string str in GenerateMessagesWithHTML(messages))
                 message += str;
-            string test = GetHTMLUsers(SQLControl.SQLGetUsers());
-            string test3 = HttpUtility.HtmlEncode("\"test\"");
-            string test4 = System.Net.WebUtility.HtmlEncode("\"test\"");
-            List<string> test2 = ReadHtmlPage("indexBase");
-            Console.Clear();
-            ConvertTest(test2);
-            Replace(test2, "{{messages}}", message);
-            Replace(test2, "{{users}}", test);
-            WriteHTMLPage(test2, "index");
+            //string test = GetHTMLUsers(SQLControl.SQLGetUsers());
+            //string test3 = HttpUtility.HtmlEncode("\"test\"");
+            //string test4 = System.Net.WebUtility.HtmlEncode("\"test\"");
+            //List<string> htmlCodeIndex = ReadHtmlPage("indexBase");
+            //Console.Clear();
+            //display(htmlCodeIndex);
+            //WriteHTMLPage(htmlCodeIndex, "index");
             return message;
             
+        }
+
+
+        private static void Replacer(List<string> htmlStrings, string users, string messages)
+        {
+            Replace(htmlStrings, "{{messages}}", messages);
+            Replace(htmlStrings, "{{users}}", users);
         }
 
         private static string[] GenerateMessagesWithHTML(List<Message> nonHTMLMessage) //make private when tested and the rest of the web is working.
@@ -46,7 +61,7 @@ namespace ChatApp
                 }
         }
 
-        public static string GetHTMLUsers(List<User> messages)
+        private static string GetHTMLUsers(List<User> messages)
         {
             string users = "";
             foreach (string str in GenerateUsernameWithHTML(messages))
@@ -64,7 +79,7 @@ namespace ChatApp
         }
 
 
-        private static void ConvertTest(List<string> file)
+        private static void Display(List<string> file)
         {
             foreach (string str in file)
                 Console.WriteLine(str);

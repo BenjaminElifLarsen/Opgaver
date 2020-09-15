@@ -13,6 +13,7 @@ namespace ChatApp
         public string UserName { get; set; }
         public DateTime Time { get; set; }
         public string TimeSincePost { get; set; }
+        public User User { get; set; }
         
         public Message(string text, int userID)
         {
@@ -58,6 +59,14 @@ namespace ChatApp
             Time = TimeConverter(time);
             MessageID = messageID;
             UserID = userID;
+        }
+
+        public Message(User username, string text, string time, int messageID)
+        {
+            User = username;
+            Text = text;
+            Time = TimeConverter(time);
+            MessageID = messageID;
         }
 
         private DateTime TimeConverter(string text)

@@ -11,11 +11,17 @@ namespace ChatApp
         //static private Dictionary<string, User> users = new Dictionary<string, User>();
         static private string loggedInUser;
 
+        private static User user;
+
         static public string GetUserName { get => loggedInUser; }
         static public string SetUserName { set => loggedInUser = value; }
-        static public int GetUserID { get => FindID(loggedInUser); }
+        static public int GetUserID { get => FindID(user.Name); }
+
+        public static User User { get => user; set => user = value; }
+
         static UserDirectory()
         {
+            user = new User("Guest", 0);
             loggedInUser = "Guest";
         }
 
@@ -33,7 +39,7 @@ namespace ChatApp
         static private int FindID(string login)
         {
 
-            if(GetUserName != "Guest")
+            if(user.Name != "Guest")
             { 
                 string[][] IDs = SQLet.GetArray($"Use {SQLControl.GetDatabaseName}; Select UserID From User_Information where UserName = '{login}'");
                 return int.Parse(IDs[0][0]);

@@ -77,7 +77,7 @@ namespace ChatApp
 
         public static string[] SQLGetUsers(int adminLevel)
         {
-            string[][] array = SQLet.GetArray($"Use {GetDatabaseName}; Select UserName From User_Information Where Admin_Level < {adminLevel} Or Admin_level IS Null"); 
+            string[][] array = SQLet.GetArray($"Use {GetDatabaseName}; Select UserName From User_Information Where Admin_Level < {adminLevel} Or Admin_level IS Null Order By UserName ASC"); 
             string[] usernames = new string[array.GetLength(0)];
             for (int n = 0; n < usernames.Length; n++)
                 usernames[n] = array[n][0];
@@ -86,7 +86,7 @@ namespace ChatApp
 
         public static List<User> SQLGetUsers()
         {
-            string[][] array = SQLet.GetArray($"Use {GetDatabaseName}; Select UserName, UserID From User_Information Where Admin_Level < {9} Or Admin_level IS Null");
+            string[][] array = SQLet.GetArray($"Use {GetDatabaseName}; Select UserName, UserID From User_Information Where Admin_Level < {9} Or Admin_level IS Null Order By UserName ASC");
             List<User> usernames = new List<User>();
             foreach (string[] strings in array)
                 usernames.Add(new User(strings[0], int.Parse(strings[1])));
@@ -124,7 +124,7 @@ namespace ChatApp
             string[][] messagesString = SQLet.GetArray($"Use {GetDatabaseName}; Select Time, UserName, Message, MessageID, Message_Information.UserID From Message_Information inner join User_Information on User_Information.UserID = Message_Information.UserID;"); ;
             List<Message> messageList = new List<Message>();
             foreach (string[] message in messagesString)
-                messageList.Add(new Message(message[1], message[2], message[0], int.Parse(message[3]),int.Parse(message[4])));
+                messageList.Add(new Message(new User(message[1], int.Parse(message[4])), message[2], message[0], int.Parse(message[3])));
 
             return messageList;//SQLet.GetArray($"Use {GetDatabaseName}; Select Time, UserName, Message From Message_Information inner join User_Information on User_Information.UserID = Message_Information.UserID;");
         }

@@ -8,7 +8,7 @@ namespace ChatApp
     {
         private string userName;
         private int userID; 
-        public User()
+        private User()
         {
 
         }
@@ -19,8 +19,8 @@ namespace ChatApp
             this.userID = userID;
         }
 
-        public string UserName { get => userName; }
-        public int UserID { get => userID; }
+        public string Name { get => userName; set => userName = value; }
+        public int ID { get => userID; set => userID = value; }
 
 
     }

@@ -11,7 +11,7 @@ namespace ChatApp
             string[] options = new string[] { "Login", "Public Control", "Admin Control", "Show Users", "Exit", "Test" };
             do
             {
-                byte selected = MenuVisual.MenuRun(options, UserDirectory.GetUserName);
+                byte selected = MenuVisual.MenuRun(options, UserDirectory.User.Name);
                 switch (selected)
                 {
                     case 0:
@@ -23,7 +23,7 @@ namespace ChatApp
                         break;
 
                     case 2:
-                        if (GotPermission(UserDirectory.GetUserName, 1))
+                        if (GotPermission(UserDirectory.User.Name, 1))
                             UserMenu();
                         else
                         {
@@ -42,7 +42,7 @@ namespace ChatApp
                         break;
 
                     case 5:
-                        Webpage.GetHTMLMessages(SQLControl.SQLGetMessages());
+                        Webpage.GetHTML(SQLControl.SQLGetMessages());
                         break;
                 }
             } while (true);
@@ -54,12 +54,12 @@ namespace ChatApp
             string[] options = new string[] { "Add Message", "See Message(s)", "Back" };
             do
             {
-                byte selected = MenuVisual.MenuRun(options, UserDirectory.GetUserName);
+                byte selected = MenuVisual.MenuRun(options, UserDirectory.User.Name);
                 switch (selected)
                 {
                     
                     case 0:
-                        if (GotPermission(UserDirectory.GetUserName, null))
+                        if (GotPermission(UserDirectory.User.Name, null))
                             Messages.AddMessage();
                         else
                         {
@@ -86,7 +86,7 @@ namespace ChatApp
             string[] options = new string[] {"Update Message", "Remove Message", "Update User", "Remove User", "Show Users", "Back" };
             do
             {
-                byte selected = MenuVisual.MenuRun(options, UserDirectory.GetUserName);
+                byte selected = MenuVisual.MenuRun(options, UserDirectory.User.Name);
                 switch (selected)
                 {
                     case 0:
@@ -106,7 +106,7 @@ namespace ChatApp
                         break;
 
                     case 4:
-                        UserDirectory.ShowUser(9);
+                        UserDirectory.ShowUser(10);
                         break;
 
                     case 5:

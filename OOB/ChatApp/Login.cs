@@ -14,11 +14,11 @@ namespace ChatApp
             string[] options = new string[] { "New Login", "Old Login", "Back" };
             do
             {
-                byte answer = MenuVisual.MenuRun(options, UserDirectory.GetUserName);
+                byte answer = MenuVisual.MenuRun(options, UserDirectory.User.Name);
                 switch (answer)
                 {
                     case 0:
-                        UserDirectory.SetUserName = CreateLogin();
+                        UserDirectory.User.Name = CreateLogin();
                         break;
 
                     case 1:
@@ -43,12 +43,12 @@ namespace ChatApp
                 if (!UserDirectory.DoesLoginExist(username))
                 {
                     if (EnterPassword(username))
-                        UserDirectory.SetUserName = username;
+                        UserDirectory.User.Name = username;
                     else
-                        UserDirectory.SetUserName = "Guest";
+                        UserDirectory.User.Name = "Guest";
                 }
                 else
-                    UserDirectory.SetUserName = "Guest";
+                    UserDirectory.User.Name = "Guest";
             } while (username == "");
         }
 
