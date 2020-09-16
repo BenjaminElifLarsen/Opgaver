@@ -1,7 +1,12 @@
 Create Database StorageDB
 Go
 Use StorageDB
-Create Table Inventory (ID NVARCHAR(16) Not null Primary Key, name NVARCHAR(255) Not null , amount INT Not null , Type NVARCHAR(255) Not null )
+Create Table Inventory (ID NVARCHAR(16) Not null Primary Key,
+Ware_Name NVARCHAR(255) Not null,
+Ware_Amount INT Not null, 
+Ware_Type NVARCHAR(40) Not null,
+Ware_Information NVARCHAR(2048) null)
+
 Insert Into Inventory Values
     ('ID-55t','Test',25, 'Liquid'),
     ('ID-123q','Toaster',2, 'Electronic'),
