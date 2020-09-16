@@ -142,9 +142,9 @@ namespace LagerSystem
             return constructors;
         }
 
-        public static Dictionary<string,Type> FindConstructorParameters(Type type, string[] extraParameters)
+        public static Dictionary<string,dynamic> FindConstructorParameters(Type type, string[] extraParameters)
         {
-            return null;
+            return null; //create a default version of the value (using the new support function) instead of Type, this means you should be able to use the new WareCreator methods better. 
             throw new NotImplementedException();
         }
 

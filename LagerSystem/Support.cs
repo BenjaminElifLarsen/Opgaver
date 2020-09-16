@@ -179,6 +179,21 @@ namespace LagerSystem
         }
 
 
+        public static dynamic GetDefaultValueFromValueType(string type)
+        {
+            switch(type)
+            {
+                case "": //not sure if it should be int32 or System.int32 
+                    return default(Int32);
+                    break;
+
+
+                default:
+                    return null;
+                    break;
+            }
+        }
+
 
     }
 }
