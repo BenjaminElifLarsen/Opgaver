@@ -66,7 +66,7 @@ namespace LagerSystem
                             goBack = Support.Confirmation(); //if the type contains multiple constructors with extra parameters ask the user if they want to fill out more information 
                             if (goBack)//(they can select a specific constructor and then fill out the specific parameters that are extra). 
                             {
-                                WareInformation.AddWare(name,ID,type,(int)amount);
+                                //WareInformation.AddWare(name,ID,type,(int)amount);
                                 if (type.Split(' ').Length != 1) //move into a function since it so far is needed two places
                                 {
                                     string[] split = type.Split(' ');
@@ -138,8 +138,9 @@ namespace LagerSystem
             Dictionary<string, Type> parameters = new Dictionary<string, Type>(); //= WareInformation.FindConstructorParameters(type, extraParameters.Split(' '));
             parameters.Add("amount", typeof(int));
             parameters.Add("name", typeof(string)) ;
-            object[] parameterValues = new object[2];//[parameters.Count];
-            string[] parameterNames = new string[] { "amount", "name" };// parameters.Keys.ToArray<string>();
+            parameters.Add("byteNumber", typeof(byte));
+            object[] parameterValues = new object[parameters.Count];//[parameters.Count];
+            string[] parameterNames = new string[] { "amount", "name","byteNumber" };// parameters.Keys.ToArray<string>();
             Type parameterType;
 
 
