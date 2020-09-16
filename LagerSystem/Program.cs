@@ -25,11 +25,19 @@ namespace LagerSystem
             dynamic test = Support.GetDefaultValueFromValueType("Int32");
             object test2 = Support.GetDefaultValueFromValueType("UInt32");
             object[] test3 = new object[] { test2, "testString" };
-            object test4 = WareCreator.Test();
+            object test4 = Test(test2);//WareCreator.Test();
             Menu menu = new Menu();
             WareInformation.AddWareDefault();
             Input.RunInputThread();
             menu.MainMenu();
+        }
+
+
+        private static T Test<T>(T variable)
+        {
+            var test = Convert.ChangeType("32", variable.GetType());
+
+            throw new NotImplementedException();
         }
     }
 
