@@ -141,6 +141,8 @@ namespace LagerSystem
             object[] parameterValues = new object[2];//[parameters.Count];
             string[] parameterNames = new string[] { "amount", "name" };// parameters.Keys.ToArray<string>();
             Type parameterType;
+
+
             for (int i = 0; i < parameterValues.Length; i++)
             {
                 parameterType = parameters[parameterNames[i]];
@@ -167,6 +169,15 @@ namespace LagerSystem
 
         }
 
+        /// <summary>
+        /// Test function, remove later...
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static object Test()
+        {
+            return EnterExtraInformation<UInt32>("");
+        }
 
         private static t EnterExtraInformation<t>(string information) //need to catch cases where it cannot convert, e.g. converting "12q" to an int32. Also need to deal with an empty string (it should just return null
         {

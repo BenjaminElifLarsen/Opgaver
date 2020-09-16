@@ -181,10 +181,40 @@ namespace LagerSystem
 
         public static dynamic GetDefaultValueFromValueType(string type)
         {
-            switch(type)
+            if(Nullable.GetUnderlyingType(Type.GetType("System."+type)) != null)
+                return null;
+            
+            switch(type.ToLower())
             {
-                case "": //not sure if it should be int32 or System.int32 
+                case "int32": 
                     return default(Int32);
+                    break;
+
+                case "int8":
+                    return default(Byte);
+                    break;
+
+                case "int16":
+                    return default(Int16);
+                    break;
+
+                case "int64":
+                    return default(Int64);
+                    break;
+                case "uint32":
+                    return default(UInt32);
+                    break;
+
+                case "uint8":
+                    return default(SByte);
+                    break;
+
+                case "uint16":
+                    return default(UInt16);
+                    break;
+
+                case "uint64":
+                    return default(UInt64);
                     break;
 
 
