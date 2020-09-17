@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\drage\\source\\repos\\Opgaver\\Reaktions spil\\Reaktions spil.csproj": {}
+    "C:\\Users\\Benjamin Elif Larsen\\Desktop\\NewRepo\\Opgaver\\Reaktions spil\\Reaktions spil.csproj": {}
   },
   "projects": {
-    "C:\\Users\\drage\\source\\repos\\Opgaver\\Reaktions spil\\Reaktions spil.csproj": {
+    "C:\\Users\\Benjamin Elif Larsen\\Desktop\\NewRepo\\Opgaver\\Reaktions spil\\Reaktions spil.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\drage\\source\\repos\\Opgaver\\Reaktions spil\\Reaktions spil.csproj",
+        "projectUniqueName": "C:\\Users\\Benjamin Elif Larsen\\Desktop\\NewRepo\\Opgaver\\Reaktions spil\\Reaktions spil.csproj",
         "projectName": "Reaktions spil",
-        "projectPath": "C:\\Users\\drage\\source\\repos\\Opgaver\\Reaktions spil\\Reaktions spil.csproj",
-        "packagesPath": "C:\\Users\\drage\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\drage\\source\\repos\\Opgaver\\Reaktions spil\\obj\\",
+        "projectPath": "C:\\Users\\Benjamin Elif Larsen\\Desktop\\NewRepo\\Opgaver\\Reaktions spil\\Reaktions spil.csproj",
+        "packagesPath": "C:\\Users\\Benjamin Elif Larsen\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Benjamin Elif Larsen\\Desktop\\NewRepo\\Opgaver\\Reaktions spil\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\drage\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Benjamin Elif Larsen\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -55,7 +52,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.301\\RuntimeIdentifierGraph.json"
         }
       }
     }

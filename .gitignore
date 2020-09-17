@@ -338,3 +338,9 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/DatabaseImage/ChatAppUbuntoCore/ChatPart/Chat
+/DatabaseImage/ChatAppUbuntoCore/ChatPart
+/DatabaseImage/UbuntuNetCoreTestPlatform
+/DatabaseImage/UbuntuSQLWithCore/ChatPart
+/DatabaseImage/ChatAppUbuntoCore/SQLPart/DockerFile
+/DatabaseImage/ChatAppUbuntoCore/docker-compose.yml
