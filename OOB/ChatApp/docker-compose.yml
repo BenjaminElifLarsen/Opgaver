@@ -1,0 +1,17 @@
+version: '3.4'
+
+
+
+services:
+  sqlserver:
+    image: "mcr.microsoft.com/mssql/server:2019-CU5-ubuntu-18.04"
+    environment:
+      SA_Password: "Password123."
+      ACCEPT_EULA: "Y"
+    ports:
+    - "1433:1435"
+  chatapp:
+    image: ${DOCKER_REGISTRY-}chatapp
+    build:
+      context: .
+      dockerfile: Dockerfile
