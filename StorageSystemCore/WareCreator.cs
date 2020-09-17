@@ -188,12 +188,21 @@ namespace LagerSystem
             string value = Console.ReadLine();
             try
             {
-                return (t)Convert.ChangeType(value, typeof(t));
+                return (t)Convert.ChangeType(value, typeof(t)); 
             }
             catch
             {
                 if (Nullable.GetUnderlyingType(typeof(t)) != null)
-                    return default(t);
+                {
+                    try
+                    {
+                        return (t)Convert.ChangeType(value, Nullable.GetUnderlyingType(typeof(t)));
+                    }
+                    catch
+                    {
+
+                    }
+                }
                 else
                     throw new InvalidCastException();
             }
