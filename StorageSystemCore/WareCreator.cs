@@ -77,11 +77,13 @@ namespace LagerSystem
                                 if(ConstructorsExist(Type.GetType("LagerSystem." + type)))
                                     if(ExtraConstructorMenu())
                                     {
-                                        string extraParameters = SelectConsturctor(Type.GetType("LagerSystem." + type));
-                                        ArquiringInformation(Type.GetType("LagerSystem." + type), extraParameters);
+                                        string[] extraParameters = CreateSelectableConstructorList(Type.GetType("LagerSystem." + type));
+                                        byte selectedCtor = SelectConstructor(extraParameters);
+                                        object[] filledOutParameters = ArquiringInformation(Type.GetType("LagerSystem." + type), selectedCtor);
+                                        
                                     }
                                     else
-                                        WareInformation.AddWare(name, ID, type, (int)amount);
+                                        WareInformation.AddWare(name, ID, type, (int)amount); //make this take an object[] instead of different parameters, also do not need to be in an else if done like that
                             }
                         }
                         break;
@@ -98,7 +100,23 @@ namespace LagerSystem
         }
 
 
-        private string SelectConsturctor(Type type)
+        private object[] CreateCtorObject(object[] primaryParameters, object[] secundaryParameters)
+        {
+            object[] allParameters = new object[primaryParameters.Length + secundaryParameters.Length];
+            for(int m = 0; m < allParameters.Length; m++)
+            {
+
+            }
+            throw new NotImplementedException();
+        }
+
+        private byte SelectConstructor(string[] options)
+        {
+            Console.Clear();
+            return Visual.MenuRun(options, "Select more information");
+        }
+
+        private string[] CreateSelectableConstructorList(Type type) //change return type to string[]
         {
             List<List<string>> ctorsFromClass = WareInformation.FindConstructorsParameterNames(type);
             List<string> baseCtorVariables = WareInformation.BasicConstructorVariableNames;
@@ -118,9 +136,9 @@ namespace LagerSystem
             }
             tempCtors.RemoveAll(IsEmpty);
             ctorArray = tempCtors.ToArray();
-            Console.Clear();
-            Console.WriteLine("Enter number to select information amount"); //need to remove variables that has already been entered
-            return tempCtors[Visual.MenuRun(ctorArray, "Test")]; //<- move this into its own function, so a function that split and a function for selection
+            //Console.Clear();
+            //Console.WriteLine("Enter number to select information amount"); //need to remove variables that has already been entered
+            return ctorArray; //<- move this into its own function, so a function that split and a function for selection
             //var test = EnterExtraInformation<string>("Information");
             //var test2 = EnterExtraInformation<Int32>("Amount");
             //var test3 = EnterExtraInformation<Int32?>("Amount");
@@ -133,9 +151,9 @@ namespace LagerSystem
         }
 
 
-        private object[] ArquiringInformation(Type type, string extraParameters)
+        private object[] ArquiringInformation(Type type, byte number)
         {
-            Dictionary<string, Type> parameters = WareInformation.GetConstructorParameterNamesAndTypes(type,null)[2]; //= WareInformation.FindConstructorParameters(type, extraParameters.Split(' '));
+            Dictionary<string, Type> parameters = WareInformation.GetConstructorParameterNamesAndTypes(type,null)[number]; //= WareInformation.FindConstructorParameters(type, extraParameters.Split(' '));
             //parameters.Add("amount", typeof(int));
             //parameters.Add("name", typeof(string)) ;
             //parameters.Add("byteNumber", typeof(byte));
@@ -196,6 +214,10 @@ namespace LagerSystem
                     try
                     {
                         return (t)Convert.ChangeType(value, Nullable.GetUnderlyingType(typeof(t)));
+                    }
+                    catch
+                    {
+                        throw new InvalidCastException();
                     }
                 }
                 else
