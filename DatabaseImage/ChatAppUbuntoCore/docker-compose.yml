@@ -1,0 +1,20 @@
+version: '3.8'
+
+volumes:
+db-data:
+
+services:
+  sql:
+    build:
+      image: "mcr.microsoft.com/mssql/server:2019-CU5-ubuntu-18.04"
+        enviroment:
+	SA_Password: "Password123."
+	ACCEPT_EULA: "Y"
+	Ports:
+	-"1433:1435"
+   App: 
+     build:
+	context: ./ChatPart
+	dockerfile: DockerFile
+     depends_on:
+	- sql

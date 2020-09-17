@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Chatter</title>
+		<link href="style.css" rel="stylesheet" />
+	</head>
+	<header>
+
+	</header>
+
+	<body>
+
+	<div class="col-1-hidden"></div>
+	<div class="box col-10">	
+		<div class="chatLog col-10 backgroundColour scrollbar"> 
+{{messages}}
+		</div>
+
+		<div id="Users" class="userList col-2 backgroundColour scrollbar">  <p>User(s) Online</p>
+		<p class="username">
+			<ul>
+{{users}}
+			</ul>
+		</p>
+
+		</div>
+
+		<!--<div class="boxForMessage col-10 backgroundColour scrollbar">-->
+
+			<div class="messageBox col-10 backgroundColour">
+				<form action="" method="post">
+					<label for="Chat">Chat</label>
+					<textarea id="Chat" name="chat meessage" row="1" style="width:100%">
+					</textarea>
+					</br>
+					<input type="submit" value="Submit">
+				</form>
+				<button id="box" onclick="UserBox()">Show Users</button>
+			</div>
+		<!--</div>-->
+	</div>
+	<script>
+	function UserBox()
+	{
+		var x = document.getElementById("Users");
+		<!--if(x.style.display === "block"){-->
+		<!--	x.style.display = "none";-->
+		<!--}else{-->
+		<!--	x.style.display = "block";-->
+		<!--}-->
+		if(x.classList.contains("userList")){
+			x.classList.replace("userList", "test");
+		}else{
+			x.classList.replace("test","userList");
+		}
+		var text = document.getElementById("box").firstChild;
+		text.data = text.data == "Show Users" ? "Hide Users" : "Show Users";
+	}
+
+	
+	</script>
+
+	</body>
+
+
+
+
+</html>
