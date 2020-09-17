@@ -101,11 +101,9 @@ namespace LagerSystem
         private string SelectConsturctor(Type type)
         {
             List<List<string>> ctorsFromClass = WareInformation.FindConstructors(type);
-            List<string> baseCtorVariables = new List<string>() {"name","amount","id" };
-            Console.Clear();
+            List<string> baseCtorVariables = WareInformation.BasicConstructorVariableNames;
             List<string> tempCtors = new List<string>();
             string[] ctorArray;// = new string[consturctors.Count];
-            Console.WriteLine("Enter number to select information amount"); //need to remove variables that has already been entered
             for (int n = 0; n < ctorsFromClass.Count; n++)
             {
                 tempCtors.Add("");
@@ -120,7 +118,9 @@ namespace LagerSystem
             }
             tempCtors.RemoveAll(IsEmpty);
             ctorArray = tempCtors.ToArray();
-            return tempCtors[Visual.MenuRun(ctorArray, "Test")]; //<- move this into its own function
+            Console.Clear();
+            Console.WriteLine("Enter number to select information amount"); //need to remove variables that has already been entered
+            return tempCtors[Visual.MenuRun(ctorArray, "Test")]; //<- move this into its own function, so a function that split and a function for selection
             //var test = EnterExtraInformation<string>("Information");
             //var test2 = EnterExtraInformation<Int32>("Amount");
             //var test3 = EnterExtraInformation<Int32?>("Amount");

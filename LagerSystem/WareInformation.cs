@@ -10,6 +10,11 @@ namespace LagerSystem
     static class WareInformation
     {
         /// <summary>
+        /// The names of the basic variables that all ware and derived constructors contains.  
+        /// </summary>
+        private static List<string> baseCtorVariables = new List<string>() { "name", "amount", "id" };
+
+        /// <summary>
         /// Llist contains all wares
         /// </summary>
         private static List<Ware> wares = new List<Ware>(); //have a class for storaging/manipulating the ware list
@@ -18,6 +23,12 @@ namespace LagerSystem
         /// Gets a deep-copy of all wares.
         /// </summary>
         public static List<Ware> Ware { get => Support.DeepCopy(wares); set => wares = value; } 
+
+        /// <summary>
+        /// Gets a list with the parameter names that all constructors of Ware and derived are using. 
+        /// </summary>
+        public static List<string> BasicConstructorVariableNames { get => baseCtorVariables; }
+
 
         /// <summary>
         /// Gets ...
