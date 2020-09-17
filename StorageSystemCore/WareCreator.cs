@@ -133,7 +133,7 @@ namespace LagerSystem
         }
 
 
-        private void ArquiringInformation(Type type, string extraParameters)
+        private object[] ArquiringInformation(Type type, string extraParameters)
         {
             Dictionary<string, Type> parameters = WareInformation.GetConstructorParameterNamesAndTypes(type,null)[2]; //= WareInformation.FindConstructorParameters(type, extraParameters.Split(' '));
             //parameters.Add("amount", typeof(int));
@@ -143,17 +143,16 @@ namespace LagerSystem
             string[] parameterNames = parameters.Keys.ToArray(); //new string[] { "amount", "name","byteNumber" };// parameters.Keys.ToArray<string>();
             Type parameterType;
 
-
             for (int i = 0; i < parameterValues.Length; i++)
             {
                 parameterType = parameters[parameterNames[i]];
                 if (parameterType.IsValueType)
                 {
                     //var t;// = Activator.CreateInstance(parameterType);
-                    var test = typeof(WareCreator);
-                    var test3 = test.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static); 
-                    var test2 = test3.MakeGenericMethod(parameterType);
-                    parameterValues[i] = test2.Invoke(null, new object[] { parameterNames[i] }); //https://stackoverflow.com/questions/54679223/c-sharp-getting-type-out-of-a-string-variable-and-using-it-in-generic-method
+                    var wareCreatorType = typeof(WareCreator);
+                    var foundMethod = wareCreatorType.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static); 
+                    var genericVersion = foundMethod.MakeGenericMethod(parameterType);
+                    parameterValues[i] = genericVersion.Invoke(null, new object[] { parameterNames[i] }); //need to handle the possible invalid conversion exception
                     //parameterValues[i] = EnterExtraInformation(parameterNames[i], t);
                 }
                 else
@@ -167,7 +166,7 @@ namespace LagerSystem
                 } //two things to look into, dynamic type and whether it is possible to get a var which type is the type of the parameter inside an object
 
             }
-
+            return parameterValues;
         }
 
         /// <summary>
@@ -197,10 +196,6 @@ namespace LagerSystem
                     try
                     {
                         return (t)Convert.ChangeType(value, Nullable.GetUnderlyingType(typeof(t)));
-                    }
-                    catch
-                    {
-
                     }
                 }
                 else
