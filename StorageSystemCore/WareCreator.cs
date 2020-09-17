@@ -100,7 +100,7 @@ namespace LagerSystem
 
         private string SelectConsturctor(Type type)
         {
-            List<List<string>> ctorsFromClass = WareInformation.FindConstructors(type);
+            List<List<string>> ctorsFromClass = WareInformation.FindConstructorsParameterNames(type);
             List<string> baseCtorVariables = WareInformation.BasicConstructorVariableNames;
             List<string> tempCtors = new List<string>();
             string[] ctorArray;// = new string[consturctors.Count];
@@ -135,12 +135,12 @@ namespace LagerSystem
 
         private void ArquiringInformation(Type type, string extraParameters)
         {
-            Dictionary<string, Type> parameters = new Dictionary<string, Type>(); //= WareInformation.FindConstructorParameters(type, extraParameters.Split(' '));
-            parameters.Add("amount", typeof(int));
-            parameters.Add("name", typeof(string)) ;
-            parameters.Add("byteNumber", typeof(byte));
+            Dictionary<string, Type> parameters = WareInformation.GetConstructorParameterNamesAndTypes(type,null)[2]; //= WareInformation.FindConstructorParameters(type, extraParameters.Split(' '));
+            //parameters.Add("amount", typeof(int));
+            //parameters.Add("name", typeof(string)) ;
+            //parameters.Add("byteNumber", typeof(byte));
             object[] parameterValues = new object[parameters.Count];//[parameters.Count];
-            string[] parameterNames = new string[] { "amount", "name","byteNumber" };// parameters.Keys.ToArray<string>();
+            string[] parameterNames = parameters.Keys.ToArray(); //new string[] { "amount", "name","byteNumber" };// parameters.Keys.ToArray<string>();
             Type parameterType;
 
 
@@ -211,7 +211,7 @@ namespace LagerSystem
 
         private bool ConstructorsExist(Type type)
         {
-            return WareInformation.FindConstructors(type).Count > 1;
+            return WareInformation.FindConstructorsParameterNames(type).Count > 1;
             throw new NotImplementedException();
         }
 
