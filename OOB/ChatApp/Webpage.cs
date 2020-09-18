@@ -21,7 +21,7 @@ namespace ChatApp
             return html;
         }
 
-        private static string GetHTMLMessages(List<Message> messages)
+        public static string GetHTMLMessages(List<Message> messages)
         {
             string message = "";
             foreach (string str in GenerateMessagesWithHTML(messages))
@@ -56,11 +56,12 @@ namespace ChatApp
                 }
         }
 
-        private static string GetHTMLUsers(List<User> messages)
+        public static string GetHTMLUsers(List<User> messages)
         {
-            string users = "";
+            string users = "<ul>";
             foreach (string str in GenerateUsernameWithHTML(messages))
                 users += str;
+            users += "</ul>";
             return users;
         }
 

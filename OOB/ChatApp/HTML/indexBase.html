@@ -15,15 +15,15 @@
 
 	<div class="col-1-hidden"></div>
 	<div class="box col-10">	
-		<div class="chatLog col-10 backgroundColour scrollbar"> 
+		<div id="messageWindow" class="chatLog col-10 backgroundColour scrollbar"> 
 {{messages}}
 		</div>
 
 		<div id="Users" class="userList col-2 backgroundColour scrollbar">  <p>User(s) Online</p>
 		<p class="username">
-			<ul>
+			
 {{users}}
-			</ul>
+			
 		</p>
 
 		</div>
@@ -43,6 +43,29 @@
 		<!--</div>-->
 	</div>
 	<script>
+
+        var interval = setInterval(function () {
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "/users", false);
+            xhttp.send();
+            document.getElementById("Users").innerHTML = xhttp.responseText;
+		}, 1000);
+
+		var currentMessageHtml = document.getElementById("messageWindow").innerHTML;
+        var interval = setInterval(function () {
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "/messages", false);
+			xhttp.send();
+            if (xhttp.responseText != currentMessageHtml) {
+                document.getElementById("messageWindow").innerHTML = xhttp.responseText;
+                var objDiv = document.getElementById("messageWindow");
+				objDiv.scrollTop = objDiv.scrollHeight;
+                currentMessageHtml = xhttp.responseText;
+            }
+        }, 1000);
+
 	function UserBox()
 	{
 		var x = document.getElementById("Users");

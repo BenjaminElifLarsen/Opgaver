@@ -1,3 +1,5 @@
 version: '3.4'
 services:
   chatapp:
+    labels:
+      om.microsoft.visualstudio.debuggee.arguments: "localHost,1435","http://localHost:8080/"

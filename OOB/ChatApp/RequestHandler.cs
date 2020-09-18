@@ -8,12 +8,16 @@ namespace ChatApp
     class RequestHandler
     {
 
-        
+        private string host;
+
+        public string SetHost { set => host = value; }
 
         public void Start()
         {
-            WebLet httpListener = new WebLet("http://localHost:8080/");
+            WebLet httpListener = new WebLet(host);
             //routering, paring af urler og metoder
+            httpListener.Route("^[/]users$", RequestUser);
+            httpListener.Route("^[/]messages$", RequestMessages);
             httpListener.Route("^[/]$HTML^[/]$style^[/]$css", RequestCSS);
             httpListener.Route("^[/]$", RequestRoot);
             httpListener.Start();
@@ -32,6 +36,19 @@ namespace ChatApp
 
             return Webpage.GetHTML(SQLControl.SQLGetMessages(), SQLControl.SQLGetUsers());
         }
+
+        //localhost:8080/messages
+        private string RequestMessages(Request r)
+        {
+            return Webpage.GetHTMLMessages(SQLControl.SQLGetMessages());
+        }
+
+        //localhost:8080/users
+        private string RequestUser(Request r)
+        {
+            return Webpage.GetHTMLUsers(SQLControl.SQLGetUsers());
+        }
+
 
         //transmission of css files (can also transmit other files)
         private string RequestCSS(Request r)
