@@ -139,7 +139,7 @@ namespace ChatApp
 
         public static void SQLAddMessage(string message, int id)
         {
-            string time = DateTime.UtcNow.ToString(new CultureInfo("da-DK"));
+            string time = DateTime.UtcNow.ToString("G", new CultureInfo("da-DK"));
             if (RegexControl.ContainsSingleQuouteMark(message))
                 message = Support.SanitiseSingleQuotes(message);
             string sql = $"Use {GetDatabaseName}; Insert into Message_Information(Message, Time, UserID) Values('{message}','{time}','{id}')";
