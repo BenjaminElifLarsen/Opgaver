@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace ChatApp
 {
@@ -6,24 +7,41 @@ namespace ChatApp
     {
         static void Main(string[] args)
         {
-            string[] options = new string[] { "BENJAMIN-ELIF-L\\MSSQLSERVER02", "localHost,1433", "Write Self" };
-            do
+            if(args.Length > 0)
             {
-                byte answer = MenuVisual.MenuRun(options);
-                string selected;
-                bool windowLogin = false;
-                Console.Clear();
-                if (answer == 2)
-                    selected = Console.ReadLine();
+                bool windowLogin = args[0] == "BENJAMIN-ELIF-L\\MSSQLSERVER02";
+                SQLControl.SQLConnect("master", args[0], windowLogin);
+                RequestHandler requestHandler = new RequestHandler();
+                if (args.Length == 2)
+                    requestHandler.SetHost = args[1];
                 else
+                    requestHandler.SetHost = "http://localHost:8080/";
+
+                Thread webThread = new Thread(new ThreadStart(requestHandler.Start));
+                webThread.Name = "Web RequestHandler Thread";
+                webThread.Start();
+            }
+            else
+            {
+                string[] options = new string[] { "BENJAMIN-ELIF-L\\MSSQLSERVER02", "localHost,1433", "Write Self" };
+                do
                 {
-                    if (answer == 0)
-                        windowLogin = true;
-                    selected = options[answer];
-                }
-                SQLControl.SQLConnect("master", selected, windowLogin);
-            }while (!SQLControl.SQLCreateDatabase());
-            Run();
+                    byte answer = MenuVisual.MenuRun(options);
+                    string selected;
+                    bool windowLogin = false;
+                    Console.Clear();
+                    if (answer == 2)
+                        selected = Console.ReadLine();
+                    else
+                    {
+                        if (answer == 0)
+                            windowLogin = true;
+                        selected = options[answer];
+                    }
+                    SQLControl.SQLConnect("master", selected, windowLogin);
+                } while (!SQLControl.SQLCreateDatabase());
+                Run();
+            }
         }
 
         static public void Run()

@@ -77,11 +77,13 @@ namespace LagerSystem
                                 if(ConstructorsExist(Type.GetType("LagerSystem." + type)))
                                     if(ExtraConstructorMenu())
                                     {
-                                        string extraParameters = SelectConsturctor(Type.GetType("LagerSystem." + type));
-                                        ArquiringInformation(Type.GetType("LagerSystem." + type), extraParameters);
+                                        string[] extraParameters = CreateSelectableConstructorList(Type.GetType("LagerSystem." + type));
+                                        byte selectedCtor = SelectConstructor(extraParameters);
+                                        object[] filledOutParameters = ArquiringInformation(Type.GetType("LagerSystem." + type), selectedCtor);
+                                        
                                     }
                                     else
-                                        WareInformation.AddWare(name, ID, type, (int)amount);
+                                        WareInformation.AddWare(name, ID, type, (int)amount); //make this take an object[] instead of different parameters, also do not need to be in an else if done like that
                             }
                         }
                         break;
@@ -98,9 +100,25 @@ namespace LagerSystem
         }
 
 
-        private string SelectConsturctor(Type type)
+        private object[] CreateCtorObject(object[] primaryParameters, object[] secundaryParameters)
         {
-            List<List<string>> ctorsFromClass = WareInformation.FindConstructors(type);
+            object[] allParameters = new object[primaryParameters.Length + secundaryParameters.Length];
+            for(int m = 0; m < allParameters.Length; m++)
+            {
+
+            }
+            throw new NotImplementedException();
+        }
+
+        private byte SelectConstructor(string[] options)
+        {
+            Console.Clear();
+            return Visual.MenuRun(options, "Select more information");
+        }
+
+        private string[] CreateSelectableConstructorList(Type type) //change return type to string[]
+        {
+            List<List<string>> ctorsFromClass = WareInformation.FindConstructorsParameterNames(type);
             List<string> baseCtorVariables = WareInformation.BasicConstructorVariableNames;
             List<string> tempCtors = new List<string>();
             string[] ctorArray;// = new string[consturctors.Count];
@@ -118,9 +136,9 @@ namespace LagerSystem
             }
             tempCtors.RemoveAll(IsEmpty);
             ctorArray = tempCtors.ToArray();
-            Console.Clear();
-            Console.WriteLine("Enter number to select information amount"); //need to remove variables that has already been entered
-            return tempCtors[Visual.MenuRun(ctorArray, "Test")]; //<- move this into its own function, so a function that split and a function for selection
+            //Console.Clear();
+            //Console.WriteLine("Enter number to select information amount"); //need to remove variables that has already been entered
+            return ctorArray; //<- move this into its own function, so a function that split and a function for selection
             //var test = EnterExtraInformation<string>("Information");
             //var test2 = EnterExtraInformation<Int32>("Amount");
             //var test3 = EnterExtraInformation<Int32?>("Amount");
@@ -133,16 +151,15 @@ namespace LagerSystem
         }
 
 
-        private void ArquiringInformation(Type type, string extraParameters)
+        private object[] ArquiringInformation(Type type, byte number)
         {
-            Dictionary<string, Type> parameters = new Dictionary<string, Type>(); //= WareInformation.FindConstructorParameters(type, extraParameters.Split(' '));
-            parameters.Add("amount", typeof(int));
-            parameters.Add("name", typeof(string)) ;
-            parameters.Add("byteNumber", typeof(byte));
+            Dictionary<string, Type> parameters = WareInformation.GetConstructorParameterNamesAndTypes(type,null)[number]; //= WareInformation.FindConstructorParameters(type, extraParameters.Split(' '));
+            //parameters.Add("amount", typeof(int));
+            //parameters.Add("name", typeof(string)) ;
+            //parameters.Add("byteNumber", typeof(byte));
             object[] parameterValues = new object[parameters.Count];//[parameters.Count];
-            string[] parameterNames = new string[] { "amount", "name","byteNumber" };// parameters.Keys.ToArray<string>();
+            string[] parameterNames = parameters.Keys.ToArray(); //new string[] { "amount", "name","byteNumber" };// parameters.Keys.ToArray<string>();
             Type parameterType;
-
 
             for (int i = 0; i < parameterValues.Length; i++)
             {
@@ -150,10 +167,10 @@ namespace LagerSystem
                 if (parameterType.IsValueType)
                 {
                     //var t;// = Activator.CreateInstance(parameterType);
-                    var test = typeof(WareCreator);
-                    var test3 = test.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static); 
-                    var test2 = test3.MakeGenericMethod(parameterType);
-                    parameterValues[i] = test2.Invoke(null, new object[] { parameterNames[i] }); //https://stackoverflow.com/questions/54679223/c-sharp-getting-type-out-of-a-string-variable-and-using-it-in-generic-method
+                    var wareCreatorType = typeof(WareCreator);
+                    var foundMethod = wareCreatorType.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static); 
+                    var genericVersion = foundMethod.MakeGenericMethod(parameterType);
+                    parameterValues[i] = genericVersion.Invoke(null, new object[] { parameterNames[i] }); //need to handle the possible invalid conversion exception
                     //parameterValues[i] = EnterExtraInformation(parameterNames[i], t);
                 }
                 else
@@ -167,7 +184,7 @@ namespace LagerSystem
                 } //two things to look into, dynamic type and whether it is possible to get a var which type is the type of the parameter inside an object
 
             }
-
+            return parameterValues;
         }
 
         /// <summary>
@@ -188,12 +205,21 @@ namespace LagerSystem
             string value = Console.ReadLine();
             try
             {
-                return (t)Convert.ChangeType(value, typeof(t));
+                return (t)Convert.ChangeType(value, typeof(t)); 
             }
             catch
             {
                 if (Nullable.GetUnderlyingType(typeof(t)) != null)
-                    return default(t);
+                {
+                    try
+                    {
+                        return (t)Convert.ChangeType(value, Nullable.GetUnderlyingType(typeof(t)));
+                    }
+                    catch
+                    {
+                        throw new InvalidCastException();
+                    }
+                }
                 else
                     throw new InvalidCastException();
             }
@@ -211,7 +237,7 @@ namespace LagerSystem
 
         private bool ConstructorsExist(Type type)
         {
-            return WareInformation.FindConstructors(type).Count > 1;
+            return WareInformation.FindConstructorsParameterNames(type).Count > 1;
             throw new NotImplementedException();
         }
 

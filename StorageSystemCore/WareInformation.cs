@@ -136,7 +136,7 @@ namespace LagerSystem
         /// 
         /// </summary>
         /// <param name="type">The type to find all constructors of.</param>
-        public static List<List<string>> FindConstructors(Type type)
+        public static List<List<string>> FindConstructorsParameterNames(Type type)
         {
             List<List<string>> constructors = new List<List<string>>();
             ConstructorInfo[] constructorInfos = type.GetConstructors();
@@ -153,9 +153,23 @@ namespace LagerSystem
             return constructors;
         }
 
-        public static Dictionary<string,dynamic> FindConstructorParameters(Type type, string[] extraParameters)
+        public static List<Dictionary<string,Type>> GetConstructorParameterNamesAndTypes(Type type, string[] extraParameters)
         {
-            return null; //create a default version of the value (using the new support function) instead of Type, this means you should be able to use the new WareCreator methods better. 
+            List<Dictionary<string,Type>> constructors = new List<Dictionary<string, Type>>();
+            ConstructorInfo[] constructorInfos = type.GetConstructors();
+            foreach (ConstructorInfo constructorInfo in constructorInfos)
+            {
+                constructors.Add(new Dictionary<string, Type>());
+
+                foreach (ParameterInfo parameterInfo in constructorInfo.GetParameters())
+                {
+                    if (parameterInfo.ParameterType != typeof(WarePublisher))
+                        if(!baseCtorVariables.Contains(parameterInfo.Name))
+                            constructors[constructors.Count - 1].Add(parameterInfo.Name,parameterInfo.ParameterType);
+                }
+            }
+
+            return constructors; //create a default version of the value (using the new support function) instead of Type, this means you should be able to use the new WareCreator methods better. 
             throw new NotImplementedException();
         }
 

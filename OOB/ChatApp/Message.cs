@@ -81,7 +81,7 @@ namespace ChatApp
         {
             if (RegexControl.ContainsSingleQuouteMark(Text))
                 Text = Support.SanitiseSingleQuotes(Text);
-            SQLControl.SQLAddMessage(Text, Time.ToUniversalTime().ToString(new CultureInfo("da-DK")));
+            SQLControl.SQLAddMessage(Text, Time.ToUniversalTime().ToString("G", new CultureInfo("da-DK")));
         }
 
         public void Delete()

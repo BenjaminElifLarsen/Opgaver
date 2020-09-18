@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace ChatApp
 {
@@ -8,6 +9,7 @@ namespace ChatApp
     {
         public static void MainMenu()
         {
+            bool webThreadRunning = false;
             string[] options = new string[] { "Login", "Public Control", "Admin Control", "Show Users", "Exit", "Test" };
             do
             {
@@ -42,7 +44,15 @@ namespace ChatApp
                         break;
 
                     case 5:
-                        Webpage.GetHTML(SQLControl.SQLGetMessages());
+                        if (!webThreadRunning) { 
+                            RequestHandler requestHandler = new RequestHandler();
+                            Thread webThread = new Thread(new ThreadStart(requestHandler.Start));
+                            requestHandler.SetHost = "http://localHost:8080/";
+                            webThread.Name = "Web RequestHandler Thread";
+                            webThread.Start();
+                            webThreadRunning = true;
+                        }
+                        //Webpage.GetHTML(SQLControl.SQLGetMessages());
                         break;
                 }
             } while (true);

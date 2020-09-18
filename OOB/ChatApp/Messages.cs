@@ -17,7 +17,7 @@ namespace ChatApp
                 Console.Clear();
                 message = Console.ReadLine().Trim();
             } while (message == "");
-            string time = DateTime.UtcNow.ToString(new CultureInfo("da-DK"));
+            string time = DateTime.UtcNow.ToString("G", new CultureInfo("da-DK"));
             if (RegexControl.ContainsSingleQuouteMark(message))
                 message = Support.SanitiseSingleQuotes(message);
             SQLControl.SQLAddMessage(message, time);

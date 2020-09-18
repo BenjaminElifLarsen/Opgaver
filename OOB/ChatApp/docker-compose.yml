@@ -9,9 +9,11 @@ services:
       SA_Password: "Password123."
       ACCEPT_EULA: "Y"
     ports:
-    - "1433:1435"
+    - "1435:1433"
   chatapp:
     image: ${DOCKER_REGISTRY-}chatapp
+    stdin_open: true
+    tty: true
     build:
       context: .
       dockerfile: Dockerfile

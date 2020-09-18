@@ -1,0 +1,346 @@
+div.backgroundColour{
+	color:white;
+	background-color:rgb(70,70,70);
+}
+
+@media only screen and (max-width: 600px){
+	body {
+    		background-color: black;
+  	}
+  	div.userList{
+		/*visibility: hidden;*/
+		max-height: 10vh;
+		display:none;
+		height: 0%;
+ 	 }
+	div.test{
+		display:block;
+		max-height: 10vh;
+		height: 0%;
+	}
+	div.chatLog{
+		height: 70vh;
+		min-height: 40vh;
+		max-height: 80vh;
+		/*position: absolute;*/
+		float: left;
+	}
+	div.messageBox{
+		min-height: 110px;
+		max-height: 16vh;
+		/*position: absolute;*/
+		/*top: 73vh;*/
+		float: left;
+	}
+	div.box{
+		margin: 0vw;
+		padding-top:1.0vh;
+		display: block;
+		border-style: none;
+		border-color:red;
+		box-sizing: border-box;
+		/*posistion: relative;*/
+		float: left;
+	}
+	div{
+	}
+	.col-1-hidden {width: 8.33%; visibility: hidden;}
+
+  	[class*="col-"] {
+   		/*margin: 0.0vw;*/
+		width: 100%;
+		padding: 0.5vw;
+		border-style: solid;
+		border-radius: 0.4vw;
+		border-color:rgb(60,60,60);
+		border-width: 0.4vh;
+		float: left;
+		box-sizing: border-box;
+  	}
+	button{
+		background-color: blanchedalmond;
+		border-radius: 6px 6px;
+	}
+	button:hover{
+		background-color: lightblue;
+		border-radius: 6px 6px;
+	}
+	.messageTime{
+	color:pink;
+	font-size:90%;
+
+	}
+	ul li{
+		list-style-type: none;
+		color:red;
+		padding-bottom: 1%;
+		text-align: left;
+	}
+}
+
+@media only screen and (min-width: 600px) {
+  	body {
+    		background-color: grey;
+  	}
+	div.chatLog{
+		/*width: 60vw;*/
+		/*max-width: 60vw;*/
+		height: 70vh;
+		min-height: 40vh;
+		max-height: 80vh;
+		/*position: absolute;*/
+		float: left;
+		border-style: solid;
+		border-width: 0px 0px 5px 0px;
+	}	
+	div.userList{
+		/*width: 20vw;*/
+		/*max-width: 20vw;*/
+		height: 70vh;
+		min-height: 40vh;
+		max-height: 80vh;
+		/*position: absolute;*/
+		/*left: 61.5vw;*/
+		float: left;
+		display:block;
+	}
+	div.test{
+		display:block
+		height: 70vh;
+		min-height: 40vh;
+		max-height: 80vh;
+	}
+	div.messageBox{
+		/*width: 81vw;*/
+		/*max-width: 81vw;*/
+		min-height: 6vh;
+		max-height: 12vh;
+		/*position: absolute;*/
+		/*top: 73vh;*/
+		float: left;
+	}
+	div.box{
+		margin: 0vw;
+		padding-top:1.0vh;
+		display: block;
+		border-style: none;
+		border-color:red;
+		box-sizing: border-box;
+		/*posistion: relative;*/
+	}
+	div{
+	}
+
+	.col-1 {width: 8.33%;}
+	.col-1-hidden {width: 8.33%; visibility: hidden;}
+	.col-2 {width: 16.66%;}
+	.col-3 {width: 25%;}
+	.col-4 {width: 33.33%;}
+	.col-5 {width: 41.66%;}
+	.col-6 {width: 50%;}
+	.col-7 {width: 58.33%;}
+	.col-8 {width: 66.66%;}
+	.col-9 {width: 75%;}
+	.col-10 {width: 83.33%;}
+	.col-11 {width: 91.66%;}
+	.col-12 {width: 100%;}
+	
+	[class*="col-"] {
+	  	/*margin: 0.0vw;*/
+		padding: 0.5vw;
+		border-style: solid;
+		border-radius: 0.4vw;
+		border-color:rgb(60,60,60);
+		border-width: 0.4vh;
+		float: left;
+		box-sizing: border-box;
+	}
+	button{
+		visibility: hidden;
+		display:none;
+		
+	}
+	.messageTime{
+		color:pink;
+		font-size:70%;
+	}
+	ul li{
+		list-style-type: none;
+		color:red;
+		padding-bottom: 4%;
+		text-align: left
+	}
+}
+
+@media only screen and (min-width: 740px) {
+  	body {
+    		background-color: black;
+  	}
+	div.chatLog{
+		/*width: 60vw;*/
+		/*max-width: 60vw;*/
+		height: 70vh;
+		min-height: 40vh;
+		max-height: 80vh;
+		/*position: absolute;*/
+		float: left;
+	}	
+	div.userList{
+		/*width: 20vw;*/
+		/*max-width: 20vw;*/
+		height: 70vh;
+		min-height: 40vh;
+		max-height: 80vh;
+		/*position: absolute;*/
+		/*left: 61.5vw;*/
+		float: left;
+		display:block;
+	}
+	div.test{
+		display:block;
+		height: 70vh;
+		min-height: 40vh;
+		max-height: 80vh;
+	}
+	div.boxForMessage{
+		padding: 0.0vw;
+	}
+	div.messageBox{
+		/*width: 81vw;*/
+		/*max-width: 81vw;*/
+		/*width:83.73%;*/
+		min-height: 6vh;
+		max-height: 12vh;
+		border-width:0px 0.4% 0px 0px;
+		/*position: absolute;*/
+		/*top: 73vh;*/
+		float: left;
+	}
+	div.box{
+		margin: 0vw;
+		padding-top:1.0vh;
+		display: block;
+		border-style: none;
+		border-color:red;
+		box-sizing: border-box;
+		/*posistion: relative;*/
+	}
+	div{
+	}
+
+	.col-1 {width: 8.33%;}
+	.col-1-hidden {width: 8.33%; visibility: hidden;}
+	.col-2 {width: 16.66%;}
+	.col-3 {width: 25%;}
+	.col-4 {width: 33.33%;}
+	.col-5 {width: 41.66%;}
+	.col-6 {width: 50%;}
+	.col-7 {width: 58.33%;}
+	.col-8 {width: 66.66%;}
+	.col-9 {width: 75%;}
+	.col-10 {width: 83.33%;}
+	.col-11 {width: 91.66%;}
+	.col-12 {width: 100%;}
+	
+	[class*="col-"] { /*put borders into their own class*/
+	  	/*margin: 0.0vw;*/
+		padding: 0.5vw;
+		border-style: solid;
+		border-radius: 0.4vw;
+		border-color:rgb(60,60,60);
+		border-width: 0.4vh;
+		float: left;
+		box-sizing: border-box;
+	}
+	button{
+		visibility: hidden;
+		display:none;
+		
+	}
+
+	.messageTime{
+		color:pink;
+		font-size:70%;
+	}
+
+	ul li{
+		list-style-type: none;
+		color:red;
+		padding-bottom: 4%;
+		text-align: left;
+	}
+
+}
+
+*{
+	box-sizing: border-box
+}
+
+
+
+
+.username{
+	color:green;
+}
+
+ul{
+	padding-left: 0px;
+}
+
+
+
+.message{
+ /*have an underline after each message*/
+	color: white;
+}
+
+.scrollbar{
+    overflow: auto;
+}
+
+#Users{
+
+}
+
+input[type=submit] {	 
+	background-color: blanchedalmond;
+	border-radius: 6px 6px;
+}
+input[type=submit]:hover {	 
+	background-color: lightblue;
+	border-radius: 6px 6px;
+}
+
+textarea{
+	border-style: none;
+	margin-bottom: 5px;
+   	border-radius: 8px;
+}
+
+.row{
+/**/
+}
+
+div.messageRow
+{ /*contains each user message */
+	border-style: solid;
+	border-color:rgb(90,90,90);
+	border-width: 0px 0px 1px 0px; /*use this and the one above to underscore users messages, consider have a div for message-boxes*/
+
+}
+
+::-webkit-scrollbar{
+	width: 6px;
+}
+::-webkit-scrollbar-track {
+	border-radius: 6px;
+	box-shadow: inset 0 0 3px grey;
+	background: red;
+}
+::-webkit-scrollbar-thumb{
+	background: grey;
+}
+
+::-webkit-scrollbar-thumb:hover{
+	background: black;
+}
