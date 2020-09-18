@@ -8,14 +8,16 @@ namespace ChatApp
 {
     class Webpage
     {
-        public static string GetHTML(List<Message> messages)
+        public static string GetHTML(List<Message> messages, List<User> users)
         {
             string html = "";
             List<string> htmlCodeIndex = ReadHtmlPage("indexBase");
             string htmlMessages = GetHTMLMessages(messages);
-            string htmlUsers = GetHTMLUsers(SQLControl.SQLGetUsers());
+            string htmlUsers = GetHTMLUsers(users);
             Replacer(htmlCodeIndex, htmlUsers, htmlMessages);
             WriteHTMLPage(htmlCodeIndex, "index");
+            foreach (string str in htmlCodeIndex)
+                html += str;
             return html;
         }
 

@@ -338,9 +338,11 @@ div.messageRow
 	background: red;
 }
 ::-webkit-scrollbar-thumb{
+	border-radius: 6px;
 	background: grey;
 }
 
 ::-webkit-scrollbar-thumb:hover{
+	border-radius: 6px;
 	background: black;
 }

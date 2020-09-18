@@ -137,6 +137,17 @@ namespace ChatApp
             SQLTread.Start(sql);
         }
 
+        public static void SQLAddMessage(string message, int id)
+        {
+            string time = DateTime.UtcNow.ToString(new CultureInfo("da-DK"));
+            if (RegexControl.ContainsSingleQuouteMark(message))
+                message = Support.SanitiseSingleQuotes(message);
+            string sql = $"Use {GetDatabaseName}; Insert into Message_Information(Message, Time, UserID) Values('{message}','{time}','{id}')";
+            Thread SQLTread = new Thread(ThreadedControl);
+            SQLTread.Start(sql);
+
+        }
+
         public static void SQLGetMessagesAndDisplay() //change at some point
         {
             string[][] result = SQLet.GetArray($"Use {GetDatabaseName}; Select Time, UserName, Message From Message_Information inner join User_Information on User_Information.UserID = Message_Information.UserID;");
@@ -195,6 +206,11 @@ namespace ChatApp
         public static string[][] GetUserInformation(string username, string info)
         {
             return SQLet.GetArray($"Use {GetDatabaseName}; Select {info} from User_Information where UserName = {username};");
+        }
+
+        public static void CreateUser(string username, string password)
+        {
+            SQLet.Execute($"Use {GetDatabaseName}; Insert Into User_Information(UserName,UserPassword) Values('{username}','{HashConverter.StringToHash(password)}')");
         }
     }
 }

@@ -12,6 +12,8 @@ services:
     - "1433:1435"
   chatapp:
     image: ${DOCKER_REGISTRY-}chatapp
+    stdin_open: true
+    tty: true
     build:
       context: .
       dockerfile: Dockerfile

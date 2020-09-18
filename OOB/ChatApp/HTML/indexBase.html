@@ -5,7 +5,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Chatter</title>
-		<link href="style.css" rel="stylesheet" />
+		<link href="HTML/style.css" rel="stylesheet" />
 	</head>
 	<header>
 
@@ -31,9 +31,9 @@
 		<!--<div class="boxForMessage col-10 backgroundColour scrollbar">-->
 
 			<div class="messageBox col-10 backgroundColour">
-				<form action="" method="post">
+				<form action="/" method="post">
 					<label for="Chat">Chat</label>
-					<textarea id="Chat" name="chat meessage" row="1" style="width:100%">
+					<textarea id="Chat" name="chatmessage" row="1" style="width:100%">
 					</textarea>
 					</br>
 					<input type="submit" value="Submit">
@@ -46,11 +46,7 @@
 	function UserBox()
 	{
 		var x = document.getElementById("Users");
-		<!--if(x.style.display === "block"){-->
-		<!--	x.style.display = "none";-->
-		<!--}else{-->
-		<!--	x.style.display = "block";-->
-		<!--}-->
+		
 		if(x.classList.contains("userList")){
 			x.classList.replace("userList", "test");
 		}else{

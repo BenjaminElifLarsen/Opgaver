@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <None Update="HTML\indexBase.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="HTML\index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
