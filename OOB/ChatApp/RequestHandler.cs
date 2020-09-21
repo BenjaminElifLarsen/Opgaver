@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using TECHCOOL;
 
@@ -10,7 +11,7 @@ namespace ChatApp
 
         private string[] host;
 
-        public string[] SetHost { set => host = value; }
+        public string[] SetHost { set { host = value; Debug.WriteLine(host[0]); } }
 
         public void Start()
         {
