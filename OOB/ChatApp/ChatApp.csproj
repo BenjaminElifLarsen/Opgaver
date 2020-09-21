@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
-    <PackageReference Include="TECHCOOL" Version="1.0.2" />
+    <PackageReference Include="TECHCOOL" Version="1.0.5" />
   </ItemGroup>
 
   <ItemGroup>
