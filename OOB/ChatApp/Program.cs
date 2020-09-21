@@ -13,9 +13,9 @@ namespace ChatApp
                 SQLControl.SQLConnect("master", args[0], windowLogin);
                 RequestHandler requestHandler = new RequestHandler();
                 if (args.Length == 2)
-                    requestHandler.SetHost = args[1];
+                    requestHandler.SetHost = new string[] { args[1] };
                 else
-                    requestHandler.SetHost = "http://localHost:8080/";
+                    requestHandler.SetHost = new string[] { "http://localHost:8080/" };
 
                 Thread webThread = new Thread(new ThreadStart(requestHandler.Start));
                 webThread.Name = "Web RequestHandler Thread";

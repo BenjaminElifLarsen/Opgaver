@@ -8,9 +8,9 @@ namespace ChatApp
     class RequestHandler
     {
 
-        private string host;
+        private string[] host;
 
-        public string SetHost { set => host = value; }
+        public string[] SetHost { set => host = value; }
 
         public void Start()
         {

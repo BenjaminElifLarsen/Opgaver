@@ -47,7 +47,14 @@ namespace ChatApp
                         if (!webThreadRunning) { 
                             RequestHandler requestHandler = new RequestHandler();
                             Thread webThread = new Thread(new ThreadStart(requestHandler.Start));
-                            requestHandler.SetHost = "http://localHost:8080/";
+                            if(MenuVisual.MenuRun(new string[] { "Yes", "No" }, "Enter IP-address for port 8080?") == 0)
+                            {
+                                Console.Write("http://");
+                                string hostPart = Console.ReadLine();
+                                requestHandler.SetHost = new string[] { "http://" + hostPart + ":8080/" };
+                            }
+                            else
+                                requestHandler.SetHost = new string[] { "http://localHost:8080/" };
                             webThread.Name = "Web RequestHandler Thread";
                             webThread.Start();
                             webThreadRunning = true;
