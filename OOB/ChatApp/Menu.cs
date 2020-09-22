@@ -54,7 +54,7 @@ namespace ChatApp
                                 requestHandler.SetHost = new string[] { "http://" + hostPart + ":8080/" };
                             }
                             else
-                                requestHandler.SetHost = new string[] { "http://localHost:8080/" };
+                                requestHandler.SetHost = new string[] { "http://localhost:8080/" };
                             webThread.Name = "Web RequestHandler Thread";
                             webThread.Start();
                             webThreadRunning = true;

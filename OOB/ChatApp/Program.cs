@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using System.Net.Sockets;
 using System.Threading;
 
 namespace ChatApp
@@ -7,6 +9,10 @@ namespace ChatApp
     {
         static void Main(string[] args)
         {
+            TcpListener test = new TcpListener(8081);
+            test.Start();
+            var v = test.LocalEndpoint;
+            var test2 = Dns.GetHostAddresses(Dns.GetHostName());
             if(args.Length > 0)
             {
                 bool windowLogin = args[0] == "BENJAMIN-ELIF-L\\MSSQLSERVER02";

@@ -16,8 +16,11 @@ namespace ChatApp
             string htmlUsers = GetHTMLUsers(users);
             Replacer(htmlCodeIndex, htmlUsers, htmlMessages);
             WriteHTMLPage(htmlCodeIndex, "index");
+            
             foreach (string str in htmlCodeIndex)
                 html += str;
+            string js = File.ReadAllText("HTML/updateMessages.js");
+            html = html.Replace("{{JavaScript}}", js);
             return html;
         }
 
@@ -101,6 +104,21 @@ namespace ChatApp
                 foreach (string str in htmlLines)
                     file.WriteLine(str);
             }
+        }
+
+        public static string GenerateLogin()
+        {
+            string html = "";
+            string login = "";
+            List<string> htmlCodeIndex = ReadHtmlPage("indexBase");
+            List<string> htmlCodeLogin = ReadHtmlPage("login");
+            WriteHTMLPage(htmlCodeIndex, "index");
+            foreach (string str in htmlCodeLogin)
+                login += str;
+            Replacer(htmlCodeIndex, null, login);
+            foreach (string str in htmlCodeIndex)
+                html += str;
+            return html;
         }
 
     }

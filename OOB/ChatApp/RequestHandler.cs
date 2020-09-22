@@ -15,13 +15,21 @@ namespace ChatApp
 
         public void Start()
         {
-            WebLet httpListener = new WebLet(host);
+            WebLet httpListener = new WebLet(host[0]);
             //routering, paring af urler og metoder
+            httpListener.Route("^[/]login$",RequestLogin);
             httpListener.Route("^[/]users$", RequestUser);
             httpListener.Route("^[/]messages$", RequestMessages);
             httpListener.Route("^[/]$HTML^[/]$style^[/]$css", RequestCSS);
             httpListener.Route("^[/]$", RequestRoot);
             httpListener.Start();
+        }
+
+        private string RequestLogin(Request r)
+        {
+
+
+            return Webpage.GenerateLogin();
         }
 
         //user request localHost:8080/
