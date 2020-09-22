@@ -7,7 +7,7 @@ namespace ChatApp
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main(string[] args) //docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Password123." -p 1435:1433 --name ChatSQL2 -d mcr.microsoft.com/mssql/server:2019-CU5-ubuntu-18.04
         {
             TcpListener test = new TcpListener(8081);
             test.Start();
