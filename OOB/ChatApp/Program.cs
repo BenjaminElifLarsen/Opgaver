@@ -27,7 +27,7 @@ namespace ChatApp
             }
             else
             {
-                string[] options = new string[] { "BENJAMIN-ELIF-L\\MSSQLSERVER02", "localHost,1433", "Write Self" };
+                string[] options = new string[] { "BENJAMIN-ELIF-L\\MSSQLSERVER02", "localHost,1435", "Write Self" };
                 do
                 {
                     byte answer = MenuVisual.MenuRun(options);

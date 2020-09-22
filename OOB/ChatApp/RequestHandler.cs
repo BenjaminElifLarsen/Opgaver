@@ -64,13 +64,15 @@ namespace ChatApp
             {
                 string username = data.Post["username"];
                 username = Support.SanitiseSingleQuotes(username);
+                SQLControl.SQLGetUser(username);
             }
         }
 
         private void PostMessage(RequestData data)
         {
             string clientMessage = data.Post["chatmessage"];
-            SQLControl.SQLAddMessage(clientMessage, 1);
+            if(data.Post["userID"] != null)
+            SQLControl.SQLAddMessage(clientMessage, Int32.Parse(data.Post["userID"]));
 
         }
 
