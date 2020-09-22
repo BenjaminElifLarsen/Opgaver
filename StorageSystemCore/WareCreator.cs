@@ -100,15 +100,15 @@ namespace LagerSystem
         }
 
 
-        private object[] CreateCtorObject(object[] primaryParameters, object[] secundaryParameters)
-        {
-            object[] allParameters = new object[primaryParameters.Length + secundaryParameters.Length];
-            for(int m = 0; m < allParameters.Length; m++)
-            {
+        //private object[] CreateCtorObject(object[] primaryParameters, object[] secundaryParameters) //purpose forfilled in WareInformation.AddWare(string,string,type,int,object[])
+        //{
+        //    object[] allParameters = new object[primaryParameters.Length + secundaryParameters.Length];
+        //    for(int m = 0; m < allParameters.Length; m++)
+        //    {
 
-            }
-            throw new NotImplementedException();
-        }
+        //    }
+        //    throw new NotImplementedException();
+        //}
 
         private byte SelectConstructor(string[] options)
         {
@@ -116,6 +116,11 @@ namespace LagerSystem
             return Visual.MenuRun(options, "Select more information");
         }
 
+        /// <summary>
+        /// Creates a string array, where each entry contains a string with all non-base variable names, and returns it. 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         private string[] CreateSelectableConstructorList(Type type) //change return type to string[]
         {
             List<List<string>> ctorsFromClass = WareInformation.FindConstructorsParameterNames(type);
@@ -187,7 +192,12 @@ namespace LagerSystem
             return parameterValues;
         }
 
-
+        /// <summary>
+        /// Generic method to convert a string to a value type. Conversion for nullables does not work if the string contains a non-null value, rather the underlying type is returned. 
+        /// </summary>
+        /// <param name="primaryParameters"></param>
+        /// <param name="secundaryParameters"></param>
+        /// <returns></returns>
         private static t EnterExtraInformation<t>(string information) //need to catch cases where it cannot convert, e.g. converting "12q" to an int32. Also need to deal with an empty string (it should just return null
         {
             //TypeCode typeCode = Type.GetTypeCode(type); //https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.typeconverter?view=netcore-3.1
@@ -216,6 +226,10 @@ namespace LagerSystem
             }
         }
 
+        /// <summary>
+        /// Asks if the user wants to input more information or not and returns true if they want too.
+        /// </summary>
+        /// <returns></returns>
         private bool ExtraConstructorMenu()
         {
             string title = "Do you want to add more information?";
@@ -227,7 +241,6 @@ namespace LagerSystem
         private bool ConstructorsExist(Type type)
         {
             return WareInformation.FindConstructorsParameterNames(type).Count > 1;
-            throw new NotImplementedException();
         }
 
 
