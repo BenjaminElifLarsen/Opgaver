@@ -72,7 +72,7 @@ namespace ChatApp
             {
                 try
                 {
-                    string username = data.Post["username"]; //try catch this in case of USername is to long 
+                    string username = data.Post["username"]; //try catch this in case of Username is to long 
                     username = Support.SanitiseSingleQuotes(username);
                     return SQLControl.SQLGetUser(username);
                 }
