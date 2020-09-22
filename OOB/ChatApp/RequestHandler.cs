@@ -29,7 +29,7 @@ namespace ChatApp
         {
 
 
-            return Webpage.GenerateLogin();
+            return Webpage.GenerateLoginHTML();
         }
 
         //user request localHost:8080/
@@ -39,11 +39,39 @@ namespace ChatApp
             if(method.ToLower() == "post")
             {
                 RequestData data = r.Data;
-                string clientMessage = data.Post["chatmessage"];
-                SQLControl.SQLAddMessage(clientMessage, 1);
+                if (data.Post.ContainsKey("username"))
+                {
+                    PostUser(data);
+                }
+                else if (data.Post.ContainsKey("chatmessage"))
+                {
+                    PostMessage(data);
+                }
             }
 
             return Webpage.GetHTML(SQLControl.SQLGetMessages(), SQLControl.SQLGetUsers());
+        }
+
+        private void PostUser(RequestData data)
+        {
+            try
+            {
+                string username = data.Post["username"];
+                username = Support.SanitiseSingleQuotes(username);
+                SQLControl.CreateUser(data.Post["username"], "Test123.");
+            }
+            catch
+            {
+                string username = data.Post["username"];
+                username = Support.SanitiseSingleQuotes(username);
+            }
+        }
+
+        private void PostMessage(RequestData data)
+        {
+            string clientMessage = data.Post["chatmessage"];
+            SQLControl.SQLAddMessage(clientMessage, 1);
+
         }
 
         //localhost:8080/messages

@@ -106,18 +106,18 @@ namespace ChatApp
             }
         }
 
-        public static string GenerateLogin()
+        public static string GenerateLoginHTML()
         {
             string html = "";
-            string login = "";
-            List<string> htmlCodeIndex = ReadHtmlPage("indexBase");
-            List<string> htmlCodeLogin = ReadHtmlPage("login");
-            WriteHTMLPage(htmlCodeIndex, "index");
-            foreach (string str in htmlCodeLogin)
-                login += str;
-            Replacer(htmlCodeIndex, null, login);
-            foreach (string str in htmlCodeIndex)
-                html += str;
+            //string login = "";
+            //List<string> htmlCodeIndex = ReadHtmlPage("indexBase");
+            //List<string> htmlCodeLogin = ReadHtmlPage("login");
+            //WriteHTMLPage(htmlCodeIndex, "index");
+            //foreach (string str in htmlCodeLogin)
+            //    login += str;
+            //Replacer(htmlCodeIndex, null, login);
+            //foreach (string str in htmlCodeIndex)
+            //    html += str;
             return html;
         }
 

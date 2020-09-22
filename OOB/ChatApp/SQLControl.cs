@@ -117,6 +117,14 @@ namespace ChatApp
             return usernames;
         }
 
+        public static User SQLGetUser(string username)
+        {
+            string[][] array = SQLet.GetArray($"Use {GetDatabaseName}; Select UserName, UserID From User_Information Where Username = '{username}'");
+            User user = new User(array[0][0], int.Parse(array[0][1]));
+                
+            return user;
+        }
+
         public static void SQLRemoveUser(string username)
         {
             string sql = $"Use {GetDatabaseName}; Delete from User_Information where UserName = '{username}'";
