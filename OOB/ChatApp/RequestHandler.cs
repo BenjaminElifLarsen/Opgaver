@@ -38,33 +38,48 @@ namespace ChatApp
             string method = r.Context.Request.HttpMethod;
             if(method.ToLower() == "post")
             {
+                User user = null;
                 RequestData data = r.Data;
                 if (data.Post.ContainsKey("username"))
                 {
-                    PostUser(data);
+                    user = PostUser(data);
                 }
                 else if (data.Post.ContainsKey("chatmessage"))
                 {
-                    PostMessage(data);
+                    user = SQLControl.SQLGetUser(Int32.Parse(data.Post["userID"]));
+                    if(user != null)
+                        PostMessage(data);
                 }
+
+                if (user != null)
+                    return Webpage.GetHTML(SQLControl.SQLGetMessages(), SQLControl.SQLGetUsers(), user);
             }
 
-            return Webpage.GetHTML(SQLControl.SQLGetMessages(), SQLControl.SQLGetUsers());
+            //return Webpage.GetHTML(SQLControl.SQLGetMessages(), SQLControl.SQLGetUsers());
+            return Webpage.GenerateLoginHTML();
         }
 
-        private void PostUser(RequestData data)
+        private User PostUser(RequestData data)
         {
             try
             {
                 string username = data.Post["username"];
                 username = Support.SanitiseSingleQuotes(username);
-                SQLControl.CreateUser(data.Post["username"], "Test123.");
+                SQLControl.CreateUser(data.Post["username"], data.Post["password"]);
+                return SQLControl.SQLGetUser(username);
             }
             catch
             {
-                string username = data.Post["username"];
-                username = Support.SanitiseSingleQuotes(username);
-                SQLControl.SQLGetUser(username);
+                try
+                {
+                    string username = data.Post["username"]; //try catch this in case of USername is to long 
+                    username = Support.SanitiseSingleQuotes(username);
+                    return SQLControl.SQLGetUser(username);
+                }
+                catch
+                {
+                    return null;
+                }
             }
         }
 
@@ -72,8 +87,7 @@ namespace ChatApp
         {
             string clientMessage = data.Post["chatmessage"];
             if(data.Post["userID"] != null)
-            SQLControl.SQLAddMessage(clientMessage, Int32.Parse(data.Post["userID"]));
-
+                SQLControl.SQLAddMessage(clientMessage, Int32.Parse(data.Post["userID"]));
         }
 
         //localhost:8080/messages

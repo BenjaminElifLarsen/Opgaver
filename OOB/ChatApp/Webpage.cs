@@ -8,13 +8,13 @@ namespace ChatApp
 {
     class Webpage
     {
-        public static string GetHTML(List<Message> messages, List<User> users)
+        public static string GetHTML(List<Message> messages, List<User> users, User user)
         {
             string html = "";
             List<string> htmlCodeIndex = ReadHtmlPage("indexBase");
             string htmlMessages = GetHTMLMessages(messages);
             string htmlUsers = GetHTMLUsers(users);
-            Replacer(htmlCodeIndex, htmlUsers, htmlMessages);
+            Replacer(htmlCodeIndex, htmlUsers, htmlMessages, user.ID);
             WriteHTMLPage(htmlCodeIndex, "index");
             
             foreach (string str in htmlCodeIndex)
@@ -34,10 +34,11 @@ namespace ChatApp
         }
 
 
-        private static void Replacer(List<string> htmlStrings, string users, string messages)
+        private static void Replacer(List<string> htmlStrings, string users, string messages, int userID = 1)
         {
             Replace(htmlStrings, "{{messages}}", messages);
             Replace(htmlStrings, "{{users}}", users);
+            Replace(htmlStrings, "{{USERID}}", userID.ToString());
         }
 
         private static string[] GenerateMessagesWithHTML(List<Message> nonHTMLMessage) 
