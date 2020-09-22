@@ -158,27 +158,23 @@ namespace LagerSystem
             return response == 0;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private static void KeyEvnetHandler(object sender, ControlEvents.KeyEventArgs e)
         {
             key = e.Key;
         }
 
 
+
         /// <summary>
-        /// https://stackoverflow.com/questions/1749966/c-sharp-how-to-determine-whether-a-type-is-a-number
+        /// Returns the default value of the ValueType in <paramref name="type"/>, else 
         /// </summary>
-        private static HashSet<Type> NumericalTypes = new HashSet<Type>
-        {
-            typeof(int),
-            typeof(float)
-        };
-
-        public static bool IsNumericalType(Type type)
-        {
-            return NumericalTypes.Contains(type) || NumericalTypes.Contains(Nullable.GetUnderlyingType(type));
-        }
-
-
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static dynamic GetDefaultValueFromValueType(string type)
         {
             if(Nullable.GetUnderlyingType(Type.GetType("System."+type)) != null)
