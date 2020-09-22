@@ -23,7 +23,7 @@ namespace LagerSystem
         {
         }
 
-        public Liquid(string name, string id, string information, int amount, WarePublisher warePublisher) : base(name, id, information, amount, warePublisher)
+        public Liquid(string name, string id, int amount, string information, WarePublisher warePublisher) : base(name, id, amount, information, warePublisher)
         {
         }
 
@@ -43,7 +43,7 @@ namespace LagerSystem
             this.boilingPoint = boilingPoint;
         }
 
-        public Liquid(string name, string id, string information, int amount, double minTemp, float? boilingPoint, WarePublisher warePublisher) : base(name, id, information, amount, warePublisher)
+        public Liquid(string name, string id, int amount, string information, double minTemp, float? boilingPoint, WarePublisher warePublisher) : base(name, id, amount, information, warePublisher)
         {
             this.minTemp = minTemp;
             this.boilingPoint = boilingPoint;

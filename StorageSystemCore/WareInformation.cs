@@ -59,7 +59,7 @@ namespace LagerSystem
         /// <param name="id"></param>
         /// <param name="type"></param>
         /// <param name="amount"></param>
-        public static void AddWare(string name, string id, string type, int amount) //move later to its final class 
+        public static void AddWare(string name, string id, string type, int amount, object[] extra) //move later to its final class 
         {
             if(type.Split(' ').Length != 1)
             {
@@ -69,7 +69,14 @@ namespace LagerSystem
                     type += typing;
             }
             Type test = Type.GetType("LagerSystem."+type);
-            wares.Add((Ware)Activator.CreateInstance(test, new object[]{name,id,amount, Publisher.PubWare }));
+            object[] dataObject = new object[4+extra.Length];
+            dataObject[0] = name;
+            dataObject[1] = id;
+            dataObject[2] = amount;
+            for (int i = 3; i < dataObject.Length - 1; i++)
+                dataObject[i] = extra[i - 3];
+            dataObject[dataObject.Length-1] = Publisher.PubWare;
+            wares.Add((Ware)Activator.CreateInstance(test, dataObject ));
         }
 
         public static void AddWareDefault() //when storage class has been added move this function to it
@@ -161,14 +168,14 @@ namespace LagerSystem
             {
                 constructors.Add(new Dictionary<string, Type>());
 
-                foreach (ParameterInfo parameterInfo in constructorInfo.GetParameters())
+                foreach (ParameterInfo parameterInfo in constructorInfo.GetParameters()) //could make it such that it contains an if-statment that ensures the amount of parameters are the same in extraarametesr + the base amount
                 {
                     if (parameterInfo.ParameterType != typeof(WarePublisher))
                         if(!baseCtorVariables.Contains(parameterInfo.Name))
                             constructors[constructors.Count - 1].Add(parameterInfo.Name,parameterInfo.ParameterType);
                 }
             }
-
+            constructors.RemoveAt(0);
             return constructors; //create a default version of the value (using the new support function) instead of Type, this means you should be able to use the new WareCreator methods better. 
             throw new NotImplementedException();
         }

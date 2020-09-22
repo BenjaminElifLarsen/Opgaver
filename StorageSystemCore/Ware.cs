@@ -45,7 +45,7 @@ namespace LagerSystem
         /// <param name="information">Information about the ware.</param>
         /// <param name="amount">The unit amount of the ware.</param>
         /// <param name="warePublisher">...</param>
-        public Ware(string name, string id, string information, int amount, WarePublisher warePublisher) : this(name, id, amount, warePublisher)
+        public Ware(string name, string id, int amount, string information, WarePublisher warePublisher) : this(name, id, amount, warePublisher)
         {
             this.information = information;
         }

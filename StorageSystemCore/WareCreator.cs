@@ -74,16 +74,16 @@ namespace LagerSystem
                                     foreach (string typing in split)
                                         type += typing;
                                 }
-                                if(ConstructorsExist(Type.GetType("LagerSystem." + type)))
+                                object[] filledOutParameters = null;
+                                if (ConstructorsExist(Type.GetType("LagerSystem." + type)))
                                     if(ExtraConstructorMenu())
                                     {
                                         string[] extraParameters = CreateSelectableConstructorList(Type.GetType("LagerSystem." + type));
                                         byte selectedCtor = SelectConstructor(extraParameters);
-                                        object[] filledOutParameters = ArquiringInformation(Type.GetType("LagerSystem." + type), selectedCtor);
+                                        filledOutParameters = ArquiringInformation(Type.GetType("LagerSystem." + type), selectedCtor);
                                         
                                     }
-                                    else
-                                        WareInformation.AddWare(name, ID, type, (int)amount); //make this take an object[] instead of different parameters, also do not need to be in an else if done like that
+                                WareInformation.AddWare(name, ID, type, (int)amount, filledOutParameters);
                             }
                         }
                         break;
@@ -187,15 +187,6 @@ namespace LagerSystem
             return parameterValues;
         }
 
-        /// <summary>
-        /// Test function, remove later...
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public static object Test()
-        {
-            return EnterExtraInformation<UInt32>("");
-        }
 
         private static t EnterExtraInformation<t>(string information) //need to catch cases where it cannot convert, e.g. converting "12q" to an int32. Also need to deal with an empty string (it should just return null
         {
@@ -223,8 +214,6 @@ namespace LagerSystem
                 else
                     throw new InvalidCastException();
             }
-
-            throw new NotImplementedException();
         }
 
         private bool ExtraConstructorMenu()
