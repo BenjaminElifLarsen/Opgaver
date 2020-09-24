@@ -8,15 +8,30 @@ namespace LagerSystem
 {
     public class WareSeacheableAttribute : Attribute
     {
-        private string property;
+        /// <summary>
+        /// The name of the attribute.
+        /// </summary>
+        private string name;
+        /// <summary>
+        /// The name of the attribute as it is in the sql database.
+        /// </summary>
+        private string sqlName;
 
-        public WareSeacheableAttribute(string property)
+        public WareSeacheableAttribute(string name, string sqlName)
         {
-            this.property = property;
+            this.name = name;
+            this.sqlName = sqlName;
         }
 
-        public string Property { get => property; set => property = value; }
+        /// <summary>
+        /// Gets and sets the name of the attribute.
+        /// </summary>
+        public string Name { get => name; set => name = value; }
 
+        /// <summary>
+        /// Gets and sets the name of the attribute as it is in the SQL database.
+        /// </summary>
+        public string SQLName { get => sqlName; set => sqlName = value; }
 
     }
 }

@@ -59,7 +59,6 @@ namespace LagerSystem
                 return --currentHoveredOver;
             else
                 return currentHoveredOver;
-            key = new ConsoleKey();
         }
 
         /// <summary>

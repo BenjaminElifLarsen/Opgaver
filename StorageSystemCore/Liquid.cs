@@ -50,19 +50,19 @@ namespace LagerSystem
         }
 
 
-        [WareSeacheable("Minimum Temperature")]
+        [WareSeacheable("Minimum Temperature", "minTemp")]
         /// <summary>
         /// Gets the minimum temperature the materiale is liquid at.
         /// </summary>
         public double MinimumTemperature { get => minTemp; }
 
-        [WareSeacheable("Boiling Point")]
+        [WareSeacheable("Boiling Point","boilingPoint")]
         /// <summary>
         /// ... null indicates the boiling point has not been set.
         /// </summary>
         public float? GetBoilingPoint { get => boilingPoint; }
 
-        [WareSeacheable("Volatile")]
+        [WareSeacheable("Volatile","volatile")]
         /// <summary>
         /// 
         /// </summary>

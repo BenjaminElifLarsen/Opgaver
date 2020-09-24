@@ -133,14 +133,13 @@ namespace LagerSystem
             foreach (PropertyInfo propertyInfo in propertyInfos)
                 foreach (Attribute attre in propertyInfo.GetCustomAttributes())
                     if (attre is WareSeacheableAttribute info)
-                        properties.Add(info.Property);
-                        //typeString += info.Property + " ";
+                        properties.Add(info.Name);
             
             return properties;
         }
 
         /// <summary>
-        /// 
+        /// Finds and returns the name of all parameters belogning
         /// </summary>
         /// <param name="type">The type to find all constructors of.</param>
         public static List<List<string>> FindConstructorsParameterNames(Type type)
