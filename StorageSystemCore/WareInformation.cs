@@ -70,14 +70,14 @@ namespace LagerSystem
                 PropertyInfo[] propertyInfoArray = ware.GetType().GetProperties();
                 foreach(PropertyInfo propertyInfo in propertyInfoArray)
                 {
-                    foreach(CustomAttributeData attribute in propertyInfo.CustomAttributes)
+                    foreach(Attribute attribute in propertyInfo.GetCustomAttributes())
                     {
-                        if(attribute.AttributeType == typeof(WareSeacheableAttribute))
+                        if(attribute.GetType() == typeof(WareSeacheableAttribute))
                         { //FindSearchableAttributes has the problem solved using a list, but figure out a why to solve this problem without
                             WareSeacheableAttribute seacheableAttribute = attribute as WareSeacheableAttribute;
-                            if (attributesToSearchFor.Contains(attribute.ConstructorArguments[0].Value)) { //returns "\"value\""  
+                            if (attributesToSearchFor.Contains(seacheableAttribute.Name)) { //returns "\"value\""  
                                 string value = propertyInfo.GetValue(ware) != null ? propertyInfo.GetValue(ware).ToString() + " " : "null "; //needs to deal with arrays, lists and such
-                                wareInformation[wareInformation.Count - 1].Add(attribute.ConstructorArguments[0].ToString(), value); //have an attribute for collections, i.e. true or false
+                                wareInformation[wareInformation.Count - 1].Add(seacheableAttribute.Name, value); //have an attribute for collections, i.e. true or false
                             }
                         }
                     }
