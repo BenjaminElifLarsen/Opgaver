@@ -139,7 +139,7 @@ namespace LagerSystem
         }
 
         /// <summary>
-        /// Finds and returns the name of all parameters belogning
+        /// Finds and returns the name of all parameters belogning to each constructor of type <paramref name="type"/>
         /// </summary>
         /// <param name="type">The type to find all constructors of.</param>
         public static List<List<string>> FindConstructorsParameterNames(Type type)

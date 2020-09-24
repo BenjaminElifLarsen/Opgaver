@@ -17,6 +17,11 @@ namespace LagerSystem
         /// </summary>
         private string sqlName;
 
+        /// <summary>
+        /// The default constructor for WareSeacheableAttribute class 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="sqlName"></param>
         public WareSeacheableAttribute(string name, string sqlName)
         {
             this.name = name;
