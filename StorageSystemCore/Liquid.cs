@@ -9,9 +9,9 @@ namespace LagerSystem
     [WareType("Liquid")]
     class Liquid : Ware
     {
-        protected double minTemp;
+        protected double? minTemp;
         protected float? boilingPoint;
-        protected bool @volatile;
+        protected bool? @volatile;
         /// <summary>
         /// The basic ware consturctor
         /// </summary>
@@ -54,7 +54,7 @@ namespace LagerSystem
         /// <summary>
         /// Gets the minimum temperature the materiale is liquid at.
         /// </summary>
-        public double MinimumTemperature { get => minTemp; }
+        public double? MinimumTemperature { get => minTemp; }
 
         [WareSeacheable("Boiling Point","boilingPoint")]
         /// <summary>
@@ -66,7 +66,7 @@ namespace LagerSystem
         /// <summary>
         /// 
         /// </summary>
-        public bool IsVolatile { get => @volatile; }
+        public bool? IsVolatile { get => @volatile; }
 
 
     }

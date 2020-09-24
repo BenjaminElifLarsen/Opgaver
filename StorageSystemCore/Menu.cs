@@ -14,7 +14,7 @@ namespace LagerSystem
         public void MainMenu() //put WareCreateMenu and WareChangeMenu into a sub menu. 
         {
             string title = "Main Menu";
-            string[] menuOptions = new string[] {"Storage","Add Ware","Change Ware", "Exit" };
+            string[] menuOptions = new string[] {"Storage","Add Ware","Change Ware", "Exit", "Test" };
             do
             {
                 byte answer = Visual.MenuRun(menuOptions, title);
@@ -34,6 +34,10 @@ namespace LagerSystem
 
                     case 3:
                         Environment.Exit(0);
+                        break;
+
+                    case 4:
+                        WareViewMenu();
                         break;
                 }
             } while (true);
@@ -145,14 +149,20 @@ namespace LagerSystem
 
         private void WareViewAllMenu()
         {
-
             Visual.WareDisplay(WareInformation.GetWareInformation());
             Support.WaitOnKeyInput();
         }
 
-
-
-
+        private void WareViewMenu() 
+        {
+            Console.Clear();
+            List<string> searchAttributes = WareInformation.FindAllSearchableAttributesNames();
+            foreach(string seAttr in searchAttributes)
+            {
+                Console.WriteLine(seAttr);
+            }
+            List<Dictionary<string,string>> test = WareInformation.GetWareInformation(new string[] { "Name" }.ToList());
+        }
 
     }
 }

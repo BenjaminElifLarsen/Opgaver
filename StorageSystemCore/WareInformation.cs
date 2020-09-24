@@ -52,6 +52,40 @@ namespace LagerSystem
             return wareInformation;
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="attributesToSearchFor"></param>
+        /// <returns></returns>
+        public static List<Dictionary<string, string>> GetWareInformation(List<string> attributesToSearchFor)
+        {
+            if (attributesToSearchFor == null)
+                throw new NullReferenceException();
+            List<Dictionary<string, string>> wareInformation = new List<Dictionary<string, string>>(); 
+            foreach(Ware ware in wares)
+            {
+                wareInformation.Add(new Dictionary<string, string>());
+                List<string> information = new List<string>();
+                PropertyInfo[] propertyInfoArray = ware.GetType().GetProperties();
+                foreach(PropertyInfo propertyInfo in propertyInfoArray)
+                {
+                    foreach(CustomAttributeData attribute in propertyInfo.CustomAttributes)
+                    {
+                        if(attribute.AttributeType == typeof(WareSeacheableAttribute))
+                        { //FindSearchableAttributes has the problem solved using a list, but figure out a why to solve this problem without
+                            WareSeacheableAttribute seacheableAttribute = attribute as WareSeacheableAttribute;
+                            if (attributesToSearchFor.Contains(attribute.ConstructorArguments[0].Value)) { //returns "\"value\""  
+                                string value = propertyInfo.GetValue(ware) != null ? propertyInfo.GetValue(ware).ToString() + " " : "null "; //needs to deal with arrays, lists and such
+                                wareInformation[wareInformation.Count - 1].Add(attribute.ConstructorArguments[0].ToString(), value); //have an attribute for collections, i.e. true or false
+                            }
+                        }
+                    }
+                }
+            }
+            return wareInformation;
+        }
+
         /// <summary>
         /// Adds a new ware of <paramref name="type"/> with the values of <paramref name="name"/>, <paramref name="id"/> and <paramref name="amount"/>
         /// </summary>
@@ -124,16 +158,16 @@ namespace LagerSystem
         /// </summary>
         /// <param name="type">The type to find all searchable attributse of.</param>
         /// <returns></returns>
-        private static List<string> FindSearchableAttributes(Type type)
+        public static List<string[]> FindSearchableAttributes(Type type) //consider altering to return both name and sql name 
         {
-            List<string> properties = new List<string>();
+            List<string[]> properties = new List<string[]>();
             //string typeString = ""; //maybe return a dictionary for the data type of the property to know what the user can enter.
             PropertyInfo[] propertyInfos = type.GetProperties();
             //Attribute[] attributes = type.GetMethods();
             foreach (PropertyInfo propertyInfo in propertyInfos)
                 foreach (Attribute attre in propertyInfo.GetCustomAttributes())
                     if (attre is WareSeacheableAttribute info)
-                        properties.Add(info.Name);
+                        properties.Add(new string[] { info.Name, info.SQLName });
             
             return properties;
         }
@@ -177,6 +211,51 @@ namespace LagerSystem
             constructors.RemoveAt(0);
             return constructors; //create a default version of the value (using the new support function) instead of Type, this means you should be able to use the new WareCreator methods better. 
             throw new NotImplementedException();
+        }
+
+        public static List<string> FindWareTypes() 
+        {
+            List<string> typeList = new List<string>();
+            Type[] types = Assembly.GetExecutingAssembly().GetTypes(); //finds all types in the executing assembly
+            foreach (Type type in types)
+            {
+                List<Attribute> attrs = type.GetCustomAttributes().ToList(); //converts their custom attributes to a list
+                if (!type.IsAbstract) //ensures the base class is not a "valid" type since it is abstract
+                    foreach (Attribute attr in attrs)
+                        if (attr is WareTypeAttribute info) //is the attribute the correct one
+                        {
+                            typeList.Add(info.Type); //add to list
+                            break;
+                        }
+            }
+            return typeList;
+        }
+
+        /// <summary>
+        /// Finds and returns the name of all searchable attributes over all classes that inherences from <c>Ware</c>.
+        /// </summary>
+        /// <returns></returns>
+        public static List<string> FindAllSearchableAttributesNames() //rename
+        {
+            List<string> listOfTypes = FindWareTypes(); //have a function that calls this one and returns name, one for sqlnames and one for both
+            List<string> searchable = new List<string>();
+
+            foreach (string type in listOfTypes)
+            {
+                string type_ = type;
+                if (type_.Split(' ').Length != 1) //this if-statment exist in two locations, create a support function for this. 
+                {
+                    string[] split = type.Split(' ');
+                    type_ = "";
+                    foreach (string typing in split)
+                        type_ += typing;
+                }
+                List<string[]> attributes = FindSearchableAttributes(Type.GetType("LagerSystem." + type_));
+                foreach (string[] attrArray in attributes)
+                    if (!searchable.Contains(attrArray[0]))
+                        searchable.Add(attrArray[0]);
+            }
+            return searchable;
         }
 
     }

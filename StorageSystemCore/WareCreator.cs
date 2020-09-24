@@ -369,29 +369,12 @@ namespace LagerSystem
 
         private string SelectType()
         {
-            string[] possibleTypes = FindWareTypes().ToArray(); //should handle an empty list
+            string[] possibleTypes = WareInformation.FindWareTypes().ToArray(); //should handle an empty list
 
             return possibleTypes[Visual.MenuRun(possibleTypes,"Select Type")];
             //throw new NotImplementedException(); //use reflection to find all types.
         }
 
-        private List<string> FindWareTypes() //move into Support
-        {
-            List<string> typeList = new List<string>();
-            Type[] types = Assembly.GetExecutingAssembly().GetTypes(); //finds all types in the executing assembly
-            foreach (Type type in types)
-            {
-                List<Attribute> attrs = type.GetCustomAttributes().ToList(); //converts their custom attributes to a list
-                if(!type.IsAbstract) //ensures the base class is not a "valid" type since it is abstract
-                    foreach (Attribute attr in attrs) 
-                        if (attr is WareTypeAttribute info) //is the attribute the correct one
-                        {
-                            typeList.Add(info.Type); //add to list
-                            break;
-                        }
-                }
-            return typeList;
-        }
 
 
         protected void CreateWareEventHandler(object sender, ControlEvents.CreateWareEventArgs e) 

@@ -28,7 +28,7 @@ namespace LagerSystem
         /// <summary>
         /// Information about the ware. 
         /// </summary>
-        protected string information = "";
+        protected string information;
 
         private Ware() { }
 
