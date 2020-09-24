@@ -13,10 +13,22 @@ namespace LagerSystem
     [WareType("None")] //Ware is abstract and cannot be initialisated
     abstract class Ware
     {
+        /// <summary>
+        /// The name of the ware.
+        /// </summary>
         protected string name;
+        /// <summary>
+        /// The unique ID of the ware.
+        /// </summary>
         protected string id;
-        protected int amount; //should a negative unit amount be allowed? E.g. more units ordered than there are? 
-        protected string information = "Missing";
+        /// <summary>
+        /// The amount of the ware. 
+        /// </summary>
+        protected int amount;  
+        /// <summary>
+        /// Information about the ware. 
+        /// </summary>
+        protected string information = "";
 
         private Ware() { }
 
