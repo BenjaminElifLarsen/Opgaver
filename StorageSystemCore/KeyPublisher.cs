@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace LagerSystem
 {
+    /// <summary>
+    /// Contains event, delegates and functions related to arquring keyboard interaction.
+    /// </summary>
     public class KeyPublisher
     {
         public delegate void keyPressEventHandler(object sender, ControlEvents.KeyEventArgs args);
