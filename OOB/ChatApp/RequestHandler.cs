@@ -33,7 +33,7 @@ namespace ChatApp
         }
 
         //user request localHost:8080/
-        private string RequestRoot(Request r)
+        private string RequestRoot(Request r) //needed to permit the firewall to transmit tcp data out on port 80
         {
             string method = r.Context.Request.HttpMethod;
             if(method.ToLower() == "post")
@@ -46,8 +46,8 @@ namespace ChatApp
                 }
                 else if (data.Post.ContainsKey("chatmessage"))
                 {
-                    user = SQLControl.SQLGetUser(Int32.Parse(data.Post["userID"]));
-                    if(user != null)
+                    user = SQLControl.SQLGetUser(Int32.Parse(data.Post["userID"])); //fails right now here because of userID is not set. input string was not in right format (value is {{USERID}} if
+                    if(user != null) //Webpage.GetHTML is called instead of WebPage.GeneratorLoginHTML() the first time
                         PostMessage(data);
                 }
 
