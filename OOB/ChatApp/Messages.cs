@@ -9,6 +9,7 @@ namespace ChatApp
     {
         static public void AddMessage()
         {
+            Reporter.Log($"Entered Add Message");
             Console.Clear();
 
             string message = "";
@@ -25,6 +26,7 @@ namespace ChatApp
 
         static public void RemoveMessage()
         {
+            Reporter.Log($"Entered Remove Message");
             Console.Clear();
             string toRemove = "";
             do
@@ -33,14 +35,21 @@ namespace ChatApp
                 Console.Write("Enter Message_Information entry condition: Where ");
                 toRemove = Console.ReadLine().Trim();
             } while (toRemove == "");
+
             if (!RegexControl.ContainsForbiddenWords(toRemove))
+            {
                 SQLControl.SQLRemoveMessage(toRemove);
+            }
             else
+            {
+                Reporter.Log($"Where condition {toRemove} contains forbidden words. Written by user {UserDirectory.User.Name}");
                 Support.FoundForbiddenWord();
+            }
         }
 
         static public void UpdateMessage()
         {
+            Reporter.Log($"Entered Update Message");
             Console.Clear();
             string columnToUpdate = "";
             do
@@ -50,7 +59,9 @@ namespace ChatApp
                 columnToUpdate = Console.ReadLine().Trim();
             } while (columnToUpdate == "");
             if (RegexControl.ContainsSingleQuouteMark(columnToUpdate))
+            {
                 columnToUpdate = Support.SanitiseSingleQuotes(columnToUpdate);
+            }
             string valueToUpdate = "";
             do
             {
@@ -74,6 +85,7 @@ namespace ChatApp
 
         static public void SeeMessage()
         {
+            Reporter.Log($"Entered See menu");
             Console.Clear();
             //string columns = "";
             //do

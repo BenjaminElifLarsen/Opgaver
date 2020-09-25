@@ -9,17 +9,24 @@ namespace ChatApp
     {
         static void Main(string[] args) //docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Password123." -p 1435:1433 --name ChatSQL2 -d mcr.microsoft.com/mssql/server:2019-CU5-ubuntu-18.04
         {
+            Reporter.Log("Program Start");
             //TcpListener test = new TcpListener(8081); //it all works for Simon, so it might be EndPoint Security that is causing a problem since it has run out. 
             //test.Start();
             //var v = test.LocalEndpoint;
             //var test2 = Dns.GetHostAddresses(Dns.GetHostName());
             if(args.Length > 0)
             {
+                Reporter.Log($"Non-visual start");
+                Reporter.Log($"{args.Length}");
+                Reporter.Log($"{args[0]}");
                 bool windowLogin = args[0] == "BENJAMIN-ELIF-L\\MSSQLSERVER02";
                 SQLControl.SQLConnect("master", args[0], windowLogin);
                 RequestHandler requestHandler = new RequestHandler();
                 if (args.Length == 2)
+                {
+                    Reporter.Log($"{args[1]}");
                     requestHandler.SetHost = new string[] { args[1] };
+                }
                 else
                     requestHandler.SetHost = new string[] { "http://localHost:80/" };
 
@@ -27,6 +34,7 @@ namespace ChatApp
             }
             else
             {
+                Reporter.Log($"Visual Start");
                 string[] options = new string[] { "DESKTOP-OF6BBIM"/*"BENJAMIN-ELIF-L\\MSSQLSERVER02"*/, "localHost,1435", "Write Self" };
                 do
                 {
@@ -42,6 +50,7 @@ namespace ChatApp
                             windowLogin = true;
                         selected = options[answer];
                     }
+                    Reporter.Log($"Trying to connect database via {selected}");
                     SQLControl.SQLConnect("master", selected, windowLogin);
                 } while (!SQLControl.SQLCreateDatabase());
                 Run();

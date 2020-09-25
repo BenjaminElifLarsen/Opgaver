@@ -22,7 +22,29 @@ namespace ChatApp
             httpListener.Route("^[/]messages$", RequestMessages);
             httpListener.Route("^[/]$HTML^[/]$style^[/]$css", RequestCSS);
             httpListener.Route("^[/]$", RequestRoot);
-            httpListener.Start();
+            try {
+                Reporter.Log($"Starting server up with {host[0]}");
+                httpListener.Start();
+            }
+            catch (System.Net.HttpListenerException e)
+            {
+                Reporter.Log($"Failed at starting server with {host[0]}");
+                Console.Clear();
+                Reporter.Report(e);
+                Console.WriteLine("Could not start the server. Error logged at " + Reporter.ErrorLocation);
+                Console.Read();
+                Menu.SetWebThreadRunning = false;
+            }
+            catch(Exception e)
+            {
+                Reporter.Log($"See error log for the error");
+                Console.Clear();
+                Reporter.Report(e);
+                Console.WriteLine("Error! Error logged at " + Reporter.ErrorLocation);
+                Console.Read();
+                Menu.SetWebThreadRunning = false;
+
+            }
         }
 
         private string RequestLogin(Request r)
@@ -46,9 +68,15 @@ namespace ChatApp
                 }
                 else if (data.Post.ContainsKey("chatmessage"))
                 {
+                    try { 
                     user = SQLControl.SQLGetUser(Int32.Parse(data.Post["userID"])); //fails right now here because of userID is not set. input string was not in right format (value is {{USERID}} if
                     if(user != null) //Webpage.GetHTML is called instead of WebPage.GeneratorLoginHTML() the first time
                         PostMessage(data);
+                    }
+                    catch (FormatException e)
+                    {
+                        Reporter.Report(e);
+                    }
                 }
 
                 if (user != null)
@@ -76,8 +104,9 @@ namespace ChatApp
                     username = Support.SanitiseSingleQuotes(username);
                     return SQLControl.SQLGetUser(username);
                 }
-                catch
+                catch(Exception e)
                 {
+                    Reporter.Report(e);
                     return null;
                 }
             }
@@ -106,7 +135,15 @@ namespace ChatApp
         //transmission of css files (can also transmit other files)
         private string RequestCSS(Request r)
         {
-            return System.IO.File.ReadAllText(@".\HTML\style.css");
+            try
+            {
+                return System.IO.File.ReadAllText(@".\HTML\style.css");
+            }
+            catch (System.IO.IOException e)
+            {
+                Reporter.Report(e);
+                return "Failed at loading css (serverside)";
+            }
         }
 
         //transmission of files

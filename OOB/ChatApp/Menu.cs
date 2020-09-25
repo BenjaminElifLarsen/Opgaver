@@ -7,43 +7,52 @@ namespace ChatApp
 {
     static class Menu
     {
+        private static bool webThreadRunning = false;
+        public static bool SetWebThreadRunning { set => webThreadRunning = value; }
         public static void MainMenu()
         {
-            bool webThreadRunning = false;
             string[] options = new string[] { "Login", "Public Control", "Admin Control", "Show Users", "Exit", "Test" };
             do
             {
+                Reporter.Log($"Entered main menu");
                 byte selected = MenuVisual.MenuRun(options, UserDirectory.User.Name);
                 switch (selected)
                 {
                     case 0:
+                        Reporter.Log($"Entered login menu");
                         Login.RunLogin();
                         break;
 
                     case 1:
+                        Reporter.Log($"Entered message menu");
                         MessageMenu();
                         break;
 
                     case 2:
+                        Reporter.Log($"Entered Admin menu");
                         if (GotPermission(UserDirectory.User.Name, 1))
                             UserMenu();
                         else
                         {
                             Console.Clear();
+                            Reporter.Log(UserDirectory.User.Name + " had not permission for admin menu");
                             Console.WriteLine("You do not have permission");
                             Console.Read();
                         }
                         break;
 
                     case 3:
+                        Reporter.Log($"Entered show users with admin level less than 9");
                         UserDirectory.ShowUser(9);
                         break;
 
                     case 4:
+                        Reporter.Log("Program Shutdown");
                         Environment.Exit(0);
                         break;
 
                     case 5:
+                        Reporter.Log($"Entered server menu");
                         if (!webThreadRunning) { 
                             RequestHandler requestHandler = new RequestHandler();
                             Thread webThread = new Thread(new ThreadStart(requestHandler.Start));
@@ -54,10 +63,20 @@ namespace ChatApp
                                 requestHandler.SetHost = new string[] { "http://" + hostPart + ":80/" };
                             }
                             else
-                                requestHandler.SetHost = new string[] { "http://localhost:8080/" };
+                                requestHandler.SetHost = new string[] { "http://localhost:80/" };
                             webThread.Name = "Web RequestHandler Thread";
-                            webThread.Start();
-                            webThreadRunning = true;
+                            try 
+                            { 
+                                webThread.Start();
+                                webThreadRunning = true;
+                            }
+                            catch (Exception e)
+                            {
+                                Console.Clear();
+                                Reporter.Report(e);
+                                Console.WriteLine("Could not start up the server. For error see " + Reporter.ErrorLocation);
+                                Console.Read();
+                            }
                         }
                         //Webpage.GetHTML(SQLControl.SQLGetMessages());
                         break;
@@ -80,6 +99,7 @@ namespace ChatApp
                             Messages.AddMessage();
                         else
                         {
+                            Reporter.Log("Guest tried to enter a message");
                             Console.Clear();
                             Console.WriteLine("You do not have permission");
                             Console.Read();

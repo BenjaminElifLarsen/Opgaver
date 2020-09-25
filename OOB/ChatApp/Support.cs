@@ -23,6 +23,7 @@ namespace ChatApp
 
         public static string SanitiseSingleQuotes(string text)
         {
+            Reporter.Log($"Checking string for single quotes");
             List<char> sanitised = new List<char>();
             foreach(char chr in text)
             {
@@ -30,9 +31,10 @@ namespace ChatApp
                 if(chr == '\'')
                 {
                     sanitised.Add('\'');
+                    Reporter.Log($"Found single quote");
                 }
             }
-
+            Reporter.Log($"Done checking for single quotes");
             return new string(sanitised.ToArray());
         }
 

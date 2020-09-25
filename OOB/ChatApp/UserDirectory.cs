@@ -66,8 +66,11 @@ namespace ChatApp
                 {
                     case 0:
                         Console.Write("Enter Admin Level: ");
-                        response = Console.ReadLine();
+                        do {
+                            response = Console.ReadLine();
+                        } while (!int.TryParse(response, out _));
                         command = "Admin_level";
+                        Reporter.Log($"User {User.Name} transmitted query to change {username}s admin level to {response}");
                         sql = $"Use {SQLControl.GetDatabaseName}; Update User_Information Set {command} = {response} where UserName = '{username}'";
                         break;
 
@@ -78,6 +81,7 @@ namespace ChatApp
                             response = Console.ReadLine();
                         } while (!Login.ValidUserName(response));
                         command = "UserName";
+                        Reporter.Log($"User {User.Name} transmitted query to change {username}'s username to {response}");
                         sql = $"Use {SQLControl.GetDatabaseName}; Update User_Information Set {command} = '{response}' where UserName = '{username}'";
                         break;
 
@@ -85,13 +89,19 @@ namespace ChatApp
                         Console.Write("Enter New Password: ");
                         response = Login.HiddenText();
                         command = "UserPassword";
+                        Reporter.Log($"User {User.Name} transmitted query to change {username}'s password.");
                         sql = $"Use {SQLControl.GetDatabaseName}; Update User_Information Set {command} = '{HashConverter.StringToHash(response)}' where UserName = '{username}'";
                         break;
                 }
-                if(!RegexControl.ContainsForbiddenWords(sql))
+                if (!RegexControl.ContainsForbiddenWords(sql))
+                {
                     SQLControl.SQLAlterUser(sql);
+                }
                 else
+                {
+                    Reporter.Log($"Sql query contains forbidden words. Writting by user {User.Name}. {Environment.NewLine} SQL: {sql}");
                     Support.FoundForbiddenWord();
+                }
 
             }
             else

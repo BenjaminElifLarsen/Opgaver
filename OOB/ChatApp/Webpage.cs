@@ -11,16 +11,34 @@ namespace ChatApp
         public static string GetHTML(List<Message> messages, List<User> users, User user)
         {
             string html = "";
-            List<string> htmlCodeIndex = ReadHtmlPage("indexBase");
+
+            List<string> htmlCodeIndex;
+
             string htmlMessages = GetHTMLMessages(messages);
             string htmlUsers = GetHTMLUsers(users);
-            Replacer(htmlCodeIndex, htmlUsers, htmlMessages, user.ID);
-            WriteHTMLPage(htmlCodeIndex, "index");
-            
-            foreach (string str in htmlCodeIndex)
-                html += str;
-            string js = File.ReadAllText("HTML/updateMessages.js");
-            html = html.Replace("{{JavaScript}}", js);
+            try
+            {
+                htmlCodeIndex = ReadHtmlPage("indexBase");
+                Replacer(htmlCodeIndex, htmlUsers, htmlMessages, user.ID);
+                WriteHTMLPage(htmlCodeIndex, "index");
+                foreach (string str in htmlCodeIndex)
+                    html += str;
+            }
+            catch (FileNotFoundException e)
+            {
+                Reporter.Report(e);
+                html = "Failed at loading html page (serverside)";
+            }
+            try
+            {
+                string js = File.ReadAllText("HTML/updateMessages.js");
+                html = html.Replace("{{JavaScript}}", js);
+            }
+            catch (FileNotFoundException e)
+            {
+                Reporter.Report(e);
+                html = "Failed at loading javascript (serverside)";
+            }
             return html;
         }
 
@@ -111,11 +129,20 @@ namespace ChatApp
         {
             string html = "";
             string login = "";
+            List<string> htmlCodeLogin;
             //List<string> htmlCodeIndex = ReadHtmlPage("indexBase");
-            List<string> htmlCodeLogin = ReadHtmlPage("login");
+            try { 
+                htmlCodeLogin = ReadHtmlPage("login");
+                foreach (string str in htmlCodeLogin)
+                    login += str;
+            }
+            catch(FileNotFoundException e)
+            {
+                Reporter.Report(e);
+                login = "Failed at loading html page (serverside)";
+            }
             //WriteHTMLPage(htmlCodeIndex, "index");
-            foreach (string str in htmlCodeLogin)
-                login += str;
+
             //Replacer(htmlCodeIndex, null, login);
             //foreach (string str in htmlCodeIndex)
             //    html += str;

@@ -76,15 +76,17 @@ namespace ChatApp
                    
                     End
                 ";
-                Console.WriteLine(cmd);
+                //Console.WriteLine(cmd);
                 SQLet.Execute(cmd);
 
 
-
+                Reporter.Log($"Established connection to the database");
                 return true;
             }
             catch (Microsoft.Data.SqlClient.SqlException e)
             {
+                Reporter.Log($"Could not establish connection to the database.");
+                Reporter.Report(e);
                 Console.WriteLine("Could not establish connection to the database, please retry.");
                 Debug.WriteLine(e);
                 Console.ReadKey();
@@ -92,11 +94,14 @@ namespace ChatApp
             }
             catch (Exception e)
             {
-                Console.WriteLine("Erorr");
+                Reporter.Log($"Encountered error: " + e.Message);
+                Reporter.Report(e);
+                Console.WriteLine("Error");
                 Debug.WriteLine(e);
                 Console.ReadKey();
                 return false;
             }
+
         }
 
         public static string[] SQLGetUsers(int adminLevel)
@@ -190,9 +195,17 @@ namespace ChatApp
 
         public static void SQLRemoveMessage(string data)
         {
-            string sql = $"Use {GetDatabaseName}; Delete from Message_Information where {data}";
-            Thread SQLTread = new Thread(ThreadedControl);
-            SQLTread.Start(sql);
+            try
+            {
+                string sql = $"Use {GetDatabaseName}; Delete from Message_Information where {data}";
+                Thread SQLTread = new Thread(ThreadedControl);
+                SQLTread.Start(sql);
+            }
+            catch (Microsoft.Data.SqlClient.SqlException e)
+            {
+                Reporter.Report(e);
+                Console.WriteLine("Could not delete data, see "+Reporter.ErrorLocation);
+            }
         }
 
         public static void SQLAlterMessage(string column, string value, string condition)
@@ -205,29 +218,62 @@ namespace ChatApp
             }
             catch (Microsoft.Data.SqlClient.SqlException e)
             {
-                Console.WriteLine(e);
+                Reporter.Report(e);
+                Console.WriteLine("Could not update. For error see " + Reporter.ErrorLocation);
                 Console.ReadKey();
             }
             catch(Exception e)
             {
-                Console.WriteLine(e);
+                Reporter.Report(e);
+                Console.WriteLine("Encountered error, see " + Reporter.ErrorLocation);
                 Console.Read();
             }
         }
 
         private static void ThreadedControl(object sql)
         {
-            SQLet.Execute((string)sql);
+            try
+            {
+                Reporter.Log("SQL query was sent to the SQL database: " + Environment.NewLine + (string)sql);
+                SQLet.Execute((string)sql);
+            }
+            catch (Microsoft.Data.SqlClient.SqlException e)
+            {
+                Reporter.Log($"Failed running the SQL query");
+                Reporter.Log("Database failed running the SQL query:" + Environment.NewLine + sql);
+                Reporter.Report(e);
+            }
         }
 
         public static string[][] GetUserInformation(string username, string info)
         {
-            return SQLet.GetArray($"Use {GetDatabaseName}; Select {info} from User_Information where UserName = {username};");
+            try
+            {
+                Reporter.Log($"Accessed information for {username} about {info}");
+                return SQLet.GetArray($"Use {GetDatabaseName}; Select {info} from User_Information where UserName = {username};");
+            }
+            catch (Microsoft.Data.SqlClient.SqlException e)
+            {
+                Reporter.Log($"Failed at getting information {info} about user {username}");
+                Reporter.Report(e);
+                Console.WriteLine("Could not arquier data");
+                Console.Read();
+                return null;
+            }
         }
 
         public static void CreateUser(string username, string password)
         {
-            SQLet.Execute($"Use {GetDatabaseName}; Insert Into User_Information(UserName,UserPassword) Values('{username}','{HashConverter.StringToHash(password)}')");
+            try
+            {
+                Reporter.Log($"Creating user {username}");
+                SQLet.Execute($"Use {GetDatabaseName}; Insert Into User_Information(UserName,UserPassword) Values('{username}','{HashConverter.StringToHash(password)}')");
+            }
+            catch(Microsoft.Data.SqlClient.SqlException e)
+            {
+                Reporter.Log($"Failed at creating user {username}");
+                Reporter.Report(e);
+            }
         }
     }
 }

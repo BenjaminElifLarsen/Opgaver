@@ -43,7 +43,10 @@ namespace ChatApp
                 if (!UserDirectory.DoesLoginExist(username))
                 {
                     if (EnterPassword(username))
+                    {
+                        Reporter.Log($"User {username} logged on the server");
                         UserDirectory.User.Name = username;
+                    }
                     else
                         UserDirectory.User.Name = "Guest";
                 }
@@ -94,11 +97,14 @@ namespace ChatApp
                     Console.Clear();
                 } while (!ValidPassword(password));
             } while (password == "");
-            if (RegexControl.ContainsForbiddenWords(username))
+            if (RegexControl.ContainsForbiddenWords(username)) 
+            {
+                Reporter.Log($"Username {username} contains forbidden words.");
                 Support.SanitiseSingleQuotes(username);
+            }
 
             SQLControl.CreateUser(username, password);
-
+            Reporter.Log($"New User {username} logged on to the server");
             return username;
         }
 
