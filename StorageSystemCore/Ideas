@@ -1,4 +1,5 @@
 1: Instead of returning strings for the view/SQL-add/update returns objects and for sql check their type, if string add '' around the value.
+	This does not fully work as a null string returns as an object rather than an object:string
 
 2: When adding a ware to the SQL-database, start with adding the default values (name, id, amount, type) and then for each extra value check if the column exist. 
   2.1: If it does, just add the value that belongs to that column
