@@ -21,7 +21,7 @@ namespace ChatApp
                 if (args.Length == 2)
                     requestHandler.SetHost = new string[] { args[1] };
                 else
-                    requestHandler.SetHost = new string[] { "http://localHost:8080/" };
+                    requestHandler.SetHost = new string[] { "http://localHost:80/" };
 
                 requestHandler.Start();
             }
