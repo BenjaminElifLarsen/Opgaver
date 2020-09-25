@@ -58,14 +58,14 @@ namespace LagerSystem
         /// </summary>
         /// <param name="attributesToSearchFor"></param>
         /// <returns></returns>
-        public static List<Dictionary<string, string>> GetWareInformation(List<string> attributesToSearchFor)
+        public static List<Dictionary<string, object>> GetWareInformation(List<string> attributesToSearchFor)
         {
             if (attributesToSearchFor == null)
                 throw new NullReferenceException();
-            List<Dictionary<string, string>> wareInformation = new List<Dictionary<string, string>>(); 
+            List<Dictionary<string, object>> wareInformation = new List<Dictionary<string, object>>(); 
             foreach(Ware ware in wares)
             {
-                wareInformation.Add(new Dictionary<string, string>());
+                wareInformation.Add(new Dictionary<string, object>());
                 List<string> information = new List<string>();
                 PropertyInfo[] propertyInfoArray = ware.GetType().GetProperties();
                 foreach(PropertyInfo propertyInfo in propertyInfoArray)
@@ -76,7 +76,7 @@ namespace LagerSystem
                         { //FindSearchableAttributes has the problem solved using a list, but figure out a why to solve this problem without
                             WareSeacheableAttribute seacheableAttribute = attribute as WareSeacheableAttribute;
                             if (attributesToSearchFor.Contains(seacheableAttribute.Name)) { //returns "\"value\""  
-                                string value = propertyInfo.GetValue(ware) != null ? propertyInfo.GetValue(ware).ToString() + " " : "null "; //needs to deal with arrays, lists and such
+                                object value = propertyInfo.GetValue(ware); /*!= null ? propertyInfo.GetValue(ware) : null;*/ //needs to deal with arrays, lists and such
                                 wareInformation[wareInformation.Count - 1].Add(seacheableAttribute.Name, value); //have an attribute for collections, i.e. true or false
                             }
                         }

@@ -161,7 +161,7 @@ namespace LagerSystem
             {
                 Console.WriteLine(seAttr);
             }
-            List<Dictionary<string,string>> test = WareInformation.GetWareInformation(new string[] { "Name", "Amount" }.ToList());
+            List<Dictionary<string,object>> test = WareInformation.GetWareInformation(new string[] { "Name", "Amount","Information" }.ToList());
         }
 
     }
