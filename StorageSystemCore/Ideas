@@ -4,3 +4,6 @@
 2: When adding a ware to the SQL-database, start with adding the default values (name, id, amount, type) and then for each extra value check if the column exist. 
   2.1: If it does, just add the value that belongs to that column
   2.2: If it does not, add the column as nullable and then add the value. 
+
+For the Converter and the function that is worked on right now. There is no reason to store the values in the dictionary. Just have a List<string> for the sqlnames and 
+a List<object> for the values. 
