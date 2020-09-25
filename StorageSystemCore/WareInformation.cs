@@ -77,6 +77,8 @@ namespace LagerSystem
                             WareSeacheableAttribute seacheableAttribute = attribute as WareSeacheableAttribute;
                             if (attributesToSearchFor.Contains(seacheableAttribute.Name)) { //returns "\"value\""  
                                 object value = propertyInfo.GetValue(ware); /*!= null ? propertyInfo.GetValue(ware) : null;*/ //needs to deal with arrays, lists and such
+                                if(value == null && propertyInfo.PropertyType == typeof(string))
+                                    value = "null";
                                 wareInformation[wareInformation.Count - 1].Add(seacheableAttribute.Name, value); //have an attribute for collections, i.e. true or false
                             }
                         }

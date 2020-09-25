@@ -120,7 +120,7 @@ namespace LagerSystem
         /// Displays 
         /// </summary>
         /// <param name="information"></param>
-        public static void WareDisplay(List<string[]> information)
+        public static void WareDisplay(List<string[]> information) //have an overload that takes the List<Dictionary<string,object>>
         {
             Console.Clear();
             Support.DeactiveCursor();
