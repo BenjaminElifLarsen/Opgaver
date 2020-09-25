@@ -110,16 +110,16 @@ namespace ChatApp
         public static string GenerateLoginHTML()
         {
             string html = "";
-            //string login = "";
+            string login = "";
             //List<string> htmlCodeIndex = ReadHtmlPage("indexBase");
-            //List<string> htmlCodeLogin = ReadHtmlPage("login");
+            List<string> htmlCodeLogin = ReadHtmlPage("login");
             //WriteHTMLPage(htmlCodeIndex, "index");
-            //foreach (string str in htmlCodeLogin)
-            //    login += str;
+            foreach (string str in htmlCodeLogin)
+                login += str;
             //Replacer(htmlCodeIndex, null, login);
             //foreach (string str in htmlCodeIndex)
             //    html += str;
-            return html;
+            return login;
         }
 
     }
