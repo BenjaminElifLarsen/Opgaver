@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LagerSystem
+namespace StorageSystemCore
 {
     public class Menu
     {
@@ -181,7 +181,7 @@ namespace LagerSystem
             byte answer = Visual.MenuRun(options, "Database");
             string[] sqlInfo = new string[4];
             string connect;
-            switch (answer)
+            switch (answer) //do this until they either connect or uses the non-sql database
             {
                 case 0:
                     sqlInfo[0] = Support.CollectString("Enter Servername"); 

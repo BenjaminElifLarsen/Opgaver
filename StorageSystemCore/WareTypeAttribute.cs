@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LagerSystem
+namespace StorageSystemCore
 {
     /// <summary>
     /// ... The value needs to be same as class name

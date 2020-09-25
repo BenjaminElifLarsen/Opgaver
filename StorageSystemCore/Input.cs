@@ -5,13 +5,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LagerSystem
+namespace StorageSystemCore
 {
     static public class Input
     {
-        /// <summary>
-        /// Starts the input system on a seperate thread.
-        /// </summary>
+
         public static void RunInputThread()
         {
             Thread inputThread = new Thread(InputRun);
@@ -19,9 +17,6 @@ namespace LagerSystem
             inputThread.Start();
         }
 
-        /// <summary>
-        /// Gets the key input until the program shuts down
-        /// </summary>
         static private void InputRun()
         {
             do
@@ -34,6 +29,8 @@ namespace LagerSystem
                 }
 
             } while (true);
+
+
         }
 
     }

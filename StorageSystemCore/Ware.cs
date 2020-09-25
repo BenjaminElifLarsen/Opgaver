@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LagerSystem
+namespace StorageSystemCore
 {
     /// <summary>
     /// The basic ware class, abstract, that all different types of wares should inherence from.

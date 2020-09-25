@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace LagerSystem
+namespace StorageSystemCore
 {
     /// <summary>
     /// Contains functions that use Regex.

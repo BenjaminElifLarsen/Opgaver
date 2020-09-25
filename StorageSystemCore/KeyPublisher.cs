@@ -4,11 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LagerSystem
+namespace StorageSystemCore
 {
-    /// <summary>
-    /// Contains event, delegates and functions related to arquring keyboard interaction.
-    /// </summary>
     public class KeyPublisher
     {
         public delegate void keyPressEventHandler(object sender, ControlEvents.KeyEventArgs args);

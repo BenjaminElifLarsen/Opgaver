@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LagerSystem
+namespace StorageSystemCore
 {
     /// <summary>
     /// Publisher class that all objects, that needs to react to either a keypress or interact with a ware, should be subscribed too.
