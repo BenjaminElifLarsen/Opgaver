@@ -176,5 +176,37 @@ namespace LagerSystem
             key = e.Key;
         }
 
+
+        //public static string SelectionRun(List<string> attributes, string title = null)
+        //{
+        //    byte location = SelectionDisplay(attributes, title);
+
+
+        //    return SelectionEntering(attributes,location);
+        //}
+
+        //private static string SelectionEntering(List<string> attributes, byte writeLocation)
+        //{
+        //    Console.CursorTop = writeLocation;
+        //    Console.WriteLine(){
+
+        //    }
+        //}
+
+        //private static byte SelectionDisplay(List<string> attributes, string title)
+        //{
+        //    if (title != null)
+        //        Console.WriteLine(title);
+        //    else
+        //        Console.CursorTop = 1;
+            
+        //    foreach (string seAttr in attributes)
+        //    {
+        //        Console.CursorLeft = 2;
+        //        Console.WriteLine(seAttr);
+        //    }
+        //    return (byte)Console.CursorTop;
+        //}
+
     }
 }

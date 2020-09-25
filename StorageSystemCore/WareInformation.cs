@@ -117,10 +117,11 @@ namespace LagerSystem
 
         public static void AddWareDefault() //when storage class has been added move this function to it
         {
-            wares.Add(new Liquid("Test", "ID-55t", 25, Publisher.PubWare));
+            wares.Add(new Liquid("Water", "ID-55t", 25, Publisher.PubWare));
             wares.Add(new Electronic("Toaster", "ID-123q", 2, Publisher.PubWare));
-            wares.Add(new Liquid("Superproduct", "ID-55t2", 1, Publisher.PubWare));
+            wares.Add(new Liquid("Milk", "ID-55t2", 1, Publisher.PubWare));
             wares.Add(new CombustibleLiquid("FOOF", "ID-5q1", 10, -163, 1, -57, null, Publisher.PubWare));
+            wares.Add(new Electronic("TV", "ID-tv4", 512, "This is an ordinary television. Please buy it.", Publisher.PubWare));
         }
 
         /// <summary>

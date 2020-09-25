@@ -220,6 +220,36 @@ namespace LagerSystem
             }
         }
 
+        public static string HiddenText(string title = null)
+        {
+            List<char> text = new List<char>(); ;
+            ConsoleKeyInfo keyPressed;
+            if (title != null)
+                Console.WriteLine(title);
+            do
+            {
+                keyPressed = Console.ReadKey(true);
+                if (keyPressed.Key != ConsoleKey.Backspace)
+                {
+                    if (keyPressed.Key != ConsoleKey.Enter)
+                    {
+                        text.Add(keyPressed.KeyChar);
+                        Console.Write('*');
+                    }
+                }
+                else
+                    if (Console.CursorLeft != 0)
+                {
+                    Console.CursorLeft -= 1;
+                    Console.Write(' ');
+                    Console.CursorLeft -= 1;
+                    text.RemoveAt(text.Count - 1);
+                }
+            } while (keyPressed.Key != ConsoleKey.Enter);
+
+            return new string(text.ToArray());
+        }
+
 
     }
 }

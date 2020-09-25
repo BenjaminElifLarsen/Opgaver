@@ -14,7 +14,7 @@ namespace LagerSystem
         public void MainMenu() //put WareCreateMenu and WareChangeMenu into a sub menu. 
         {
             string title = "Main Menu";
-            string[] menuOptions = new string[] {"Storage","Add Ware","Change Ware", "Exit", "Test" };
+            string[] menuOptions = new string[] {"Basic Storage", "Expanded Storage", "Add Ware","Change Ware", "Exit", /*" SQL Test"*/ };
             do
             {
                 byte answer = Visual.MenuRun(menuOptions, title);
@@ -24,20 +24,24 @@ namespace LagerSystem
                         WareViewAllMenu();
                         break;
 
-                    case 1:
+                    case 2:
                         WareCreateMenu();
                         break;
 
-                    case 2:
+                    case 3:
                         WareChangeMenu();
                         break;
 
-                    case 3:
+                    case 4:
                         Environment.Exit(0);
                         break;
 
-                    case 4:
+                    case 1:
                         WareViewMenu();
+                        break;
+
+                    case 5:
+                        SQLTest();
                         break;
                 }
             } while (true);
@@ -127,7 +131,7 @@ namespace LagerSystem
         /// Asks the user to enter an amount and returns it.
         /// </summary>
         /// <returns></returns>
-        private int CollectAmount() //WareCreator.EnterAmount does what this should do, so consider moving the code of that function into a Support function and then call that function from here and WareCreator.EnterAmount
+        private int CollectAmount() 
         {
             return Support.CollectValue("Enter Amount");
         }
@@ -157,12 +161,50 @@ namespace LagerSystem
         {
             Console.Clear();
             List<string> searchAttributes = WareInformation.FindAllSearchableAttributesNames();
-            foreach(string seAttr in searchAttributes)
+            searchAttributes.Add("Done");
+            List<string> selectedAttributes = new List<string>();
+            byte selected;
+            do 
             {
-                Console.WriteLine(seAttr);
-            }
-            List<Dictionary<string,object>> test = WareInformation.GetWareInformation(new string[] { "Name", "Amount","Information" }.ToList());
+                selected = Visual.MenuRun(searchAttributes.ToArray(), "Select Attributes");
+                if (selected != searchAttributes.Count - 1 && !selectedAttributes.Contains(searchAttributes[selected]))
+                    selectedAttributes.Add(searchAttributes[selected]);
+            } while (selected != searchAttributes.Count-1);
+            List<Dictionary<string, object>> attributesAndValues;
+            if (selectedAttributes.Count != 0)
+                attributesAndValues = WareInformation.GetWareInformation(selectedAttributes); /*new string[] { "Name", "Amount", "Information" }.ToList()*/
         }
+
+        public void SQLTest() //consider moving this to somewhere else.
+        {
+            string[] options = new string[] { "Window login Authentication", "SQL Server Authentication", "No SQL Database" };
+            byte answer = Visual.MenuRun(options, "Database");
+            string[] sqlInfo = new string[4];
+            string connect;
+            switch (answer)
+            {
+                case 0:
+                    sqlInfo[0] = Support.CollectString("Enter Servername"); 
+                    sqlInfo[1] = Support.CollectString("Enter database"); //first ask if they want to create a database or enter one
+                    connect = SQLCode.SQLControl.CreateConnectionString(sqlInfo[0], sqlInfo[1]);
+                    SQLCode.SQLControl.CreateConnection(connect);
+                    break;
+
+                case 1:
+                    sqlInfo[0] = Support.CollectString("Enter Servername");
+                    sqlInfo[1] = Support.CollectString("Enter SQL SA");
+                    sqlInfo[2] = Support.HiddenText("Enter Password");
+                    sqlInfo[3] = Support.CollectString("Enter database"); //first ask if they want to create a database or enter one
+                    connect = SQLCode.SQLControl.CreateConnectionString(sqlInfo[0], sqlInfo[1], sqlInfo[2], sqlInfo[3]);
+                    SQLCode.SQLControl.CreateConnection(connect);
+                    break;
+
+                case 2:
+                    WareInformation.AddWareDefault();
+                    break;
+            }
+        }
+
 
     }
 }

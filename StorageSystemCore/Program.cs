@@ -16,9 +16,9 @@ namespace LagerSystem
     //Det skal være muligt at se en liste over varer i databasen
     //Det er ikke nødvendigt at gemme i filer eller databaser
 
-    class Program //move all of the different classes into their own files
+    class Program 
     {
-        static void Main(string[] args) //needs a system to ensure all IDs are unique
+        static void Main(string[] args) 
         {
             //DatabaseCreation.CreateDockerDatabase(); //needs to inform the user that they will need to run the powershell script before running the program if they want to use the SQL database
             
@@ -27,8 +27,9 @@ namespace LagerSystem
             //object[] test3 = new object[] { test2, "testString" };
             //object test4 = Test(test2);//WareCreator.Test();
             Menu menu = new Menu();
-            WareInformation.AddWareDefault();
             Input.RunInputThread();
+            menu.SQLTest();
+            //WareInformation.AddWareDefault();
             menu.MainMenu();
         }
 

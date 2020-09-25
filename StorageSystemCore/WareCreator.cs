@@ -158,12 +158,9 @@ namespace LagerSystem
 
         private object[] ArquiringInformation(Type type, byte number)
         {
-            Dictionary<string, Type> parameters = WareInformation.GetConstructorParameterNamesAndTypes(type,null)[number]; //= WareInformation.FindConstructorParameters(type, extraParameters.Split(' '));
-            //parameters.Add("amount", typeof(int));
-            //parameters.Add("name", typeof(string)) ;
-            //parameters.Add("byteNumber", typeof(byte));
-            object[] parameterValues = new object[parameters.Count];//[parameters.Count];
-            string[] parameterNames = parameters.Keys.ToArray(); //new string[] { "amount", "name","byteNumber" };// parameters.Keys.ToArray<string>();
+            Dictionary<string, Type> parameters = WareInformation.GetConstructorParameterNamesAndTypes(type,null)[number];
+            object[] parameterValues = new object[parameters.Count];
+            string[] parameterNames = parameters.Keys.ToArray();
             Type parameterType;
 
             for (int i = 0; i < parameterValues.Length; i++)
@@ -171,22 +168,18 @@ namespace LagerSystem
                 parameterType = parameters[parameterNames[i]];
                 if (parameterType.IsValueType)
                 {
-                    //var t;// = Activator.CreateInstance(parameterType);
                     var wareCreatorType = typeof(WareCreator);
                     var foundMethod = wareCreatorType.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static); 
                     var genericVersion = foundMethod.MakeGenericMethod(parameterType);
-                    parameterValues[i] = genericVersion.Invoke(null, new object[] { parameterNames[i] }); //need to handle the possible invalid conversion exception
-                    //parameterValues[i] = EnterExtraInformation(parameterNames[i], t);
+                    parameterValues[i] = genericVersion.Invoke(null, new object[] { parameterNames[i] });
                 }
                 else
                 {
-                    //var t = "";
                     var test = typeof(WareCreator);
                     var test3 = test.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static);
                     var test2 = test3.MakeGenericMethod(parameterType);
-                    parameterValues[i] = test2.Invoke(null, new object[] { parameterNames[i] }); //https://stackoverflow.com/questions/54679223/c-sharp-getting-type-out-of-a-string-variable-and-using-it-in-generic-method
-                    //parameterValues[i] = EnterExtraInformation(parameterNames[i], t);
-                } //two things to look into, dynamic type and whether it is possible to get a var which type is the type of the parameter inside an object
+                    parameterValues[i] = test2.Invoke(null, new object[] { parameterNames[i] }); 
+                } 
 
             }
             return parameterValues;
@@ -200,7 +193,7 @@ namespace LagerSystem
         /// <returns></returns>
         private static t EnterExtraInformation<t>(string information) //need to catch cases where it cannot convert, e.g. converting "12q" to an int32. Also need to deal with an empty string (it should just return null
         {
-            //TypeCode typeCode = Type.GetTypeCode(type); //https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.typeconverter?view=netcore-3.1
+            //https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.typeconverter?view=netcore-3.1
             Console.Clear();
             Console.WriteLine("Please Enter {0}",information);
             string value = Console.ReadLine();
