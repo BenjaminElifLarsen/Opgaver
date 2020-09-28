@@ -16,7 +16,7 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="ware"></param>
         /// <returns></returns>
-        public static Dictionary<string,object> ObjectToSQL(object ware)
+        public static Dictionary<string,object> ObjectToSQL(object ware) //needs to add the type too
         {
             Dictionary<string, object> info = new Dictionary<string, object>();
             PropertyInfo[] propertyInfoArray = ware.GetType().GetProperties();
