@@ -42,8 +42,7 @@ namespace StorageSystemCore
         public static object SQLToObject(string query) //not designed to select specific values of a sql entry, but rather creating an object from all columns
         { //so the first columns of the query should always be in the order of the basic constructor and the rest of the columns should be set 
             //via properties if the type contains those specific columns 
-
-
+            //maybe return array of all objects in the database
             throw new NotImplementedException();
         }
 
