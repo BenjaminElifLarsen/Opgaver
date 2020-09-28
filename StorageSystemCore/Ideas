@@ -6,7 +6,9 @@
   2.2: If it does not, add the column as nullable and then add the value. 
 
 For the Converter and the function that is worked on right now. There is no reason to store the values in the dictionary. Just have a List<string> for the sqlnames and 
-a List<object> for the values. Then again, maybe it is better to keep them together and then loop through the wares and check if any of them contains a property
+a List<object> for the values. 
+
+Maybe it is better to keep them together as a dictionary and then loop through the wares and check if any of them contains a property
 with any of the selected attributes. 
 
 For the visual part, have a string[,] for the values, find all the properties with the correct attributes and write them in the correct entry.

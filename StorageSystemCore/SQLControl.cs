@@ -109,6 +109,26 @@ namespace SQLCode
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="obj"></param>
+        public static void AddWare(string table, Dictionary<string, object> obj)
+        {
+            string[] sqlColumns = new string[obj.Count];
+            string[] sqlValues = new string[obj.Count];
+            int pos = 0;
+            foreach(KeyValuePair<string,object> entry in obj)
+            {
+                sqlColumns[pos] = entry.Key;
+                sqlValues[pos] = entry.Value.ToString();
+                pos++;
+            }
+
+            AddWare(table, sqlColumns, sqlValues);
+        }
+
+        /// <summary>
         /// Adds a ware to the database
         /// </summary>
         /// <param name="sqlColumn"></param>
@@ -148,8 +168,31 @@ namespace SQLCode
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="obj"></param>
+        /// <param name="whereCondition"></param>
+        /// <returns></returns>
+        public static bool ModifyWare(string table, Dictionary<string, object> obj, string whereCondition)
+        {
+            string[] sqlColumns = new string[obj.Count];
+            string[] sqlValues = new string[obj.Count];
+            int pos = 0;
+            foreach (KeyValuePair<string, object> entry in obj) //function this and the one in AddWare(string,dictionary<string,object>)
+            {
+                sqlColumns[pos] = entry.Key;
+                sqlValues[pos] = entry.Value.ToString();
+                pos++;
+            }
+
+            return ModifyWare(table, sqlColumns, sqlValues, whereCondition);
+        }
+
+        /// <summary>
         /// Modifies one or more ware(s).
         /// </summary>
+        /// <param name="table"></param>
         /// <param name="columnsToUpdate"></param>
         /// <param name="valuesToUpdateToo"></param>
         /// <param name="whereCondition"></param>

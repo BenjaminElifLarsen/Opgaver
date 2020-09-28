@@ -10,8 +10,13 @@ namespace StorageSystemCore
     /// </summary>
     public static class ObjectSQLConversion
     {
-
-        public static void ObjectToSQL(object ware) //calls the SQLControl in the end
+        /// <summary>
+        /// Converts an object to a dictionary<string,object> where all strings has '' added around them.
+        /// All sql properties of string types that returns an empty string has their value replaced with "null".
+        /// </summary>
+        /// <param name="ware"></param>
+        /// <returns></returns>
+        public static Dictionary<string,object> ObjectToSQL(object ware)
         {
             Dictionary<string, object> info = new Dictionary<string, object>();
             PropertyInfo[] propertyInfoArray = ware.GetType().GetProperties();
@@ -28,11 +33,18 @@ namespace StorageSystemCore
                         if (propertyInfo.PropertyType == typeof(string))
                             value = $"'{value}'";
                         info.Add(seacheableAttribute.Name, value); 
-                        
                     }
                 }
             }
-            SQLCode.SQLControl.AddWare("Inventory", null, null); //have a function that goes through the keys and puts them into an array and a function for values that puts them into an array
+            return info;    
+        }
+
+        public static object SQLToObject(string query) //not designed to select specific values of a sql entry, but rather creating an object from all columns
+        { //so the first columns of the query should always be in the order of the basic constructor and the rest of the columns should be set 
+            //via properties if the type contains those specific columns 
+
+
+            throw new NotImplementedException();
         }
 
     }
