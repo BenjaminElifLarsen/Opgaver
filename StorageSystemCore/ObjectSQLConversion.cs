@@ -32,7 +32,7 @@ namespace StorageSystemCore
                             value = "null";
                         if (propertyInfo.PropertyType == typeof(string))
                             value = $"'{value}'";
-                        info.Add(seacheableAttribute.Name, value); 
+                        info.Add(seacheableAttribute.SQLName, value); 
                     }
                 }
             }

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <StartupObject>LagerSystem.Program</StartupObject>
+    <StartupObject>StorageSystemCore.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

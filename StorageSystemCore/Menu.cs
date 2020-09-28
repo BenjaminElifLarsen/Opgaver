@@ -173,6 +173,8 @@ namespace StorageSystemCore
             List<Dictionary<string, object>> attributesAndValues;
             if (selectedAttributes.Count != 0)
                 attributesAndValues = WareInformation.GetWareInformation(selectedAttributes); /*new string[] { "Name", "Amount", "Information" }.ToList()*/
+            //Testing purpose, not related to this function
+            ObjectSQLConversion.ObjectToSQL(WareInformation.Ware[WareInformation.Ware.Count-1]);
         }
 
         public void SQLTest() //consider moving this to somewhere else.

@@ -75,12 +75,12 @@ namespace StorageSystemCore
                                         type += typing;
                                 }
                                 object[] filledOutParameters = null;
-                                if (ConstructorsExist(Type.GetType("LagerSystem." + type)))
+                                if (ConstructorsExist(Type.GetType("StorageSystemCore." + type)))
                                     if(ExtraConstructorMenu())
                                     {
-                                        string[] extraParameters = CreateSelectableConstructorList(Type.GetType("LagerSystem." + type));
+                                        string[] extraParameters = CreateSelectableConstructorList(Type.GetType("StorageSystemCore." + type));
                                         byte selectedCtor = SelectConstructor(extraParameters);
-                                        filledOutParameters = ArquiringInformation(Type.GetType("LagerSystem." + type), selectedCtor);
+                                        filledOutParameters = ArquiringInformation(Type.GetType("StorageSystemCore." + type), selectedCtor);
                                         
                                     }
                                 WareInformation.AddWare(name, ID, type, (int)amount, filledOutParameters);

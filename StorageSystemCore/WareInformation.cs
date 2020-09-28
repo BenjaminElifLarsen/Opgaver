@@ -104,7 +104,7 @@ namespace StorageSystemCore
                 foreach (string typing in split)
                     type += typing;
             }
-            Type test = Type.GetType("LagerSystem."+type);
+            Type test = Type.GetType("StorageSystemCore." + type);
             object[] dataObject = new object[4+extra.Length];
             dataObject[0] = name;
             dataObject[1] = id;
@@ -253,7 +253,7 @@ namespace StorageSystemCore
                     foreach (string typing in split)
                         type_ += typing;
                 }
-                List<string[]> attributes = FindSearchableAttributes(Type.GetType("LagerSystem." + type_));
+                List<string[]> attributes = FindSearchableAttributes(Type.GetType("StorageSystemCore." + type_));
                 foreach (string[] attrArray in attributes)
                     if (!searchable.Contains(attrArray[0]))
                         searchable.Add(attrArray[0]);
