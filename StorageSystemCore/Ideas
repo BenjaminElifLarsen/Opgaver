@@ -15,3 +15,9 @@ For the visual part, have a string[,] for the values, find all the properties wi
 	If they do not have a specific attributes its entry should be "null.". Rows should be each specific ware. 
 	1: Find for each coloumn the longest value and use that value +2 for the '|' seperator.
 	
+To get wares from the database first gather the type of each entry and then find all of the sql attributes that belongs to that entry and use the sqlnames to select the data.
+	Either:
+		1: select the data for each attribute, one at a time or
+		2: select all of the data at ones 
+	Also, the basic constructor variables that all wares shares should be selected first in the correct order and the ware is initialsed with these and 		
+		then their properties that contains sql attributes are called and set. 
