@@ -10,7 +10,7 @@ namespace ChatApp
 {
     static class SQLControl
     {
-        public static string GetDatabaseName { get => "ChatTest"; }
+        public static string GetDatabaseName { get => "Chat"; }
 
         public static void SQLConnect(string database, string servername = "BENJAMIN-ELIF-L\\MSSQLSERVER02", bool windowLogin = true)
         {
@@ -60,7 +60,8 @@ namespace ChatApp
                             (MessageID Int Not Null Primary Key IDENTITY(1,1), 
                              UserID Int Not Null Constraint FK_userID_message FOREIGN KEY REFERENCES User_Information(UserID) On Delete Cascade On Update Cascade,
                              Message NVARCHAR(255) Not Null, Time NVARCHAR(255) Not Null,
-                             ChannelID Int Null Constraint FK_channelID_message FOREIGN KEY REFERENCES channel_Information(ChannelID) On Delete Cascade On Update Cascade);
+                             ChannelID Int Null Constraint FK_channelID_message FOREIGN KEY REFERENCES Channel_Information(ChannelID) On Delete Cascade On Update Cascade,
+                             RecipientID Int Null);
                             
                             Insert Into User_Information(UserName,UserPassword,Admin_level)
                             Values('Admin','{password}',9);
@@ -69,7 +70,10 @@ namespace ChatApp
                         IF Object_ID('dbo.LatestMessages') is null
                         Begin
                             DECLARE @v_ViewCreateStatement VARCHAR(MAX) = '
-                            Create View LatestMessages as Select Top 30 Time, UserName, Message, MessageID, Message_Information.UserID From Message_Information inner join User_Information on User_Information.UserID = Message_Information.UserID;
+                            Create View LatestMessages as Select Top 30 Time, Sender.UserID, Sender.UserName, Message, MessageID, Message_Information.RecipientID, Recipient.UserName as RecipientName
+                            From Message_Information 
+                            Inner Join User_Information As Sender on Sender.UserID = Message_Information.UserID
+                            Left Join User_Information As Recipient On Message_Information.RecipientID = Recipient.UserID
                             '
                             EXEC(@v_ViewCreateStatement)
                         End
@@ -178,10 +182,10 @@ namespace ChatApp
 
         public static List<Message> SQLGetMessages()
         {
-            string[][] messagesString = SQLet.GetArray($"Use {GetDatabaseName}; Select Time, UserName, Message, MessageID, Message_Information.UserID From Message_Information inner join User_Information on User_Information.UserID = Message_Information.UserID;"); ;
+            string[][] messagesString = SQLet.GetArray($"Use {GetDatabaseName}; Select * From LatestMessages"/*$"Use {GetDatabaseName}; Select Time, UserName, Message, MessageID, Message_Information.UserID From Message_Information inner join User_Information on User_Information.UserID = Message_Information.UserID;"*/); ;
             List<Message> messageList = new List<Message>();
             foreach (string[] message in messagesString)
-                messageList.Add(new Message(new User(message[1], int.Parse(message[4])), message[2], message[0], int.Parse(message[3])));
+                messageList.Add(new Message(new User(message[2], int.Parse(message[1])), new User(message[6], int.Parse(message[5])), message[3], message[0], int.Parse(message[4])));;
 
             return messageList;//SQLet.GetArray($"Use {GetDatabaseName}; Select Time, UserName, Message From Message_Information inner join User_Information on User_Information.UserID = Message_Information.UserID;");
         }
