@@ -247,5 +247,26 @@ namespace SQLCode
             }
         }
 
+        private static List<List<string>> GetValues(string query)
+        {
+            List<List<string>> information = new List<List<string>>();
+            SqlCommand command = new SqlCommand(query, SQLConnection);
+            SQLConnection.Open();
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    information.Add(new List<string>());
+                    int colAmount = reader.FieldCount;
+                    for (int i = 0; i < colAmount; i++)
+                        information[information.Count - 1].Add(reader[i].ToString());
+                    //    Console.Write(reader[i] + " ");
+                    //Console.Write(Environment.NewLine);
+                }
+            }
+            SQLConnection.Close();
+            return information;
+        }
+
     }
 }

@@ -22,4 +22,3 @@ To get wares from the database first gather the type of each entry and then find
 	Also, the basic constructor variables that all wares shares should be selected first in the correct order and the ware is initialsed with these and 		
 		then their properties that contains sql attributes are called and set. 
 		
-Remove LagerSystem.sln and LagerSystem.csproj.

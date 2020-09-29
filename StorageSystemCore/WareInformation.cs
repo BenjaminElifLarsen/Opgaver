@@ -12,7 +12,7 @@ namespace StorageSystemCore
         /// <summary>
         /// The names of the basic variables that all ware and derived constructors contains.  
         /// </summary>
-        private static List<string> baseCtorVariables = new List<string>() { "name", "amount", "id" };
+        private static List<string> baseCtorVariables = new List<string>() { "name", "id", "amount" };
 
         /// <summary>
         /// Llist contains all wares

@@ -20,6 +20,7 @@ namespace StorageSystemCore
         {
             Dictionary<string, object> info = new Dictionary<string, object>();
             PropertyInfo[] propertyInfoArray = ware.GetType().GetProperties();
+            info.Add("type", ware.GetType().Name);
             foreach (PropertyInfo propertyInfo in propertyInfoArray)
             {
                 foreach (Attribute attribute in propertyInfo.GetCustomAttributes())
@@ -39,10 +40,19 @@ namespace StorageSystemCore
             return info;    
         }
 
-        public static object SQLToObject(string query) //not designed to select specific values of a sql entry, but rather creating an object from all columns
+        public static object SQLToObject(string ID) //not designed to select specific values of a sql entry, but rather creating an object from all columns
         { //so the first columns of the query should always be in the order of the basic constructor and the rest of the columns should be set 
             //via properties if the type contains those specific columns 
             //maybe return array of all objects in the database
+            string sqlBaiscQuery = "";
+            for(int n = 0; n < WareInformation.BasicConstructorVariableNames.Count; n++)
+            {
+                sqlBaiscQuery += WareInformation.BasicConstructorVariableNames[n];
+                if (n != WareInformation.BasicConstructorVariableNames.Count - 1)
+                    sqlBaiscQuery += ",";
+            }
+            string getTypeQuery = $"Use {SQLCode.SQLControl.DataBase}; Select type From Inventory where id = {ID};";
+
             throw new NotImplementedException();
         }
 
