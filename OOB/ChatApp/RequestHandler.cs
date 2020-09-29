@@ -116,7 +116,7 @@ namespace ChatApp
         {
             string clientMessage = data.Post["chatmessage"];
             if(data.Post["userID"] != null) { 
-                if(data.Post["recipientID"] == null || data.Post["recipientID"] == "")
+                if(data.Post["recipientID"] == null || data.Post["recipientID"] == "" || data.Post["recipientID"] == "0")
                     SQLControl.SQLAddMessage(clientMessage, Int32.Parse(data.Post["userID"]));
                 else
                     SQLControl.SQLAddMessage(clientMessage, Int32.Parse(data.Post["userID"]), Int32.Parse(data.Post["recipientID"]));
