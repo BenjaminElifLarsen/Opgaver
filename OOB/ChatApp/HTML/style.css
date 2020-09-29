@@ -269,6 +269,12 @@ div.backgroundColour{
 		padding-bottom: 4%;
 		text-align: left;
 	}
+	ul li a{
+		list-style-type: none;
+		color: red;
+		padding-bottom: 4%;
+		text-align: left;
+	}
 
 }
 
