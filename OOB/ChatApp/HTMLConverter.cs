@@ -15,7 +15,7 @@ namespace ChatApp
 
         public static string UsernameToHTMLUsername(User user)
         {
-            return $"<li>{user.Name}</li>";
+            return $"<li><a href=\"#{user.ID}\">{user.Name}</li>";
         }
 
 

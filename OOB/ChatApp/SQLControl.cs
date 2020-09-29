@@ -174,10 +174,13 @@ namespace ChatApp
 
         }
 
+        
+
         public static void SQLGetMessagesAndDisplay() //change at some point
         {
             string[][] result = SQLet.GetArray($"Use {GetDatabaseName}; Select Time, UserName, Message From Message_Information inner join User_Information on User_Information.UserID = Message_Information.UserID;");
             Support.DisplaySelect(result, "|Time | User | Message |");
+            SQLGetMessages();
         }
 
         public static List<Message> SQLGetMessages()
@@ -185,7 +188,12 @@ namespace ChatApp
             string[][] messagesString = SQLet.GetArray($"Use {GetDatabaseName}; Select * From LatestMessages"/*$"Use {GetDatabaseName}; Select Time, UserName, Message, MessageID, Message_Information.UserID From Message_Information inner join User_Information on User_Information.UserID = Message_Information.UserID;"*/); ;
             List<Message> messageList = new List<Message>();
             foreach (string[] message in messagesString)
-                messageList.Add(new Message(new User(message[2], int.Parse(message[1])), new User(message[6], int.Parse(message[5])), message[3], message[0], int.Parse(message[4])));;
+            {
+                if(message[5] != "NULL")
+                    messageList.Add(new Message(new User(message[2], int.Parse(message[1])), new User(message[6], int.Parse(message[5])), message[3], message[0], int.Parse(message[4])));
+                else
+                    messageList.Add(new Message(new User(message[2], int.Parse(message[1])), message[3], message[0], int.Parse(message[4])));
+            }
 
             return messageList;//SQLet.GetArray($"Use {GetDatabaseName}; Select Time, UserName, Message From Message_Information inner join User_Information on User_Information.UserID = Message_Information.UserID;");
         }
