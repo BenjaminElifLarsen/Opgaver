@@ -31,14 +31,14 @@
 		<!--<div class="boxForMessage col-10 backgroundColour scrollbar">-->
 
 			<div class="messageBox col-10 backgroundColour">
-				<form action="/" method="post">
+				<form action="/" method="post" onsubmit="document.getElementById('hdnReceptID').value = document.location.hash.substr(1)">
 					<label for="Chat">Chat</label>
 					<textarea id="Chat" name="chatmessage" row="1" style="width:100%"></textarea>
 					<input type="hidden" name="userID" , id="hdnUserID" value="
 {{USERID}}
 " />
 					<input type="hidden" name="recipientID" , id="hdnReceptID" value="" />
-					onsubmit="document.getElementById('hdnReceptID').value = document.location.hash.substr(1)"
+					
 					<input type="submit" value="Submit">
 				</form>
 				<button id="box" onclick="UserBox()">Show Users</button>
