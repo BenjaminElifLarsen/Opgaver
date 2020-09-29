@@ -180,7 +180,7 @@ namespace ChatApp
         {
             string[][] result = SQLet.GetArray($"Use {GetDatabaseName}; Select Time, UserName, Message From Message_Information inner join User_Information on User_Information.UserID = Message_Information.UserID;");
             Support.DisplaySelect(result, "|Time | User | Message |");
-            SQLGetMessages();
+            //SQLGetMessages();
         }
 
         public static List<Message> SQLGetMessages()
