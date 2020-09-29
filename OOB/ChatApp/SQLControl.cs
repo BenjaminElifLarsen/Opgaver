@@ -174,6 +174,15 @@ namespace ChatApp
 
         }
 
+        public static void SQLAddMessage(string message, int userID, int recipID)
+        {
+            string time = DateTime.UtcNow.ToString("G", new CultureInfo("da-DK"));
+            if (RegexControl.ContainsSingleQuouteMark(message))
+                message = Support.SanitiseSingleQuotes(message);
+            string sql = $"Use {GetDatabaseName}; Insert into Message_Information(Message, Time, UserID,RecipientID) Values('{message}','{time}',{userID},{recipID})";
+            Thread SQLTread = new Thread(ThreadedControl);
+            SQLTread.Start(sql);
+        }
         
 
         public static void SQLGetMessagesAndDisplay() //change at some point
