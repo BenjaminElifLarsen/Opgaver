@@ -21,4 +21,4 @@ ARG arg0="localHost,1435"
 ARG arg1="http://localHost:8080/"
 ENTRYPOINT ["dotnet", "ChatApp.dll"]
 CMD [$arg0, $arg1]
-EXPOSE 8080/tcp
+EXPOSE 80/tcp
