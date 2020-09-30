@@ -80,7 +80,17 @@ namespace ChatApp
                 }
 
                 if (user != null)
-                    return Webpage.GetHTML(SQLControl.SQLGetMessages(user), SQLControl.SQLGetUsers(), user);
+                {
+                    try
+                    {
+                        return Webpage.GetHTML(SQLControl.SQLGetMessages(user), SQLControl.SQLGetUsers(), user);
+                    }
+                    catch (Exception e)
+                    {
+                        Reporter.Report(e);
+                        return Webpage.GetHTML(SQLControl.SQLGetMessages(), SQLControl.SQLGetUsers(), user);
+                    }
+                }
             }
 
             //return Webpage.GetHTML(SQLControl.SQLGetMessages(), SQLControl.SQLGetUsers());
