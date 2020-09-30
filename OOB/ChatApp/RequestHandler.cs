@@ -138,9 +138,9 @@ namespace ChatApp
         {
             User user = null;
             RequestData data = r.Data;
-            if (data.Post.ContainsKey("username"))
+            if (data.Post.ContainsKey("userID"))
             {
-                user = PostUser(data);
+                user = SQLControl.SQLGetUser(Int32.Parse(data.Post["userID"]));
 
                 return Webpage.GetHTMLMessages(SQLControl.SQLGetMessages(user));
             }
