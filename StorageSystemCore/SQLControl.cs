@@ -53,11 +53,10 @@ namespace SQLCode
         }
 
         /// <summary>
-        /// Creates a connection string and returns it.
+        /// Creates a trusted connection string and returns it.
         /// </summary>
         /// <returns></returns>
-        public static string CreateConnectionString(string server, string database) //have a function like in the chatapp that creates the database and tables if they do not exist. 
-            //So the user when starting should have 3 options, use non-sql "database", the program can create a database where they need to enter server and user/pasword or they can manually run the script and log into its database
+        public static string CreateConnectionString(string server, string database)
         {
             SqlConnectionStringBuilder sqlCnt = new SqlConnectionStringBuilder();
             sqlCnt["Server"] = server;
@@ -66,6 +65,10 @@ namespace SQLCode
             return sqlCnt.ToString();
         }
 
+        /// <summary>
+        /// Creates a connection string and returns it.
+        /// </summary>
+        /// <returns></returns>
         public static string CreateConnectionString(string server, string username, string password, string database)
         {
             SqlConnectionStringBuilder sqlCnt = new SqlConnectionStringBuilder();
@@ -133,7 +136,7 @@ namespace SQLCode
         /// </summary>
         /// <param name="sqlColumn"></param>
         /// <param name="sqlAddValues"></param>
-        public static void AddWare(string table, string[] sqlColumn, string[] sqlAddValues) //needs to deal with exceptions, like violating the primary key
+        public static void AddWare(string table, string[] sqlColumn, string[] sqlAddValues) //needs to deal with exceptions, like violating the primary key or ware already existing
         {
             string columns = $"Use {database}; Insert Into {table} (";
             for(int i = 0; i < sqlColumn.Length; i++)
@@ -210,7 +213,7 @@ namespace SQLCode
             }
             sqlCommand += $"Where {whereCondition}";
 
-            CommandAndRead(sqlCommand);
+            RunCommand(sqlCommand);
             return true;
         }
 
@@ -247,6 +250,11 @@ namespace SQLCode
             }
         }
 
+        /// <summary>
+        /// Gets 
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         private static List<List<string>> GetValues(string query)
         {
             List<List<string>> information = new List<List<string>>();
@@ -260,8 +268,38 @@ namespace SQLCode
                     int colAmount = reader.FieldCount;
                     for (int i = 0; i < colAmount; i++)
                         information[information.Count - 1].Add(reader[i].ToString());
-                    //    Console.Write(reader[i] + " ");
-                    //Console.Write(Environment.NewLine);
+                }
+            }
+            SQLConnection.Close();
+            return information;
+        }
+
+        /// <summary>
+        /// Gets the value(s) in <paramref name="sqlColumn"/> from the object with the specific <paramref name="ID"/>.
+        /// </summary>
+        /// <param name="sqlColumn"></param>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        private static List<string> GetValues(string[] sqlColumn, string ID)
+        {
+            List<string> information = new List<string>();
+            string query = $"Use {database}; Select ";
+            for (int i = 0; i < sqlColumn.Length; i++)
+            {
+                query += sqlColumn[i];
+                if (i != sqlColumn.Length - 1)
+                    query += ", ";
+            }
+            query += $" From Inventory Where id = {ID};";
+            SqlCommand command = new SqlCommand(query, SQLConnection);
+            SQLConnection.Open();
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    int colAmount = reader.FieldCount;
+                    for (int i = 0; i < colAmount; i++)
+                        information.Add(reader[i].ToString());
                 }
             }
             SQLConnection.Close();

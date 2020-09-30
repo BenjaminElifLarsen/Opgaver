@@ -52,7 +52,11 @@ namespace StorageSystemCore
                     sqlBaiscQuery += ",";
             }
             string getTypeQuery = $"Use {SQLCode.SQLControl.DataBase}; Select type From Inventory where id = {ID};";
-
+            //1) get the type
+            //2) find the custom attributes that does not belong to the basic variables
+            //3) get the values of all custom attributes
+            //4) create an object of type using the sql values beloging to the basic variables using their custom attribute (sqlname)
+            //5) call the correct custom attribute properties for the rest and set them with the values from the sql call (the sql should return a 
             throw new NotImplementedException();
         }
 
