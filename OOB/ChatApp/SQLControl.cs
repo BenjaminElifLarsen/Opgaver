@@ -212,7 +212,7 @@ namespace ChatApp
         {
             try { 
                 string[][] messagesString = SQLet.GetArray($@"Use {GetDatabaseName}; Select * From LatestMessages
-                    Where (RecipientID == 0 Or RecipientID Is Null) Or RecipientID = {user.ID} Or UserID = {user.ID}");
+                    Where (RecipientID == 0 Or RecipientID Is Null) Or RecipientID == {user.ID} Or UserID == {user.ID}");
                 List<Message> messageList = new List<Message>();
                 foreach (string[] message in messagesString)
                 {
