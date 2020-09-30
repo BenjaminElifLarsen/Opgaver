@@ -81,15 +81,15 @@ namespace ChatApp
 
                 if (user != null)
                 {
-                    //try
-                    //{
+                    try
+                    {
                         return Webpage.GetHTML(SQLControl.SQLGetMessages(user), SQLControl.SQLGetUsers(), user);
-                    //}
-                    //catch (Exception e)
-                    //{
-                    //    Reporter.Report(e);
-                    //    return Webpage.GetHTML(SQLControl.SQLGetMessages(), SQLControl.SQLGetUsers(), user);
-                    //}
+                    }
+                    catch (Exception e)
+                    {
+                        Reporter.Report(e);
+                        return Webpage.GetHTML(SQLControl.SQLGetMessages(), SQLControl.SQLGetUsers(), user);
+                    }
                 }
             }
 
@@ -134,8 +134,17 @@ namespace ChatApp
         }
 
         //localhost:8080/messages
-        private string RequestMessages(Request r)
+        private string RequestMessages(Request r) //this and the updateMessages.js are causing problems
         {
+            User user = null;
+            RequestData data = r.Data;
+            if (data.Post.ContainsKey("username"))
+            {
+                user = PostUser(data);
+
+                return Webpage.GetHTMLMessages(SQLControl.SQLGetMessages(user));
+            }
+
             return Webpage.GetHTMLMessages(SQLControl.SQLGetMessages());
         }
 
