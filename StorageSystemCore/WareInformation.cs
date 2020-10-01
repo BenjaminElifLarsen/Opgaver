@@ -122,6 +122,7 @@ namespace StorageSystemCore
             wares.Add(new Liquid("Milk", "ID-55t2", 1, Publisher.PubWare));
             wares.Add(new CombustibleLiquid("FOOF", "ID-5q1", 10, -163, 1, -57, null, Publisher.PubWare));
             wares.Add(new Electronic("TV", "ID-tv4", 512, "This is an ordinary television. Please buy it.", Publisher.PubWare));
+            wares.Add(new CombustibleLiquid("CiF3", "ld-5wQ", 1, "One of the world most deadly chemicals.", Publisher.PubWare));
         }
 
         /// <summary>
