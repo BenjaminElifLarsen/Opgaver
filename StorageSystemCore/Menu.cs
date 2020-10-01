@@ -14,7 +14,7 @@ namespace StorageSystemCore
         public void MainMenu() //put WareCreateMenu and WareChangeMenu into a sub menu. 
         {
             string title = "Main Menu";
-            string[] menuOptions = new string[] {"Basic Storage", "Expanded Storage", "Add Ware","Change Ware", "Exit", /*" SQL Test"*/ };
+            string[] menuOptions = new string[] {"Basic Storage View", "Expanded Storage View", "Add Ware","Change Ware", "Exit", /*" SQL Test"*/ };
             do
             {
                 byte answer = Visual.MenuRun(menuOptions, title);
@@ -147,7 +147,7 @@ namespace StorageSystemCore
 
         private void WareCreateMenu()
         {
-            WareCreator creator = new WareCreator(Publisher.PubWare); //move to somewhere else
+            WareCreator creator = new WareCreator(Publisher.PubWare); //move to somewhere else, maybe have a static class which a function/property that sets the publisher.
             Publisher.PubWare.CreateWare();
         } 
 
@@ -175,36 +175,48 @@ namespace StorageSystemCore
                 attributesAndValues = WareInformation.GetWareInformation(selectedAttributes); /*new string[] { "Name", "Amount", "Information" }.ToList()*/
             //Testing purpose, not related to this function
             ObjectSQLConversion.ObjectToSQL(WareInformation.Ware[WareInformation.Ware.Count-1]);
+            ObjectSQLConversion.ObjectToSQL(WareInformation.Ware[0]);
         }
 
+        /// <summary>
+        /// Function used to set database (or no database)...
+        /// </summary>
         public void SQLTest() //consider moving this to somewhere else.
         {
             string[] options = new string[] { "Window login Authentication", "SQL Server Authentication", "No SQL Database" };
-            byte answer = Visual.MenuRun(options, "Database");
             string[] sqlInfo = new string[4];
-            string connect;
-            switch (answer) //do this until they either connect or uses the non-sql database
+            string connect = null;
+            bool run = true;
+
+            do
             {
-                case 0:
-                    sqlInfo[0] = Support.CollectString("Enter Servername"); 
-                    sqlInfo[1] = Support.CollectString("Enter database"); //first ask if they want to create a database or enter one
-                    connect = SQLCode.SQLControl.CreateConnectionString(sqlInfo[0], sqlInfo[1]);
-                    SQLCode.SQLControl.CreateConnection(connect);
-                    break;
+                byte answer = Visual.MenuRun(options, "Database");
+                switch (answer) //do this until they either connect or uses the non-sql database
+                {
+                    case 0:
+                        sqlInfo[0] = Support.CollectString("Enter Servername");
+                        sqlInfo[1] = Support.CollectString("Enter database"); //first ask if they want to create a database or enter one
+                        connect = SQLCode.SQLControl.CreateConnectionString(sqlInfo[0], sqlInfo[1]);
+                        SQLCode.SQLControl.CreateConnection(connect);
+                        break;
 
-                case 1:
-                    sqlInfo[0] = Support.CollectString("Enter Servername");
-                    sqlInfo[1] = Support.CollectString("Enter SQL SA");
-                    sqlInfo[2] = Support.HiddenText("Enter Password");
-                    sqlInfo[3] = Support.CollectString("Enter database"); //first ask if they want to create a database or enter one
-                    connect = SQLCode.SQLControl.CreateConnectionString(sqlInfo[0], sqlInfo[1], sqlInfo[2], sqlInfo[3]);
-                    SQLCode.SQLControl.CreateConnection(connect);
-                    break;
+                    case 1:
+                        sqlInfo[0] = Support.CollectString("Enter Servername");
+                        sqlInfo[1] = Support.CollectString("Enter SQL SA");
+                        sqlInfo[2] = Support.HiddenText("Enter Password");
+                        sqlInfo[3] = Support.CollectString("Enter database"); //first ask if they want to create a database or enter one
+                        connect = SQLCode.SQLControl.CreateConnectionString(sqlInfo[0], sqlInfo[1], sqlInfo[2], sqlInfo[3]);
+                        SQLCode.SQLControl.CreateConnection(connect);
+                        break;
 
-                case 2:
-                    WareInformation.AddWareDefault();
-                    break;
-            }
+                    case 2:
+                        WareInformation.AddWareDefault();
+                        break;
+                }
+                if (connect != null || answer == options.Length - 1)
+                    run = false;
+
+            } while (run);
         }
 
 
