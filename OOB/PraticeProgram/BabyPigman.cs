@@ -12,7 +12,12 @@ namespace PraticeProgram
 
         public override string GenerateSound()
         {
-            return "5 * 2^-1 = 0.5";
+            return "5 * 2^-1 = 2.5";
+        }
+        
+        public void RunAway()
+        {
+            Console.WriteLine("RUN!!!");
         }
     }
 }
