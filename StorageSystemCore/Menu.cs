@@ -171,11 +171,14 @@ namespace StorageSystemCore
                     selectedAttributes.Add(searchAttributes[selected]);
             } while (selected != searchAttributes.Count-1);
             List<Dictionary<string, object>> attributesAndValues;
-            if (selectedAttributes.Count != 0)
+            if (selectedAttributes.Count != 0) 
+            { 
                 attributesAndValues = WareInformation.GetWareInformation(selectedAttributes); /*new string[] { "Name", "Amount", "Information" }.ToList()*/
+                Visual.WareDisplay(selectedAttributes, attributesAndValues);
+            }
             //Testing purpose, not related to this function
-            SQLCode.ObjectSQLConversion.ObjectToSQL(WareInformation.Ware[WareInformation.Ware.Count-1]);
-            SQLCode.ObjectSQLConversion.ObjectToSQL(WareInformation.Ware[0]);
+            //SQLCode.ObjectSQLConversion.ObjectToSQL(WareInformation.Ware[WareInformation.Ware.Count-1]);
+            //SQLCode.ObjectSQLConversion.ObjectToSQL(WareInformation.Ware[0]);
         }
 
         /// <summary>

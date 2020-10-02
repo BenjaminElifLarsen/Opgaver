@@ -165,6 +165,73 @@ namespace StorageSystemCore
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="columnNames"></param>
+        /// <param name="columnAndValues"></param>
+        public static void WareDisplay(List<string> columnNames, List<Dictionary<string,object>> columnAndValues)
+        {
+            Support.DeactiveCursor();
+            int[] columnStartLocation = new int[columnNames.Count];
+            int[] currentLongestRowValue = new int[columnNames.Count];
+            int totalLength = 0;
+            string[,] textToDisplay = new string[columnNames.Count, columnAndValues.Count];
+            for(int n = 0; n < textToDisplay.GetLength(0); n++)
+            {
+                for(int m = 0; m < textToDisplay.GetLength(1); m++)
+                {
+                    
+                    if (columnAndValues[m].TryGetValue(columnNames[n], out object value))
+                        if(value != null)
+                            textToDisplay[n, m] = value.ToString();
+                        else
+                            textToDisplay[n, m] = "null";
+                    else
+                        textToDisplay[n, m] = "null";
+                    if (textToDisplay[n, m].Length > currentLongestRowValue[n])
+                    {
+                        if (columnNames[n].Length < textToDisplay[n, m].Length)
+                            currentLongestRowValue[n] = textToDisplay[n, m].Length;
+                        else
+                            currentLongestRowValue[n] = columnNames[n].Length;
+                        //totalLength += textToDisplay[n, m].Length + 2;
+                        //columnEndLocation[n] = totalLength;
+                    }
+                }
+            }
+            for(int n = 0; n < columnStartLocation.Length; n++)
+            {
+                columnStartLocation[n] = totalLength;
+                totalLength += currentLongestRowValue[n] + 2;
+                               
+            }
+
+            Console.Clear();
+            string underscore = "|".PadRight(totalLength, '-');
+            Console.CursorTop = 1;
+            Console.Write(underscore);
+            for (int n = 0; n < textToDisplay.GetLength(0); n++)
+            {
+                Console.CursorTop = 0;
+                Console.CursorLeft = columnStartLocation[n]; //System.ArgumentOutOfRangeException, buffer size in y is to small. Check beforehand if there is a n value that is same or bigger than the buffer size. If true, lower the GetLength to smaller than it
+                Console.Write("|"+columnNames[n]);
+                for (int m = 0; m < textToDisplay.GetLength(1); m++)
+                {
+                    Console.CursorLeft = columnStartLocation[n];
+                    Console.CursorTop = m + 2;
+                    Console.Write("|"+textToDisplay[n, m]);
+                    //if (n > 0)
+                    //    Console.CursorLeft = columnStartLocation[n - 1];
+                    //else
+                    //    Console.CursorLeft = 0;
+
+                }
+            }
+            Support.WaitOnKeyInput();
+            Support.ActiveCursor();
+        }
+
         public static void SetScreenSize(int x, int y)
         {
             Console.WindowWidth = x;

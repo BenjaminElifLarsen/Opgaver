@@ -62,11 +62,11 @@ namespace StorageSystemCore
         /// </summary>
         public float? GetBoilingPoint { get => boilingPoint; }
 
-        [WareSeacheable("Volatile","volatile")]
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool? IsVolatile { get => @volatile; }
+        //[WareSeacheable("Volatile","volatile")]
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public bool? IsVolatile { get => @volatile; }
 
 
     }
