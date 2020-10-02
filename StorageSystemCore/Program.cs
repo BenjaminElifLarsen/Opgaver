@@ -20,17 +20,10 @@ namespace StorageSystemCore
     {
         static void Main(string[] args) 
         {
-            //DatabaseCreation.CreateDockerDatabase(); //needs to inform the user that they will need to run the powershell script before running the program if they want to use the SQL database
-            
-            //dynamic test = Support.GetDefaultValueFromValueType("Int32");
-            //object test2 = Support.GetDefaultValueFromValueType("UInt32");
-            //object[] test3 = new object[] { test2, "testString" };
-            //object test4 = Test(test2);//WareCreator.Test();
             Menu menu = new Menu();
             Input.RunInputThread();
-            SQLCode.StoredProcedures.CreateAllStoredProcedures();
-            menu.SQLTest();
-            //WareInformation.AddWareDefault();
+            menu.DatabaseSelection();
+            //SQLCode.StoredProcedures.CreateAllStoredProcedures();
             menu.MainMenu();
         }
 

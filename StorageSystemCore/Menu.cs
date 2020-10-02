@@ -41,7 +41,7 @@ namespace StorageSystemCore
                         break;
 
                     case 5:
-                        SQLTest();
+                        DatabaseSelection();
                         break;
                 }
             } while (true);
@@ -181,11 +181,13 @@ namespace StorageSystemCore
         /// <summary>
         /// Function used to set database (or no database)...
         /// </summary>
-        public void SQLTest() //consider moving this to somewhere else.
+        public void DatabaseSelection() //consider moving this to somewhere else.
         {
             string[] options = new string[] { "Window login Authentication", "SQL Server Authentication", "No SQL Database" };
             string[] sqlInfo = new string[4];
+            string firstConnection = null;
             string connect = null;
+            
             bool run = true;
 
             do
@@ -196,27 +198,83 @@ namespace StorageSystemCore
                     case 0:
                         sqlInfo[0] = Support.CollectString("Enter Servername");
                         sqlInfo[1] = Support.CollectString("Enter database"); //first ask if they want to create a database or enter one
-                        connect = SQLCode.SQLControl.CreateConnectionString(sqlInfo[0], sqlInfo[1]);
-                        SQLCode.SQLControl.CreateConnection(connect);
+                        if (DoesDatabaseExist())
+                        {
+                            try
+                            {
+                                firstConnection = SQLCode.SQLControl.CreateConnectionString(sqlInfo[0], "master");
+                                run = !SQLCode.SQLControl.InitalitionOfDatabase(sqlInfo, firstConnection, true);
+                                //create database
+                            }
+                            catch
+                            {
+                                run = true;
+                            }
+                        }
+                        else
+                            try
+                            {
+                                run = !SQLCode.SQLControl.CreateConnection(sqlInfo, true);
+                            }
+                            catch
+                            {
+                                run = true;
+                            }//when they start the problem and selects sql, the first conenction should go to the master database, 
+                                                                    //which then creates the actual database and then a second connection is established to this database which then creates the table(s) and columns. This final connection is kept 
+                                                                    //should firstly ask if they want to initialise database creation. If yes connnect to the master else connect directly to the database, since it and its table(s) (their columns should also exist)
                         break;
 
                     case 1:
                         sqlInfo[0] = Support.CollectString("Enter Servername");
                         sqlInfo[1] = Support.CollectString("Enter SQL SA");
                         sqlInfo[2] = Support.HiddenText("Enter Password");
-                        sqlInfo[3] = Support.CollectString("Enter database"); //first ask if they want to create a database or enter one
-                        connect = SQLCode.SQLControl.CreateConnectionString(sqlInfo[0], sqlInfo[1], sqlInfo[2], sqlInfo[3]);
-                        SQLCode.SQLControl.CreateConnection(connect);
+                        sqlInfo[3] = Support.CollectString("Enter database");
+                        if (DoesDatabaseExist()) 
+                        {
+                            try
+                            {
+                                firstConnection = SQLCode.SQLControl.CreateConnectionString(sqlInfo[0], "master", sqlInfo[2], sqlInfo[3]);
+                                run = !SQLCode.SQLControl.InitalitionOfDatabase(sqlInfo, firstConnection, false);
+                            }
+                            catch
+                            {
+                                run = true;
+                            }
+                        }
+                        else
+                            try { 
+                                run = !SQLCode.SQLControl.CreateConnection(sqlInfo, false);
+                            }
+                            catch
+                            {
+                                run = true;
+                            }
+
                         break;
 
                     case 2:
                         WareInformation.AddWareDefault();
                         break;
                 }
-                if (connect != null || answer == options.Length - 1)
+                if (answer == options.Length - 1)
                     run = false;
+                if(run == true)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Could not establish connection to the database");
+                    Support.WaitOnKeyInput();
+                }
 
             } while (run);
+        }
+
+        
+
+        private bool DoesDatabaseExist() //rename, also, could connect to the master and do the check
+        {
+            string[] options = new string[] {"Yes","No" };
+            byte answer = Visual.MenuRun(options, "Initialise Database Creation?");
+            return answer == 0;
         }
 
 

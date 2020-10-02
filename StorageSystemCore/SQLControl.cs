@@ -164,10 +164,16 @@ namespace SQLCode
         /// <param name="sqlCommand"></param>
         public static void RunCommand(string sqlCommand)
         {
-            SqlCommand command = new SqlCommand(sqlCommand, SQLConnection);
-            sqlConnection.Open();
-            command.ExecuteNonQuery();
-            sqlConnection.Close();
+            try { 
+                SqlCommand command = new SqlCommand(sqlCommand, SQLConnection);
+                sqlConnection.Open();
+                command.ExecuteNonQuery();
+                sqlConnection.Close();
+            }
+            catch(SqlException e)
+            {
+                throw e;
+            }
         }
 
         /// <summary>
@@ -204,7 +210,7 @@ namespace SQLCode
         {
             if (columnsToUpdate.Length != valuesToUpdateToo.Length)
                 return false;
-            string sqlCommand = $"Use {database}; Update {table} Set "; //instead of this, call the function in StoredProcedures
+            string sqlCommand = $"Use {database}; Update {table} Set "; //instead of this, call the function in StoredProcedures, maybe just in this case this is better (as long time there is more than one column to update)
             for(int n = 0; n <columnsToUpdate.Length; n++)
             {
                 sqlCommand += $"{columnsToUpdate[n]} = {valuesToUpdateToo[n]}";
@@ -212,9 +218,15 @@ namespace SQLCode
                     sqlCommand += ",";
             }
             sqlCommand += $"Where {whereCondition}";
-
-            RunCommand(sqlCommand);
-            return true;
+            try
+            {
+                RunCommand(sqlCommand);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -230,9 +242,9 @@ namespace SQLCode
         /// <summary>
         /// Tries to establish a connection to the database in <paramref name="connectionString"/>. Returns the connection if it could connect, else null.
         /// </summary>
-        /// <param name="connectionString"></param>
-        /// <returns></returns>
-        public static SqlConnection CreateConnection(string connectionString)
+        /// <param name="connectionString">The sql datbase connection string</param>
+        /// <returns>Returns the sql connection</returns>
+        private static SqlConnection CreateConnection(string connectionString)
         {
             try
             {
@@ -243,10 +255,35 @@ namespace SQLCode
                     return connection;
                 
             }
-            catch(Exception e)
+            catch (SqlException e)
             {
-                Console.WriteLine(e);
-                return null;
+                sqlConnection = null;
+                //Console.WriteLine(e);
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// Tries to establish a connection to the database out from the data in <paramref name="sqlInfo"/> and <paramref name="window"/>. Returns the connection if it could connect, else null.
+        /// </summary>
+        /// <param name="sqlInfo">Contains the information needed to create a database connection string</param>
+        /// <param name="window">If true the connection will be using Window login, else SQL Server login</param>
+        /// <returns>Returns true if it could establish a connection, else false.</returns>
+        public static bool CreateConnection(string[] sqlInfo, bool window) 
+        {
+            try
+            {
+                string connect;
+                if (window)
+                    connect = CreateConnectionString(sqlInfo[0], sqlInfo[1]);
+                else
+                    connect = CreateConnectionString(sqlInfo[0], sqlInfo[1], sqlInfo[2], sqlInfo[3]);
+                CreateConnection(connect);
+                return true;
+            }
+            catch (SqlException e)
+            {
+                throw e;
             }
         }
 
@@ -255,23 +292,30 @@ namespace SQLCode
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        private static List<List<string>> GetValues(string query)
+        public static List<List<string>> GetValuesMultiWares(string query)
         {
-            List<List<string>> information = new List<List<string>>();
-            SqlCommand command = new SqlCommand(query, SQLConnection);
-            SQLConnection.Open();
-            using (SqlDataReader reader = command.ExecuteReader())
-            {
-                while (reader.Read())
+            try { 
+                List<List<string>> information = new List<List<string>>();
+                SqlCommand command = new SqlCommand(query, SQLConnection);
+                SQLConnection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    information.Add(new List<string>());
-                    int colAmount = reader.FieldCount;
-                    for (int i = 0; i < colAmount; i++)
-                        information[information.Count - 1].Add(reader[i].ToString());
+                    while (reader.Read())
+                    {
+                        information.Add(new List<string>());
+                        int colAmount = reader.FieldCount;
+                        for (int i = 0; i < colAmount; i++)
+                            information[information.Count - 1].Add(reader[i].ToString());
+                    }
                 }
+                SQLConnection.Close();
+                return information;
+
             }
-            SQLConnection.Close();
-            return information;
+            catch (SqlException e)
+            {
+                throw e;
+            }
         }
 
         /// <summary>
@@ -280,7 +324,7 @@ namespace SQLCode
         /// <param name="sqlColumn"></param>
         /// <param name="ID"></param>
         /// <returns></returns>
-        private static List<string> GetValues(string[] sqlColumn, string ID)
+        private static List<string> GetValuesSingleWare(string[] sqlColumn, string ID)
         {
             List<string> information = new List<string>();
             string query = $"Use {database}; Select ";
@@ -304,6 +348,64 @@ namespace SQLCode
             }
             SQLConnection.Close();
             return information;
+        }
+
+        /// <summary>
+        /// Runs <paramref name="query"/> in the sql database and returns a List<string> with the values.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public static List<string> GetValuesSingleWare(string query)
+        {
+            try { 
+                List<string> information = new List<string>(); //maybe change this to List<List<string>>, but then it would be the same as GetValues(string)
+                SQLConnection.Open();
+                SqlCommand command = new SqlCommand(query, SQLConnection);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int colAmount = reader.FieldCount;
+                        for (int i = 0; i < colAmount; i++)
+                            information.Add(reader[i].ToString());
+                    }
+                }
+                sqlConnection.Close();
+                return information;
+
+            }
+            catch (SqlException e)
+            {
+                throw e;
+            }
+        }
+
+ 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sqlInfo"></param>
+        /// <param name="masterConnection"></param>
+        /// <param name="window"></param>
+        /// <returns></returns>
+        public static bool InitalitionOfDatabase(string[] sqlInfo, string masterConnection, bool window)
+        {
+            try
+            {
+                CreateConnection(masterConnection);
+                //create database
+                
+                CreateConnection(sqlInfo, window);
+
+                StoredProcedures.CreateAllStoredProcedures();
+                return true;
+            }
+            catch (System.Data.SqlClient.SqlException e)
+            { //log the error in the reporter
+                throw e;
+                //return false;
+            }
         }
 
     }

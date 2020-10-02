@@ -41,6 +41,11 @@ namespace SQLCode
             return info;    
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
         public static object SQLToObject(string ID) //not designed to select specific values of a sql entry, but rather creating an object from all columns
         { //so the first columns of the query should always be in the order of the basic constructor and the rest of the columns should be set 
             //via properties if the type contains those specific columns 
@@ -52,7 +57,17 @@ namespace SQLCode
                 if (n != WareInformation.BasicConstructorVariableNames.Count - 1)
                     sqlBaiscQuery += ",";
             }
-            string getTypeQuery = $"Use {SQLCode.SQLControl.DataBase}; Select type From Inventory where id = {ID};"; //use one of the new storage procedures
+            List<string> getTypeQuery = StoredProcedures.GetTypeSP(ID);//$"Use {SQLCode.SQLControl.DataBase}; Select type From Inventory where id = {ID};"; //use one of the new storage procedures
+            string typeClass = "";
+            if (getTypeQuery[0].Split(' ').Length != 1) //move into a function since it so far is needed two places
+            {
+                string[] split = getTypeQuery[0].Split(' ');
+                typeClass = "";
+                foreach (string typing in split)
+                    typeClass += typing;
+            }
+            
+            Type type = Type.GetType("StorageSystemCore." + typeClass);
 
             //1) get the type
             //2) find the custom attributes that does not belong to the basic variables
