@@ -171,22 +171,26 @@ namespace StorageSystemCore
 
 
         /// <summary>
-        /// Returns the default value of the ValueType in <paramref name="type"/>, else 
+        /// Returns the default value of the ValueType in <paramref name="type"/>, else null. The return type will be packed into dynamic
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
         public static dynamic GetDefaultValueFromValueType(string type)
         {
-            if(Nullable.GetUnderlyingType(Type.GetType("System."+type)) != null)
+            Type typeCheck = Type.GetType("System." + type);
+            if (typeCheck.IsValueType == false)
                 return null;
-            
-            switch(type.ToLower())
+            if (Nullable.GetUnderlyingType(Type.GetType("System."+type)) != null)
+                return null;
+
+
+            switch (type.ToLower())
             {
                 case "int32": 
                     return default(Int32);
                     break;
 
-                case "int8":
+                case "byte":
                     return default(Byte);
                     break;
 
@@ -201,7 +205,7 @@ namespace StorageSystemCore
                     return default(UInt32);
                     break;
 
-                case "uint8":
+                case "sbyte":
                     return default(SByte);
                     break;
 
@@ -213,13 +217,17 @@ namespace StorageSystemCore
                     return default(UInt64);
                     break;
 
-
                 default:
                     return null;
                     break;
             }
         }
 
+        /// <summary>
+        /// Replaces the keyinputs with '*'s on the console.  
+        /// </summary>
+        /// <param name="title"></param>
+        /// <returns></returns>
         public static string HiddenText(string title = null)
         {
             List<char> text = new List<char>(); ;

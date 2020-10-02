@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace StorageSystemCore
 {
-    static class WareInformation
+    public static class WareInformation
     {
         /// <summary>
         /// The names of the basic variables that all ware and derived constructors contains.  
@@ -31,7 +31,7 @@ namespace StorageSystemCore
 
 
         /// <summary>
-        /// Gets ...
+        /// Gets the basic information that all wares needs to initiase... as a minimum ...
         /// </summary>
         /// <returns></returns>
         public static List<string[]> GetWareInformation()
@@ -45,7 +45,7 @@ namespace StorageSystemCore
                 information[0] = ware.GetName;
                 information[1] = ware.GetID;
                 information[2] = ware.GetAmount.ToString();
-                information[3] = FindTypeAttribute(ware);//ware.GetType().ToString().Split('.')[1]; //consider using reflection for the type, since the namespace is returned
+                information[3] = FindTypeAttribute(ware);
                 wareInformation.Add(information);
             }
             //FindSearchableAttributes(typeof(CombustibleLiquid));
@@ -73,7 +73,7 @@ namespace StorageSystemCore
                     foreach(Attribute attribute in propertyInfo.GetCustomAttributes())
                     {
                         if(attribute.GetType() == typeof(WareSeacheableAttribute))
-                        { //FindSearchableAttributes has the problem solved using a list, but figure out a why to solve this problem without
+                        { 
                             WareSeacheableAttribute seacheableAttribute = attribute as WareSeacheableAttribute;
                             if (attributesToSearchFor.Contains(seacheableAttribute.Name)) { //returns "\"value\""  
                                 object value = propertyInfo.GetValue(ware); /*!= null ? propertyInfo.GetValue(ware) : null;*/ //needs to deal with arrays, lists and such

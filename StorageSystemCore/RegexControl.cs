@@ -12,7 +12,7 @@ namespace StorageSystemCore
     /// </summary>
     public static class RegexControl
     {
-        private static string specialSigns = @"_ \- \= \+ \. \,";
+        private static string specialSigns = @"_ \- \= \+ \. \,"; //needs to also check for any other signs, right now e.g. %- will return true
         private static Regex rgSpeical = new Regex(@"[" + specialSigns + "]{1,}");
         private static Regex rgValues = new Regex("[0-9]{1,}");
         private static Regex rgLettersLower = new Regex("[a-z]{1,}");

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace StorageSystemCore
 {
+    /// <summary>
+    /// Used to set attributes for methods and properties that contains ware informations that are used for the sql database and display...
+    /// </summary>
     public class WareSeacheableAttribute : Attribute
     {
         /// <summary>

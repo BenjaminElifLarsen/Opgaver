@@ -11,7 +11,7 @@ namespace StorageSystemCore
     /// The basic ware class, abstract, that all different types of wares should inherence from.
     /// </summary>
     [WareType("None")] //Ware is abstract and cannot be initialisated
-    abstract class Ware
+    public abstract class Ware
     {
         /// <summary>
         /// The name of the ware.

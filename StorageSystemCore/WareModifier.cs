@@ -9,7 +9,7 @@ namespace StorageSystemCore
     /// <summary>
     /// Contains functions to modify, add wares and remove wares
     /// </summary>
-    public class WareModifier //consider using delegates/events to access this one.
+    public class WareModifier
     {
         /// <summary>
         /// 
@@ -38,10 +38,18 @@ namespace StorageSystemCore
         /// <returns>Returns true if the item was found and removed else false</returns>
         public static bool RemoveWare(string ID)
         {
-            if(Support.Confirmation())
+            if (Support.Confirmation())
                 return WareInformation.RemoveWare(ID);
             return false;
         }
 
+        /// <summary>
+        /// Used for unit testing 
+        /// </summary>
+        /// <param name="ID"></param>
+        public static void RemoveWareTesting(string ID)
+        {
+            WareInformation.RemoveWare(ID);
+        }
     }
 }
