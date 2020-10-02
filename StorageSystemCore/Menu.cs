@@ -174,8 +174,8 @@ namespace StorageSystemCore
             if (selectedAttributes.Count != 0)
                 attributesAndValues = WareInformation.GetWareInformation(selectedAttributes); /*new string[] { "Name", "Amount", "Information" }.ToList()*/
             //Testing purpose, not related to this function
-            ObjectSQLConversion.ObjectToSQL(WareInformation.Ware[WareInformation.Ware.Count-1]);
-            ObjectSQLConversion.ObjectToSQL(WareInformation.Ware[0]);
+            SQLCode.ObjectSQLConversion.ObjectToSQL(WareInformation.Ware[WareInformation.Ware.Count-1]);
+            SQLCode.ObjectSQLConversion.ObjectToSQL(WareInformation.Ware[0]);
         }
 
         /// <summary>

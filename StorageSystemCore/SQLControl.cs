@@ -162,7 +162,7 @@ namespace SQLCode
         /// Runs a query.
         /// </summary>
         /// <param name="sqlCommand"></param>
-        private static void RunCommand(string sqlCommand)
+        public static void RunCommand(string sqlCommand)
         {
             SqlCommand command = new SqlCommand(sqlCommand, SQLConnection);
             sqlConnection.Open();
@@ -204,7 +204,7 @@ namespace SQLCode
         {
             if (columnsToUpdate.Length != valuesToUpdateToo.Length)
                 return false;
-            string sqlCommand = $"Use {database}; Update {table} Set ";
+            string sqlCommand = $"Use {database}; Update {table} Set "; //instead of this, call the function in StoredProcedures
             for(int n = 0; n <columnsToUpdate.Length; n++)
             {
                 sqlCommand += $"{columnsToUpdate[n]} = {valuesToUpdateToo[n]}";

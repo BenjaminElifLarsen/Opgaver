@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using StorageSystemCore;
 
-namespace StorageSystemCore
+namespace SQLCode 
 {
     /// <summary>
     /// "Converts" a class object to information in the SQL-database and information in the SQL database to a class object 
@@ -16,7 +17,7 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="ware"></param>
         /// <returns></returns>
-        public static Dictionary<string,object> ObjectToSQL(object ware) //needs to add the type too
+        public static Dictionary<string,object> ObjectToSQL(object ware) 
         {
             Dictionary<string, object> info = new Dictionary<string, object>();
             PropertyInfo[] propertyInfoArray = ware.GetType().GetProperties();
@@ -51,7 +52,8 @@ namespace StorageSystemCore
                 if (n != WareInformation.BasicConstructorVariableNames.Count - 1)
                     sqlBaiscQuery += ",";
             }
-            string getTypeQuery = $"Use {SQLCode.SQLControl.DataBase}; Select type From Inventory where id = {ID};";
+            string getTypeQuery = $"Use {SQLCode.SQLControl.DataBase}; Select type From Inventory where id = {ID};"; //use one of the new storage procedures
+
             //1) get the type
             //2) find the custom attributes that does not belong to the basic variables
             //3) get the values of all custom attributes

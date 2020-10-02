@@ -28,6 +28,7 @@ namespace StorageSystemCore
             //object test4 = Test(test2);//WareCreator.Test();
             Menu menu = new Menu();
             Input.RunInputThread();
+            SQLCode.StoredProcedures.CreateAllStoredProcedures();
             menu.SQLTest();
             //WareInformation.AddWareDefault();
             menu.MainMenu();
@@ -35,12 +36,7 @@ namespace StorageSystemCore
 
         //uses to be version controlled using the master branch and some other branches, however, since all projects uses the master branch it has been decided to move this project until its own "master" 
         //LS-Master and then all future branches will be called LS-{name}. No better time to start with git died and lost the master branch on the local repo.
-        private static T Test<T>(T variable)
-        {
-            var test = Convert.ChangeType("32", variable.GetType());
 
-            throw new NotImplementedException();
-        }
     }
 
     
