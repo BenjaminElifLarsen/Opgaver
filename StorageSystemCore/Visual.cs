@@ -6,11 +6,17 @@ using System.Threading.Tasks;
 
 namespace StorageSystemCore
 {
+    /// <summary>
+    /// Class that deals with the visual part of the storage system. 
+    /// </summary>
     public static class Visual
     {
 
         private static ConsoleKey key;
 
+        /// <summary>
+        /// The basic, static, constructor. Will always have been called before the first run-time call to any of its functions. 
+        /// </summary>
         static Visual()
         {
             Publisher.PubKey.RaiseKeyPressEvent += KeyEvnetHandler;
@@ -38,7 +44,7 @@ namespace StorageSystemCore
         }
 
         /// <summary>
-        /// 
+        /// Allows the interaction with the menu.
         /// </summary>
         /// <param name="selected"></param>
         /// <returns>Returns the currently hovered over array position. Comnbined with the ref parameter <c>selected</c> to check if enter key has been pressed. </returns>
@@ -62,7 +68,7 @@ namespace StorageSystemCore
         }
 
         /// <summary>
-        /// 
+        /// Displays the visual part of the menu.
         /// </summary>
         /// <param name="options"></param>
         /// <param name="currentHoveredOver"></param>
@@ -117,48 +123,42 @@ namespace StorageSystemCore
         }
 
         /// <summary>
-        /// Displays 
+        /// Displays the basic information listen in <paramref name="information"/>.
         /// </summary>
-        /// <param name="information"></param>
-        public static void WareDisplay(List<string[]> information) //have an overload that takes the List<Dictionary<string,object>>
+        /// <param name="information">Contains the information to display. Each string[] should be a seperate object</param>
+        public static void WareDisplay(List<string[]> information) 
         {
             Console.Clear();
             Support.DeactiveCursor();
 
-            string[] titles = new string[] { "Name", "ID", "Amount", "Type" }; //can use reflection to find the specific methods/properties in different classes. Can use strings parameters to display different values using param string
+            string[] titles = new string[] { "Name", "ID", "Amount", "Type" };
             int[] xLocation = new int[titles.Length];
             byte increasement = 20;
-            //int totalLength = xLocation[xLocation.Length-1];
-            for (int n = 1; n < xLocation.Length; n++)
+            for (int n = 1; n < xLocation.Length; n++) //calculates the start location of each column
                 xLocation[n] = increasement * n;
-            for(int n = 0; n < titles.Length; n++)
+            for(int n = 0; n < titles.Length; n++) //displays the titles and '|'
             {
                 Console.CursorLeft = xLocation[n];
                 Console.Write("| " + titles[n]);
             }
-            string underline = "|"; //+ Pad(totalLength, '-');
-            foreach (int xloc in xLocation)
+            string underline = "|"; 
+            foreach (int xloc in xLocation) //calculates the line seperator
                 underline += Pad(increasement, '-', "|");
-            //int yLocation = 0;
             Console.WriteLine(Pad(increasement - titles[titles.Length-1].Length-2,' ') + "|" + Environment.NewLine + underline);
-            for(int n = 0; n < information.Count; n++)
+            for(int n = 0; n < information.Count; n++) //writes out the information of each string array
             {
                 string[] wareInfo = information[n];
-                //string wareInformation = //wareInfo[0] + Pad(xLocation[0] - wareInfo[0].Length, addToo: "|") + wareInfo[1] + Pad(xLocation[1] - wareInfo[1].Length, addToo: "|") + 
-                                           //wareInfo[3] + Pad(xLocation[2] - wareInfo[2].Length, addToo: "|") + wareInfo[2] + Pad(xLocation[3] - wareInfo[3].Length, addToo: "|");
-                for (int m = 0; m < wareInfo.Length; m++) //make it find the longest word in each catergory and use the length plus something for the placement of | in all lines for that category (have a function for this)
+                for (int m = 0; m < wareInfo.Length; m++) 
                 {
                     Console.CursorLeft = xLocation[m];
                     Console.Write("| " + wareInfo[m]);
                 }
                 Console.Write(Pad(increasement-wareInfo[wareInfo.Length-1].Length-2)+"|");
                 Console.WriteLine(Environment.NewLine + underline);
-                //Console.CursorTop += 1;
             }
-            //Console.WriteLine(underline);
             Support.ActiveCursor();
 
-            string Pad(int value, char padding = ' ', string addToo = "")
+            string Pad(int value, char padding = ' ', string addToo = "") 
             {
                 value = value < 0 ? 0 : value;
                 return addToo.PadLeft(value,padding);
@@ -166,10 +166,10 @@ namespace StorageSystemCore
         }
 
         /// <summary>
-        /// 
+        /// Displays the information, stored in <paramref name="columnAndValues"/>, of all wares. The column titles comes from <paramref name="columnNames"/>.
         /// </summary>
-        /// <param name="columnNames"></param>
-        /// <param name="columnAndValues"></param>
+        /// <param name="columnNames">The name of the column titles.</param>
+        /// <param name="columnAndValues">The name and values of each <paramref name="columnNames"/> from all wares. </param>
         public static void WareDisplay(List<string> columnNames, List<Dictionary<string,object>> columnAndValues)
         {
             Support.DeactiveCursor();
@@ -177,7 +177,7 @@ namespace StorageSystemCore
             int[] currentLongestRowValue = new int[columnNames.Count];
             int totalLength = 0;
             string[,] textToDisplay = new string[columnNames.Count, columnAndValues.Count];
-            for(int n = 0; n < textToDisplay.GetLength(0); n++)
+            for(int n = 0; n < textToDisplay.GetLength(0); n++) //fills out the 2D array with the inforamtion to display
             {
                 for(int m = 0; m < textToDisplay.GetLength(1); m++)
                 {
@@ -189,18 +189,16 @@ namespace StorageSystemCore
                             textToDisplay[n, m] = "null";
                     else
                         textToDisplay[n, m] = "null";
-                    if (textToDisplay[n, m].Length > currentLongestRowValue[n])
+                    if (textToDisplay[n, m].Length > currentLongestRowValue[n]) //ensures the longest length of information of all rows in each column is known
                     {
                         if (columnNames[n].Length < textToDisplay[n, m].Length)
                             currentLongestRowValue[n] = textToDisplay[n, m].Length;
                         else
                             currentLongestRowValue[n] = columnNames[n].Length;
-                        //totalLength += textToDisplay[n, m].Length + 2;
-                        //columnEndLocation[n] = totalLength;
                     }
                 }
             }
-            for(int n = 0; n < columnStartLocation.Length; n++)
+            for(int n = 0; n < columnStartLocation.Length; n++) //adds some more length to each column length 
             {
                 columnStartLocation[n] = totalLength;
                 totalLength += currentLongestRowValue[n] + 2;
@@ -211,7 +209,7 @@ namespace StorageSystemCore
             string underscore = "|".PadRight(totalLength, '-');
             Console.CursorTop = 1;
             Console.Write(underscore);
-            for (int n = 0; n < textToDisplay.GetLength(0); n++)
+            for (int n = 0; n < textToDisplay.GetLength(0); n++) //displays all information in the 2D array textToDisplay
             {
                 Console.CursorTop = 0;
                 Console.CursorLeft = columnStartLocation[n]; //System.ArgumentOutOfRangeException, buffer size in y is to small. Check beforehand if there is a n value that is same or bigger than the buffer size. If true, lower the GetLength to smaller than it
@@ -221,11 +219,6 @@ namespace StorageSystemCore
                     Console.CursorLeft = columnStartLocation[n];
                     Console.CursorTop = m + 2;
                     Console.Write("|"+textToDisplay[n, m]);
-                    //if (n > 0)
-                    //    Console.CursorLeft = columnStartLocation[n - 1];
-                    //else
-                    //    Console.CursorLeft = 0;
-
                 }
             }
             Support.WaitOnKeyInput();
@@ -238,42 +231,15 @@ namespace StorageSystemCore
             Console.WindowHeight = y;
         }
 
+        /// <summary>
+        /// Function subscribed to the key event. When the event is called it will add what key has been pressed to <c>key</c>. Needed to interact with the class and its functions. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private static void KeyEvnetHandler(object sender, ControlEvents.KeyEventArgs e)
         {
             key = e.Key;
         }
-
-
-        //public static string SelectionRun(List<string> attributes, string title = null)
-        //{
-        //    byte location = SelectionDisplay(attributes, title);
-
-
-        //    return SelectionEntering(attributes,location);
-        //}
-
-        //private static string SelectionEntering(List<string> attributes, byte writeLocation)
-        //{
-        //    Console.CursorTop = writeLocation;
-        //    Console.WriteLine(){
-
-        //    }
-        //}
-
-        //private static byte SelectionDisplay(List<string> attributes, string title)
-        //{
-        //    if (title != null)
-        //        Console.WriteLine(title);
-        //    else
-        //        Console.CursorTop = 1;
-            
-        //    foreach (string seAttr in attributes)
-        //    {
-        //        Console.CursorLeft = 2;
-        //        Console.WriteLine(seAttr);
-        //    }
-        //    return (byte)Console.CursorTop;
-        //}
 
     }
 }

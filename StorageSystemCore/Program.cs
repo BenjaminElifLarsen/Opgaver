@@ -22,7 +22,7 @@ namespace StorageSystemCore
         {
             Menu menu = new Menu();
             Input.RunInputThread();
-            menu.DatabaseSelection();
+            menu.DatabaseSelectionMenu();
             //SQLCode.StoredProcedures.CreateAllStoredProcedures();
             menu.MainMenu();
         }

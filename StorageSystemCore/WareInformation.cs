@@ -68,15 +68,15 @@ namespace StorageSystemCore
                 wareInformation.Add(new Dictionary<string, object>());
                 List<string> information = new List<string>();
                 PropertyInfo[] propertyInfoArray = ware.GetType().GetProperties();
-                foreach(PropertyInfo propertyInfo in propertyInfoArray)
+                foreach (PropertyInfo propertyInfo in propertyInfoArray)
                 {
                     foreach(Attribute attribute in propertyInfo.GetCustomAttributes())
                     {
-                        if(attribute.GetType() == typeof(WareSeacheableAttribute))
+                        if(attribute.GetType() == typeof(WareSeacheableAttribute)) //WareSearchableAttrribute values cannot be retrived if connected to the a method
                         { 
                             WareSeacheableAttribute seacheableAttribute = attribute as WareSeacheableAttribute;
-                            if (attributesToSearchFor.Contains(seacheableAttribute.Name)) { //returns "\"value\""  
-                                object value = propertyInfo.GetValue(ware); /*!= null ? propertyInfo.GetValue(ware) : null;*/ //needs to deal with arrays, lists and such
+                            if (attributesToSearchFor.Contains(seacheableAttribute.Name)) {
+                                object value = propertyInfo.GetValue(ware); //needs to deal with arrays, lists and such
                                 if(value == null && propertyInfo.PropertyType == typeof(string))
                                     value = "null";
                                 wareInformation[wareInformation.Count - 1].Add(seacheableAttribute.Name, value); //have an attribute for collections, i.e. true or false
@@ -84,6 +84,12 @@ namespace StorageSystemCore
                         }
                     }
                 }
+                if (attributesToSearchFor.Contains("Type")) //Type got its own if-statment, since its attribute is connected to the class rather than properties. 
+                {
+                    WareTypeAttribute attribute = ware.GetType().GetCustomAttribute(typeof(WareTypeAttribute)) as WareTypeAttribute;
+                    wareInformation[wareInformation.Count - 1].Add("Type", attribute.Type);
+                }
+
             }
             return wareInformation;
         }

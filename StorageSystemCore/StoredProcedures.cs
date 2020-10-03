@@ -15,12 +15,12 @@ namespace SQLCode
         /// </summary>
         public static void CreateAllStoredProcedures()
         {
-            MethodInfo[] methods = Type.GetType(typeof(StoredProcedures).ToString()).GetMethods(BindingFlags.NonPublic | BindingFlags.Static);
+            MethodInfo[] methods = Type.GetType(typeof(StoredProcedures).ToString()).GetMethods(BindingFlags.NonPublic | BindingFlags.Static); //the binding flags ensures only static non-public methods are found.
             foreach(MethodInfo method in methods)
             {
-                string sql = (string)method.Invoke(null, null);
                 try
                 {
+                    string sql = (string)method.Invoke(null, null); //unsafe, if a method does not have a return type that can be casted to a string or void return type, the program will crash.
                     SQLControl.RunCommand(sql);
                 }
                 catch (Exception e)

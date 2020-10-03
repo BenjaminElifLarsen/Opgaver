@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace StorageSystemCore
 {
     /// <summary>
-    /// Publisher class that all objects, that needs to react to either a keypress or interact with a ware, should be subscribed too.
+    /// Publisher class that all objects, that needs to react to either a keypress, create a ware or interact with a ware, should be subscribed too.
     /// </summary>
     public class Publisher
     {

@@ -21,7 +21,7 @@ namespace StorageSystemCore
                 switch (answer)
                 {
                     case 0:
-                        WareViewAllMenu();
+                        WareViewBasicMenu();
                         break;
 
                     case 2:
@@ -41,7 +41,7 @@ namespace StorageSystemCore
                         break;
 
                     case 5:
-                        DatabaseSelection();
+                        DatabaseSelectionMenu();
                         break;
                 }
             } while (true);
@@ -145,24 +145,34 @@ namespace StorageSystemCore
             return Support.CollectString("Enter ID");
         }
 
+        /// <summary>
+        /// Starts the creation of a new ware.
+        /// </summary>
         private void WareCreateMenu()
         {
             WareCreator creator = new WareCreator(Publisher.PubWare); //move to somewhere else, maybe have a static class which a function/property that sets the publisher.
             Publisher.PubWare.CreateWare();
         } 
 
-        private void WareViewAllMenu()
+        /// <summary>
+        /// Runs the code to view the basic information of all wares.
+        /// </summary>
+        private void WareViewBasicMenu()
         {
             Visual.WareDisplay(WareInformation.GetWareInformation());
             Support.WaitOnKeyInput();
         }
 
+        /// <summary>
+        /// Runs the code that allows the user to view specific information of all wares.
+        /// </summary>
         private void WareViewMenu() 
         {
             Console.Clear();
             List<string> searchAttributes = WareInformation.FindAllSearchableAttributesNames();
+            searchAttributes.Add("Type");
             searchAttributes.Add("Done");
-            List<string> selectedAttributes = new List<string>();
+            List<string> selectedAttributes = new List<string>(); 
             byte selected;
             do 
             {
@@ -173,7 +183,7 @@ namespace StorageSystemCore
             List<Dictionary<string, object>> attributesAndValues;
             if (selectedAttributes.Count != 0) 
             { 
-                attributesAndValues = WareInformation.GetWareInformation(selectedAttributes); /*new string[] { "Name", "Amount", "Information" }.ToList()*/
+                attributesAndValues = WareInformation.GetWareInformation(selectedAttributes);
                 Visual.WareDisplay(selectedAttributes, attributesAndValues);
             }
             //Testing purpose, not related to this function
@@ -184,7 +194,7 @@ namespace StorageSystemCore
         /// <summary>
         /// Function used to set database (or no database)...
         /// </summary>
-        public void DatabaseSelection() //consider moving this to somewhere else.
+        public void DatabaseSelectionMenu() //consider moving this to somewhere else.
         {
             string[] options = new string[] { "Window login Authentication", "SQL Server Authentication", "No SQL Database" };
             string[] sqlInfo = new string[4];
@@ -272,8 +282,11 @@ namespace StorageSystemCore
         }
 
         
-
-        private bool DoesDatabaseExist() //rename, also, could connect to the master and do the check
+        /// <summary>
+        /// Small menu that asks the user if the database exist or not.
+        /// </summary>
+        /// <returns>Returns true if the user selects yes to the database exist, else false.</returns>
+        private bool DoesDatabaseExist() //rename
         {
             string[] options = new string[] {"Yes","No" };
             byte answer = Visual.MenuRun(options, "Initialise Database Creation?");

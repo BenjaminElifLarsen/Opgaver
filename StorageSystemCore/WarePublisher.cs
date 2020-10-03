@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace StorageSystemCore
 {
+    /// <summary>
+    /// Contains the events, handlers and event class related to ware manipulation. 
+    /// </summary>
     public class WarePublisher
     {
         public delegate void createWareEventHandler(object sender, ControlEvents.CreateWareEventArgs args);
@@ -17,11 +20,18 @@ namespace StorageSystemCore
         public delegate void removeEventHandler(object sender, ControlEvents.RemoveEventArgs args);
         public event removeEventHandler RaiseRemoveEvent;
 
-        public void CreateWare(/*string name, string id, uint amount*/)
+        /// <summary>
+        /// Creates an event that all classes that are subscriben to RaiseCreateWareEvent will trigger on.
+        /// </summary>
+        public void CreateWare()
         {
-            OnCreatingWare(new ControlEvents.CreateWareEventArgs(/*name, id, amount*/));
+            OnCreatingWare(new ControlEvents.CreateWareEventArgs());
         }
 
+        /// <summary>
+        /// Sends the event out to all subscribers. 
+        /// </summary>
+        /// <param name="e"></param>
         protected virtual void OnCreatingWare(ControlEvents.CreateWareEventArgs e)
         { //calls a function/class that creates a new class 
             createWareEventHandler eventHandler = RaiseCreateWareEvent;
@@ -39,6 +49,10 @@ namespace StorageSystemCore
             OnAddingToWare(new ControlEvents.AddEventArgs(ID, amount));
         }
 
+        /// <summary>
+        /// Sends out the event to all objects that are subscribed to RaiseAddEvent. 
+        /// </summary>
+        /// <param name="e"></param>
         protected virtual void OnAddingToWare(ControlEvents.AddEventArgs e)
         { //calls a function/class that creates a new class 
             addEventHandler eventHandler = RaiseAddEvent;
@@ -56,6 +70,10 @@ namespace StorageSystemCore
             OnRemovingFomWare(new ControlEvents.RemoveEventArgs(ID, amount));
         }
 
+        /// <summary>
+        /// Sends out the event to all objects that are subscribed to RaiseRemoveEvent
+        /// </summary>
+        /// <param name="e"></param>
         protected virtual void OnRemovingFomWare(ControlEvents.RemoveEventArgs e)
         { 
             removeEventHandler eventHandler = RaiseRemoveEvent;
