@@ -159,7 +159,16 @@ namespace StorageSystemCore
         /// </summary>
         private void WareViewBasicMenu()
         {
-            Visual.WareDisplay(WareInformation.GetWareInformation());
+            if(!SQLCode.SQLControl.DatabaseInUse)
+                Visual.WareDisplay(WareInformation.GetWareInformation());
+            else
+            { //testing purposes, have a minor functon for this, since data generation is not really a menu thing. 
+                List<List<string>> information = SQLCode.SQLControl.GetValuesAllWare(new string[] { "name", "id", "amount", "type" });
+                List<string[]> informationReady = new List<string[]>();
+                foreach (List<string> arrayData in information)
+                    informationReady.Add(arrayData.ToArray());
+                Visual.WareDisplay(informationReady);
+            }
             Support.WaitOnKeyInput();
         }
 
@@ -228,6 +237,7 @@ namespace StorageSystemCore
                         else
                             try
                             {
+                                SQLCode.SQLControl.DataBase = sqlInfo[3];
                                 run = !SQLCode.SQLControl.CreateConnection(sqlInfo, true);
                             }
                             catch
@@ -250,6 +260,7 @@ namespace StorageSystemCore
                                 SQLCode.SQLControl.DataBase = sqlInfo[3];
                                 firstConnection = SQLCode.SQLControl.CreateConnectionString(sqlInfo[0], sqlInfo[1], sqlInfo[2], "master");
                                 run = !SQLCode.SQLControl.InitalitionOfDatabase(sqlInfo, firstConnection, false);
+                                SQLCode.SQLControl.DatabaseInUse = true;
                             }
                             catch
                             {
@@ -257,8 +268,10 @@ namespace StorageSystemCore
                             }
                         }
                         else
-                            try { 
+                            try {
+                                SQLCode.SQLControl.DataBase = sqlInfo[3];
                                 run = !SQLCode.SQLControl.CreateConnection(sqlInfo, false);
+                                SQLCode.SQLControl.DatabaseInUse = true;
                             }
                             catch
                             {
@@ -269,6 +282,7 @@ namespace StorageSystemCore
 
                     case 2:
                         WareInformation.AddWareDefault();
+                        SQLCode.SQLControl.DatabaseInUse = false;
                         break;
                 }
                 if (answer == options.Length - 1)

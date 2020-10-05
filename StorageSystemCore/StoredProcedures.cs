@@ -21,11 +21,11 @@ namespace SQLCode
                 try
                 {
                     string sql = (string)method.Invoke(null, null); //unsafe, if a method does not have a return type that can be casted to a string or void return type, the program will crash.
-                    SQLControl.RunCommand(sql);
+                    SQLControl.RunCommand(sql); //first null is given since it is not invoked in an instance and the second null is because there is no parameters in the functions
                 }
-                catch (Exception e)
+                catch (Exception e) 
                 {
-                    Console.WriteLine($"Failed at running method {method.Name}: {e.Message}");
+                    Console.WriteLine($"Failed at running function {method.Name}: {e.Message}");
                     StorageSystemCore.Support.WaitOnKeyInput();
                 }
             }
@@ -36,7 +36,6 @@ namespace SQLCode
             return
                 "CREATE PROCEDURE SelectAllData " +
                     "AS " +
-                    $"USE {SQLControl.DataBase}; " +
                     "SELECT * FROM Inventory;";
         }
 
@@ -45,18 +44,27 @@ namespace SQLCode
             return
                 "CREATE PROCEDURE SelectPartlyData @Columns nvarchar(512) " +
                     "AS " +
-                    $"USE {SQLControl.DataBase}; " +
                     "SELECT @Columns FROM Inventory;";
         }
 
-        private static string CreateInsertWares() //the variables should be in string and not list/array
+        private static string CreateInsertWaresBasic() 
         {
-            return //not fully sure if this approach will work out regarding having the vlaues as nvarchar
-                "CREATE PROCEDURE InsertWare @Columns nvarchar(512), @Values nvarchar(2048) " +
+            return
+                "CREATE PROCEDURE InsertWareBasic @ID nvarchar(16), @Name nvarchar(128), @Amount int, @Type nvarchar(64) " +
                     "AS " +
-                    $"USE {SQLControl.DataBase}; " + 
-                    "INSERT INTO Inventory (@Columns) " +
-                    "Values (@Values);";
+                    "INSERT INTO Inventory (id,name,amount,type) " +
+                    "Values (@ID,@Name,@Amount,@Type);";
+        }
+
+        private static string CreateInsertWareFull()
+        {
+            return
+                "CREATE PROCEDURE InsertWareFull " +
+                    "@ID nvarchar(16), @Name nvarchar(128), @Amount int, @Type nvarchar(64), " +
+                    "@Information nvarchar(2048) null, @DangerCategory int null, @FlashPoint float null, @MinTemp float null, @BoilingPoint float null, @Volatile bit null " +
+                    "AS " +
+                    "INSERT INTO Inventory (id,name,amount,type,information,dangerCategory,flashPoint,minTemp,boilingPoint,volatile) " +
+                    "Values (@ID,@Name,@Amount,@Type,@Information,@DangerCategory,@FlashPoint,@MinTemp,@BoilingPoint,@Volatile);";
         }
 
         private static string CreateDeleteWare()
@@ -64,7 +72,6 @@ namespace SQLCode
             return
                 "CREATE PROCEDURE DeleteWare @WareToDelete nvarchar(16) " +
                     "AS " +
-                    $"USE {SQLControl.DataBase}; " +
                     "DELETE FROM Inventory WHERE id = @WareToDelete;";
         }
 
@@ -73,7 +80,6 @@ namespace SQLCode
             return
                 "CREATE PROCEDURE FindWareType @WareID nvarchar(16) " +
                     "As " +
-                    $"USE {SQLControl.DataBase}; " +
                     "SELECT type FROM Inventory WHERE id = @WareID;";
         }
 
@@ -82,28 +88,25 @@ namespace SQLCode
             return
                 "CREATE PROCEDURE SelectValuesFromOneWare @WareID nvarchar(16) " +
                     "AS " +
-                    $"USE {SQLControl.DataBase}; " +
                     "SELECT * FROM Inventory WHERE id = @WareID;";
         }
 
         private static string CreateSelectPartValuesOfOneWare()
         {
             return
-                "CREATE PROCEDURE SelectPartValuesFromOneWare @WareID nvarchar(16) @Columns nvarchar(512) " +
+                "CREATE PROCEDURE SelectPartValuesFromOneWare @WareID nvarchar(16), @Columns nvarchar(512) " +
                     "AS " +
-                    $"USE {SQLControl.DataBase}; " +
                     "SELECT @Columns FROM Inventory WHERE id = @WareID;";
         }
 
         private static string CreateUpdateWare()
         {
             return
-                "CREATE PROCEDURE UpdateWare @WareID nvarchar(16) @Column nvarchar(512) @NewValue nvarchar(2048) " +
+                "CREATE PROCEDURE UpdateWare @WareID nvarchar(16), @Column nvarchar(512), @NewValue nvarchar(2048) " +
                     "AS " +
-                    $"USE {SQLControl.DataBase}; " +
                     "UPDATE Inventory " +
                     "SET @Column = @NewValue " +
-                    "WHERE id = @WareID:";
+                    "WHERE id = @WareID;";
         }
 
         /// <summary>
@@ -252,12 +255,28 @@ namespace SQLCode
         /// </summary>
         /// <param name="columns"></param>
         /// <param name="values"></param>
-        public static void InsertWareSP(string columns, string values)
+        public static void InsertWareSP(string id, string name, string amount, string type)
         {
             string sqlString =
-                $"EXEC InsertWare @Columns = {columns}, @Values = {values}";
+                $"EXEC InsertWareBasic @ID = {id}, @Name = {name}, @Amount = {amount}, @Type = {type}";
             try { 
             SQLControl.RunCommand(sqlString);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Could not insert: {e.Message}");
+                StorageSystemCore.Support.WaitOnKeyInput();
+            }
+        }
+
+        public static void InsertWareSP(string id, string name, string amount, string type, string information, string dangerCategory, string flashPoint, string minTemp, string boilingPoint, string @volatile)
+        {
+            string sqlString =
+                $"EXEC InsertWareFull @ID = {id}, @Name = {name}, @Amount = {amount}, @Type = {type}, " +
+                    $"@Information = {information ?? "null"}, @DangerCategory = {dangerCategory ?? "null"}, @FlashPoint = {flashPoint ?? "null"}, @MinTemp = {minTemp ?? "null"}, @BoilingPoint = {boilingPoint ?? "null"}, @Volatile = {@volatile ?? "null"}";
+            try
+            {
+                SQLControl.RunCommand(sqlString);
             }
             catch (Exception e)
             {

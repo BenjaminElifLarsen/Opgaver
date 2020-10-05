@@ -18,7 +18,8 @@ namespace SQLCode
             string sqlString =
                 $"Use {SQLControl.DataBase}; " +
                     "Create Table Inventory " +
-                    "(id NVARCHAR(16) Not null Primary Key, " +
+                    "(id NVARCHAR(16) Not null, " +
+                    "idValue INT Not null Identity(1,1), " +
                     "name NVARCHAR(40) Not null , " +
                     "amount INT Not null , " +
                     "type NVARCHAR(40) Not null, " +
@@ -27,27 +28,22 @@ namespace SQLCode
                     "minTemp float null," +
                     "boilingPoint float null, " +
                     "volatile bit null," +
-                    "information NVARCHAR(2048) null);";
+                    "information NVARCHAR(2048) null, " +
+                    "Primary Key(id, idValue) );";
             SQLControl.RunCommand(sqlString);
         }
 
-        private static void CreateDefaultEntries()
+        public static void CreateDefaultEntries()
         {
-            string[] columns = new string[] { };
-            string[] values = new string[] { };
-            string columnsString = "id, name, amount, type";
-            string valuesString = "'ID-55t','Water',25,'Liquid'";
-            StoredProcedures.InsertWareSP(columnsString, valuesString);
-            columnsString = "id, name, amount, type";
-            valuesString = "'ID-123q','Toaster',25,'Electronic'";
-            StoredProcedures.InsertWareSP(columnsString, valuesString);
+            StoredProcedures.InsertWareSP("'ID-55t'","'Water'","25","'Liquid'");
+            StoredProcedures.InsertWareSP("'ID-123q'", "'Toaster'", "25", "'Electronic'");
+            StoredProcedures.InsertWareSP("'MO.92z'", "'CiF3'", "1", "'Combustible Liquid'", "'Danger'", "4", null, null, null, null);
         }
 
         public static void InitialiseDatabase()
         {
             CreateDatabase();
             CreateTable();
-            CreateDefaultEntries();
         }
     }
 }

@@ -32,6 +32,8 @@ namespace SQLCode
 
         public static string[][] TablesAndColumns { get => tablesAndColumns; }
 
+        public static bool DatabaseInUse { get; set; }
+
         /// <summary>
         /// Sanitises <paramref name="queryToSanitise"/> and returns it. 
         /// </summary>
@@ -172,6 +174,7 @@ namespace SQLCode
             }
             catch(SqlException e)
             {
+                sqlConnection.Close();
                 throw e;
             }
         }
@@ -324,7 +327,7 @@ namespace SQLCode
         /// <param name="sqlColumn"></param>
         /// <param name="ID"></param>
         /// <returns></returns>
-        private static List<string> GetValuesSingleWare(string[] sqlColumn, string ID)
+        public static List<string> GetValuesSingleWare(string[] sqlColumn, string ID)
         {
             List<string> information = new List<string>();
             string query = $"Use {database}; Select ";
@@ -349,6 +352,33 @@ namespace SQLCode
             SQLConnection.Close();
             return information;
         }
+        public static List<List<string>> GetValuesAllWare(string[] sqlColumn)
+        {
+            List<List<string>> information = new List<List<string>>();
+            string query = $"Use {database}; Select ";
+            for (int i = 0; i < sqlColumn.Length; i++)
+            {
+                query += sqlColumn[i];
+                if (i != sqlColumn.Length - 1)
+                    query += ", ";
+            }
+            query += $" From Inventory;";
+            SqlCommand command = new SqlCommand(query, SQLConnection);
+            SQLConnection.Open();
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    information.Add(new List<string>());
+                    int colAmount = reader.FieldCount;
+                    for (int i = 0; i < colAmount; i++)
+                        information[information.Count-1].Add(reader[i].ToString());
+                }
+            }
+            SQLConnection.Close();
+            return information;
+        }
+
 
         /// <summary>
         /// Runs <paramref name="query"/> in the sql database and returns a List<string> with the values.
@@ -399,8 +429,8 @@ namespace SQLCode
                 DatabaseCreation.InitialiseDatabase();
 
                 CreateConnection(sqlInfo, window);
-
                 StoredProcedures.CreateAllStoredProcedures();
+                DatabaseCreation.CreateDefaultEntries();
                 return true;
             }
             catch (System.Data.SqlClient.SqlException e)

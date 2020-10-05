@@ -225,6 +225,19 @@ namespace StorageSystemCore
             Support.ActiveCursor();
         }
 
+        /// <summary>
+        /// Displays the information, stored in <paramref name="values"/>, of all wares. The column titles comes from <paramref name="columnNames"/>. Designed for SQL
+        /// </summary>
+        /// <param name="columnNames"></param>
+        /// <param name="values"></param>
+        public static void WareDisplay(List<string> columnNames, List<string[]> values)
+        {
+            Support.DeactiveCursor();
+
+            Support.WaitOnKeyInput();
+            Support.ActiveCursor();
+        }
+
         public static void SetScreenSize(int x, int y)
         {
             Console.WindowWidth = x;
