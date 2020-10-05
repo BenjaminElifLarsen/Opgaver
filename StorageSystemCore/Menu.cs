@@ -215,6 +215,7 @@ namespace StorageSystemCore
                         {
                             try
                             {
+                                SQLCode.SQLControl.DataBase = sqlInfo[1];
                                 firstConnection = SQLCode.SQLControl.CreateConnectionString(sqlInfo[0], "master");
                                 run = !SQLCode.SQLControl.InitalitionOfDatabase(sqlInfo, firstConnection, true);
                                 //create database
@@ -246,7 +247,8 @@ namespace StorageSystemCore
                         {
                             try
                             {
-                                firstConnection = SQLCode.SQLControl.CreateConnectionString(sqlInfo[0], "master", sqlInfo[2], sqlInfo[3]);
+                                SQLCode.SQLControl.DataBase = sqlInfo[3];
+                                firstConnection = SQLCode.SQLControl.CreateConnectionString(sqlInfo[0], sqlInfo[1], sqlInfo[2], "master");
                                 run = !SQLCode.SQLControl.InitalitionOfDatabase(sqlInfo, firstConnection, false);
                             }
                             catch

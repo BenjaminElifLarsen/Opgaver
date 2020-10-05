@@ -394,8 +394,10 @@ namespace SQLCode
             try
             {
                 CreateConnection(masterConnection);
+
                 //create database
-                
+                DatabaseCreation.InitialiseDatabase();
+
                 CreateConnection(sqlInfo, window);
 
                 StoredProcedures.CreateAllStoredProcedures();
