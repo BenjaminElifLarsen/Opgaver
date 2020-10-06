@@ -215,7 +215,6 @@ namespace StorageSystemCore
             string[] options = new string[] { "Window login Authentication", "SQL Server Authentication", "No SQL Database" };
             string[] sqlInfo = new string[4];
             string firstConnection = null;
-            string connect = null;
             
             bool run = true;
 
