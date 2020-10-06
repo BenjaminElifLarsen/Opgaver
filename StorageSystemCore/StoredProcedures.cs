@@ -109,6 +109,26 @@ namespace SQLCode
                     "WHERE id = @WareID;";
         }
 
+        private static string CreateAddAmountWare()
+        {
+            return
+                "CREATE PROCEDURE AddToWareAmount @WareID nvarchar(16), @Value int " +
+                    "AS " +
+                    "UPDATE Inventory " +
+                    "SET amount = amount + @Value " +
+                    "WHERE id = @WareID;";
+        }
+
+        private static string CreateRemoveAmountWare()
+        {
+            return
+                "CREATE PROCEDURE RemoveFromWareAmount @WareID nvarchar(16), @Value int " +
+                    "AS " +
+                    "UPDATE Inventory " +
+                    "SET amount = amount - @Value " +
+                    "WHERE id = @WareID;";
+        }
+
         private static string CreateGetColumnNames()
         {
             return
@@ -119,7 +139,7 @@ namespace SQLCode
         }
 
         /// <summary>
-        /// Uses the update stored procedure to update the ware <paramref name="id"/>'s <paramref name="column"/> with the new value of <paramref name="newValue"/>.
+        /// Not Working as MSSQL thinks @Column is the column name. Uses the update stored procedure to update the ware <paramref name="id"/>'s <paramref name="column"/> with the new value of <paramref name="newValue"/>.
         /// </summary>
         /// <param name="id">Ware ID to update</param>
         /// <param name="column">The Column to update</param>
@@ -179,7 +199,7 @@ namespace SQLCode
         }
 
         /// <summary>
-        /// Uses the Select partly data procedure to collect the data in <paramref name="columns"/> of all wares in the database.
+        /// Not Working as MSSQL thinks @Column is the column name. Uses the Select partly data procedure to collect the data in <paramref name="columns"/> of all wares in the database.
         /// </summary>
         /// <param name="columns"></param>
         /// <returns>Returns information from <paramref name="columns"/> of all wares in the database as a list of lists of strings.</returns>
@@ -220,7 +240,7 @@ namespace SQLCode
         }
 
         /// <summary>
-        /// Uses the select part values from one ware stored procedure to retive the information(s) of <paramref name="columns"/> of the ware with <paramref name="id"/>.
+        /// Not Working as MSSQL thinks @Column is the column name. Uses the select part values from one ware stored procedure to retive the information(s) of <paramref name="columns"/> of the ware with <paramref name="id"/>.
         /// </summary>
         /// <param name="id">The ID of the ware to collect information from. </param>
         /// <param name="columns">The column(s) to get information(s) from. </param>
@@ -255,6 +275,46 @@ namespace SQLCode
             catch (Exception e)
             {
                 Console.WriteLine($"Could not delete: {e.Message}");
+                StorageSystemCore.Support.WaitOnKeyInput();
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="amount"></param>
+        public static void AddToWareAmountSP(string id, int amount)
+        {
+            string sqlString =
+                $"EXEC AddToWareAmount @WareID = {id}, @Value = {amount}";
+            try
+            {
+                SQLControl.RunCommand(sqlString);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Could not add to ware: {e.Message}");
+                StorageSystemCore.Support.WaitOnKeyInput();
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="amount"></param>
+        public static void RemoveFromWareAmountSP(string id, int amount)
+        {
+            string sqlString =
+                $"EXEC RemoveFromWareAmount @WareID = {id}, @Value = {amount}";
+            try
+            {
+                SQLControl.RunCommand(sqlString);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Could not add to ware: {e.Message}");
                 StorageSystemCore.Support.WaitOnKeyInput();
             }
         }

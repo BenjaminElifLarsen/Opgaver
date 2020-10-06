@@ -80,7 +80,7 @@ namespace StorageSystemCore
         private void WareRemoveMenu()
         {
             string ID = CollectID();
-            if (Support.IDExist(ID))
+            if (Support.IDExist(ID,SQLCode.SQLControl.DatabaseInUse))
                 if(WareModifier.RemoveWare(ID))
                 {
                     ProgressInformer("{0} was removed.", ID);
@@ -106,7 +106,7 @@ namespace StorageSystemCore
         private void WareAddAmountMenu()
         {
             string ID = CollectID();
-            if (Support.IDExist(ID))
+            if (Support.IDExist(ID, SQLCode.SQLControl.DatabaseInUse))
                 WareModifier.AddToWare(ID,CollectAmount());
             else
             {
@@ -118,7 +118,7 @@ namespace StorageSystemCore
         private void WareRemoveAmountMenu()
         {
             string ID = CollectID();
-            if (Support.IDExist(ID)) 
+            if (Support.IDExist(ID, SQLCode.SQLControl.DatabaseInUse)) 
                 WareModifier.RemoveFromWare(ID, CollectAmount());
             else
             {

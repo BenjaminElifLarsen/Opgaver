@@ -294,7 +294,7 @@ namespace StorageSystemCore
         /// <returns>Returns true if the ID is unique else false.</returns>
         private bool UniqueID(string IDToCheck)
         {
-            if (!Support.UniqueID(IDToCheck))
+            if (!Support.UniqueID(IDToCheck, SQLCode.SQLControl.DatabaseInUse))
             {
                 Console.WriteLine("ID is not unique. Enter a new ID");
                 return false;

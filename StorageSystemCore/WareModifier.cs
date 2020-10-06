@@ -18,7 +18,10 @@ namespace StorageSystemCore
         /// <param name="amount"></param>
         public static void AddToWare(string ID, int amount)
         {
-            Publisher.PubWare.AddToWare(ID, amount);
+            if (!SQLCode.SQLControl.DatabaseInUse)
+                Publisher.PubWare.AddToWare(ID, amount);
+            else
+                SQLCode.StoredProcedures.AddToWareAmountSP($"'{ID}'",amount);
         }
 
         /// <summary>
@@ -28,18 +31,25 @@ namespace StorageSystemCore
         /// <param name="amount"></param>
         public static void RemoveFromWare(string ID, int amount)
         {
-            Publisher.PubWare.RemoveFromWare(ID, amount);
+            if (!SQLCode.SQLControl.DatabaseInUse)
+                Publisher.PubWare.RemoveFromWare(ID, amount);
+            else
+                SQLCode.StoredProcedures.RemoveFromWareAmountSP($"'{ID}'", amount);
         }
 
         /// <summary>
-        /// ... Returns true if the item was found and removed else false
+        /// Removes a ware. Returns true if the item was found and removed else false
         /// </summary>
         /// <param name="ID">The ID of the ware to remove</param>
         /// <returns>Returns true if the item was found and removed else false</returns>
         public static bool RemoveWare(string ID)
         {
-            if (Support.Confirmation())
-                return WareInformation.RemoveWare(ID);
+            if (Support.Confirmation()) {
+                if (!SQLCode.SQLControl.DatabaseInUse)
+                    return WareInformation.RemoveWare(ID);
+                SQLCode.StoredProcedures.RunDeleteWareSP($"'{ID}'");
+                return true;
+            }
             return false;
         }
 

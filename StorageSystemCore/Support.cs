@@ -51,13 +51,23 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="IDToCheck">The ID to check against other wares' ID.</param>
         /// <returns>Returns false if <paramref name="IDToCheck"/> is not unique else true.</returns>
-        public static bool UniqueID(string IDToCheck)
+        public static bool UniqueID(string IDToCheck, bool sql = false)
         {
-            List<string[]> information = WareInformation.GetWareInformation();
-            foreach (string[] specificWare in information)
+            if (!sql) { 
+                List<string[]> information = WareInformation.GetWareInformation();
+                foreach (string[] specificWare in information)
+                {
+                    if (specificWare[1] == IDToCheck)
+                        return false;
+                }
+            }
+            else
             {
-                if (specificWare[1] == IDToCheck)
-                    return false;
+                List<List<string>> information = SQLCode.SQLControl.GetValuesAllWare(new string[] {"id" });
+                foreach (List<string> list in information)
+                    foreach (string str in list)
+                        if (str == IDToCheck)
+                            return false;
             }
             return true;
         }
@@ -67,9 +77,9 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="IDToCheck">The ID to check if its exist.</param>
         /// <returns>Returns true if ID exist, else false.</returns>
-        public static bool IDExist(string IDToCheck)
+        public static bool IDExist(string IDToCheck, bool sql = false)
         {
-            return !UniqueID(IDToCheck);
+            return !UniqueID(IDToCheck, sql);
         }
 
         /// <summary>
@@ -115,7 +125,7 @@ namespace StorageSystemCore
         /// <returns></returns>
         public static string RemoveSpace(string type)
         {
-            if (type.Split(' ').Length != 1) //move into a function since it so far is needed two places
+            if (type.Split(' ').Length != 1) 
             {
                 string[] split = type.Split(' ');
                 type = "";

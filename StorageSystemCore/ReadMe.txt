@@ -7,3 +7,5 @@ After this you will be asked if you want to initialise a database creation or no
 If you got docker you can run the following command to create a sql container: 
 	docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Password123." -p 1435:1433 -p 8080:8080 --name StorageDB -d mcr.microsoft.com/mssql/server:2019-CU5-ubuntu-18.04
 The username will be 'SA' and the password will be 'Password123.' and the servername will be 'localHost,1435'. 
+
+Currently, extra information cannot be added to a ware under creation if using a database. 
