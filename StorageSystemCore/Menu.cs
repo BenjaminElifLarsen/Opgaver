@@ -178,8 +178,11 @@ namespace StorageSystemCore
         private void WareViewMenu() 
         {
             Console.Clear();
-            List<string> searchAttributes = WareInformation.FindAllSearchableAttributesNames();
-            searchAttributes.Add("Type");
+            List<string> searchAttributes = WareInformation.FindAllSearchableAttributesNames(SQLCode.SQLControl.DatabaseInUse);
+            if (!SQLCode.SQLControl.DatabaseInUse)
+                searchAttributes.Add("Type");
+            else
+                searchAttributes.Add("type");
             searchAttributes.Add("Done");
             List<string> selectedAttributes = new List<string>(); 
             byte selected;
@@ -191,9 +194,16 @@ namespace StorageSystemCore
             } while (selected != searchAttributes.Count-1);
             List<Dictionary<string, object>> attributesAndValues;
             if (selectedAttributes.Count != 0) 
-            { 
-                attributesAndValues = WareInformation.GetWareInformation(selectedAttributes);
-                Visual.WareDisplay(selectedAttributes, attributesAndValues);
+            {
+                if (!SQLCode.SQLControl.DatabaseInUse) { 
+                    attributesAndValues = WareInformation.GetWareInformation(selectedAttributes);
+                    Visual.WareDisplay(selectedAttributes, attributesAndValues);
+                }
+                else
+                {
+                    List<List<string>> wareValues = SQLCode.SQLControl.GetValuesAllWare(selectedAttributes.ToArray()); 
+                    Visual.WareDisplay(selectedAttributes.ToArray(), wareValues);
+                }
             }
             //Testing purpose, not related to this function
             //SQLCode.ObjectSQLConversion.ObjectToSQL(WareInformation.Ware[WareInformation.Ware.Count-1]);

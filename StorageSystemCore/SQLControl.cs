@@ -379,6 +379,24 @@ namespace SQLCode
             return information;
         }
 
+        public static List<string> GetColumnNames(string query)
+        {
+            List<string> information = new List<string>();
+            SqlCommand command = new SqlCommand(query, SQLConnection);
+            SQLConnection.Open();
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    int colAmount = reader.FieldCount;
+                    for (int i = 0; i < colAmount; i++)
+                        information.Add(reader[i].ToString());
+                }
+            }
+            SQLConnection.Close();
+            return information;
+        }
+
 
         /// <summary>
         /// Runs <paramref name="query"/> in the sql database and returns a List<string> with the values.

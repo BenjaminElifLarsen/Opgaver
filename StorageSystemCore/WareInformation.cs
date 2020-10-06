@@ -244,12 +244,13 @@ namespace StorageSystemCore
         /// <summary>
         /// Finds and returns the name of all searchable attributes over all classes that inherences from <c>Ware</c>.
         /// </summary>
+        /// <param name="sql">True for finding the sql names, false for finding the non-sql names.</param>
         /// <returns></returns>
-        public static List<string> FindAllSearchableAttributesNames() //rename
+        public static List<string> FindAllSearchableAttributesNames(bool sql) //rename
         {
             List<string> listOfTypes = FindWareTypes(); //have a function that calls this one and returns name, one for sqlnames and one for both
             List<string> searchable = new List<string>();
-
+            byte column = sql ? (byte)1 : (byte)0;
             foreach (string type in listOfTypes)
             {
                 string type_ = type;
@@ -262,8 +263,8 @@ namespace StorageSystemCore
                 }
                 List<string[]> attributes = FindSearchableAttributes(Type.GetType("StorageSystemCore." + type_));
                 foreach (string[] attrArray in attributes)
-                    if (!searchable.Contains(attrArray[0]))
-                        searchable.Add(attrArray[0]);
+                    if (!searchable.Contains(attrArray[column]))
+                        searchable.Add(attrArray[column]);
             }
             return searchable;
         }

@@ -109,6 +109,15 @@ namespace SQLCode
                     "WHERE id = @WareID;";
         }
 
+        private static string CreateGetColumnNames()
+        {
+            return
+                "CREATE PROCEDURE GetColumnNames @Table nvarchar(24) " +
+                    "AS " +
+                    "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS " +
+                    "WHERE TABLE_NAME=@Table;";
+        }
+
         /// <summary>
         /// Uses the update stored procedure to update the ware <paramref name="id"/>'s <paramref name="column"/> with the new value of <paramref name="newValue"/>.
         /// </summary>
@@ -282,6 +291,22 @@ namespace SQLCode
             {
                 Console.WriteLine($"Could not insert: {e.Message}");
                 StorageSystemCore.Support.WaitOnKeyInput();
+            }
+        }
+
+        public static List<string> GetColumnNamesSP(string table)
+        {
+            string sqlString =
+                $"EXEC GetColumnNames @Table = {table}";
+            try
+            {
+                return SQLControl.GetColumnNames(sqlString);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Could not retrive columns: {e.Message}");
+                StorageSystemCore.Support.WaitOnKeyInput();
+                return null;
             }
         }
 

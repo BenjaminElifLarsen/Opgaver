@@ -205,11 +205,14 @@ namespace StorageSystemCore
                                
             }
 
+            byte maxLength = (byte)textToDisplay.GetLength(0);
+            while (columnStartLocation[maxLength-1] > Console.BufferWidth)
+                maxLength--;
             Console.Clear();
             string underscore = "|".PadRight(totalLength, '-');
             Console.CursorTop = 1;
             Console.Write(underscore);
-            for (int n = 0; n < textToDisplay.GetLength(0); n++) //displays all information in the 2D array textToDisplay
+            for (int n = 0; n < maxLength/*textToDisplay.GetLength(0)*/; n++) //displays all information in the 2D array textToDisplay
             {
                 Console.CursorTop = 0;
                 Console.CursorLeft = columnStartLocation[n]; //System.ArgumentOutOfRangeException, buffer size in y is to small. Check beforehand if there is a n value that is same or bigger than the buffer size. If true, lower the GetLength to smaller than it
@@ -230,9 +233,53 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="columnNames"></param>
         /// <param name="values"></param>
-        public static void WareDisplay(List<string> columnNames, List<string[]> values)
+        public static void WareDisplay(string[] columnNames, List<List<string>> values) //when this is working, find the parts that can moved into functions and shared with the one above
         {
             Support.DeactiveCursor();
+            int[] columnStartLocation = new int[columnNames.Length];
+            int[] currentLongestRowValue = new int[columnNames.Length];
+            int totalLength = 0;
+            string[,] textToDisplay = new string[columnNames.Length, values.Count];
+            for (int n = 0; n < textToDisplay.GetLength(0); n++) //fills out the 2D array with the inforamtion to display
+            {
+                for (int m = 0; m < textToDisplay.GetLength(1); m++)
+                {
+                    textToDisplay[n, m] = values[m][n] == "" ? "null" : values[m][n];
+                    if (textToDisplay[n, m].Length > currentLongestRowValue[n]) //ensures the longest length of information of all rows in each column is known
+                    {
+                        if (columnNames[n].Length < textToDisplay[n, m].Length)
+                            currentLongestRowValue[n] = textToDisplay[n, m].Length;
+                        else
+                            currentLongestRowValue[n] = columnNames[n].Length;
+                    }
+                }
+            }
+            for (int n = 0; n < columnStartLocation.Length; n++) //adds some more length to each column length 
+            {
+                columnStartLocation[n] = totalLength;
+                totalLength += currentLongestRowValue[n] + 2;
+
+            }
+            byte maxLength = (byte)textToDisplay.GetLength(0);
+            while (columnStartLocation[maxLength - 1] > Console.BufferWidth)
+                maxLength--;
+
+            Console.Clear();
+            string underscore = "|".PadRight(totalLength, '-');
+            Console.CursorTop = 1;
+            Console.Write(underscore);
+            for (int n = 0; n < maxLength; n++) //displays all information in the 2D array textToDisplay
+            {
+                Console.CursorTop = 0;
+                Console.CursorLeft = columnStartLocation[n];
+                Console.Write("|" + columnNames[n]);
+                for (int m = 0; m < textToDisplay.GetLength(1); m++)
+                {
+                    Console.CursorLeft = columnStartLocation[n];
+                    Console.CursorTop = m + 2;
+                    Console.Write("|" + textToDisplay[n, m]);
+                }
+            }
 
             Support.WaitOnKeyInput();
             Support.ActiveCursor();
