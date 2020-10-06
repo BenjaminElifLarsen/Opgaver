@@ -11,7 +11,7 @@ namespace StorageSystemCore
         public delegate void keyPressEventHandler(object sender, ControlEvents.KeyEventArgs args);
         public event keyPressEventHandler RaiseKeyPressEvent;
 
-        public void PressKey(ConsoleKey key) //a threaded function should call this when a key is pressed.
+        public void PressKey(ConsoleKey key) 
         {
             OnPressingKey(new ControlEvents.KeyEventArgs(key));
         }

@@ -54,7 +54,7 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="e"></param>
         protected virtual void OnAddingToWare(ControlEvents.AddEventArgs e)
-        { //calls a function/class that creates a new class 
+        { 
             addEventHandler eventHandler = RaiseAddEvent;
             if (eventHandler != null)
                 eventHandler.Invoke(this, e);
