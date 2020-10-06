@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace StorageSystemCore
 {
     /// <summary>
-    /// Used to set attributes for methods and properties that contains ware informations that are used for the sql database and display...
+    /// Used to set attributes for methods and properties that contains ware informations that are used for the sql database and display.
     /// </summary>
-    public class WareSeacheableAttribute : Attribute
+    public class WareSeacheableAttribute : Attribute //[DataType("System.Double")],[DataType("System.Int[])] maybe as a seperate attribute. Will need a value for collection entry count 
     {
         /// <summary>
         /// The name of the attribute.

@@ -205,7 +205,7 @@ namespace StorageSystemCore
                                
             }
 
-            byte maxLength = (byte)textToDisplay.GetLength(0);
+            byte maxLength = (byte)textToDisplay.GetLength(0); //function from here to the end
             while (columnStartLocation[maxLength-1] > Console.BufferWidth)
                 maxLength--;
             Console.Clear();
@@ -260,7 +260,7 @@ namespace StorageSystemCore
                 totalLength += currentLongestRowValue[n] + 2;
 
             }
-            byte maxLength = (byte)textToDisplay.GetLength(0);
+            byte maxLength = (byte)textToDisplay.GetLength(0); //function from here to the end
             while (columnStartLocation[maxLength - 1] > Console.BufferWidth)
                 maxLength--;
 

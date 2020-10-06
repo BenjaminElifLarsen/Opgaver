@@ -188,7 +188,7 @@ namespace StorageSystemCore
             byte selected;
             do 
             {
-                selected = Visual.MenuRun(searchAttributes.ToArray(), "Select Attributes");
+                selected = Visual.MenuRun(searchAttributes.ToArray(), "Select Information To Find");
                 if (selected != searchAttributes.Count - 1 && !selectedAttributes.Contains(searchAttributes[selected]))
                     selectedAttributes.Add(searchAttributes[selected]);
             } while (selected != searchAttributes.Count-1);
@@ -211,9 +211,9 @@ namespace StorageSystemCore
         }
 
         /// <summary>
-        /// Function used to set database (or no database)...
+        /// Function used to set database (or no database).
         /// </summary>
-        public void DatabaseSelectionMenu() //consider moving this to somewhere else.
+        public void DatabaseSelectionMenu() 
         {
             string[] options = new string[] { "Window login Authentication", "SQL Server Authentication", "No SQL Database" };
             string[] sqlInfo = new string[4];
@@ -229,7 +229,7 @@ namespace StorageSystemCore
                 {
                     case 0:
                         sqlInfo[0] = Support.CollectString("Enter Servername");
-                        sqlInfo[1] = Support.CollectString("Enter database"); //first ask if they want to create a database or enter one
+                        sqlInfo[1] = Support.CollectString("Enter database");
                         if (DoesDatabaseExist())
                         {
                             try
@@ -237,7 +237,6 @@ namespace StorageSystemCore
                                 SQLCode.SQLControl.DataBase = sqlInfo[1];
                                 firstConnection = SQLCode.SQLControl.CreateConnectionString(sqlInfo[0], "master");
                                 run = !SQLCode.SQLControl.InitalitionOfDatabase(sqlInfo, firstConnection, true);
-                                //create database
                             }
                             catch
                             {
@@ -253,14 +252,12 @@ namespace StorageSystemCore
                             catch
                             {
                                 run = true;
-                            }//when they start the problem and selects sql, the first conenction should go to the master database, 
-                                                                    //which then creates the actual database and then a second connection is established to this database which then creates the table(s) and columns. This final connection is kept 
-                                                                    //should firstly ask if they want to initialise database creation. If yes connnect to the master else connect directly to the database, since it and its table(s) (their columns should also exist)
+                            }
                         break;
 
                     case 1:
                         sqlInfo[0] = Support.CollectString("Enter Servername");
-                        sqlInfo[1] = Support.CollectString("Enter SQL SA");
+                        sqlInfo[1] = Support.CollectString("Enter SQL Username");
                         sqlInfo[2] = Support.HiddenText("Enter Password");
                         sqlInfo[3] = Support.CollectString("Enter database");
                         if (DoesDatabaseExist()) 

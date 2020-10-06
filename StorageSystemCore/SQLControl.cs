@@ -406,7 +406,7 @@ namespace SQLCode
         public static List<string> GetValuesSingleWare(string query)
         {
             try { 
-                List<string> information = new List<string>(); //maybe change this to List<List<string>>, but then it would be the same as GetValues(string)
+                List<string> information = new List<string>(); 
                 SQLConnection.Open();
                 SqlCommand command = new SqlCommand(query, SQLConnection);
                 using (SqlDataReader reader = command.ExecuteReader())
@@ -420,7 +420,6 @@ namespace SQLCode
                 }
                 sqlConnection.Close();
                 return information;
-
             }
             catch (SqlException e)
             {
@@ -446,7 +445,7 @@ namespace SQLCode
                 //create database
                 DatabaseCreation.InitialiseDatabase();
 
-                CreateConnection(sqlInfo, window);
+                CreateConnection(sqlInfo, window); //creates the main connection that is connected directly to the database.
                 StoredProcedures.CreateAllStoredProcedures();
                 DatabaseCreation.CreateDefaultEntries();
                 return true;

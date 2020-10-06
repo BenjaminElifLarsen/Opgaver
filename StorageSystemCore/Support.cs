@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace StorageSystemCore
 {
     /// <summary>
-    /// Support class ...
+    /// Support class. Contains functions designed to be used by other classes.
     /// </summary>
     public static class Support
     {
@@ -47,7 +47,7 @@ namespace StorageSystemCore
         }
 
         /// <summary>
-        /// Checks if <paramref name="IDToCheck"/> is already in use. Returns false if it does else true.
+        /// Checks if <paramref name="IDToCheck"/> is already in use. Returns false if it does, else true.
         /// </summary>
         /// <param name="IDToCheck">The ID to check against other wares' ID.</param>
         /// <returns>Returns false if <paramref name="IDToCheck"/> is not unique else true.</returns>
@@ -177,7 +177,7 @@ namespace StorageSystemCore
         /// <summary>
         /// Asks if an user is sure about their choice. If yes it returns true, else false.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns true if the user acknowledge the confirmation, else false.</returns>
         public static bool Confirmation() 
         {
             string message = "Are you sure?";
@@ -186,23 +186,21 @@ namespace StorageSystemCore
         }
 
         /// <summary>
-        /// 
+        /// Functions that is subscribed to the KeyEvent.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">Parameters of the event.</param>
         private static void KeyEvnetHandler(object sender, ControlEvents.KeyEventArgs e)
         {
             key = e.Key;
         }
-
-
 
         /// <summary>
         /// Returns the default value of the ValueType in <paramref name="type"/>, else null. The return type will be packed into dynamic
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static dynamic GetDefaultValueFromValueType(string type)
+        public static dynamic GetDefaultValueFromValueType(string type) //the unit testing indicates this is a fairly slow function. Around 46 ms for 4 calls
         {
             Type typeCheck = Type.GetType("System." + type);
             if (typeCheck.IsValueType == false)
@@ -261,6 +259,7 @@ namespace StorageSystemCore
             ConsoleKeyInfo keyPressed;
             if (title != null)
                 Console.WriteLine(title);
+            ActiveCursor();
             do
             {
                 keyPressed = Console.ReadKey(true);
@@ -281,10 +280,10 @@ namespace StorageSystemCore
                     text.RemoveAt(text.Count - 1);
                 }
             } while (keyPressed.Key != ConsoleKey.Enter);
-
+            DeactiveCursor();
             return new string(text.ToArray());
         }
 
-
     }
+
 }

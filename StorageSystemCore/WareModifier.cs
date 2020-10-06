@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 namespace StorageSystemCore
 {
     /// <summary>
-    /// Contains functions to modify, add wares and remove wares
+    /// Contains functions to modify ware amount, add wares and remove ware
     /// </summary>
     public class WareModifier
     {
         /// <summary>
-        /// 
+        /// Adds <paramref name="amount"/> to the ware with the id <paramref name="ID"/>.
         /// </summary>
-        /// <param name="ID"></param>
-        /// <param name="amount"></param>
+        /// <param name="ID">The id of the ware.</param>
+        /// <param name="amount">The amount to add.</param>
         public static void AddToWare(string ID, int amount)
         {
             if (!SQLCode.SQLControl.DatabaseInUse)
@@ -25,10 +25,10 @@ namespace StorageSystemCore
         }
 
         /// <summary>
-        /// 
+        /// Removes <paramref name="amount"/> from the ware with the id <paramref name="ID"/>.
         /// </summary>
-        /// <param name="ID"></param>
-        /// <param name="amount"></param>
+        /// <param name="ID">The id of the ware.</param>
+        /// <param name="amount">The amount to remove.</param>
         public static void RemoveFromWare(string ID, int amount)
         {
             if (!SQLCode.SQLControl.DatabaseInUse)

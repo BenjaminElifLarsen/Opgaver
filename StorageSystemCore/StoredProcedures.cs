@@ -280,10 +280,10 @@ namespace SQLCode
         }
 
         /// <summary>
-        /// 
+        /// Adds <paramref name="amount"/> to the total amount of the ware with the ID <paramref name="id"/>.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="amount"></param>
+        /// <param name="id">The ID of the ware.</param>
+        /// <param name="amount">The amount to add</param>
         public static void AddToWareAmountSP(string id, int amount)
         {
             string sqlString =
@@ -300,10 +300,10 @@ namespace SQLCode
         }
 
         /// <summary>
-        /// 
+        /// Removes <paramref name="amount"/> from the total amount of the ware with the ID <paramref name="id"/>.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="amount"></param>
+        /// <param name="id">The ID of the ware.</param>
+        /// <param name="amount">The amount to remove</param>
         public static void RemoveFromWareAmountSP(string id, int amount)
         {
             string sqlString =
@@ -320,11 +320,13 @@ namespace SQLCode
         }
 
         /// <summary>
-        /// Uses the insert ware stored procedure to insert a new ware, into the database, with the <paramref name="columns"/> with the values from <paramref name="values"/> 
+        /// Uses the insert ware stored procedure to insert a new ware, into the database, with the basic column requirements filled out.
         /// </summary>
-        /// <param name="columns"></param>
-        /// <param name="values"></param>
-        public static void InsertWareSP(string id, string name, string amount, string type)
+        /// <param name="id">The ID of the ware.</param>
+        /// <param name="name">The name of the ware.</param>
+        /// <param name="amount">The amount of the ware.</param>
+        /// <param name="type">The type of the ware.</param>
+        public static void InsertWareSP(string id, string name, int amount, string type)
         {
             string sqlString =
                 $"EXEC InsertWareBasic @ID = {id}, @Name = {name}, @Amount = {amount}, @Type = {type}";
@@ -338,7 +340,21 @@ namespace SQLCode
             }
         }
 
-        public static void InsertWareSP(string id, string name, string amount, string type, string information, string dangerCategory, string flashPoint, string minTemp, string boilingPoint, string @volatile)
+        /// <summary>
+        /// Uses the insert ware stored procedure to insert a new ware, into the database, with the ability to set any column. 
+        /// However, <paramref name="id"/>, <paramref name="amount"/>, <paramref name="name"/> and <paramref name="type"/> is needed.
+        /// </summary>
+        /// <param name="id">The ID of the ware.</param>
+        /// <param name="name">The name of the ware.</param>
+        /// <param name="amount">The amount of the ware.</param>
+        /// <param name="type">The type of the ware.</param>
+        /// <param name="information">Information about the ware.</param>
+        /// <param name="dangerCategory">The danger category of the ware.</param>
+        /// <param name="flashPoint">The flash point of the ware.</param>
+        /// <param name="minTemp">The minimum temperature of the ware.</param>
+        /// <param name="boilingPoint">The boiling point of the ware.</param>
+        /// <param name="volatile">Whether the ware is volatile or not.</param>
+        public static void InsertWareSP(string id, string name, int amount, string type, string information, string dangerCategory, string flashPoint, string minTemp, string boilingPoint, string @volatile)
         {
             string sqlString =
                 $"EXEC InsertWareFull @ID = {id}, @Name = {name}, @Amount = {amount}, @Type = {type}, " +

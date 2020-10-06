@@ -7,12 +7,20 @@ using System.Threading.Tasks;
 
 namespace StorageSystemCore
 {
+    /// <summary>
+    /// Continas methods and properties related to ware information. 
+    /// </summary>
     public static class WareInformation
     {
         /// <summary>
         /// The names of the basic variables that all ware and derived constructors contains.  
         /// </summary>
         private static List<string> baseCtorVariables = new List<string>() { "name", "id", "amount" };
+
+        /// <summary>
+        /// The sql names of all basic variables that all wares shall contain.
+        /// </summary>
+        private static List<string> baseSQLNames = new List<string>() { "name", "id", "amount" };
 
         /// <summary>
         /// Llist contains all wares
@@ -29,9 +37,13 @@ namespace StorageSystemCore
         /// </summary>
         public static List<string> BasicConstructorVariableNames { get => baseCtorVariables; }
 
+        /// <summary>
+        /// Gets a list with the sql names that all wares shall have set. 
+        /// </summary>
+        public static List<string> BasicSQLNames { get => baseSQLNames; }
 
         /// <summary>
-        /// Gets the basic information that all wares needs to initiase... as a minimum ...
+        /// Gets the basic information that all wares needs to contain
         /// </summary>
         /// <returns></returns>
         public static List<string[]> GetWareInformation()
@@ -134,7 +146,44 @@ namespace StorageSystemCore
         /// <param name="amount">The amount of the ware.</param>
         public static void AddWare(string name, string id, string type, int amount)
         {
-            SQLCode.StoredProcedures.InsertWareSP($"'{id}'", $"'{name}'", amount.ToString(), $"'{type}'");
+            SQLCode.StoredProcedures.InsertWareSP($"'{id}'", $"'{name}'", amount, $"'{type}'");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="id"></param>
+        /// <param name="type"></param>
+        /// <param name="amount"></param>
+        /// <param name="columnsAndValues"></param>
+        public static void AddWare(string name, string id, string type, int amount, Dictionary<string,object> columnsAndValues)
+        {
+            object information;
+            columnsAndValues.TryGetValue("information",out information);
+            string informationString = $"'{information}'" == "" ? null : $"'{information}'";
+
+            object dangerCategory;
+            columnsAndValues.TryGetValue("dangerCategory", out dangerCategory);
+            string dangerCategoryString = $"{dangerCategory}" == "" ? null : $"{dangerCategory}";
+
+            object flashPoint;
+            columnsAndValues.TryGetValue("flashPoint", out flashPoint);
+            string flashPointString = $"{flashPoint}" == "" ? null : $"{flashPoint}";
+
+            object minTemp;
+            columnsAndValues.TryGetValue("minTemp", out minTemp);
+            string minTempString = $"{minTemp}" == "" ? null : $"{minTemp}";
+
+            object boilingPoint;
+            columnsAndValues.TryGetValue("boilingPoint", out boilingPoint);
+            string boilingPointString = $"{boilingPoint}" == "" ? null : $"{boilingPoint}";
+
+            object @volatile;
+            columnsAndValues.TryGetValue("@volatile", out @volatile);
+            string @volatileString = $"{@volatile}" == "" ? null : $"{@volatile}";
+
+            SQLCode.StoredProcedures.InsertWareSP($"'{id}'", $"'{name}'", amount, $"'{type}'", informationString, dangerCategoryString, flashPointString, minTempString, boilingPointString, @volatileString);
         }
 
         /// <summary>
@@ -220,6 +269,12 @@ namespace StorageSystemCore
             return constructors;
         }
 
+        /// <summary>
+        /// Gets all extra constructors of <paramref name="type"/>.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="extraParameters"></param>
+        /// <returns></returns>
         public static List<Dictionary<string,Type>> GetConstructorParameterNamesAndTypes(Type type, string[] extraParameters)
         {
             List<Dictionary<string,Type>> constructors = new List<Dictionary<string, Type>>();
@@ -228,7 +283,7 @@ namespace StorageSystemCore
             {
                 constructors.Add(new Dictionary<string, Type>());
 
-                foreach (ParameterInfo parameterInfo in constructorInfo.GetParameters()) //could make it such that it contains an if-statment that ensures the amount of parameters are the same in extraarametesr + the base amount
+                foreach (ParameterInfo parameterInfo in constructorInfo.GetParameters()) 
                 {
                     if (parameterInfo.ParameterType != typeof(WarePublisher))
                         if(!baseCtorVariables.Contains(parameterInfo.Name))
@@ -236,7 +291,7 @@ namespace StorageSystemCore
                 }
             }
             constructors.RemoveAt(0);
-            return constructors; //create a default version of the value (using the new support function) instead of Type, this means you should be able to use the new WareCreator methods better. 
+            return constructors; 
             throw new NotImplementedException();
         }
 
