@@ -95,12 +95,14 @@ namespace StorageSystemCore
         }
 
         /// <summary>
-        /// Adds a new ware of <paramref name="type"/> with the values of <paramref name="name"/>, <paramref name="id"/> and <paramref name="amount"/>
+        /// Adds a new ware of <paramref name="type"/> with the basic values of <paramref name="name"/>, <paramref name="id"/> and <paramref name="amount"/>. 
+        /// More arguments can be given in <paramref name="extra"/> in an order that fits a constructor of <paramref name="type"/>.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="id"></param>
-        /// <param name="type"></param>
-        /// <param name="amount"></param>
+        /// <param name="name">The name of the ware.</param>
+        /// <param name="id">The id of the ware.</param>
+        /// <param name="type">The type of the ware.</param>
+        /// <param name="amount">The amount of the ware.</param>
+        /// <param name="extra">Extra information for the constructor of <paramref name="type"/>.</param>
         public static void AddWare(string name, string id, string type, int amount, object[] extra) //move later to its final class 
         {
             if(type.Split(' ').Length != 1)
@@ -111,7 +113,8 @@ namespace StorageSystemCore
                     type += typing;
             }
             Type test = Type.GetType("StorageSystemCore." + type);
-            object[] dataObject = new object[4+extra.Length];
+            int lengthToAdd = extra != null ? extra.Length : 0;
+            object[] dataObject = new object[4 + lengthToAdd];
             dataObject[0] = name;
             dataObject[1] = id;
             dataObject[2] = amount;
@@ -121,6 +124,22 @@ namespace StorageSystemCore
             wares.Add((Ware)Activator.CreateInstance(test, dataObject ));
         }
 
+        /// <summary>
+        /// Adds a new ware of <paramref name="type"/> with the basic values of <paramref name="name"/>, <paramref name="id"/> and <paramref name="amount"/>.
+        /// Creates the ware in the database. 
+        /// </summary>
+        /// <param name="name">The name of the ware.</param>
+        /// <param name="id">The id of the ware.</param>
+        /// <param name="type">The type of the ware.</param>
+        /// <param name="amount">The amount of the ware.</param>
+        public static void AddWare(string name, string id, string type, int amount)
+        {
+            SQLCode.StoredProcedures.InsertWareSP($"'{id}'", $"'{name}'", amount.ToString(), $"'{type}'");
+        }
+
+        /// <summary>
+        /// Adds default wares if no database has been selected. 
+        /// </summary>
         public static void AddWareDefault() //when storage class has been added move this function to it
         {
             wares.Add(new Liquid("Water", "ID-55t", 25, Publisher.PubWare));
@@ -153,7 +172,7 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="ware"></param>
         /// <returns></returns>
-        private static string FindTypeAttribute(Ware ware ) //could it be modified to find different Attributes?
+        private static string FindTypeAttribute(Ware ware ) //could/should it be modified to find different Attributes?
         {
             string typeString = "";
             Attribute[] attributes = Attribute.GetCustomAttributes(ware.GetType());
@@ -164,16 +183,14 @@ namespace StorageSystemCore
         }
 
         /// <summary>
-        /// 
+        /// Finds all and returns all names and sqlNames of WareSeacheableAttribute.
         /// </summary>
         /// <param name="type">The type to find all searchable attributse of.</param>
         /// <returns></returns>
-        public static List<string[]> FindSearchableAttributes(Type type) //consider altering to return both name and sql name 
+        public static List<string[]> FindSearchableAttributes(Type type)
         {
             List<string[]> properties = new List<string[]>();
-            //string typeString = ""; //maybe return a dictionary for the data type of the property to know what the user can enter.
             PropertyInfo[] propertyInfos = type.GetProperties();
-            //Attribute[] attributes = type.GetMethods();
             foreach (PropertyInfo propertyInfo in propertyInfos)
                 foreach (Attribute attre in propertyInfo.GetCustomAttributes())
                     if (attre is WareSeacheableAttribute info)

@@ -109,6 +109,23 @@ namespace StorageSystemCore
         }
 
         /// <summary>
+        /// Removes any spaces between words for the ware type. 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static string RemoveSpace(string type)
+        {
+            if (type.Split(' ').Length != 1) //move into a function since it so far is needed two places
+            {
+                string[] split = type.Split(' ');
+                type = "";
+                foreach (string typing in split)
+                    type += typing;
+            }
+            return type;
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="message"></param>

@@ -63,16 +63,14 @@ namespace StorageSystemCore
                     case 4:
                         if (!MissingInformation(ID, name, type, amount)) //put this if-statment and its contect into a function
                         {
-                            goBack = Support.Confirmation(); //if the type contains multiple constructors with extra parameters ask the user if they want to fill out more information 
-                            if (goBack)//(they can select a specific constructor and then fill out the specific parameters that are extra). 
+                            goBack = Support.Confirmation(); 
+                            if (goBack)
                             {
-                                //WareInformation.AddWare(name,ID,type,(int)amount);
-                                if (type.Split(' ').Length != 1) //move into a function since it so far is needed two places
+                                type = Support.RemoveSpace(type);
+                                if (SQLCode.SQLControl.DatabaseInUse)
                                 {
-                                    string[] split = type.Split(' ');
-                                    type = "";
-                                    foreach (string typing in split)
-                                        type += typing;
+                                    WareInformation.AddWare(name, ID, type, (int)amount);
+                                    break;
                                 }
                                 object[] filledOutParameters = null;
                                 if (ConstructorsExist(Type.GetType("StorageSystemCore." + type)))
@@ -90,7 +88,6 @@ namespace StorageSystemCore
 
                     case 5:
                         goBack = Support.Confirmation();
-                        //go back
                         break;
                 }
 
@@ -98,17 +95,6 @@ namespace StorageSystemCore
 
             RemoveFromSubscription(warePublisher);
         }
-
-
-        //private object[] CreateCtorObject(object[] primaryParameters, object[] secundaryParameters) //purpose forfilled in WareInformation.AddWare(string,string,type,int,object[])
-        //{
-        //    object[] allParameters = new object[primaryParameters.Length + secundaryParameters.Length];
-        //    for(int m = 0; m < allParameters.Length; m++)
-        //    {
-
-        //    }
-        //    throw new NotImplementedException();
-        //}
 
         private byte SelectConstructor(string[] options)
         {
@@ -121,33 +107,24 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        private string[] CreateSelectableConstructorList(Type type) //change return type to string[]
+        private string[] CreateSelectableConstructorList(Type type) 
         {
             List<List<string>> ctorsFromClass = WareInformation.FindConstructorsParameterNames(type);
             List<string> baseCtorVariables = WareInformation.BasicConstructorVariableNames;
             List<string> tempCtors = new List<string>();
-            string[] ctorArray;// = new string[consturctors.Count];
+            string[] ctorArray;
             for (int n = 0; n < ctorsFromClass.Count; n++)
             {
                 tempCtors.Add("");
-                //Console.Write(n + ": ");
                 for (int m = 0; m < ctorsFromClass[n].Count; m++)
                 {
                     if (!baseCtorVariables.Contains(ctorsFromClass[n][m]))
                         tempCtors[tempCtors.Count - 1] += ctorsFromClass[n][m] + " ";
-                            //Console.Write(consturctors[n][m] + " ");
                 }
-                //Console.WriteLine();
             }
             tempCtors.RemoveAll(IsEmpty);
             ctorArray = tempCtors.ToArray();
-            //Console.Clear();
-            //Console.WriteLine("Enter number to select information amount"); //need to remove variables that has already been entered
-            return ctorArray; //<- move this into its own function, so a function that split and a function for selection
-            //var test = EnterExtraInformation<string>("Information");
-            //var test2 = EnterExtraInformation<Int32>("Amount");
-            //var test3 = EnterExtraInformation<Int32?>("Amount");
-            //throw new NotImplementedException();
+            return ctorArray;
 
             bool IsEmpty(string str)
             {
