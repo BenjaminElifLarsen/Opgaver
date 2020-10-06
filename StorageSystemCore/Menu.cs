@@ -205,9 +205,6 @@ namespace StorageSystemCore
                     Visual.WareDisplay(selectedAttributes.ToArray(), wareValues);
                 }
             }
-            //Testing purpose, not related to this function
-            //SQLCode.ObjectSQLConversion.ObjectToSQL(WareInformation.Ware[WareInformation.Ware.Count-1]);
-            //SQLCode.ObjectSQLConversion.ObjectToSQL(WareInformation.Ware[0]);
         }
 
         /// <summary>

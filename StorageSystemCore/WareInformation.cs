@@ -51,16 +51,13 @@ namespace StorageSystemCore
             List<string[]> wareInformation = new List<string[]>();
             foreach (Ware ware in wares)
             {
-                string[] information = new string[4]; //use reflection to find these values, e.g. each Ware function/property contains something like 
-                //[Data(isData:bool,dataType:string] [Data(true,"Name")] or [Data(true,"ID")] and then here they are put in array after the order of the dataTypes. 
-                //Also the storage class should contain functions/properties that only return specific values, e.g. IDs or Names
+                string[] information = new string[4];
                 information[0] = ware.GetName;
                 information[1] = ware.GetID;
                 information[2] = ware.GetAmount.ToString();
                 information[3] = FindTypeAttribute(ware);
                 wareInformation.Add(information);
             }
-            //FindSearchableAttributes(typeof(CombustibleLiquid));
             return wareInformation;
         }
 
@@ -84,14 +81,14 @@ namespace StorageSystemCore
                 {
                     foreach(Attribute attribute in propertyInfo.GetCustomAttributes())
                     {
-                        if(attribute.GetType() == typeof(WareSeacheableAttribute)) //WareSearchableAttrribute values cannot be retrived if connected to the a method
+                        if(attribute.GetType() == typeof(WareSeacheableAttribute)) 
                         { 
                             WareSeacheableAttribute seacheableAttribute = attribute as WareSeacheableAttribute;
                             if (attributesToSearchFor.Contains(seacheableAttribute.Name)) {
                                 object value = propertyInfo.GetValue(ware); //needs to deal with arrays, lists and such
                                 if(value == null && propertyInfo.PropertyType == typeof(string))
                                     value = "null";
-                                wareInformation[wareInformation.Count - 1].Add(seacheableAttribute.Name, value); //have an attribute for collections, i.e. true or false
+                                wareInformation[wareInformation.Count - 1].Add(seacheableAttribute.Name, value); 
                             }
                         }
                     }
@@ -141,7 +138,7 @@ namespace StorageSystemCore
         /// Creates the ware in the database. 
         /// </summary>
         /// <param name="name">The name of the ware.</param>
-        /// <param name="id">The id of the ware.</param>
+        /// <param name="id">The ID of the ware.</param>
         /// <param name="type">The type of the ware.</param>
         /// <param name="amount">The amount of the ware.</param>
         public static void AddWare(string name, string id, string type, int amount)
@@ -150,13 +147,14 @@ namespace StorageSystemCore
         }
 
         /// <summary>
-        /// 
+        /// Adds a new ware of <paramref name="type"/> with the basic values of <paramref name="name"/>, <paramref name="id"/> and <paramref name="amount"/>.
+        /// Information stored in <paramref name="columnsAndValues"/> will be used to add extra information about the ware. 
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="id"></param>
-        /// <param name="type"></param>
-        /// <param name="amount"></param>
-        /// <param name="columnsAndValues"></param>
+        /// <param name="name">The name of the ware.</param>
+        /// <param name="id">The ID of the ware.</param>
+        /// <param name="type">The type of the ware.</param>
+        /// <param name="amount">The amount of the ware. </param>
+        /// <param name="columnsAndValues">Extra information to add to the ware. The keys are sql columns.</param>
         public static void AddWare(string name, string id, string type, int amount, Dictionary<string,object> columnsAndValues)
         {
             object information;
@@ -325,14 +323,7 @@ namespace StorageSystemCore
             byte column = sql ? (byte)1 : (byte)0;
             foreach (string type in listOfTypes)
             {
-                string type_ = type;
-                if (type_.Split(' ').Length != 1) //this if-statment exist in two locations, create a support function for this. 
-                {
-                    string[] split = type.Split(' ');
-                    type_ = "";
-                    foreach (string typing in split)
-                        type_ += typing;
-                }
+                string type_ = Support.RemoveSpace(type);
                 List<string[]> attributes = FindSearchableAttributes(Type.GetType("StorageSystemCore." + type_));
                 foreach (string[] attrArray in attributes)
                     if (!searchable.Contains(attrArray[column]))

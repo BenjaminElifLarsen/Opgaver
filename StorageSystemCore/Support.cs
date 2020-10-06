@@ -136,7 +136,7 @@ namespace StorageSystemCore
         }
 
         /// <summary>
-        /// 
+        /// Ask the user to enter a value and returns it if it is not null or empty.
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
@@ -156,7 +156,7 @@ namespace StorageSystemCore
         }
 
         /// <summary>
-        /// Ask the user to collect a string and returns it if it is not null or empty.
+        /// Ask the user to enter a string and returns it if it is not null or empty.
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
@@ -213,38 +213,30 @@ namespace StorageSystemCore
             {
                 case "int32": 
                     return default(Int32);
-                    break;
 
                 case "byte":
                     return default(Byte);
-                    break;
 
                 case "int16":
                     return default(Int16);
-                    break;
 
                 case "int64":
                     return default(Int64);
-                    break;
+
                 case "uint32":
                     return default(UInt32);
-                    break;
 
                 case "sbyte":
                     return default(SByte);
-                    break;
 
                 case "uint16":
                     return default(UInt16);
-                    break;
 
                 case "uint64":
                     return default(UInt64);
-                    break;
 
                 default:
                     return null;
-                    break;
             }
         }
 
