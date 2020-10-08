@@ -290,7 +290,6 @@ namespace StorageSystemCore
             }
             constructors.RemoveAt(0);
             return constructors; 
-            throw new NotImplementedException();
         }
 
         public static List<string> FindWareTypes() 

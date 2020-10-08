@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace StorageSystemCore
 {
-    public class WareCreator
+    sealed public class WareCreator
     {
         private readonly WarePublisher warePublisher;
         private WareCreator() { }
@@ -337,8 +337,8 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static Dictionary<string,Type> FindSQLProperties(Type type) //only public and static while testing it
-        { // WareCreator.FindSQLProperties(typeof(Liquid));
+        private Dictionary<string,Type> FindSQLProperties(Type type) 
+        { 
             Dictionary<string, Type> namesAndValues = new Dictionary<string, Type>();
             PropertyInfo[] propertyInfos = type.GetProperties();
             foreach (PropertyInfo propertyInfo in propertyInfos)
