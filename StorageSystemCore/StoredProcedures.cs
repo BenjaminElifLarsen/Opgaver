@@ -15,16 +15,21 @@ namespace SQLCode
         /// </summary>
         public static void CreateAllStoredProcedures()
         {
+            StorageSystemCore.Reporter.Log("Starting creation of stored procedures");
             MethodInfo[] methods = Type.GetType(typeof(StoredProcedures).ToString()).GetMethods(BindingFlags.NonPublic | BindingFlags.Static); //the binding flags ensures only static non-public methods are found.
             foreach(MethodInfo method in methods)
             {
                 try
                 {
                     string sql = (string)method.Invoke(null, null); //unsafe, if a method does not have a return type that can be casted to a string or void return type, the program will crash.
+                    StorageSystemCore.Reporter.Log($"Trying to run: {sql}");
                     SQLControl.RunCommand(sql); //first null is given since it is not invoked in an instance and the second null is because there is no parameters in the functions
+                    StorageSystemCore.Reporter.Log("Succeded in running.");
                 }
                 catch (Exception e) 
                 {
+                    StorageSystemCore.Reporter.Report(e);
+                    StorageSystemCore.Reporter.Log($"Failed at running function {method.Name}: {e.Message}");
                     Console.WriteLine($"Failed at running function {method.Name}: {e.Message}");
                     StorageSystemCore.Support.WaitOnKeyInput();
                 }
@@ -153,6 +158,7 @@ namespace SQLCode
             }
             catch(Exception e)
             {
+                StorageSystemCore.Reporter.Report(e);
                 Console.WriteLine($"Could not update: {e.Message}");
                 StorageSystemCore.Support.WaitOnKeyInput();
             }
@@ -173,6 +179,7 @@ namespace SQLCode
             }
             catch (Exception e)
             {
+                StorageSystemCore.Reporter.Report(e);
                 Console.WriteLine($"Could not update: {e.Message}");
                 StorageSystemCore.Support.WaitOnKeyInput();
                 return null;
@@ -192,6 +199,7 @@ namespace SQLCode
             }
             catch (Exception e)
             {
+                StorageSystemCore.Reporter.Report(e);
                 Console.WriteLine($"Could not get information: {e.Message}");
                 StorageSystemCore.Support.WaitOnKeyInput();
                 return null;
@@ -213,6 +221,7 @@ namespace SQLCode
             }
             catch (Exception e)
             {
+                StorageSystemCore.Reporter.Report(e);
                 Console.WriteLine($"Could not get information: {e.Message}");
                 StorageSystemCore.Support.WaitOnKeyInput();
                 return null;
@@ -233,6 +242,7 @@ namespace SQLCode
             }
             catch (Exception e)
             {
+                StorageSystemCore.Reporter.Report(e);
                 Console.WriteLine($"Could not get information: {e.Message}");
                 StorageSystemCore.Support.WaitOnKeyInput();
                 return null;
@@ -254,6 +264,7 @@ namespace SQLCode
             }
             catch (Exception e)
             {
+                StorageSystemCore.Reporter.Report(e);
                 Console.WriteLine($"Could not get information: {e.Message}");
                 StorageSystemCore.Support.WaitOnKeyInput();
                 return null;
@@ -274,6 +285,7 @@ namespace SQLCode
             }
             catch (Exception e)
             {
+                StorageSystemCore.Reporter.Report(e);
                 Console.WriteLine($"Could not delete: {e.Message}");
                 StorageSystemCore.Support.WaitOnKeyInput();
             }
@@ -294,6 +306,7 @@ namespace SQLCode
             }
             catch (Exception e)
             {
+                StorageSystemCore.Reporter.Report(e);
                 Console.WriteLine($"Could not add to ware: {e.Message}");
                 StorageSystemCore.Support.WaitOnKeyInput();
             }
@@ -314,6 +327,7 @@ namespace SQLCode
             }
             catch (Exception e)
             {
+                StorageSystemCore.Reporter.Report(e);
                 Console.WriteLine($"Could not add to ware: {e.Message}");
                 StorageSystemCore.Support.WaitOnKeyInput();
             }
@@ -335,6 +349,7 @@ namespace SQLCode
             }
             catch (Exception e)
             {
+                StorageSystemCore.Reporter.Report(e);
                 Console.WriteLine($"Could not insert: {e.Message}");
                 StorageSystemCore.Support.WaitOnKeyInput();
             }
@@ -365,6 +380,7 @@ namespace SQLCode
             }
             catch (Exception e)
             {
+                StorageSystemCore.Reporter.Report(e);
                 Console.WriteLine($"Could not insert: {e.Message}");
                 StorageSystemCore.Support.WaitOnKeyInput();
             }
@@ -380,6 +396,7 @@ namespace SQLCode
             }
             catch (Exception e)
             {
+                StorageSystemCore.Reporter.Report(e);
                 Console.WriteLine($"Could not retrive columns: {e.Message}");
                 StorageSystemCore.Support.WaitOnKeyInput();
                 return null;

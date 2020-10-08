@@ -218,7 +218,7 @@ namespace StorageSystemCore
             string connect = null;
             
             bool run = true;
-
+            Reporter.Log("Program starting");
             do
             {
                 byte answer = Visual.MenuRun(options, "Database");
@@ -235,8 +235,9 @@ namespace StorageSystemCore
                                 firstConnection = SQLCode.SQLControl.CreateConnectionString(sqlInfo[0], "master");
                                 run = !SQLCode.SQLControl.InitalitionOfDatabase(sqlInfo, firstConnection, true);
                             }
-                            catch
+                            catch (Exception e)
                             {
+                                Reporter.Report(e);
                                 run = true;
                             }
                         }
@@ -246,8 +247,9 @@ namespace StorageSystemCore
                                 SQLCode.SQLControl.DataBase = sqlInfo[3];
                                 run = !SQLCode.SQLControl.CreateConnection(sqlInfo, true);
                             }
-                            catch
+                            catch (Exception e)
                             {
+                                Reporter.Report(e);
                                 run = true;
                             }
                         break;

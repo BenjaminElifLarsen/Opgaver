@@ -211,6 +211,7 @@ namespace StorageSystemCore
                     }
                     catch (Exception e)
                     {
+                        Reporter.Report(e);
                         Console.Clear();
                         Console.WriteLine("Could not convert. Value set to 0: " + e.InnerException.Message);
                         parameterValues[i] = 0; //figure out a good way to reenter value
@@ -257,6 +258,7 @@ namespace StorageSystemCore
                                 }
                                 catch (Exception e)
                                 {
+                                    Reporter.Report(e);
                                     Console.Clear();
                                     Console.WriteLine("Could not convert. Value set to 0: " + e.InnerException.Message);
                                     nameAndValues.Add(info.SQLName, 0); //figure out a good way to reenter value
@@ -498,7 +500,7 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="sender">The event sender</param>
         /// <param name="e">The parameters of the event</param>
-        protected void CreateWareEventHandler(object sender, ControlEvents.CreateWareEventArgs e) 
+        private void CreateWareEventHandler(object sender, ControlEvents.CreateWareEventArgs e) 
         {
             CreateWare();
         }
