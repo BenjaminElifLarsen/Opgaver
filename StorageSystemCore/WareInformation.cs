@@ -112,7 +112,7 @@ namespace StorageSystemCore
         /// <param name="type">The type of the ware.</param>
         /// <param name="amount">The amount of the ware.</param>
         /// <param name="extra">Extra information for the constructor of <paramref name="type"/>.</param>
-        public static void AddWare(string name, string id, string type, int amount, object[] extra) //move later to its final class 
+        public static void AddWare(string name, string id, string type, int amount, object[] extra) //move later to its final class, the WareCreator (after all, that is the calls that creates wares)
         {
             if(type.Split(' ').Length != 1)
             {
@@ -141,7 +141,7 @@ namespace StorageSystemCore
         /// <param name="id">The ID of the ware.</param>
         /// <param name="type">The type of the ware.</param>
         /// <param name="amount">The amount of the ware.</param>
-        public static void AddWare(string name, string id, string type, int amount)
+        public static void AddWare(string name, string id, string type, int amount) //move later to its final class, the WareCreator (after all, that is the calls that creates wares)
         {
             SQLCode.StoredProcedures.InsertWareSP($"'{id}'", $"'{name}'", amount, $"'{type}'");
         }
