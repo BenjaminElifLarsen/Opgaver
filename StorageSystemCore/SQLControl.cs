@@ -174,6 +174,7 @@ namespace SQLCode
             }
             catch(SqlException e)
             {
+                StorageSystemCore.Reporter.Report(e);
                 sqlConnection.Close();
                 throw e;
             }
@@ -226,8 +227,9 @@ namespace SQLCode
                 RunCommand(sqlCommand);
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                StorageSystemCore.Reporter.Report(e);
                 return false;
             }
         }
@@ -262,6 +264,7 @@ namespace SQLCode
             {
                 sqlConnection = null;
                 //Console.WriteLine(e);
+                StorageSystemCore.Reporter.Report(e);
                 throw e;
             }
         }
@@ -286,6 +289,7 @@ namespace SQLCode
             }
             catch (SqlException e)
             {
+                StorageSystemCore.Reporter.Report(e);
                 throw e;
             }
         }
@@ -317,6 +321,7 @@ namespace SQLCode
             }
             catch (SqlException e)
             {
+                StorageSystemCore.Reporter.Report(e);
                 throw e;
             }
         }
@@ -423,6 +428,7 @@ namespace SQLCode
             }
             catch (SqlException e)
             {
+                StorageSystemCore.Reporter.Report(e);
                 throw e;
             }
         }
@@ -440,6 +446,7 @@ namespace SQLCode
         {
             try
             {
+                StorageSystemCore.Reporter.Log($"Initalising database creation.");
                 CreateConnection(masterConnection);
 
                 //create database
@@ -448,10 +455,13 @@ namespace SQLCode
                 CreateConnection(sqlInfo, window); //creates the main connection that is connected directly to the database.
                 StoredProcedures.CreateAllStoredProcedures();
                 DatabaseCreation.CreateDefaultEntries();
+                StorageSystemCore.Reporter.Log("Database created.");
                 return true;
             }
             catch (System.Data.SqlClient.SqlException e)
             { //log the error in the reporter
+                StorageSystemCore.Reporter.Report(e);
+                StorageSystemCore.Reporter.Log($"Failed database creation: {e.Message}");
                 throw e;
                 //return false;
             }
