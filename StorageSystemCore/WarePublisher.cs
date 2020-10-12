@@ -16,6 +16,9 @@ namespace StorageSystemCore
         public delegate void createWareEventHandler(object sender, ControlEvents.CreateWareEventArgs args);
         public event createWareEventHandler RaiseCreateWareEvent;
 
+        public delegate void removeWareCreatorEventHandler(object sender, ControlEvents.RemoveWareCreatorEventArgs args);
+        public event removeWareCreatorEventHandler RaiseRemoveWareCreatorEvent;
+
         public delegate void addEventHandler(object sender, ControlEvents.AddEventArgs args);
         public event addEventHandler RaiseAddEvent;
 
@@ -43,6 +46,18 @@ namespace StorageSystemCore
         protected virtual void OnCreatingWare(ControlEvents.CreateWareEventArgs e)
         { //calls a function/class that creates a new class 
             createWareEventHandler eventHandler = RaiseCreateWareEvent;
+            if (eventHandler != null)
+                eventHandler.Invoke(this, e);
+        }
+
+        public void RemoveWareCreator()
+        {
+            OnRemovingWareCreator(new ControlEvents.RemoveWareCreatorEventArgs());
+        }
+
+        protected virtual void OnRemovingWareCreator(ControlEvents.RemoveWareCreatorEventArgs e)
+        {
+            removeWareCreatorEventHandler eventHandler = RaiseRemoveWareCreatorEvent;
             if (eventHandler != null)
                 eventHandler.Invoke(this, e);
         }

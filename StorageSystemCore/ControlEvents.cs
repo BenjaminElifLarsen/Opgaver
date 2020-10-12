@@ -21,6 +21,14 @@ namespace StorageSystemCore
             }
         }
 
+        public class RemoveWareCreatorEventArgs
+        {
+            public RemoveWareCreatorEventArgs()
+            {
+            }
+            //public WarePublisher WarePublish { get; }
+        }
+
         /// <summary>
         /// Class that holds event data of the ware amount adding system.
         /// </summary>
@@ -87,7 +95,7 @@ namespace StorageSystemCore
                 return _types[ID];
             }
 
-            public void AddValue(string ID, Type type)
+            public void Add(string ID, Type type)
             {
                 _types.Add(ID, type);
             }

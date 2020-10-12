@@ -23,8 +23,7 @@ namespace StorageSystemCore
             Menu menu = new Menu();
             Input.RunInputThread();
             menu.DatabaseSelectionMenu();
-            //SQLCode.StoredProcedures.CreateAllStoredProcedures();
-            new WareCreator(Publisher.PubWare); //might want an event that is called when existing the program that removes the eventlistiner
+            new WareCreator(Publisher.PubWare); 
             menu.MainMenu();
         }
 

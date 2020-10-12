@@ -83,7 +83,7 @@ namespace StorageSystemCore
         /// </summary>
         public string Information { get => information; set => information = value; }
 
-        [WareSeacheable("ID","id")]
+        [WareSeacheable("ID","id"), ValueUniqueness(true)]
         /// <summary>
         /// Gets the ID of the ware.
         /// </summary>
@@ -136,7 +136,7 @@ namespace StorageSystemCore
 
         protected void GetTypeEventHandler(object sender, ControlEvents.GetTypeEventArgs e)
         {
-            e.AddValue(id, this.GetType());
+            e.Add(id, this.GetType());
         }
 
         protected void AlterWareEventHandler(object sender, ControlEvents.AlterValueEventArgs e)
@@ -153,7 +153,7 @@ namespace StorageSystemCore
                             WareSeacheableAttribute seacheableAttribute = attribute as WareSeacheableAttribute;
                             if(seacheableAttribute.Name == e.PropertyName)
                             {
-                                if (e.MultieValueArray != null)
+                                if (e.MultieValueArray != null) //sets an array property
                                 {
                                     Type type = e.MultieValueArray[0].GetType();
                                     MethodInfo foundMethod = this.GetType().GetMethod("ArrayConversion", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -162,15 +162,26 @@ namespace StorageSystemCore
                                     
                                     propertyInfo.SetValue(this, array);
                                 }
-                                else
-                                {
+                                else //sets a non-array property
+                                { 
+                                    foreach (Attribute attributeValueUnique in propertyInfo.GetCustomAttributes())
+                                    {
+                                        if(attributeValueUnique.GetType() == typeof(ValueUniqueness))
+                                        {
+                                            ValueUniqueness valueUniqueness = attributeValueUnique as ValueUniqueness;
+                                            if (valueUniqueness.IsUnique) //currently, IDs are not allowed to be overwritten
+                                                goto done; //if allowed to overwrite, need to check if the ID structure is correct 
+                                        }
+                                    }
                                     propertyInfo.SetValue(this, e.SingleValue);
+                                    goto done;
                                 }
                             }
                         }
                     }
                 }
             }
+            done:;
         }
 
         /// <summary>
@@ -185,6 +196,13 @@ namespace StorageSystemCore
             warePublisher.RaiseAlterWareEvent -= AlterWareEventHandler;
         }
 
+        /// <summary>
+        /// Converts an object[] <paramref name="arrayToConvert"/> to the datatype <typeparamref name="T"/>.
+        /// Given how the method is written it is needed be called via reflection as a generic method
+        /// </summary>
+        /// <typeparam name="T">The type that should be converted to</typeparam>
+        /// <param name="arrayToConvert">The array to convert</param>
+        /// <returns>Returns a converted version of <paramref name="arrayToConvert"/>.</returns>
         protected T[] /*IConversion.*/ArrayConversion<T>(object[] arrayToConvert)
         {
             T[] convertedArray = new T[arrayToConvert.Length];

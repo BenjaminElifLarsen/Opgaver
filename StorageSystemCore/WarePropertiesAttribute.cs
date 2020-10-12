@@ -40,6 +40,14 @@ namespace StorageSystemCore
         /// Gets and sets the name of the attribute as it is in the SQL database.
         /// </summary>
         public string SQLName { get => sqlName; set => sqlName = value; }
+    }
 
+    public class ValueUniqueness : Attribute
+    {
+        public ValueUniqueness(bool isUnique)
+        {
+            IsUnique = isUnique;
+        }
+        public bool IsUnique { get; }
     }
 }

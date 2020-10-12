@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -85,7 +86,23 @@ namespace StorageSystemCore
                         if(attribute.GetType() == typeof(WareSeacheableAttribute))
                         {
                             WareSeacheableAttribute seacheableAttribute = attribute as WareSeacheableAttribute;
+                            if(propertyInfo.GetMethod.ReturnType.BaseType.Name == "Array")
+                            {
+                                var array = propertyInfo.GetValue(ware);
+                                if (array != null)
+                                {
+                                    object valueObject = "";
+                                    foreach (object value in array as IEnumerable)
+                                        valueObject += value + " ";
+                                    information.Add(seacheableAttribute.Name, valueObject);
+                                }
+                                else
+                                    information.Add(seacheableAttribute.Name, propertyInfo.GetValue(ware));
+                            }
+                            else
+                            { 
                             information.Add(seacheableAttribute.Name, propertyInfo.GetValue(ware));
+                            }
                             types.Add(propertyInfo.GetMethod.ReturnType);
                         }
                     }

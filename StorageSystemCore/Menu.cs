@@ -33,6 +33,7 @@ namespace StorageSystemCore
                         break;
 
                     case 4:
+                        Publisher.PubWare.RemoveWareCreator();
                         Environment.Exit(0);
                         break;
 
@@ -59,7 +60,7 @@ namespace StorageSystemCore
                 switch (response)
                 {
                     case 0:
-                        WareRemoveMenu(); //these should loop the menu until "Back" is selected. 
+                        WareRemoveMenu(); 
                         break;
 
                     case 1:
@@ -229,8 +230,7 @@ namespace StorageSystemCore
         {
             string[] options = new string[] { "Window login Authentication", "SQL Server Authentication", "No SQL Database" };
             string[] sqlInfo = new string[4];
-            string firstConnection = null;
-            string connect = null;
+            string firstConnection;
             
             bool run = true;
             Reporter.Log("Program starting");
@@ -242,7 +242,7 @@ namespace StorageSystemCore
                     case 0:
                         sqlInfo[0] = Support.CollectString("Enter Servername");
                         sqlInfo[1] = Support.CollectString("Enter database");
-                        if (DoesDatabaseExist())
+                        if (!DoesDatabaseExist())
                         {
                             try
                             {
@@ -274,7 +274,7 @@ namespace StorageSystemCore
                         sqlInfo[1] = Support.CollectString("Enter SQL Username");
                         sqlInfo[2] = Support.HiddenText("Enter Password");
                         sqlInfo[3] = Support.CollectString("Enter database");
-                        if (DoesDatabaseExist()) 
+                        if (!DoesDatabaseExist()) 
                         {
                             try
                             {
@@ -320,14 +320,14 @@ namespace StorageSystemCore
 
         
         /// <summary>
-        /// Small menu that asks the user if the database exist or not.
+        /// Small menu that asks the user if the user wants to initialise database creation.
         /// </summary>
         /// <returns>Returns true if the user selects yes to the database exist, else false.</returns>
         private bool DoesDatabaseExist() //rename
         {
             string[] options = new string[] {"Yes","No" };
             byte answer = Visual.MenuRun(options, "Initialise Database Creation?");
-            return answer == 0;
+            return answer == 1;
         }
 
 

@@ -14,6 +14,7 @@ namespace StorageSystemCore
         public WareCreator(WarePublisher warePublisher)
         {
             warePublisher.RaiseCreateWareEvent += CreateWareEventHandler;
+            warePublisher.RaiseRemoveWareCreatorEvent += RemoveFromSubscriptionEventHandler;
             this.warePublisher = warePublisher;
         }
 
@@ -514,9 +515,11 @@ namespace StorageSystemCore
         /// Unsubscribes the class from the ware creation event.  
         /// </summary>
         /// <param name="warePublisher"></param>
-        private void RemoveFromSubscription(WarePublisher warePublisher)
+        private void RemoveFromSubscriptionEventHandler(object sender, ControlEvents.RemoveWareCreatorEventArgs e)
         {
+
             warePublisher.RaiseCreateWareEvent -= CreateWareEventHandler;
+            warePublisher.RaiseRemoveWareCreatorEvent -= RemoveFromSubscriptionEventHandler;
         }
 
     }

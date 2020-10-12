@@ -56,7 +56,7 @@ namespace StorageSystemCore
 
         public static void ModifyWare(string ID) //move a lot of this function into smaller functions to make it easier to read
         {
-            Type type; 
+            //Type type; 
             if (!SQLCode.SQLControl.DatabaseInUse)
             {
                 string[] options = GenerateOptions(ID);
@@ -81,45 +81,12 @@ namespace StorageSystemCore
                         }
                         else
                         { //string and arrays goes here. Most likely also lists and such
-                            if(valueTypes[(byte)answer].FullName == "System.String") { 
-                                Console.Clear();
-                                Console.WriteLine($"Old Value was {oldValue ?? "Null"}. Enter new Value: ");
-                                string newValue = Console.ReadLine();
-                                Publisher.PubWare.AlterWare(ID, newValue, options[(byte)answer]);
+                            if(valueTypes[(byte)answer].FullName == "System.String") {
+                                FillOutString(options, answer, oldValue);
                             }
                             else if (valueTypes[(byte)answer].BaseType.Name == "Array")
                             {
-                                List<object> objectList = new List<object>();
-                                string[] addValueOptions = new string[] {"Enter Value","Done" };
-                                byte? valueAnswer;
-                                do
-                                {
-                                    valueAnswer = Visual.MenuRun(addValueOptions, "Array Data Entry");
-                                    if(valueAnswer == 0)
-                                    {
-                                        if (!valueTypes[(byte)answer].Name.Contains("String") && !valueTypes[(byte)answer].Name.Contains("Char"))
-                                        { //non-string
-                                            try
-                                            {
-                                                objectList.Add(CollectValue(Type.GetType(valueTypes[(byte)answer].FullName.Remove(valueTypes[(byte)answer].FullName.Length - 2, 2)),oldValue)); //code inside of Type.GetType(...) converts an array type to a non-array type
-                                            }
-                                            catch (Exception e)
-                                            {
-                                                ErrorHandling(e);
-                                            }
-                                        }
-                                        else if (valueTypes[(byte)answer].Name.Contains("Char")) //might not be needed
-                                        { //char
-
-                                        }
-                                        else
-                                        { //string
-
-                                        }
-                                    }
-                                } while (valueAnswer != addValueOptions.Length - 1);
-                                object[] objectArray = objectList.ToArray();
-                                Publisher.PubWare.AlterWare(ID, objectArray, options[(byte)answer]);
+                                FillOutArray(options, answer, valueTypes, oldValue);
                             }
                         }
                     }
@@ -138,6 +105,50 @@ namespace StorageSystemCore
                 Console.WriteLine("Could not convert: " + e.InnerException.Message);
                 Support.WaitOnKeyInput();
             }
+            void FillOutString(string[] options, byte? answer, object oldValue)
+            {
+                Console.Clear();
+                Console.WriteLine($"Old Value was {oldValue ?? "Null"}. Enter new Value: ");
+                string newValue = Console.ReadLine();
+                Publisher.PubWare.AlterWare(ID, newValue, options[(byte)answer]);
+            }
+
+            void FillOutArray(string[] options, byte? answer, List<Type> valueTypes, object oldValue)
+            {
+                List<object> objectList = new List<object>();
+                string[] addValueOptions = new string[] { "Enter Value", "Done" };
+                byte? valueAnswer;
+                do
+                {
+                    valueAnswer = Visual.MenuRun(addValueOptions, "Add Data Entry");
+                    if (valueAnswer == 0)
+                    {
+                        if (!valueTypes[(byte)answer].Name.Contains("String") /*&& !valueTypes[(byte)answer].Name.Contains("Char")*/)
+                        { //non-string
+                            try
+                            {
+                                objectList.Add(CollectValue(Type.GetType(valueTypes[(byte)answer].FullName.Remove(valueTypes[(byte)answer].FullName.Length - 2, 2)), oldValue)); //code inside of Type.GetType(...) converts an array type to a non-array type
+                            }
+                            catch (Exception e)
+                            {
+                                ErrorHandling(e);
+                            }
+                        }
+                        //else if (valueTypes[(byte)answer].Name.Contains("Char")) //might not be needed
+                        //{ //char
+
+                        //}
+                        else
+                        { //string
+                            Console.Clear();
+                            Console.WriteLine();
+                            objectList.Add(Console.ReadLine());
+                        }
+                    }
+                } while (valueAnswer != addValueOptions.Length - 1);
+                object[] objectArray = objectList.ToArray();
+                Publisher.PubWare.AlterWare(ID, objectArray, options[(byte)answer]);
+            }
         }
 
         /// <summary>
@@ -151,12 +162,12 @@ namespace StorageSystemCore
 
         private static string[] GenerateOptions(string ID)
         {
-            Type type = Publisher.PubWare.GetTypeFromWare(ID); //part of this can be moved into a function
-            List<string[]> attributes = WareInformation.FindSearchableAttributes(type); // +
-            string[] options = new string[attributes.Count + 1]; // +
-            for (int i = 0; i < options.Length - 1; i++) // +
-                options[i] = attributes[i][0]; // +
-            options[options.Length - 1] = "Exit"; // +
+            Type type = Publisher.PubWare.GetTypeFromWare(ID); 
+            List<string[]> attributes = WareInformation.FindSearchableAttributes(type);
+            string[] options = new string[attributes.Count + 1]; 
+            for (int i = 0; i < options.Length - 1; i++) 
+                options[i] = attributes[i][0];
+            options[options.Length - 1] = "Exit";
             return options;
         }
 
