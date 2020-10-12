@@ -119,7 +119,8 @@ namespace StorageSystemCore
         protected Type OnGetTypeFromWare(ControlEvents.GetTypeEventArgs e)
         {
             getTypeEventHandler eventHandler = RaiseGetTypeEvent;
-            if(eventHandler != null) {
+            if(eventHandler != null) 
+            {
                 eventHandler.Invoke(this,e);
                 try 
                 { 
@@ -131,7 +132,6 @@ namespace StorageSystemCore
                 }
             }
             return null;
-
         }
 
         public void AlterWare(string ID, object newValue, string propertyName)
