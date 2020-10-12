@@ -59,12 +59,7 @@ namespace StorageSystemCore
             Type type; 
             if (!SQLCode.SQLControl.DatabaseInUse)
             {
-                type = Publisher.PubWare.GetTypeFromWare(ID); //part of this can be moved into a function
-                List<string[]> attributes = WareInformation.FindSearchableAttributes(type); // +
-                string[] options = new string[attributes.Count + 1]; // +
-                for (int i = 0; i < options.Length - 1; i++) // +
-                    options[i] = attributes[i][0]; // +
-                options[options.Length - 1] = "Exit"; // +
+                string[] options = GenerateOptions(ID);
                 Dictionary<string, object> informations = WareInformation.GetWareInformation(ID, out List<Type> valueTypes);
                 byte? answer;
                 do
@@ -74,20 +69,14 @@ namespace StorageSystemCore
                         object oldValue = informations[options[(byte)answer]];
                         if (valueTypes[(byte)answer].IsValueType)
                         {
-                            Type wareCreatorType = typeof(WareCreator); //basically the same as the one in WareCreator
-                            MethodInfo foundMethod = wareCreatorType.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static);
-                            MethodInfo genericVersion = foundMethod.MakeGenericMethod(valueTypes[(byte)answer]);
                             try
                             {
-                                object newValue = genericVersion.Invoke(null, new object[] {$"Old Value was {oldValue ?? "Null"}. Enter new Value: " });
+                                object newValue = CollectValue(valueTypes[(byte)answer], oldValue);
                                 Publisher.PubWare.AlterWare(ID, newValue, options[(byte)answer]);
                             }
                             catch (Exception e)
                             {
-                                Reporter.Report(e);
-                                Console.Clear();
-                                Console.WriteLine("Could not convert: " + e.InnerException.Message);
-                                Support.WaitOnKeyInput();
+                                ErrorHandling(e);
                             }
                         }
                         else
@@ -110,23 +99,16 @@ namespace StorageSystemCore
                                     {
                                         if (!valueTypes[(byte)answer].Name.Contains("String") && !valueTypes[(byte)answer].Name.Contains("Char"))
                                         { //non-string
-                                            Type wareCreatorType = typeof(WareCreator); //basically the same as the one in WareCreator
-                                            MethodInfo foundMethod = wareCreatorType.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static);
-                                            MethodInfo genericVersion = foundMethod.MakeGenericMethod(Type.GetType(valueTypes[(byte)answer].FullName.Remove(valueTypes[(byte)answer].FullName.Length-2,2))); //code inside of Type.GetType(...) converts an array type to a non-array type
                                             try
                                             {
-                                                object newValue = genericVersion.Invoke(null, new object[] { $"Old Value was {oldValue ?? "Null"}. Enter new Value: " });
-                                                objectList.Add(newValue);
+                                                objectList.Add(CollectValue(Type.GetType(valueTypes[(byte)answer].FullName.Remove(valueTypes[(byte)answer].FullName.Length - 2, 2)),oldValue)); //code inside of Type.GetType(...) converts an array type to a non-array type
                                             }
                                             catch (Exception e)
                                             {
-                                                Reporter.Report(e);
-                                                Console.Clear();
-                                                Console.WriteLine("Could not convert: " + e.InnerException.Message);
-                                                Support.WaitOnKeyInput();
+                                                ErrorHandling(e);
                                             }
                                         }
-                                        else if (valueTypes[(byte)answer].Name.Contains("Char"))
+                                        else if (valueTypes[(byte)answer].Name.Contains("Char")) //might not be needed
                                         { //char
 
                                         }
@@ -148,6 +130,14 @@ namespace StorageSystemCore
             { //get the type of the ID, find the attributes of that ID
 
             }
+
+            void ErrorHandling(Exception e)
+            {
+                Reporter.Report(e);
+                Console.Clear();
+                Console.WriteLine("Could not convert: " + e.InnerException.Message);
+                Support.WaitOnKeyInput();
+            }
         }
 
         /// <summary>
@@ -157,6 +147,33 @@ namespace StorageSystemCore
         public static void RemoveWareTesting(string ID)
         {
             WareInformation.RemoveWare(ID);
+        }
+
+        private static string[] GenerateOptions(string ID)
+        {
+            Type type = Publisher.PubWare.GetTypeFromWare(ID); //part of this can be moved into a function
+            List<string[]> attributes = WareInformation.FindSearchableAttributes(type); // +
+            string[] options = new string[attributes.Count + 1]; // +
+            for (int i = 0; i < options.Length - 1; i++) // +
+                options[i] = attributes[i][0]; // +
+            options[options.Length - 1] = "Exit"; // +
+            return options;
+        }
+
+        private static object CollectValue(Type type, object oldValue)
+        {
+            Type wareCreatorType = typeof(WareCreator); //basically the same as the one in WareCreator
+            MethodInfo foundMethod = wareCreatorType.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static);
+            MethodInfo genericVersion = foundMethod.MakeGenericMethod(type); 
+            try
+            {
+                object newValue = genericVersion.Invoke(null, new object[] { $"Old Value was {oldValue ?? "Null"}. Enter new Value: " });
+                return newValue;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
     }
 }

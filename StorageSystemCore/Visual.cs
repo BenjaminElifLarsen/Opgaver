@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -181,10 +182,20 @@ namespace StorageSystemCore
             {
                 for(int m = 0; m < textToDisplay.GetLength(1); m++)
                 {
-                    
+
                     if (columnAndValues[m].TryGetValue(columnNames[n], out object value))
-                        if(value != null)
-                            textToDisplay[n, m] = value.ToString();
+                        if (value != null)
+                        {
+                            if(value.GetType().BaseType.Name == "Array") //if-statement code will convert all values in a array to a string
+                            {
+                                foreach(object element in value as IEnumerable)
+                                {
+                                    textToDisplay[n, m] += element + " ";
+                                }
+                            }
+                            else
+                                textToDisplay[n, m] = value.ToString();
+                        }
                         else
                             textToDisplay[n, m] = "null";
                     else
