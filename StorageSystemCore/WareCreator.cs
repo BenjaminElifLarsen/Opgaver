@@ -59,58 +59,7 @@ namespace StorageSystemCore
                         break;
 
                     case 4:
-                        byte missingValues;
-                        if (!MissingInformation(ID, name, type, amount, out missingValues)) //put this if/if-else-statment and its content into a function
-                        {
-                            goBack = Support.Confirmation(); 
-                            if (goBack)
-                            {
-                                if (SQLCode.SQLControl.DatabaseInUse)
-                                {
-                                    Dictionary<string,Type> propertyNamesAndTypes = FindSQLProperties(Type.GetType("StorageSystemCore." + Support.RemoveSpace(type)));
-                                    if (propertyNamesAndTypes.Count > 0)
-                                        if(Visual.MenuRun(new string[] {"Yes","No" },"Do you want to enter extra information?") == 0)//will be moved into methods when finalised the code
-                                        {
-                                            List<string> selectedOptions = new List<string>(); //perhaps the displayed names should be Name rather than SQLName and later find the property with the attribute with Name and get its SQLName
-                                            List<string> sqlOptions = propertyNamesAndTypes.Keys.ToList(); //find a better option for collection, at some point. 
-                                            sqlOptions.Add("Done");
-                                            byte selected;
-                                            do
-                                            {
-                                                selected = Visual.MenuRun(sqlOptions.ToArray(), "Select information to add");
-                                                if (selected != sqlOptions.Count - 1)
-                                                    if (!selectedOptions.Contains(sqlOptions[selected]))
-                                                        selectedOptions.Add(sqlOptions[selected]);
-                                            } while (selected != sqlOptions.Count - 1);
-                                            if(selectedOptions.Count > 0)
-                                            {
-                                                Dictionary<string,object> columnsAndValues = ArquiringInformation(Type.GetType("StorageSystemCore." + Support.RemoveSpace(type)), selectedOptions, propertyNamesAndTypes);
-                                                WareInformation.AddWare(name, ID, type, (int)amount, columnsAndValues);
-                                            }
-                                        }
-                                    else
-                                        WareInformation.AddWare(name, ID, type, (int)amount);
-                                    break;
-                                }
-                                //only if not using a database
-                                object[] filledOutParameters = null;
-                                type = Support.RemoveSpace(type);
-                                if (ConstructorsExist(Type.GetType("StorageSystemCore." + type))) //Does multiple constructor exist?
-                                    if(ExtraConstructorMenu())  //asks if the user wants to input more information
-                                    {
-                                        string[] extraParameters = CreateSelectableConstructorList(Type.GetType("StorageSystemCore." + type));
-                                        byte selectedCtor = SelectConstructor(extraParameters); 
-                                        filledOutParameters = ArquiringInformation(Type.GetType("StorageSystemCore." + type), selectedCtor);
-                                        
-                                    }
-                                WareInformation.AddWare(name, ID, type, (int)amount, filledOutParameters);
-                            }
-                        }
-                        else //informs the user of missing values. 
-                        {
-                            PrintOutMissingInformation(missingValues);
-                            Support.WaitOnKeyInput();
-                        }
+                        Creation(ref goBack,ID,name,type,amount);
                         break;
 
                     case 5:
@@ -121,6 +70,61 @@ namespace StorageSystemCore
             } while (!goBack);
 
             //RemoveFromSubscription(warePublisher);
+        }
+
+        private void Creation(ref bool goBack, string ID, string name, string type, int? amount)
+        {
+            byte missingValues;
+            if (!MissingInformation(ID, name, type, amount, out missingValues)) //put this if/if-else-statment and its content into a function
+            {
+                goBack = Support.Confirmation();
+                if (goBack)
+                {
+                    if (SQLCode.SQLControl.DatabaseInUse)
+                    {
+                        Dictionary<string, Type> propertyNamesAndTypes = FindSQLProperties(Type.GetType("StorageSystemCore." + Support.RemoveSpace(type)));
+                        if (propertyNamesAndTypes.Count > 0)
+                            if (Visual.MenuRun(new string[] { "Yes", "No" }, "Do you want to enter extra information?") == 0)//will be moved into methods when finalised the code
+                            {
+                                List<string> selectedOptions = new List<string>(); //perhaps the displayed names should be Name rather than SQLName and later find the property with the attribute with Name and get its SQLName
+                                List<string> sqlOptions = propertyNamesAndTypes.Keys.ToList(); //find a better option for collection, at some point. 
+                                sqlOptions.Add("Done");
+                                byte selected;
+                                do
+                                {
+                                    selected = Visual.MenuRun(sqlOptions.ToArray(), "Select information to add");
+                                    if (selected != sqlOptions.Count - 1)
+                                        if (!selectedOptions.Contains(sqlOptions[selected]))
+                                            selectedOptions.Add(sqlOptions[selected]);
+                                } while (selected != sqlOptions.Count - 1);
+                                if (selectedOptions.Count > 0)
+                                {
+                                    Dictionary<string, object> columnsAndValues = ArquiringInformation(Type.GetType("StorageSystemCore." + Support.RemoveSpace(type)), selectedOptions, propertyNamesAndTypes);
+                                    WareInformation.AddWare(name, ID, type, (int)amount, columnsAndValues);
+                                }
+                            }
+                            else
+                                WareInformation.AddWare(name, ID, type, (int)amount);
+                    }
+                    //only if not using a database
+                    object[] filledOutParameters = null;
+                    type = Support.RemoveSpace(type);
+                    if (ConstructorsExist(Type.GetType("StorageSystemCore." + type))) //Does multiple constructor exist?
+                        if (ExtraConstructorMenu())  //asks if the user wants to input more information
+                        {
+                            string[] extraParameters = CreateSelectableConstructorList(Type.GetType("StorageSystemCore." + type));
+                            byte selectedCtor = SelectConstructor(extraParameters);
+                            filledOutParameters = ArquiringInformation(Type.GetType("StorageSystemCore." + type), selectedCtor);
+
+                        }
+                    WareInformation.AddWare(name, ID, type, (int)amount, filledOutParameters);
+                }
+            }
+            else //informs the user of missing values. 
+            {
+                PrintOutMissingInformation(missingValues);
+                Support.WaitOnKeyInput();
+            }
         }
 
         /// <summary>

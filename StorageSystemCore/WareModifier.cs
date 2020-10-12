@@ -93,7 +93,7 @@ namespace StorageSystemCore
                 } while (answer != options.Length - 1);
 
             }
-            else
+            else //SQL
             { //get the type of the ID, find the attributes of that ID
 
             }
