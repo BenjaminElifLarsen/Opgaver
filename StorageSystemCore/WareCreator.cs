@@ -119,7 +119,7 @@ namespace StorageSystemCore
 
             } while (!goBack);
 
-            RemoveFromSubscription(warePublisher);
+            //RemoveFromSubscription(warePublisher);
         }
 
         /// <summary>

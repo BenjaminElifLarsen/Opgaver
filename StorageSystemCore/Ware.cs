@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -47,6 +48,7 @@ namespace StorageSystemCore
             warePublisher.RaiseAddEvent += AddAmountEventHandler;
             warePublisher.RaiseRemoveEvent += RemoveAmountEvnetHandler;
             warePublisher.RaiseGetTypeEvent += GetTypeEventHandler;
+            warePublisher.RaiseAlterWareEvent += AlterWareEventHandler;
         }
 
         //have attributes for constructors, if Type does not contain a way to find them
@@ -67,25 +69,25 @@ namespace StorageSystemCore
         /// <summary>
         /// Gets the name of the ware.
         /// </summary>
-        public string GetName { get => name; }
+        public string Name { get => name; set => name = value; }
 
         [WareSeacheable("Amount", "amount")]
         /// <summary>
         /// Gets the amount of the ware.
         /// </summary>
-        public int GetAmount { get => amount; }
+        public int Amount { get => amount; set => amount = value; }
 
         [WareSeacheable("Information","information")]
         /// <summary>
         /// Gets the ware information
         /// </summary>
-        public string GetInformation { get => information; }
+        public string Information { get => information; set => information = value; }
 
         [WareSeacheable("ID","id")]
         /// <summary>
         /// Gets the ID of the ware.
         /// </summary>
-        public string GetID { get => id; }
+        public string ID { get => id; set => id = value; }
 
         /// <summary>
         /// Add the <paramref name="amount"/> to the unit amount of the ware.
@@ -117,7 +119,7 @@ namespace StorageSystemCore
         /// <param name="e"></param>
         protected void AddAmountEventHandler(object sender, ControlEvents.AddEventArgs e)
         {
-            if (e.ID == this.id)
+            if (e.ID == id)
                 Add(e.AmountToAdd);
         }
 
@@ -128,13 +130,35 @@ namespace StorageSystemCore
         /// <param name="e"></param>
         protected void RemoveAmountEvnetHandler(object sender, ControlEvents.RemoveEventArgs e)
         {
-            if (e.ID == this.id)
+            if (e.ID == id)
                 Remove(e.AmountToRemove);
         }
 
         protected void GetTypeEventHandler(object sender, ControlEvents.GetTypeEventArgs e)
         {
             e.AddValue(id, this.GetType());
+        }
+
+        protected void AlterWareEventHandler(object sender, ControlEvents.AlterValueEventArgs e)
+        {
+            if(e.ID == id)
+            {
+                PropertyInfo[] propertyInfos = GetType().GetProperties();
+                foreach(PropertyInfo propertyInfo in propertyInfos)
+                {
+                    foreach(Attribute attribute in propertyInfo.GetCustomAttributes())
+                    {
+                        if(attribute.GetType() == typeof(WareSeacheableAttribute))
+                        {
+                            WareSeacheableAttribute seacheableAttribute = attribute as WareSeacheableAttribute;
+                            if(seacheableAttribute.Name == e.PropertyName)
+                            {
+                                propertyInfo.SetValue(this,e.Value);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -146,6 +170,7 @@ namespace StorageSystemCore
             warePublisher.RaiseAddEvent -= AddAmountEventHandler;
             warePublisher.RaiseRemoveEvent -= RemoveAmountEvnetHandler;
             warePublisher.RaiseGetTypeEvent -= GetTypeEventHandler;
+            warePublisher.RaiseAlterWareEvent -= AlterWareEventHandler;
         }
 
     }

@@ -54,13 +54,13 @@ namespace StorageSystemCore
         /// <summary>
         /// Gets the minimum temperature the materiale is liquid at.
         /// </summary>
-        public double? MinimumTemperature { get => minTemp; }
+        public double? MinimumTemperature { get => minTemp; set => minTemp = value; }
 
         [WareSeacheable("Boiling Point","boilingPoint")]
         /// <summary>
         /// ... null indicates the boiling point has not been set.
         /// </summary>
-        public float? GetBoilingPoint { get => boilingPoint; }
+        public float? BoilingPoint { get => boilingPoint; set => boilingPoint = value; }
 
         //[WareSeacheable("Volatile","volatile")]
         ///// <summary>

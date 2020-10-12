@@ -166,7 +166,6 @@ namespace StorageSystemCore
         /// </summary>
         private void WareCreateMenu()
         {
-            WareCreator creator = new WareCreator(Publisher.PubWare); //move to somewhere else, maybe have a static class which a function/property that sets the publisher.
             Publisher.PubWare.CreateWare();
         } 
 

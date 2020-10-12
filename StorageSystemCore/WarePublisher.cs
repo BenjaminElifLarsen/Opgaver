@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.CompilerServices;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -23,6 +24,9 @@ namespace StorageSystemCore
 
         public delegate void getTypeEventHandler(object sender, ControlEvents.GetTypeEventArgs args);
         public event getTypeEventHandler RaiseGetTypeEvent;
+
+        public delegate void alterWareEventHandler(object sender, ControlEvents.AlterValueEventArgs args);
+        public event alterWareEventHandler RaiseAlterWareEvent;
 
         /// <summary>
         /// Creates an event that all classes that are subscriben to RaiseCreateWareEvent will trigger on.
@@ -113,6 +117,18 @@ namespace StorageSystemCore
             }
             return null;
 
+        }
+
+        public void AlterWare(string ID, object newValue, string propertyName)
+        {
+            OnAlterWare(new ControlEvents.AlterValueEventArgs(ID, newValue, propertyName));
+        }
+
+        protected void OnAlterWare(ControlEvents.AlterValueEventArgs e)
+        {
+            alterWareEventHandler eventHandler = RaiseAlterWareEvent;
+            if (eventHandler != null)
+                eventHandler.Invoke(this, e);
         }
 
     }

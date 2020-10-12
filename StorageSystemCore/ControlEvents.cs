@@ -34,17 +34,17 @@ namespace StorageSystemCore
             public AddEventArgs(string ID, int amountToAdd)
             {
                 this.ID = ID;
-                this.AmountToAdd = amountToAdd;
+                AmountToAdd = amountToAdd;
             }
             /// <summary>
             /// Gets and sets the ID of the ware.
             /// </summary>
-            public string ID { get; set; }
+            public string ID { get; }
 
             /// <summary>
             /// Gets and sets the amount to add.
             /// </summary>
-            public int AmountToAdd { get; set; }
+            public int AmountToAdd { get; }
         }
 
         /// <summary>
@@ -60,12 +60,12 @@ namespace StorageSystemCore
             public RemoveEventArgs(string ID, int amountToRemove)
             {
                 this.ID = ID;
-                this.AmountToRemove = amountToRemove;
+                AmountToRemove = amountToRemove;
             }
             /// <summary>
             /// Get and sets the ID of the ware.
             /// </summary>
-            public string ID { get; set; }
+            public string ID { get; }
 
             /// <summary>
             /// Gets and sets the amount to remove. 
@@ -80,7 +80,7 @@ namespace StorageSystemCore
             {
                 this.ID = ID;
             }
-            public string ID { get; set; }
+            public string ID { get; }
 
             public Type GetType(string ID)
             {
@@ -92,6 +92,26 @@ namespace StorageSystemCore
                 _types.Add(ID, type);
             }
 
+        }
+
+        public class AlterValueEventArgs
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="ID"></param>
+            /// <param name="newValue"></param>
+            /// <param name="property">The WareSeacheableAttribute Name</param>
+            public AlterValueEventArgs(string ID, object newValue, string property)
+            {
+                this.ID = ID;
+                Value = newValue;
+                PropertyName = property;
+            }
+
+            public string ID { get; }
+            public object Value { get; }
+            public string PropertyName { get; }
         }
 
         /// <summary>
@@ -110,7 +130,7 @@ namespace StorageSystemCore
             /// <summary>
             /// Gets and sets the consoleKeyInfo key. 
             /// </summary>
-            public ConsoleKey Key { get; set; }
+            public ConsoleKey Key { get; }
         }
 
 

@@ -88,13 +88,13 @@ namespace StorageSystemCore
         /// <summary>
         /// Gets the category of the liquid. Null indicates the category has not been set.
         /// </summary>
-        public float? GetCategory { get => category; }
+        public byte? Category { get => category; set => category = value; }
 
         [WareSeacheable("Flash Point","flashPoint")]
         /// <summary>
         /// Gets the flash point of the liquid. Null indicates the flashpoint has not been set. 
         /// </summary>
-        public float[] GetFlashPoint { get => flashPoint; }
+        public float[] FlashPoint { get => flashPoint; set => flashPoint = value; }
 
     }
 }

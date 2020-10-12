@@ -52,9 +52,9 @@ namespace StorageSystemCore
             foreach (Ware ware in wares)
             {
                 string[] information = new string[4];
-                information[0] = ware.GetName;
-                information[1] = ware.GetID;
-                information[2] = ware.GetAmount.ToString();
+                information[0] = ware.Name;
+                information[1] = ware.ID;
+                information[2] = ware.Amount.ToString();
                 information[3] = FindTypeAttribute(ware);
                 wareInformation.Add(information);
             }
@@ -62,32 +62,40 @@ namespace StorageSystemCore
         }
 
 
-        public static Dictionary<string,object> GetWareInformation(string ID)
+        public static Dictionary<string,object> GetWareInformation(string ID, out List<Type> valueTypes) //some of these functions should be moved out of here
         {
-            Ware wareToGetInformation;
+
             foreach(Ware ware in wares)
-                if(ID == ware.GetID)
+                if(ID == ware.ID)
                 {
-                    return CollectInformation(ware);
+                    valueTypes = new List<Type>();
+                    return CollectInformation(ware, valueTypes);
                 }
+            valueTypes = null;
             return null;
 
-            Dictionary<string,object> CollectInformation(Ware ware)
+            Dictionary<string,object> CollectInformation(Ware ware, List<Type> types)
             {
                 Dictionary<string, object> information = new Dictionary<string, object>();
                 PropertyInfo[] propertyInfos = ware.GetType().GetProperties();
                 foreach (PropertyInfo propertyInfo in propertyInfos)
                 {
-
+                    foreach(Attribute attribute in propertyInfo.GetCustomAttributes())
+                    {
+                        if(attribute.GetType() == typeof(WareSeacheableAttribute))
+                        {
+                            WareSeacheableAttribute seacheableAttribute = attribute as WareSeacheableAttribute;
+                            information.Add(seacheableAttribute.Name, propertyInfo.GetValue(ware));
+                            types.Add(propertyInfo.GetMethod.ReturnType);
+                        }
+                    }
                 }
-
-
-                throw new NotImplementedException();
+                return information;
             }
         }
 
         /// <summary>
-        /// ...
+        /// 
         /// </summary>
         /// <param name="attributesToSearchFor"></param>
         /// <returns></returns>
@@ -229,7 +237,7 @@ namespace StorageSystemCore
         public static bool RemoveWare(string ID) //when storage class has been added move this function to it
         {
             for (int i = wares.Count - 1; i >= 0; i--)
-                if (wares[i].GetID == ID)
+                if (wares[i].ID == ID)
                 {
                     wares[i].RemoveSubscriptions(Publisher.PubWare);
                     wares.RemoveAt(i);
