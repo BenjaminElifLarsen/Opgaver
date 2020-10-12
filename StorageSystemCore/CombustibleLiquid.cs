@@ -96,5 +96,7 @@ namespace StorageSystemCore
         /// </summary>
         public float[] FlashPoint { get => flashPoint; set => flashPoint = value; }
 
+
+
     }
 }

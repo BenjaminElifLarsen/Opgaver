@@ -307,6 +307,11 @@ namespace StorageSystemCore
                         throw new InvalidCastException();
                     }
                 }
+                else if (typeof(t).Name.Contains("[]"))
+                {
+                    Type actualType = Type.GetType(typeof(t).FullName.Remove(typeof(t).FullName.Length - 2, 2));
+                    return (t)Convert.ChangeType(value, actualType);
+                }
                 else //cannot call this method from here, since it is called using reflection
                     throw new InvalidCastException();
             }

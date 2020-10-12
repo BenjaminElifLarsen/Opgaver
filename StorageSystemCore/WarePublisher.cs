@@ -124,6 +124,11 @@ namespace StorageSystemCore
             OnAlterWare(new ControlEvents.AlterValueEventArgs(ID, newValue, propertyName));
         }
 
+        public void AlterWare(string ID, object[] newValues, string propertyName)
+        {
+            OnAlterWare(new ControlEvents.AlterValueEventArgs(ID, newValues, propertyName));
+        }
+
         protected void OnAlterWare(ControlEvents.AlterValueEventArgs e)
         {
             alterWareEventHandler eventHandler = RaiseAlterWareEvent;

@@ -12,7 +12,7 @@ namespace StorageSystemCore
     /// The basic ware class, abstract, that all different types of wares should inherence from.
     /// </summary>
     [WareType("None")] //Ware is abstract and cannot be initialisated
-    public abstract class Ware
+    public abstract class Ware //: IConversion
     {
         /// <summary>
         /// The name of the ware.
@@ -153,7 +153,19 @@ namespace StorageSystemCore
                             WareSeacheableAttribute seacheableAttribute = attribute as WareSeacheableAttribute;
                             if(seacheableAttribute.Name == e.PropertyName)
                             {
-                                propertyInfo.SetValue(this,e.Value);
+                                if (e.MultieValueArray != null)
+                                {
+                                    Type type = e.MultieValueArray[0].GetType();
+                                    MethodInfo foundMethod = this.GetType().GetMethod("ArrayConversion", BindingFlags.Instance | BindingFlags.NonPublic);
+                                    MethodInfo genericVersion = foundMethod.MakeGenericMethod(type);
+                                    var array = genericVersion.Invoke(this, new object[]  { e.MultieValueArray });
+                                    
+                                    propertyInfo.SetValue(this, array);
+                                }
+                                else
+                                {
+                                    propertyInfo.SetValue(this, e.SingleValue);
+                                }
                             }
                         }
                     }
@@ -171,6 +183,16 @@ namespace StorageSystemCore
             warePublisher.RaiseRemoveEvent -= RemoveAmountEvnetHandler;
             warePublisher.RaiseGetTypeEvent -= GetTypeEventHandler;
             warePublisher.RaiseAlterWareEvent -= AlterWareEventHandler;
+        }
+
+        protected T[] /*IConversion.*/ArrayConversion<T>(object[] arrayToConvert)
+        {
+            T[] convertedArray = new T[arrayToConvert.Length];
+            for (int i = 0; i < convertedArray.Length; i++)
+            {
+                convertedArray[i] = (T)Convert.ChangeType(arrayToConvert[0], typeof(T));
+            }
+            return convertedArray;
         }
 
     }

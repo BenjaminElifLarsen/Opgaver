@@ -105,12 +105,20 @@ namespace StorageSystemCore
             public AlterValueEventArgs(string ID, object newValue, string property)
             {
                 this.ID = ID;
-                Value = newValue;
+                SingleValue = newValue;
+                PropertyName = property;
+            }
+
+            public AlterValueEventArgs(string ID, object[] newValues, string property)
+            {
+                this.ID = ID;
+                MultieValueArray = newValues;
                 PropertyName = property;
             }
 
             public string ID { get; }
-            public object Value { get; }
+            public object SingleValue { get; }
+            public object[] MultieValueArray { get; }
             public string PropertyName { get; }
         }
 
