@@ -73,6 +73,27 @@ namespace StorageSystemCore
             public int AmountToRemove { get; set; }
         }
 
+        public class GetTypeEventArgs
+        {
+            private Dictionary<string,Type> _types = new Dictionary<string, Type>();
+            public GetTypeEventArgs(string ID)
+            {
+                this.ID = ID;
+            }
+            public string ID { get; set; }
+
+            public Type GetType(string ID)
+            {
+                return _types[ID];
+            }
+
+            public void AddValue(string ID, Type type)
+            {
+                _types.Add(ID, type);
+            }
+
+        }
+
         /// <summary>
         /// Class that holds event data of the input control system.
         /// </summary>

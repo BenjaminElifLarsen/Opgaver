@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,6 +20,9 @@ namespace StorageSystemCore
 
         public delegate void removeEventHandler(object sender, ControlEvents.RemoveEventArgs args);
         public event removeEventHandler RaiseRemoveEvent;
+
+        public delegate void getTypeEventHandler(object sender, ControlEvents.GetTypeEventArgs args);
+        public event getTypeEventHandler RaiseGetTypeEvent;
 
         /// <summary>
         /// Creates an event that all classes that are subscriben to RaiseCreateWareEvent will trigger on.
@@ -79,6 +83,36 @@ namespace StorageSystemCore
             removeEventHandler eventHandler = RaiseRemoveEvent;
             if (eventHandler != null)
                 eventHandler.Invoke(this, e);
+        }
+
+        public Type GetTypeFromWare(string ID)
+        {
+            try 
+            { 
+                return OnGetTypeFromWare(new ControlEvents.GetTypeEventArgs(ID));
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        protected Type OnGetTypeFromWare(ControlEvents.GetTypeEventArgs e)
+        {
+            getTypeEventHandler eventHandler = RaiseGetTypeEvent;
+            if(eventHandler != null) {
+                eventHandler.Invoke(this,e);
+                try 
+                { 
+                    return e.GetType(e.ID);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            return null;
+
         }
 
     }

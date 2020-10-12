@@ -52,7 +52,7 @@ namespace StorageSystemCore
         {
             bool run = true;
             string title = "Ware Change Menu";
-            string[] options = new string[] { "Remove Ware", "Add To Ware", "Remove From Ware", "Back" };
+            string[] options = new string[] { "Remove Ware", "Add To Ware", "Remove From Ware", "Modify Ware", "Back" };
             do
             {
                 byte response = Visual.MenuRun(options, title);
@@ -71,6 +71,10 @@ namespace StorageSystemCore
                         break;
 
                     case 3:
+                        WareModifyMenu();
+                        break;
+
+                    case 4:
                         run = false;
                         break;
                 }
@@ -99,6 +103,18 @@ namespace StorageSystemCore
             {
                 Console.Clear();
                 Console.WriteLine(message, part); //figure out how to do this better. 
+                Support.WaitOnKeyInput();
+            }
+        }
+
+        private void WareModifyMenu()
+        {
+            string ID = CollectID();
+            if (Support.IDExist(ID, SQLCode.SQLControl.DatabaseInUse))
+                WareModifier.ModifyWare(ID);
+            else
+            {
+                Console.WriteLine("ID does not exist");
                 Support.WaitOnKeyInput();
             }
         }

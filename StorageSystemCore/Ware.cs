@@ -46,6 +46,7 @@ namespace StorageSystemCore
             this.amount = amount;
             warePublisher.RaiseAddEvent += AddAmountEventHandler;
             warePublisher.RaiseRemoveEvent += RemoveAmountEvnetHandler;
+            warePublisher.RaiseGetTypeEvent += GetTypeEventHandler;
         }
 
         //have attributes for constructors, if Type does not contain a way to find them
@@ -131,6 +132,11 @@ namespace StorageSystemCore
                 Remove(e.AmountToRemove);
         }
 
+        protected void GetTypeEventHandler(object sender, ControlEvents.GetTypeEventArgs e)
+        {
+            e.AddValue(id, this.GetType());
+        }
+
         /// <summary>
         /// Removes the subscriptions...
         /// </summary>
@@ -139,6 +145,7 @@ namespace StorageSystemCore
         {
             warePublisher.RaiseAddEvent -= AddAmountEventHandler;
             warePublisher.RaiseRemoveEvent -= RemoveAmountEvnetHandler;
+            warePublisher.RaiseGetTypeEvent -= GetTypeEventHandler;
         }
 
     }

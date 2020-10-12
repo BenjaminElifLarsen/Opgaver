@@ -53,6 +53,30 @@ namespace StorageSystemCore
             return false;
         }
 
+        public static void ModifyWare(string ID)
+        {
+            Type type; 
+            if (!SQLCode.SQLControl.DatabaseInUse)
+            {
+                type = Publisher.PubWare.GetTypeFromWare(ID);
+                List<string[]> attributes = WareInformation.FindSearchableAttributes(type);
+                string[] options = new string[attributes.Count + 1];
+                for (int i = 0; i < options.Length - 1; i++)
+                    options[i] = attributes[i][0];
+                options[options.Length - 1] = "Exit";
+                byte? answer;
+                do
+                {
+                    answer = Visual.MenuRun(options, "Select entry to modify");
+                } while (answer != options.Length - 1);
+
+            }
+            else
+            { //get the type of the ID, find the attributes of that ID
+
+            }
+        }
+
         /// <summary>
         /// Used for unit testing 
         /// </summary>

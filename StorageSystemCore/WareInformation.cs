@@ -62,6 +62,30 @@ namespace StorageSystemCore
         }
 
 
+        public static Dictionary<string,object> GetWareInformation(string ID)
+        {
+            Ware wareToGetInformation;
+            foreach(Ware ware in wares)
+                if(ID == ware.GetID)
+                {
+                    return CollectInformation(ware);
+                }
+            return null;
+
+            Dictionary<string,object> CollectInformation(Ware ware)
+            {
+                Dictionary<string, object> information = new Dictionary<string, object>();
+                PropertyInfo[] propertyInfos = ware.GetType().GetProperties();
+                foreach (PropertyInfo propertyInfo in propertyInfos)
+                {
+
+                }
+
+
+                throw new NotImplementedException();
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -233,7 +257,7 @@ namespace StorageSystemCore
         /// Finds all and returns all names and sqlNames of WareSeacheableAttribute.
         /// </summary>
         /// <param name="type">The type to find all searchable attributse of.</param>
-        /// <returns></returns>
+        /// <returns>Returns a list<string[]>. Each array is a property where the index 0 is the name and index 1 is the sql name</returns>
         public static List<string[]> FindSearchableAttributes(Type type)
         {
             List<string[]> properties = new List<string[]>();
