@@ -9,7 +9,9 @@ namespace StorageSystemCore
 {
     static public class Input
     {
-
+        /// <summary>
+        /// Ensures that the input system is always working by running it on another thread. 
+        /// </summary>
         public static void RunInputThread()
         {
             Thread inputThread = new Thread(InputRun);
@@ -17,20 +19,21 @@ namespace StorageSystemCore
             inputThread.Start();
         }
 
+        /// <summary>
+        /// If a key is pressed, activate an event and transmit the key. 
+        /// </summary>
         static private void InputRun()
         {
             do
             {
-                if (Console.KeyAvailable) //something somewhere causes a minor problem, confermation message at remove ware and message if a ware does not exist and trying to remove units from it
-                {//requires two key entries rather than 1, this has not happened while debuggering. 
+                if (Console.KeyAvailable)
+                { 
                     ConsoleKey key = Console.ReadKey(true).Key;
                     Publisher.PubKey.PressKey(key);
                     Support.BufferFlush();
                 }
 
             } while (true);
-
-
         }
 
     }

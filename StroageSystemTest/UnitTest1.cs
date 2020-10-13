@@ -40,6 +40,8 @@ namespace StroageSystemTest
             Assert.False(RegexControl.IsValidSpecial("%"));
             Assert.True(RegexControl.IsValidSpecial("b-nm"));
             Assert.False(RegexControl.IsValidSpecial("b%"));
+            Assert.True(RegexControl.IsValidCharsOnly("awdw123."));
+            Assert.False(RegexControl.IsValidCharsOnly("123123dø"));
         }
 
         [Fact]

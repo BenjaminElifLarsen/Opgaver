@@ -61,6 +61,11 @@ namespace StorageSystemCore
             return false;
         }
 
+        /// <summary>
+        /// Allows for the modifcation of one or more values of the ware with <paramref name="ID"/>. 
+        /// 
+        /// </summary>
+        /// <param name="ID"></param>
         public static void ModifyWare(string ID) //move a lot of this function into smaller functions to make it easier to read
         {
             //Type type; 
@@ -239,6 +244,13 @@ namespace StorageSystemCore
             WareInformation.RemoveWare(ID);
         }
 
+        /// <summary>
+        /// Generates an array of selectable attributes belonging to the type of the ware with the <paramref name="ID"/>.
+        /// Finally, it also add an "Exit" to the end of the array. 
+        /// </summary>
+        /// <param name="ID">The ID of the ware. </param>
+        /// <param name="databseInUse">True if sql is used, false otherwise.</param>
+        /// <returns></returns>
         private static string[] GenerateOptions(string ID, bool databseInUse)
         {
             Type type;
@@ -260,13 +272,20 @@ namespace StorageSystemCore
             string[] options = new string[attributes.Count + 1]; 
             for (int i = 0; i < options.Length - 1; i++) 
                 options[i] = attributes[i][n];
-            options[options.Length - 1] = "Exit";
+            options[options.Length - 1] = "Done";
             return options;
         }
 
+        /// <summary>
+        /// Collects a value via Console.ReadLine and returns it as variable of <paramref name="type"/> wrapped in an object.
+        /// 
+        /// </summary>
+        /// <param name="type">The type the input should be converted too.</param>
+        /// <param name="oldValue">The old value that will be displayed.</param>
+        /// <returns></returns>
         private static object CollectValue(Type type, object oldValue)
         {
-            Type support = typeof(Support); //basically the same as the one in WareCreator
+            Type support = typeof(Support);
             MethodInfo foundMethod = support.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static);
             MethodInfo genericVersion = foundMethod.MakeGenericMethod(type); 
             try

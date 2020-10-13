@@ -293,11 +293,19 @@ namespace StorageSystemCore
                     Type actualType = Type.GetType(typeof(t).FullName.Remove(typeof(t).FullName.Length - 2, 2));
                     return (t)Convert.ChangeType(value, actualType);
                 }
-                else //cannot call this method from here, since it is called using reflection
+                else
                     throw new InvalidCastException();
             }
         }
 
+        /// <summary>
+        /// Default error handling regarding reporting and informating the user.
+        /// 1) Writes the error. <paramref name="e"/>, to the report file.
+        /// 2) Writes out <paramref name="message"/> to the console.
+        /// 3) Waits on user input.
+        /// </summary>
+        /// <param name="e">The exception that was casted.</param>
+        /// <param name="message">The message to display for the user.</param>
         public static void ErrorHandling(Exception e, string message)
         {
             Reporter.Report(e);

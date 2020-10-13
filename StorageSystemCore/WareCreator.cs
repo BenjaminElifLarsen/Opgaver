@@ -297,7 +297,7 @@ namespace StorageSystemCore
         }
 
         /// <summary>
-        /// 
+        /// Asks the user the enter the information about a ware of <paramref name="type"/>. The data names that is needed is <paramref name="sqlColumns"/> and the data types are in <paramref name="keyValuePairs"/>. //explain better
         /// </summary>
         /// <param name="type">The type of the ware.</param>
         /// <param name="sqlColumns">The sql columns to arquier data for.</param>
@@ -559,14 +559,19 @@ namespace StorageSystemCore
         /// <returns>Returns a converted version of <paramref name="arrayToConvert"/>.</returns>
         private T[] ArrayConversion<T>(object[] arrayToConvert)
         {
-            T[] convertedArray = new T[arrayToConvert.Length];
-            for (int i = 0; i < convertedArray.Length; i++)
-            {
-                convertedArray[i] = (T)Convert.ChangeType(arrayToConvert[i], typeof(T));
+            try { 
+                T[] convertedArray = new T[arrayToConvert.Length];
+                for (int i = 0; i < convertedArray.Length; i++)
+                {
+                    convertedArray[i] = (T)Convert.ChangeType(arrayToConvert[i], typeof(T));
+                }
+                return convertedArray;
             }
-            return convertedArray;
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
-
 
         /// <summary>
         /// Adds a new ware of <paramref name="type"/> with the basic values of <paramref name="name"/>, <paramref name="id"/> and <paramref name="amount"/>. 
@@ -599,9 +604,9 @@ namespace StorageSystemCore
             {
                 WareInformation.Add((Ware)Activator.CreateInstance(test, dataObject));
             }
-            catch
+            catch (Exception e)
             {
-
+                Support.ErrorHandling(e, $"Could not add ware: {e.Message}");
             }
         }
 

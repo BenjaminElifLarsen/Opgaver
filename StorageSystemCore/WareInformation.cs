@@ -62,7 +62,16 @@ namespace StorageSystemCore
             return wareInformation;
         }
 
-
+        //rewrite
+        /// <summary>
+        /// Finds and returns a dictionary with string key and object value. 
+        /// The keys being each WareSearchableAttribute of the type from the ware with <paramref name="ID"/>
+        /// Each value is is the value of that given attribute.
+        /// <paramref name="valueTypes"/> contains the type of each entry in the dictionary.
+        /// </summary>
+        /// <param name="ID">The ID of the ware.</param>
+        /// <param name="valueTypes">The types of each entry in the return dictionary.</param>
+        /// <returns></returns>
         public static Dictionary<string,object> GetWareInformation(string ID, out List<Type> valueTypes) //some of these functions should be moved out of here
         {
 
@@ -112,7 +121,9 @@ namespace StorageSystemCore
         }
 
         /// <summary>
-        /// 
+        /// Finds and returns a list of dictionary<string,object>. Each dictionary is a different ware.   
+        /// Each key in each dictionary contains the value of a attribute in <paramref name="attributesToSearchFor"/>.
+        /// Each dictionary will not contains attribute keys if the ware does not contain that specific attribute.
         /// </summary>
         /// <param name="attributesToSearchFor"></param>
         /// <returns></returns>
@@ -238,10 +249,11 @@ namespace StorageSystemCore
         }
 
         /// <summary>
-        /// Gets all extra constructors of <paramref name="type"/>.
+        /// Gets all constructors of <paramref name="type"/> that contains more parameters that the most basic constructor of <c>Ware</c>.
         /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
+        /// <param name="type">The type to find constructors of.</param>
+        /// <returns>Returns a list of dictionaries with string keys and Type values, one for each constructor. 
+        /// Each string is the name of a parameter and each type is the type of the parameter.</returns>
         public static List<Dictionary<string,Type>> GetConstructorParameterNamesAndTypes(Type type)
         {
             List<Dictionary<string,Type>> constructors = new List<Dictionary<string, Type>>();
@@ -261,6 +273,10 @@ namespace StorageSystemCore
             return constructors; 
         }
 
+        /// <summary>
+        /// Finds and returns all types that inherience from <c>Ware</c>.
+        /// </summary>
+        /// <returns>Returns a string list containing the names of all classes that inherience from <c>Ware</c>.</returns>
         public static List<string> FindWareTypes() 
         {
             List<string> typeList = new List<string>();
@@ -300,6 +316,10 @@ namespace StorageSystemCore
             return searchable;
         }
 
+        /// <summary>
+        /// Add a <paramref name="ware"/> to the Ware list.
+        /// </summary>
+        /// <param name="ware">The ware to add.</param>
         public static void Add(Ware ware)
         {
             wares.Add(ware);

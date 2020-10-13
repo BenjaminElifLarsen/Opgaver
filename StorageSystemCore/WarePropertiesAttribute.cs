@@ -42,6 +42,9 @@ namespace StorageSystemCore
         public string SQLName { get => sqlName; set => sqlName = value; }
     }
 
+    /// <summary>
+    /// Used to set attributes for properties whoes valeus should not be overwritten. 
+    /// </summary>
     public class ValueUniqueness : Attribute
     {
         public ValueUniqueness(bool isUnique)

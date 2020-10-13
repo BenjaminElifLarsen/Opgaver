@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace StorageSystemCore
 {
+    /// <summary>
+    /// Class that contain the main part of the menu system.
+    /// </summary>
     public class Menu
     {
         /// <summary>
@@ -49,6 +52,9 @@ namespace StorageSystemCore
 
         }
 
+        /// <summary>
+        /// Runs the menu that allows for changes to a ware. 
+        /// </summary>
         private void WareChangeMenu()
         {
             bool run = true;
@@ -82,6 +88,9 @@ namespace StorageSystemCore
             } while (run);
         }
 
+        /// <summary>
+        /// Runs the menu for removing a ware. 
+        /// </summary>
         private void WareRemoveMenu()
         {
             string ID = CollectID();
@@ -108,6 +117,9 @@ namespace StorageSystemCore
             }
         }
 
+        /// <summary>
+        /// Runs the menu to modify a ware. 
+        /// </summary>
         private void WareModifyMenu()
         {
             string ID = CollectID();
@@ -120,6 +132,9 @@ namespace StorageSystemCore
             }
         }
 
+        /// <summary>
+        /// Runs the menu for adding any amount to a ware. 
+        /// </summary>
         private void WareAddAmountMenu()
         {
             string ID = CollectID();
@@ -132,6 +147,9 @@ namespace StorageSystemCore
             }
         }
 
+        /// <summary>
+        /// Runs the menu for removing any amount from a ware. 
+        /// </summary>
         private void WareRemoveAmountMenu()
         {
             string ID = CollectID();
@@ -218,9 +236,16 @@ namespace StorageSystemCore
             List<Dictionary<string, object>> attributesAndValues;
             if (selectedAttributes.Count != 0) 
             {
-                if (!SQLCode.SQLControl.DatabaseInUse) { 
-                    attributesAndValues = WareInformation.GetWareInformation(selectedAttributes);
-                    Visual.WareDisplay(selectedAttributes, attributesAndValues);
+                if (!SQLCode.SQLControl.DatabaseInUse) {
+                    try 
+                    { 
+                        attributesAndValues = WareInformation.GetWareInformation(selectedAttributes);
+                        Visual.WareDisplay(selectedAttributes, attributesAndValues);
+                    }
+                    catch (NullReferenceException e)
+                    {
+                        Support.ErrorHandling(e, $"No attibutes were selected. {e.Message}");
+                    }
                 }
                 else
                 {
@@ -256,7 +281,7 @@ namespace StorageSystemCore
                     case 0:
                         sqlInfo[0] = Support.CollectString("Enter Servername");
                         sqlInfo[1] = Support.CollectString("Enter database");
-                        if (!DoesDatabaseExist())
+                        if (!ShallDatabaseInitialiseMenu())
                         {
                             try
                             {
@@ -288,7 +313,7 @@ namespace StorageSystemCore
                         sqlInfo[1] = Support.CollectString("Enter SQL Username");
                         sqlInfo[2] = Support.HiddenText("Enter Password");
                         sqlInfo[3] = Support.CollectString("Enter database");
-                        if (!DoesDatabaseExist()) 
+                        if (!ShallDatabaseInitialiseMenu()) 
                         {
                             try
                             {
@@ -339,7 +364,7 @@ namespace StorageSystemCore
         /// Small menu that asks the user if the user wants to initialise database creation.
         /// </summary>
         /// <returns>Returns true if the user selects yes to the database exist, else false.</returns>
-        private bool DoesDatabaseExist() //rename
+        private bool ShallDatabaseInitialiseMenu()
         {
             string[] options = new string[] {"Yes","No" };
             byte answer = Visual.MenuRun(options, "Initialise Database Creation?");
