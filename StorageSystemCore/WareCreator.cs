@@ -225,9 +225,59 @@ namespace StorageSystemCore
                 }
                 else
                 {
-                    Console.Clear();
-                    Console.WriteLine("Please Enter {0}", parameterNames[i]);
-                    parameterValues[i] = Console.ReadLine(); 
+                    if(parameterType.FullName == "System.String") 
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Please Enter {0}", parameterNames[i]);
+                        parameterValues[i] = Console.ReadLine();
+                    }
+                    else if (parameterType.BaseType.Name == "Array")
+                    {
+                        List<object> objectList = new List<object>();
+                        string[] addValueOptions = new string[] { "Enter Value", "Done" };
+                        byte? valueAnswer;
+                        do
+                        {
+                            valueAnswer = Visual.MenuRun(addValueOptions, "Add Data Entry");
+                            if (valueAnswer == 0)
+                            {
+                                if (!parameterType.Name.Contains("String") )
+                                { //non-string
+                                    try
+                                    {
+                                        //objectList.Add(CollectValue(Type.GetType(valueTypes[(byte)answer].FullName.Remove(valueTypes[(byte)answer].FullName.Length - 2, 2)), oldValue)); //code inside of Type.GetType(...) converts an array type to a non-array type
+                                        Type support = typeof(Support); //basically the same as the one in WareCreator
+                                        MethodInfo foundMethod = support.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static);
+                                        MethodInfo genericVersion = foundMethod.MakeGenericMethod(Type.GetType(parameterType.FullName.Remove(parameterType.FullName.Length - 2)));
+                                        try
+                                        {
+                                            objectList.Add(genericVersion.Invoke(null, new object[] { parameterNames[i] }));
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            throw e;
+                                        }
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        
+                                    }
+                                }
+                                //else if (valueTypes[(byte)answer].Name.Contains("Char")) //might not be needed
+                                //{ //char
+
+                                //}
+                                else
+                                { //string
+                                    Console.Clear();
+                                    Console.WriteLine();
+                                    objectList.Add(Console.ReadLine());
+                                }
+                            }
+                        } while (valueAnswer != addValueOptions.Length - 1);
+                        object[] objectArray = objectList.ToArray();
+                        parameterValues[i] = objectArray;
+                    }
                 } 
 
             }
