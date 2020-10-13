@@ -159,8 +159,14 @@ namespace StorageSystemCore
                                     MethodInfo foundMethod = this.GetType().GetMethod("ArrayConversion", BindingFlags.Instance | BindingFlags.NonPublic);
                                     MethodInfo genericVersion = foundMethod.MakeGenericMethod(type);
                                     var array = genericVersion.Invoke(this, new object[]  { e.MultieValueArray });
-                                    
-                                    propertyInfo.SetValue(this, array);
+                                    try
+                                    {
+                                        propertyInfo.SetValue(this, array);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        throw ex;
+                                    }
                                     goto done;
                                 }
                                 else //sets a non-array property
@@ -174,7 +180,14 @@ namespace StorageSystemCore
                                                 goto done; //if allowed to overwrite, need to check if the ID structure is correct 
                                         }
                                     }
-                                    propertyInfo.SetValue(this, e.SingleValue);
+                                    try
+                                    {
+                                        propertyInfo.SetValue(this, e.SingleValue);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        throw ex;
+                                    }
                                     goto done;
                                 }
                             }

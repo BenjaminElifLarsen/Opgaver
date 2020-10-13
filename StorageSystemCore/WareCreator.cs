@@ -100,11 +100,11 @@ namespace StorageSystemCore
                                 if (selectedOptions.Count > 0)
                                 {
                                     Dictionary<string, object> columnsAndValues = ArquiringInformation(Type.GetType("StorageSystemCore." + Support.RemoveSpace(type)), selectedOptions, propertyNamesAndTypes);
-                                    WareInformation.AddWare(name, ID, type, (int)amount, columnsAndValues);
+                                    AddWare(name, ID, type, (int)amount, columnsAndValues);
                                 }
                             }
                             else
-                                WareInformation.AddWare(name, ID, type, (int)amount);
+                                AddWare(name, ID, type, (int)amount);
                     }
                     else 
                     {
@@ -119,7 +119,7 @@ namespace StorageSystemCore
                                 filledOutParameters = ArquiringInformation(Type.GetType("StorageSystemCore." + type), selectedCtor);
 
                             }
-                        WareInformation.AddWare(name, ID, type, (int)amount, filledOutParameters);
+                        AddWare(name, ID, type, (int)amount, filledOutParameters);
                     }
                 }
             }
@@ -221,8 +221,8 @@ namespace StorageSystemCore
                     {
                         Reporter.Report(e);
                         Console.Clear();
-                        Console.WriteLine($"Could not convert. Value set to 0. Value can be modified using the Modify menu: {Environment.NewLine}" + e.InnerException.Message);
-                        parameterValues[i] = 0; //figure out a good way to reenter value
+                        parameterValues[i] = Support.GetDefaultValueFromValueType(parameterType.Name); //figure out a good way to reenter value
+                        Console.WriteLine($"Could not convert. Value set to {parameterValues[i]}. Value can be modified using the Modify menu: {Environment.NewLine}" + e.InnerException.Message);
                         Support.WaitOnKeyInput();
                     }
                 }
@@ -567,5 +567,93 @@ namespace StorageSystemCore
             return convertedArray;
         }
 
+
+        /// <summary>
+        /// Adds a new ware of <paramref name="type"/> with the basic values of <paramref name="name"/>, <paramref name="id"/> and <paramref name="amount"/>. 
+        /// More arguments can be given in <paramref name="extra"/> in an order that fits a constructor of <paramref name="type"/>.
+        /// </summary>
+        /// <param name="name">The name of the ware.</param>
+        /// <param name="id">The id of the ware.</param>
+        /// <param name="type">The type of the ware.</param>
+        /// <param name="amount">The amount of the ware.</param>
+        /// <param name="extra">Extra information for the constructor of <paramref name="type"/>.</param>
+        public void AddWare(string name, string id, string type, int amount, object[] extra) //move later to its final class, the WareCreator (after all, that is the calls that creates wares)
+        {
+            if (type.Split(' ').Length != 1)
+            {
+                string[] split = type.Split(' ');
+                type = "";
+                foreach (string typing in split)
+                    type += typing;
+            }
+            Type test = Type.GetType("StorageSystemCore." + type);
+            int lengthToAdd = extra != null ? extra.Length : 0;
+            object[] dataObject = new object[4 + lengthToAdd];
+            dataObject[0] = name;
+            dataObject[1] = id;
+            dataObject[2] = amount;
+            for (int i = 3; i < dataObject.Length - 1; i++)
+                dataObject[i] = extra[i - 3];
+            dataObject[dataObject.Length - 1] = Publisher.PubWare;
+            try
+            {
+                WareInformation.Add((Ware)Activator.CreateInstance(test, dataObject));
+            }
+            catch
+            {
+
+            }
+        }
+
+        /// <summary>
+        /// Adds a new ware of <paramref name="type"/> with the basic values of <paramref name="name"/>, <paramref name="id"/> and <paramref name="amount"/>.
+        /// Creates the ware in the database. 
+        /// </summary>
+        /// <param name="name">The name of the ware.</param>
+        /// <param name="id">The ID of the ware.</param>
+        /// <param name="type">The type of the ware.</param>
+        /// <param name="amount">The amount of the ware.</param>
+        public void AddWare(string name, string id, string type, int amount) //move later to its final class, the WareCreator (after all, that is the calls that creates wares)
+        {
+            SQLCode.StoredProcedures.InsertWareSP($"'{id}'", $"'{name}'", amount, $"'{type}'");
+        }
+
+        /// <summary>
+        /// Adds a new ware of <paramref name="type"/> with the basic values of <paramref name="name"/>, <paramref name="id"/> and <paramref name="amount"/>.
+        /// Information stored in <paramref name="columnsAndValues"/> will be used to add extra information about the ware. 
+        /// </summary>
+        /// <param name="name">The name of the ware.</param>
+        /// <param name="id">The ID of the ware.</param>
+        /// <param name="type">The type of the ware.</param>
+        /// <param name="amount">The amount of the ware. </param>
+        /// <param name="columnsAndValues">Extra information to add to the ware. The keys are sql columns.</param>
+        public void AddWare(string name, string id, string type, int amount, Dictionary<string, object> columnsAndValues)
+        {
+            object information;
+            columnsAndValues.TryGetValue("information", out information);
+            string informationString = $"'{information}'" == "" ? null : $"'{information}'";
+
+            object dangerCategory;
+            columnsAndValues.TryGetValue("dangerCategory", out dangerCategory);
+            string dangerCategoryString = $"{dangerCategory}" == "" ? null : $"{dangerCategory}";
+
+            object flashPoint;
+            columnsAndValues.TryGetValue("flashPoint", out flashPoint);
+            string flashPointString = $"{flashPoint}" == "" ? null : $"{flashPoint}";
+
+            object minTemp;
+            columnsAndValues.TryGetValue("minTemp", out minTemp);
+            string minTempString = $"{minTemp}" == "" ? null : $"{minTemp}";
+
+            object boilingPoint;
+            columnsAndValues.TryGetValue("boilingPoint", out boilingPoint);
+            string boilingPointString = $"{boilingPoint}" == "" ? null : $"{boilingPoint}";
+
+            object @volatile;
+            columnsAndValues.TryGetValue("@volatile", out @volatile);
+            string @volatileString = $"{@volatile}" == "" ? null : $"{@volatile}";
+
+            SQLCode.StoredProcedures.InsertWareSP($"'{id}'", $"'{name}'", amount, $"'{type}'", informationString, dangerCategoryString, flashPointString, minTempString, boilingPointString, @volatileString);
+        }
     }
 }

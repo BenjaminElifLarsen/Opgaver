@@ -48,7 +48,14 @@ namespace StorageSystemCore
             if (Support.Confirmation()) {
                 if (!SQLCode.SQLControl.DatabaseInUse)
                     return WareInformation.RemoveWare(ID);
-                SQLCode.StoredProcedures.RunDeleteWareSP($"'{ID}'");
+                try { 
+                    SQLCode.StoredProcedures.RunDeleteWareSP($"'{ID}'");
+                }
+                catch (Exception e)
+                {
+                    Support.ErrorHandling(e, $"Failed at removing ware: {e.Message}");
+                    return false;
+                }
                 return true;
             }
             return false;
@@ -59,73 +66,100 @@ namespace StorageSystemCore
             //Type type; 
             if (!SQLCode.SQLControl.DatabaseInUse)
             {
-                string[] options = GenerateOptions(ID, SQLCode.SQLControl.DatabaseInUse);
-                Dictionary<string, object> informations = WareInformation.GetWareInformation(ID, out List<Type> valueTypes);
-                byte? answer;
-                do
+                string[] options = null;
+                try
                 {
-                    answer = Visual.MenuRun(options, "Select entry to modify"); 
-                    if (answer != options.Length - 1) { 
-                        object oldValue = informations[options[(byte)answer]];
-                        if (valueTypes[(byte)answer].IsValueType)
-                        {
-                            try
+                    options = GenerateOptions(ID, SQLCode.SQLControl.DatabaseInUse);
+                }
+                catch (Exception e)
+                {
+                    Support.ErrorHandling(e, $"Encounted an error: {e.Message}");
+                }
+                if (options != null) { 
+                    Dictionary<string, object> informations = WareInformation.GetWareInformation(ID, out List<Type> valueTypes);
+                    byte? answer;
+                    do
+                    {
+                        answer = Visual.MenuRun(options, "Select entry to modify"); 
+                        if (answer != options.Length - 1) { 
+                            object oldValue = informations[options[(byte)answer]];
+                            if (valueTypes[(byte)answer].IsValueType)
                             {
-                                object newValue = CollectValue(valueTypes[(byte)answer], oldValue);
-                                Publisher.PubWare.AlterWare(ID, newValue, options[(byte)answer]);
+                                try
+                                {
+                                    object newValue = CollectValue(valueTypes[(byte)answer], oldValue);
+                                    Publisher.PubWare.AlterWare(ID, newValue, options[(byte)answer]);
+                                }
+                                catch (Exception e)
+                                {
+                                    ErrorHandling(e);
+                                }
                             }
-                            catch (Exception e)
-                            {
-                                ErrorHandling(e);
+                            else
+                            { //string and arrays goes here. Most likely also lists and such
+                                if(valueTypes[(byte)answer].FullName == "System.String") {
+                                    FillOutString(options, answer, oldValue);
+                                }
+                                else if (valueTypes[(byte)answer].BaseType.Name == "Array")
+                                {
+                                    FillOutArray(options, answer, valueTypes, oldValue);
+                                }
                             }
                         }
-                        else
-                        { //string and arrays goes here. Most likely also lists and such
-                            if(valueTypes[(byte)answer].FullName == "System.String") {
-                                FillOutString(options, answer, oldValue);
-                            }
-                            else if (valueTypes[(byte)answer].BaseType.Name == "Array")
-                            {
-                                FillOutArray(options, answer, valueTypes, oldValue);
-                            }
-                        }
-                    }
-                } while (answer != options.Length - 1);
+                    } while (answer != options.Length - 1);
+                }
 
             }
             else //SQL
             { //get the type of the ID, find the attributes of that ID
                 string[] options = GenerateOptions(ID, SQLCode.SQLControl.DatabaseInUse); 
                 string[] columns = new string[options.Length - 1];
-                string[] allColumns;
-                string[] allColumnTypes;
-                allColumns = SQLCode.StoredProcedures.GetColumnNamesAndTypesSP(out allColumnTypes);
-
-                for (int i = 0; i < columns.Length; i++)
-                    columns[i] = options[i];
-                List<string> values = SQLCode.SQLControl.GetValuesSingleWare(columns, $"'{ID}'"); //SQLCode.StoredProcedures.GetInformationFromOneWareSP($"'{ID}'"); //wont work, will have data that is not needed and no proper way to know which 
-                byte? answer;
-                do
+                string[] allColumns = null;
+                string[] allColumnTypes = null;
+                try { 
+                    allColumns = SQLCode.StoredProcedures.GetColumnNamesAndTypesSP(out allColumnTypes);
+                }
+                catch (Exception e)
                 {
-                    answer = Visual.MenuRun(options, "Select entry to modify");
-                    if(answer != options.Length - 1) { 
-                        string oldValue = values[(byte)answer] != "" ? values[(byte)answer] : "Null";
-                        Console.Clear();
-                        Console.WriteLine($"Old Value was {oldValue}. Enter new Value: ");
-                        string newValue = Console.ReadLine(); //SQL does not seem like it has arrays as a datatype
-                        //need to figure out what the datatype is, since NVARCHARs needs ' around their values. 
-                        for(int i = 0; i < allColumns.Length; i++)
-                        {
-                            if (allColumns[i] == options[(byte)answer])
-                                if (allColumnTypes[i] == "nvarchar") 
-                                { 
-                                    newValue = $"'{newValue}'";
-                                    break;
-                                }
+                    Support.ErrorHandling(e, $"Could not retrive column names and types: {e.Message}");
+                }
+                if(allColumns != null && allColumnTypes != null) 
+                { 
+                    for (int i = 0; i < columns.Length; i++)
+                        columns[i] = options[i];
+                    List<string> values = SQLCode.SQLControl.GetValuesSingleWare(columns, $"'{ID}'");
+                    byte? answer;
+                    do
+                    {
+                        answer = Visual.MenuRun(options, "Select entry to modify");
+                        if(answer != options.Length - 1) { 
+                            string oldValue = values[(byte)answer] != "" ? values[(byte)answer] : "Null";
+                            Console.Clear();
+                            Console.WriteLine($"Old Value was {oldValue}. Enter new Value: ");
+                            string newValue = Console.ReadLine(); //SQL does not seem like it has arrays as a datatype
+                            for(int i = 0; i < allColumns.Length; i++)
+                            {
+                                if (allColumns[i] == options[(byte)answer])
+                                    if (allColumnTypes[i] == "nvarchar") 
+                                    { 
+                                        newValue = $"'{newValue}'";
+                                        break;
+                                    }
+                            }
+                            try { 
+                            SQLCode.SQLControl.ModifyWare("Inventory", new string[] { options[(byte)answer] }, new string[] { newValue }, $"id = '{ID}'");
+                            }
+                            catch (Exception e)
+                            {
+                                Reporter.Report(e);
+                                Console.Clear();
+                                Console.WriteLine($"Could not create the ware: {e.Message}");
+                                Support.WaitOnKeyInput();
+                            }
+
                         }
-                        SQLCode.SQLControl.ModifyWare("Inventory", new string[] { options[(byte)answer] }, new string[] { newValue }, $"id = '{ID}'");
-                    }
-                } while (answer != options.Length - 1);
+                    } while (answer != options.Length - 1);
+                }
             }
 
             void ErrorHandling(Exception e)
@@ -140,7 +174,15 @@ namespace StorageSystemCore
                 Console.Clear();
                 Console.WriteLine($"Old Value was {oldValue ?? "Null"}. Enter new Value: ");
                 string newValue = Console.ReadLine();
-                Publisher.PubWare.AlterWare(ID, newValue, options[(byte)answer]);
+                try 
+                { 
+                    Publisher.PubWare.AlterWare(ID, newValue, options[(byte)answer]);
+                }
+                catch(Exception e)
+                {
+                    Support.ErrorHandling(e, $"Encountered an error: {e.Message}");
+                }
+
             }
 
             void FillOutArray(string[] options, byte? answer, List<Type> valueTypes, object oldValue)
@@ -177,7 +219,14 @@ namespace StorageSystemCore
                     }
                 } while (valueAnswer != addValueOptions.Length - 1);
                 object[] objectArray = objectList.ToArray();
-                Publisher.PubWare.AlterWare(ID, objectArray, options[(byte)answer]);
+                try
+                {
+                    Publisher.PubWare.AlterWare(ID, objectArray, options[(byte)answer]);
+                }
+                catch (Exception e)
+                {
+                    Support.ErrorHandling(e, $"Encountered an erorr: {e.Message}");
+                }
             }
         }
 
@@ -195,7 +244,16 @@ namespace StorageSystemCore
             Type type;
             byte n = databseInUse ? (byte)1 : (byte)0;
             if (databseInUse)
-                type = Type.GetType("StorageSystemCore."+ Support.RemoveSpace(SQLCode.StoredProcedures.GetTypeSP($"'{ID}'")[0]));
+            {
+                try
+                {
+                    type = Type.GetType("StorageSystemCore." + Support.RemoveSpace(SQLCode.StoredProcedures.GetTypeSP($"'{ID}'")[0]));
+                } 
+                catch (NullReferenceException e)
+                {
+                    throw e;
+                }
+            }
             else
                 type = Publisher.PubWare.GetTypeFromWare(ID); 
             List<string[]> attributes = WareInformation.FindSearchableAttributes(type);

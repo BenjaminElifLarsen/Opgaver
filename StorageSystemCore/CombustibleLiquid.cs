@@ -20,11 +20,11 @@ namespace StorageSystemCore
         protected float[] flashPoint;
 
         /// <summary>
-        /// Most basic constructor, derived from Ware. Category, boilingPoint and flashPoint need to be given after.
+        /// Most basic constructor, derived from Ware. Category, boilingPoint, information, and flashPoint need to be given after.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="id"></param>
-        /// <param name="amount"></param>
+        /// <param name="name">The name of the ware.</param>
+        /// <param name="id">The ID of the ware.</param>
+        /// <param name="amount">The amount of the ware.</param>
         /// <param name="warePublisher"></param>
         public CombustibleLiquid(string name, string id, int amount, WarePublisher warePublisher) : base(name, id, amount, warePublisher)
         {
@@ -33,6 +33,14 @@ namespace StorageSystemCore
             flashPoint = null;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name">The name of the ware.</param>
+        /// <param name="id">The ID of the ware.</param>
+        /// <param name="amount">The amount of the ware.</param>
+        /// <param name="information">Information about the ware.</param>
+        /// <param name="warePublisher"></param>
         public CombustibleLiquid(string name, string id, int amount, string information, WarePublisher warePublisher) : base(name, id, amount, information, warePublisher)
         {
             category = null;
@@ -43,11 +51,11 @@ namespace StorageSystemCore
         /// <summary>
         /// Basic liquid constructor, derived from Liquid. Category and flashPoints need to be given after. 
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="id"></param>
-        /// <param name="amount"></param>
-        /// <param name="minTemp"></param>
-        /// <param name="boilingPoint"></param>
+        /// <param name="name">The name of the ware.</param>
+        /// <param name="id">The ID of the ware.</param>
+        /// <param name="amount">The amount of the ware.</param>
+        /// <param name="minTemp">The minimum temperature of the ware.</param>
+        /// <param name="boilingPoint">The maximum temperature of the ware.</param>
         /// <param name="warePublisher"></param>
         public CombustibleLiquid(string name, string id, int amount, double minTemp, float boilingPoint, WarePublisher warePublisher) : base(name, id, amount, minTemp, boilingPoint, warePublisher)
         {
@@ -55,6 +63,16 @@ namespace StorageSystemCore
             flashPoint = null;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name">The name of the ware.</param>
+        /// <param name="id">The ID of the ware.</param>
+        /// <param name="amount">The amount of the ware.</param>
+        /// <param name="information">Information about the ware.</param>
+        /// <param name="minTemp">The minimum temperature of the ware.</param>
+        /// <param name="boilingPoint">The maximum temperature of the ware.</param>
+        /// <param name="warePublisher"></param>
         public CombustibleLiquid(string name, string id, int amount, string information, double minTemp, float boilingPoint, WarePublisher warePublisher) : base(name, id, amount, information, minTemp, boilingPoint, warePublisher)
         {
             category = null;
@@ -64,13 +82,13 @@ namespace StorageSystemCore
         /// <summary>
         /// Constructor for a combustible liquid. No properties need to be set after the constructor call.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="id"></param>
-        /// <param name="amount"></param>
-        /// <param name="minTemp"></param>
-        /// <param name="category"></param>
-        /// <param name="boilingPoint"></param>
-        /// <param name="flashPoint"></param>
+        /// <param name="name">The name of the ware.</param>
+        /// <param name="id">The ID of the ware.</param>
+        /// <param name="amount">The amount of the ware.</param>
+        /// <param name="minTemp">The minimum temperature of the ware.</param>
+        /// <param name="boilingPoint">The maximum temperature of the ware.</param>
+        /// <param name="category">The danger category of the ware.</param>
+        /// <param name="flashPoint">The flashpoint of the ware.</param>
         /// <param name="warePublisher"></param>
         public CombustibleLiquid(string name, string id, int amount, double minTemp, byte category, float boilingPoint, float[] flashPoint, WarePublisher warePublisher) : base(name, id, amount, minTemp, boilingPoint, warePublisher)
         {
@@ -78,6 +96,18 @@ namespace StorageSystemCore
             this.flashPoint = flashPoint;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name">The name of the ware.</param>
+        /// <param name="id">The ID of the ware.</param>
+        /// <param name="amount">The amount of the ware.</param>
+        /// <param name="information">Information about the ware.</param>
+        /// <param name="minTemp">The minimum temperature of the ware.</param>
+        /// <param name="boilingPoint">The maximum temperature of the ware.</param>
+        /// <param name="category">The danger category of the ware.</param>
+        /// <param name="flashPoint">The flashpoint of the ware.</param>
+        /// <param name="warePublisher"></param>
         public CombustibleLiquid(string name, string id, int amount, string information, double minTemp, byte category, float boilingPoint, float[] flashPoint, WarePublisher warePublisher) : base(name, id, amount, information, minTemp, boilingPoint, warePublisher)
         {
             this.category = category;

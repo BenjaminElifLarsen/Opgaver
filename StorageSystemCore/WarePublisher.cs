@@ -136,19 +136,40 @@ namespace StorageSystemCore
 
         public void AlterWare(string ID, object newValue, string propertyName)
         {
-            OnAlterWare(new ControlEvents.AlterValueEventArgs(ID, newValue, propertyName));
+            try
+            {
+                OnAlterWare(new ControlEvents.AlterValueEventArgs(ID, newValue, propertyName));
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         public void AlterWare(string ID, object[] newValues, string propertyName)
         {
+            try 
+            { 
             OnAlterWare(new ControlEvents.AlterValueEventArgs(ID, newValues, propertyName));
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         protected void OnAlterWare(ControlEvents.AlterValueEventArgs e)
         {
-            alterWareEventHandler eventHandler = RaiseAlterWareEvent;
-            if (eventHandler != null)
-                eventHandler.Invoke(this, e);
+            try
+            {
+                alterWareEventHandler eventHandler = RaiseAlterWareEvent;
+                if (eventHandler != null)
+                    eventHandler.Invoke(this, e);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
     }

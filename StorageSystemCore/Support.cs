@@ -200,7 +200,7 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static dynamic GetDefaultValueFromValueType(string type) //the unit testing indicates this is a fairly slow function. Around 46 ms for 4 calls
+        public static dynamic GetDefaultValueFromValueType(string type) //the unit testing indicates this is a fairly slow function. Around 62 ms for 4 calls
         {
             Type typeCheck = Type.GetType("System." + type);
             if (typeCheck.IsValueType == false)
@@ -208,36 +208,20 @@ namespace StorageSystemCore
             if (Nullable.GetUnderlyingType(Type.GetType("System."+type)) != null)
                 return null;
 
-
-            switch (type.ToLower())
+            return (type.ToLower()) switch
             {
-                case "int32": 
-                    return default(Int32);
-
-                case "byte":
-                    return default(Byte);
-
-                case "int16":
-                    return default(Int16);
-
-                case "int64":
-                    return default(Int64);
-
-                case "uint32":
-                    return default(UInt32);
-
-                case "sbyte":
-                    return default(SByte);
-
-                case "uint16":
-                    return default(UInt16);
-
-                case "uint64":
-                    return default(UInt64);
-
-                default:
-                    return null;
-            }
+                "double" => default(Double),
+                "single" => default(Single),
+                "int32" => default(Int32),
+                "byte" => default(Byte),
+                "int16" => default(Int16),
+                "int64" => default(Int64),
+                "uint32" => default(UInt32),
+                "sbyte" => default(SByte),
+                "uint16" => default(UInt16),
+                "uint64" => default(UInt64),
+                _ => null,
+            };
         }
 
         /// <summary>
@@ -314,6 +298,13 @@ namespace StorageSystemCore
             }
         }
 
+        public static void ErrorHandling(Exception e, string message)
+        {
+            Reporter.Report(e);
+            Console.Clear();
+            Console.WriteLine(message);
+            WaitOnKeyInput();
+        }
     }
 
 }

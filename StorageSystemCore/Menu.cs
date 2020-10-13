@@ -179,11 +179,18 @@ namespace StorageSystemCore
                 Visual.WareDisplay(WareInformation.GetWareInformation());
             else
             { //testing purposes, have a minor functon for this, since data generation is not really a menu thing. 
-                List<List<string>> information = SQLCode.SQLControl.GetValuesAllWare(new string[] { "name", "id", "amount", "type" });
-                List<string[]> informationReady = new List<string[]>();
-                foreach (List<string> arrayData in information)
-                    informationReady.Add(arrayData.ToArray());
-                Visual.WareDisplay(informationReady);
+                try 
+                { 
+                    List<List<string>> information = SQLCode.SQLControl.GetValuesAllWare(new string[] { "name", "id", "amount", "type" });
+                    List<string[]> informationReady = new List<string[]>();
+                    foreach (List<string> arrayData in information)
+                        informationReady.Add(arrayData.ToArray());
+                    Visual.WareDisplay(informationReady);
+                }
+                catch (Exception e)
+                {
+                    Support.ErrorHandling(e, $"Could not collect data: {e.Message}");
+                }
             }
             Support.WaitOnKeyInput();
         }
@@ -217,8 +224,15 @@ namespace StorageSystemCore
                 }
                 else
                 {
-                    List<List<string>> wareValues = SQLCode.SQLControl.GetValuesAllWare(selectedAttributes.ToArray()); 
-                    Visual.WareDisplay(selectedAttributes.ToArray(), wareValues);
+                    try 
+                    { 
+                        List<List<string>> wareValues = SQLCode.SQLControl.GetValuesAllWare(selectedAttributes.ToArray()); 
+                        Visual.WareDisplay(selectedAttributes.ToArray(), wareValues);
+                    }
+                    catch (Exception e)
+                    {
+                        Support.ErrorHandling(e, $"Encountered an error: {e.Message}");
+                    }
                 }
             }
         }
@@ -252,7 +266,7 @@ namespace StorageSystemCore
                             }
                             catch (Exception e)
                             {
-                                Reporter.Report(e);
+                                Support.ErrorHandling(e, $"Encounted an error: {e.Message}");
                                 run = true;
                             }
                         }
@@ -264,7 +278,7 @@ namespace StorageSystemCore
                             }
                             catch (Exception e)
                             {
-                                Reporter.Report(e);
+                                Support.ErrorHandling(e, $"Encounted an error: {e.Message}");
                                 run = true;
                             }
                         break;
@@ -283,8 +297,9 @@ namespace StorageSystemCore
                                 run = !SQLCode.SQLControl.InitalitionOfDatabase(sqlInfo, firstConnection, false);
                                 SQLCode.SQLControl.DatabaseInUse = true;
                             }
-                            catch
+                            catch (Exception e)
                             {
+                                Support.ErrorHandling(e, $"Encounted an error: {e.Message}");
                                 run = true;
                             }
                         }
@@ -294,8 +309,9 @@ namespace StorageSystemCore
                                 run = !SQLCode.SQLControl.CreateConnection(sqlInfo, false);
                                 SQLCode.SQLControl.DatabaseInUse = true;
                             }
-                            catch
+                            catch (Exception e)
                             {
+                                Support.ErrorHandling(e, $"Encounted an error: {e.Message}");
                                 run = true;
                             }
 

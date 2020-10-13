@@ -28,10 +28,7 @@ namespace SQLCode
                 }
                 catch (Exception e) 
                 {
-                    StorageSystemCore.Reporter.Report(e);
-                    StorageSystemCore.Reporter.Log($"Failed at running function {method.Name}: {e.Message}");
-                    Console.WriteLine($"Failed at running function {method.Name}: {e.Message}");
-                    StorageSystemCore.Support.WaitOnKeyInput();
+                    throw e;
                 }
             }
         }
@@ -295,9 +292,7 @@ namespace SQLCode
             }
             catch (Exception e)
             {
-                StorageSystemCore.Reporter.Report(e);
-                Console.WriteLine($"Could not delete: {e.Message}");
-                StorageSystemCore.Support.WaitOnKeyInput();
+                throw e;
             }
         }
 
@@ -406,10 +401,11 @@ namespace SQLCode
             }
             catch (Exception e)
             {
-                StorageSystemCore.Reporter.Report(e);
-                Console.WriteLine($"Could not retrive columns: {e.Message}");
-                StorageSystemCore.Support.WaitOnKeyInput();
-                return null;
+                //StorageSystemCore.Reporter.Report(e);
+                //Console.WriteLine($"Could not retrive columns: {e.Message}");
+                //StorageSystemCore.Support.WaitOnKeyInput();
+                //return null;
+                throw e;
             }
         }
 

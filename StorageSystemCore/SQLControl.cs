@@ -365,29 +365,36 @@ namespace SQLCode
         }
         public static List<List<string>> GetValuesAllWare(string[] sqlColumn)
         {
-            List<List<string>> information = new List<List<string>>();
-            string query = $"Use {database}; Select ";
-            for (int i = 0; i < sqlColumn.Length; i++)
-            {
-                query += sqlColumn[i];
-                if (i != sqlColumn.Length - 1)
-                    query += ", ";
-            }
-            query += $" From Inventory;";
-            SqlCommand command = new SqlCommand(query, SQLConnection);
-            SQLConnection.Open();
-            using (SqlDataReader reader = command.ExecuteReader())
-            {
-                while (reader.Read())
+            try 
+            { 
+                List<List<string>> information = new List<List<string>>();
+                string query = $"Use {database}; Select ";
+                for (int i = 0; i < sqlColumn.Length; i++)
                 {
-                    information.Add(new List<string>());
-                    int colAmount = reader.FieldCount;
-                    for (int i = 0; i < colAmount; i++)
-                        information[information.Count-1].Add(reader[i].ToString());
+                    query += sqlColumn[i];
+                    if (i != sqlColumn.Length - 1)
+                        query += ", ";
                 }
+                query += $" From Inventory;";
+                SqlCommand command = new SqlCommand(query, SQLConnection);
+                SQLConnection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        information.Add(new List<string>());
+                        int colAmount = reader.FieldCount;
+                        for (int i = 0; i < colAmount; i++)
+                            information[information.Count-1].Add(reader[i].ToString());
+                    }
+                }
+                SQLConnection.Close();
+                return information;
             }
-            SQLConnection.Close();
-            return information;
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         public static List<string> GetColumnNames(string query)
@@ -433,7 +440,6 @@ namespace SQLCode
             }
             catch (SqlException e)
             {
-                StorageSystemCore.Reporter.Report(e);
                 throw e;
             }
             finally
@@ -499,8 +505,6 @@ namespace SQLCode
             }
             catch (System.Data.SqlClient.SqlException e)
             { //log the error in the reporter
-                StorageSystemCore.Reporter.Report(e);
-                StorageSystemCore.Reporter.Log($"Failed database creation: {e.Message}");
                 throw e;
                 //return false;
             }
