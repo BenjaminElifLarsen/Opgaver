@@ -143,6 +143,16 @@ namespace SQLCode
                     "WHERE TABLE_NAME=@Table;";
         }
 
+        private static string CreateGetColumnNamesAndTypes()
+        {
+            return
+                "CREATE PROCEDURE GetColumnNamesAndTypes " +
+                    "AS " +
+                    "SELECT DATA_TYPE, COLUMN_NAME " +
+                    "FROM INFORMATION_SCHEMA.COLUMNS " +
+                    "WHERE TABLE_NAME = 'Inventory'";
+        }
+
         /// <summary>
         /// Not Working as MSSQL thinks @Column is the column name. Uses the update stored procedure to update the ware <paramref name="id"/>'s <paramref name="column"/> with the new value of <paramref name="newValue"/>.
         /// </summary>
@@ -180,7 +190,7 @@ namespace SQLCode
             catch (Exception e)
             {
                 StorageSystemCore.Reporter.Report(e);
-                Console.WriteLine($"Could not update: {e.Message}");
+                Console.WriteLine($"Could not find the type: {e.Message}");
                 StorageSystemCore.Support.WaitOnKeyInput();
                 return null;
             }
@@ -400,6 +410,20 @@ namespace SQLCode
                 Console.WriteLine($"Could not retrive columns: {e.Message}");
                 StorageSystemCore.Support.WaitOnKeyInput();
                 return null;
+            }
+        }
+
+        public static string[] GetColumnNamesAndTypesSP(out string[] types)
+        {
+            string sqlString =
+                $"EXEC GetColumnNamesAndTypes;";
+            try
+            {
+                return SQLControl.GetColumnNamesAndTypes(sqlString, out types);
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
         }
 

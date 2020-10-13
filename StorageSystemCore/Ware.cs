@@ -161,6 +161,7 @@ namespace StorageSystemCore
                                     var array = genericVersion.Invoke(this, new object[]  { e.MultieValueArray });
                                     
                                     propertyInfo.SetValue(this, array);
+                                    goto done;
                                 }
                                 else //sets a non-array property
                                 { 

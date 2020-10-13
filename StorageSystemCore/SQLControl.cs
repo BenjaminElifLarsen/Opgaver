@@ -174,7 +174,6 @@ namespace SQLCode
             }
             catch(SqlException e)
             {
-                StorageSystemCore.Reporter.Report(e);
                 sqlConnection.Close();
                 throw e;
             }
@@ -229,8 +228,7 @@ namespace SQLCode
             }
             catch (Exception e)
             {
-                StorageSystemCore.Reporter.Report(e);
-                return false;
+                throw e;
             }
         }
 
@@ -334,6 +332,8 @@ namespace SQLCode
         /// <returns></returns>
         public static List<string> GetValuesSingleWare(string[] sqlColumn, string ID)
         {
+            if (sqlColumn == null || ID == null)
+                throw new NullReferenceException();
             List<string> information = new List<string>();
             string query = $"Use {database}; Select ";
             for (int i = 0; i < sqlColumn.Length; i++)
@@ -343,19 +343,25 @@ namespace SQLCode
                     query += ", ";
             }
             query += $" From Inventory Where id = {ID};";
-            SqlCommand command = new SqlCommand(query, SQLConnection);
-            SQLConnection.Open();
-            using (SqlDataReader reader = command.ExecuteReader())
-            {
-                while (reader.Read())
+            try { 
+                SqlCommand command = new SqlCommand(query, SQLConnection);
+                SQLConnection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    int colAmount = reader.FieldCount;
-                    for (int i = 0; i < colAmount; i++)
-                        information.Add(reader[i].ToString());
+                    while (reader.Read())
+                    {
+                        int colAmount = reader.FieldCount;
+                        for (int i = 0; i < colAmount; i++)
+                            information.Add(reader[i].ToString());
+                    }
                 }
+                SQLConnection.Close();
+                return information;
             }
-            SQLConnection.Close();
-            return information;
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
         public static List<List<string>> GetValuesAllWare(string[] sqlColumn)
         {
@@ -423,13 +429,46 @@ namespace SQLCode
                             information.Add(reader[i].ToString());
                     }
                 }
-                sqlConnection.Close();
                 return information;
             }
             catch (SqlException e)
             {
                 StorageSystemCore.Reporter.Report(e);
                 throw e;
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+
+        }
+
+        public static string[] GetColumnNamesAndTypes(string query, out string[] types)
+        {
+            try
+            {
+                List<string> columnsList = new List<string>();
+                List<string> typesList = new List<string>();
+                sqlConnection.Open();
+                SqlCommand command = new SqlCommand(query, SQLConnection);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        columnsList.Add(reader[1].ToString());
+                        typesList.Add(reader[0].ToString());
+                    }
+                }
+                types = typesList.ToArray();
+                return columnsList.ToArray();
+            }
+            catch (SqlException e)
+            {
+                throw e;
+            }
+            finally
+            {
+                sqlConnection.Close();
             }
         }
 

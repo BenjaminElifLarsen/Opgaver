@@ -207,8 +207,8 @@ namespace StorageSystemCore
                 parameterType = parameters[parameterNames[i]];
                 if (parameterType.IsValueType)
                 {
-                    Type wareCreatorType = typeof(WareCreator);
-                    MethodInfo foundMethod = wareCreatorType.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static);
+                    Type support = typeof(Support);
+                    MethodInfo foundMethod = support.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static);
                     MethodInfo genericVersion = foundMethod.MakeGenericMethod(parameterType);
                     try 
                     { 
@@ -255,8 +255,8 @@ namespace StorageSystemCore
                         {
                             if (keyValuePairs[info.SQLName].IsValueType) 
                             { 
-                                Type wareCreatorType = typeof(WareCreator);
-                                MethodInfo foundMethod = wareCreatorType.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static);
+                                Type support = typeof(Support);
+                                MethodInfo foundMethod = support.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static);
                                 MethodInfo genericVersion = foundMethod.MakeGenericMethod(keyValuePairs[info.SQLName]);
                                 try { 
                                     nameAndValues.Add(info.SQLName, genericVersion.Invoke(null, new object[] { info.Name }));
@@ -284,43 +284,6 @@ namespace StorageSystemCore
             return nameAndValues;
         }
 
-        /// <summary>
-        /// Generic method to convert a string to a value type. Conversion for nullables does not work if the string contains a non-null value, rather the underlying type is returned. 
-        /// </summary>
-        /// <param name="primaryParameters"></param>
-        /// <param name="secundaryParameters"></param>
-        /// <returns></returns>
-        private static t EnterExtraInformation<t>(string information) 
-        {
-            Console.Clear();
-            Console.WriteLine("Please Enter {0}",information);
-            string value = Console.ReadLine();
-            try
-            {
-                return (t)Convert.ChangeType(value, typeof(t)); 
-            }
-            catch
-            {
-                if (Nullable.GetUnderlyingType(typeof(t)) != null)
-                {
-                    try
-                    {
-                        return (t)Convert.ChangeType(value, Nullable.GetUnderlyingType(typeof(t)));
-                    }
-                    catch
-                    {
-                        throw new InvalidCastException();
-                    }
-                }
-                else if (typeof(t).Name.Contains("[]"))
-                {
-                    Type actualType = Type.GetType(typeof(t).FullName.Remove(typeof(t).FullName.Length - 2, 2));
-                    return (t)Convert.ChangeType(value, actualType);
-                }
-                else //cannot call this method from here, since it is called using reflection
-                    throw new InvalidCastException();
-            }
-        }
 
         /// <summary>
         /// Asks if the user wants to input more information or not. Returns true if they want too.

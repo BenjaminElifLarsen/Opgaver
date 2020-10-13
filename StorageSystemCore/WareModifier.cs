@@ -59,7 +59,7 @@ namespace StorageSystemCore
             //Type type; 
             if (!SQLCode.SQLControl.DatabaseInUse)
             {
-                string[] options = GenerateOptions(ID);
+                string[] options = GenerateOptions(ID, SQLCode.SQLControl.DatabaseInUse);
                 Dictionary<string, object> informations = WareInformation.GetWareInformation(ID, out List<Type> valueTypes);
                 byte? answer;
                 do
@@ -95,7 +95,37 @@ namespace StorageSystemCore
             }
             else //SQL
             { //get the type of the ID, find the attributes of that ID
+                string[] options = GenerateOptions(ID, SQLCode.SQLControl.DatabaseInUse); 
+                string[] columns = new string[options.Length - 1];
+                string[] allColumns;
+                string[] allColumnTypes;
+                allColumns = SQLCode.StoredProcedures.GetColumnNamesAndTypesSP(out allColumnTypes);
 
+                for (int i = 0; i < columns.Length; i++)
+                    columns[i] = options[i];
+                List<string> values = SQLCode.SQLControl.GetValuesSingleWare(columns, $"'{ID}'"); //SQLCode.StoredProcedures.GetInformationFromOneWareSP($"'{ID}'"); //wont work, will have data that is not needed and no proper way to know which 
+                byte? answer;
+                do
+                {
+                    answer = Visual.MenuRun(options, "Select entry to modify");
+                    if(answer != options.Length - 1) { 
+                        string oldValue = values[(byte)answer] != "" ? values[(byte)answer] : "Null";
+                        Console.Clear();
+                        Console.WriteLine($"Old Value was {oldValue}. Enter new Value: ");
+                        string newValue = Console.ReadLine(); //SQL does not seem like it has arrays as a datatype
+                        //need to figure out what the datatype is, since NVARCHARs needs ' around their values. 
+                        for(int i = 0; i < allColumns.Length; i++)
+                        {
+                            if (allColumns[i] == options[(byte)answer])
+                                if (allColumnTypes[i] == "nvarchar") 
+                                { 
+                                    newValue = $"'{newValue}'";
+                                    break;
+                                }
+                        }
+                        SQLCode.SQLControl.ModifyWare("Inventory", new string[] { options[(byte)answer] }, new string[] { newValue }, $"id = '{ID}'");
+                    }
+                } while (answer != options.Length - 1);
             }
 
             void ErrorHandling(Exception e)
@@ -160,21 +190,26 @@ namespace StorageSystemCore
             WareInformation.RemoveWare(ID);
         }
 
-        private static string[] GenerateOptions(string ID)
+        private static string[] GenerateOptions(string ID, bool databseInUse)
         {
-            Type type = Publisher.PubWare.GetTypeFromWare(ID); 
+            Type type;
+            byte n = databseInUse ? (byte)1 : (byte)0;
+            if (databseInUse)
+                type = Type.GetType("StorageSystemCore."+ Support.RemoveSpace(SQLCode.StoredProcedures.GetTypeSP($"'{ID}'")[0]));
+            else
+                type = Publisher.PubWare.GetTypeFromWare(ID); 
             List<string[]> attributes = WareInformation.FindSearchableAttributes(type);
             string[] options = new string[attributes.Count + 1]; 
             for (int i = 0; i < options.Length - 1; i++) 
-                options[i] = attributes[i][0];
+                options[i] = attributes[i][n];
             options[options.Length - 1] = "Exit";
             return options;
         }
 
         private static object CollectValue(Type type, object oldValue)
         {
-            Type wareCreatorType = typeof(WareCreator); //basically the same as the one in WareCreator
-            MethodInfo foundMethod = wareCreatorType.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static);
+            Type support = typeof(Support); //basically the same as the one in WareCreator
+            MethodInfo foundMethod = support.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static);
             MethodInfo genericVersion = foundMethod.MakeGenericMethod(type); 
             try
             {

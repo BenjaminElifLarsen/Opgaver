@@ -285,6 +285,8 @@ namespace StorageSystemCore
         /// <returns>Returns a list<string[]>. Each array is a property where the index 0 is the name and index 1 is the sql name</returns>
         public static List<string[]> FindSearchableAttributes(Type type)
         {
+            if (type == null)
+                throw new NullReferenceException();
             List<string[]> properties = new List<string[]>();
             PropertyInfo[] propertyInfos = type.GetProperties();
             foreach (PropertyInfo propertyInfo in propertyInfos)

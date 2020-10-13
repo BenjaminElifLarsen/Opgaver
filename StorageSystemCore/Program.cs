@@ -16,7 +16,7 @@ namespace StorageSystemCore
     //Det skal være muligt at se en liste over varer i databasen
     //Det er ikke nødvendigt at gemme i filer eller databaser
 
-    class Program 
+    class Program //multiple of the functions that returns a list should return an array instead.
     {
         static void Main(string[] args) 
         {
