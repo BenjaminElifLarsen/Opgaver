@@ -275,8 +275,15 @@ namespace StorageSystemCore
                                 }
                             }
                         } while (valueAnswer != addValueOptions.Length - 1);
-                        object[] objectArray = objectList.ToArray();
-                        parameterValues[i] = objectArray;
+                        if(objectList.Count > 0) { 
+                            object[] objectArray = objectList.ToArray();
+                            Type conversionType = objectArray[0].GetType();
+                            MethodInfo foundMethod = GetType().GetMethod("ArrayConversion", BindingFlags.Instance | BindingFlags.NonPublic);
+                            MethodInfo genericVersion = foundMethod.MakeGenericMethod(Type.GetType(parameterType.FullName.Remove(parameterType.FullName.Length - 2)));
+                            parameterValues[i] = genericVersion.Invoke(this,new object[] {objectArray });
+                        }
+                        else
+                            parameterValues[i] = null;
                     }
                 } 
 
@@ -537,6 +544,23 @@ namespace StorageSystemCore
 
             warePublisher.RaiseCreateWareEvent -= CreateWareEventHandler;
             warePublisher.RaiseRemoveWareCreatorEvent -= RemoveFromSubscriptionEventHandler;
+        }
+
+        /// <summary>
+        /// Converts an object[] <paramref name="arrayToConvert"/> to the datatype <typeparamref name="T"/>.
+        /// Given how the method is written it is needed be called via reflection as a generic method
+        /// </summary>
+        /// <typeparam name="T">The type that should be converted to</typeparam>
+        /// <param name="arrayToConvert">The array to convert</param>
+        /// <returns>Returns a converted version of <paramref name="arrayToConvert"/>.</returns>
+        private T[] ArrayConversion<T>(object[] arrayToConvert)
+        {
+            T[] convertedArray = new T[arrayToConvert.Length];
+            for (int i = 0; i < convertedArray.Length; i++)
+            {
+                convertedArray[i] = (T)Convert.ChangeType(arrayToConvert[i], typeof(T));
+            }
+            return convertedArray;
         }
 
     }

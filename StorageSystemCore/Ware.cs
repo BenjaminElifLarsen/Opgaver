@@ -209,7 +209,7 @@ namespace StorageSystemCore
             T[] convertedArray = new T[arrayToConvert.Length];
             for (int i = 0; i < convertedArray.Length; i++)
             {
-                convertedArray[i] = (T)Convert.ChangeType(arrayToConvert[0], typeof(T));
+                convertedArray[i] = (T)Convert.ChangeType(arrayToConvert[i], typeof(T));
             }
             return convertedArray;
         }
