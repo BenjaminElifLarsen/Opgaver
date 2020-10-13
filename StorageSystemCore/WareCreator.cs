@@ -106,18 +106,21 @@ namespace StorageSystemCore
                             else
                                 WareInformation.AddWare(name, ID, type, (int)amount);
                     }
-                    //only if not using a database
-                    object[] filledOutParameters = null;
-                    type = Support.RemoveSpace(type);
-                    if (ConstructorsExist(Type.GetType("StorageSystemCore." + type))) //Does multiple constructor exist?
-                        if (ExtraConstructorMenu())  //asks if the user wants to input more information
-                        {
-                            string[] extraParameters = CreateSelectableConstructorList(Type.GetType("StorageSystemCore." + type));
-                            byte selectedCtor = SelectConstructor(extraParameters);
-                            filledOutParameters = ArquiringInformation(Type.GetType("StorageSystemCore." + type), selectedCtor);
+                    else 
+                    {
+                        //only if not using a database
+                        object[] filledOutParameters = null;
+                        type = Support.RemoveSpace(type);
+                        if (ConstructorsExist(Type.GetType("StorageSystemCore." + type))) //Does multiple constructor exist?
+                            if (ExtraConstructorMenu())  //asks if the user wants to input more information
+                            {
+                                string[] extraParameters = CreateSelectableConstructorList(Type.GetType("StorageSystemCore." + type));
+                                byte selectedCtor = SelectConstructor(extraParameters);
+                                filledOutParameters = ArquiringInformation(Type.GetType("StorageSystemCore." + type), selectedCtor);
 
-                        }
-                    WareInformation.AddWare(name, ID, type, (int)amount, filledOutParameters);
+                            }
+                        WareInformation.AddWare(name, ID, type, (int)amount, filledOutParameters);
+                    }
                 }
             }
             else //informs the user of missing values. 
@@ -194,10 +197,10 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="type">The type of the ware whichs constructor(s)s should be found</param>
         /// <param name="number">The index of the selected constructor.</param>
-        /// <returns></returns>
+        /// <returns>Returns an object array containing all the extra information that is needed for a specific constructor</returns>
         private object[] ArquiringInformation(Type type, byte number)
         {
-            Dictionary<string, Type> parameters = WareInformation.GetConstructorParameterNamesAndTypes(type,null)[number]; //consider replacing number and type with Dictionary<string, Type> and let the caller pass WareInformation.GetConstructorParameterNamesAndTypes(type,null)[number] as an arugument 
+            Dictionary<string, Type> parameters = WareInformation.GetConstructorParameterNamesAndTypes(type)[number]; //consider replacing number and type with Dictionary<string, Type> and let the caller pass WareInformation.GetConstructorParameterNamesAndTypes(type,null)[number] as an arugument 
             object[] parameterValues = new object[parameters.Count];
             string[] parameterNames = parameters.Keys.ToArray();
             Type parameterType;
@@ -218,7 +221,7 @@ namespace StorageSystemCore
                     {
                         Reporter.Report(e);
                         Console.Clear();
-                        Console.WriteLine("Could not convert. Value set to 0: " + e.InnerException.Message);
+                        Console.WriteLine($"Could not convert. Value set to 0. Value can be modified using the Modify menu: {Environment.NewLine}" + e.InnerException.Message);
                         parameterValues[i] = 0; //figure out a good way to reenter value
                         Support.WaitOnKeyInput();
                     }
@@ -245,8 +248,7 @@ namespace StorageSystemCore
                                 { //non-string
                                     try
                                     {
-                                        //objectList.Add(CollectValue(Type.GetType(valueTypes[(byte)answer].FullName.Remove(valueTypes[(byte)answer].FullName.Length - 2, 2)), oldValue)); //code inside of Type.GetType(...) converts an array type to a non-array type
-                                        Type support = typeof(Support); //basically the same as the one in WareCreator
+                                        Type support = typeof(Support); 
                                         MethodInfo foundMethod = support.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static);
                                         MethodInfo genericVersion = foundMethod.MakeGenericMethod(Type.GetType(parameterType.FullName.Remove(parameterType.FullName.Length - 2)));
                                         try
@@ -255,18 +257,21 @@ namespace StorageSystemCore
                                         }
                                         catch (Exception e)
                                         {
-                                            throw e;
+                                            Reporter.Report(e);
+                                            Console.Clear();
+                                            Console.WriteLine("Could not convert. Please reenter: " + e.InnerException.Message);
+                                            Support.WaitOnKeyInput();
                                         }
                                     }
                                     catch (Exception e)
                                     {
-                                        
+                                        Reporter.Report(e);
+                                        Console.Clear();
+                                        Console.WriteLine("Could not convert." + e.Message);
+                                        Support.WaitOnKeyInput();
+
                                     }
                                 }
-                                //else if (valueTypes[(byte)answer].Name.Contains("Char")) //might not be needed
-                                //{ //char
-
-                                //}
                                 else
                                 { //string
                                     Console.Clear();
@@ -277,7 +282,6 @@ namespace StorageSystemCore
                         } while (valueAnswer != addValueOptions.Length - 1);
                         if(objectList.Count > 0) { 
                             object[] objectArray = objectList.ToArray();
-                            Type conversionType = objectArray[0].GetType();
                             MethodInfo foundMethod = GetType().GetMethod("ArrayConversion", BindingFlags.Instance | BindingFlags.NonPublic);
                             MethodInfo genericVersion = foundMethod.MakeGenericMethod(Type.GetType(parameterType.FullName.Remove(parameterType.FullName.Length - 2)));
                             parameterValues[i] = genericVersion.Invoke(this,new object[] {objectArray });
@@ -295,9 +299,9 @@ namespace StorageSystemCore
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="sqlColumns"></param>
-        /// <param name="keyValuePairs"></param>
+        /// <param name="type">The type of the ware.</param>
+        /// <param name="sqlColumns">The sql columns to arquier data for.</param>
+        /// <param name="keyValuePairs"><paramref name="sqlColumns"/> with their datatype. </param>
         private Dictionary<string,object> ArquiringInformation(Type type, List<string> sqlColumns, Dictionary<string,Type> keyValuePairs)
         {
             Support.ActiveCursor();
@@ -393,10 +397,10 @@ namespace StorageSystemCore
         /// <summary>
         /// Checks if any of the parameters are null. Returns true if information is missing, else false.
         /// If any inforamtion is missing returns a combined binary value, <paramref name="missingValue"/>, that indicates which values are missing:
-        /// 0000_0001 = <paramref name="id"/>,
-        /// 0000_0010 = <paramref name="name"/>,
-        /// 0000_0100 = <paramref name="type"/>,
-        /// 0000_1000 = <paramref name="amount"/>. 
+        /// 0000_0001 = <paramref name="id"/> (1),
+        /// 0000_0010 = <paramref name="name"/> (2),
+        /// 0000_0100 = <paramref name="type"/> (4),
+        /// 0000_1000 = <paramref name="amount"/> (8). 
         /// </summary>
         /// <param name="id">ID to check</param>
         /// <param name="name">Name to check</param>

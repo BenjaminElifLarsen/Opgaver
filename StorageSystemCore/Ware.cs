@@ -136,7 +136,7 @@ namespace StorageSystemCore
 
         protected void GetTypeEventHandler(object sender, ControlEvents.GetTypeEventArgs e)
         {
-            e.Add(id, this.GetType());
+            e.Add(id, GetType());
         }
 
         protected void AlterWareEventHandler(object sender, ControlEvents.AlterValueEventArgs e)

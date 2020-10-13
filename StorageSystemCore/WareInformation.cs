@@ -322,9 +322,8 @@ namespace StorageSystemCore
         /// Gets all extra constructors of <paramref name="type"/>.
         /// </summary>
         /// <param name="type"></param>
-        /// <param name="extraParameters"></param>
         /// <returns></returns>
-        public static List<Dictionary<string,Type>> GetConstructorParameterNamesAndTypes(Type type, string[] extraParameters)
+        public static List<Dictionary<string,Type>> GetConstructorParameterNamesAndTypes(Type type)
         {
             List<Dictionary<string,Type>> constructors = new List<Dictionary<string, Type>>();
             ConstructorInfo[] constructorInfos = type.GetConstructors();

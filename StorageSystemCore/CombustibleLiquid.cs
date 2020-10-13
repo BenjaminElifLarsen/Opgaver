@@ -88,7 +88,16 @@ namespace StorageSystemCore
         /// <summary>
         /// Gets the category of the liquid. Null indicates the category has not been set.
         /// </summary>
-        public byte? Category { get => category; set => category = value; }
+        public byte? Category 
+        { get => category; 
+            set 
+            {
+                if (value > 4 || value < 0)
+                    category = null;
+                else
+                    category = value;
+            }
+        }
 
         [WareSeacheable("Flash Point","flashPoint")]
         /// <summary>
