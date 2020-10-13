@@ -50,7 +50,7 @@ namespace StroageSystemTest
             result = Support.GetDefaultValueFromValueType("String");
             Assert.Equal(null, result);
             result = Support.GetDefaultValueFromValueType("Single");
-            Assert.Equal(null, result);
+            Assert.Equal(0, result);
             dynamic result2 = Support.GetDefaultValueFromValueType("SByte");
             Assert.Equal(0, result2);
         }
