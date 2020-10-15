@@ -200,7 +200,7 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static dynamic GetDefaultValueFromValueType(string type) //the unit testing indicates this is a fairly slow function. Around 62 ms for 4 calls
+        public static dynamic GetDefaultValueFromValueType(string type) //the unit testing indicates this is a fairly slow function. Around 62-74 ms for 4 calls
         {
             Type typeCheck = Type.GetType("System." + type);
             if (typeCheck.IsValueType == false)

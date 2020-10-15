@@ -488,49 +488,33 @@ namespace StorageSystemCore
         }
 
         /// <summary>
-        /// Checks if <paramref name="IDToCheck"/> is valid.
+        /// Checks if <paramref name="IDToCheck"/> is valid. If any parts of <paramref name="IDToCheck"/> it will add a value to the return result using binary.
         /// </summary>
-        /// <param name="IDToCheck"></param>
-        /// <returns></returns>
+        /// <remarks>
+        /// Length invalid: 0b_0000_0001 = 1.
+        /// Number invalid: 0b_0000_0010 = 2.
+        /// Lowercase invalid: 0b_0000_0100 = 4.
+        /// Uppercase invalid: 0b_0000_1000 = 8.
+        /// Special Chars invalid: 0b_0001_0000 = 16.
+        /// Valid Chars invalid: 0b_0010_0000 = 32.
+        /// </remarks>
+        /// <param name="IDToCheck">The ID to validate.</param>
+        /// <returns>Returns a binary flag with a value indicating errors in <paramref name="IDToCheck"/>.</returns>
         private int ValidID(string IDToCheck) //it does not mater sense that this method writes out the error.
         {
             int errorFlag = 0b_0000_0000_0000_0000;
-            if (!RegexControl.IsValidLength(IDToCheck)) //0000_0000_0000_0001
-            {
-                errorFlag = errorFlag ^ 0b_0000_0000_0000_0001;
-                //Console.WriteLine("Invalid: Wrong Length, min = 6, max = 16");
-                //return false;
-            }
-            if (!RegexControl.IsValidValues(IDToCheck)) //0000_0000_0000_0010
-            {
-                errorFlag = errorFlag ^ 0b_0000_0000_0000_0010;
-                //Console.WriteLine("Invalid: No numbers.");
-                //return false;
-            }
-            if (!RegexControl.IsValidLettersLower(IDToCheck)) //0000_0000_0000_0100
-            {
-                errorFlag = errorFlag ^ 0b_0000_0000_0000_0100;
-                //Console.WriteLine("Invalid: No lowercase letters.");
-                //return false;
-            }
-            if (!RegexControl.IsValidLettersUpper(IDToCheck)) //0000_0000_0000_1000
-            {
-                errorFlag = errorFlag ^ 0b_0000_0000_0000_1000;
-                //Console.WriteLine("Invalid: No uppercase letters."); 
-                //return false;
-            }
-            if(!RegexControl.IsValidSpecial(IDToCheck)) //0000_0000_0001_0000
-            {
-                errorFlag = errorFlag ^ 0b_0000_0000_0001_0000;
-                //Console.WriteLine("Invalid: No special symbols: {0}", RegexControl.GetSpecialSigns);
-                //return false;
-            }
-            if(!RegexControl.IsValidCharsOnly(IDToCheck)) //0000_0000_0010_0000
-            {
-                errorFlag = errorFlag ^ 0b_0000_0000_0010_0000;
-                //Console.WriteLine("Invalid: Contains invalid symbols or letter.");
-                //return false;
-            }
+            if (!RegexControl.IsValidLength(IDToCheck))             
+                errorFlag ^= 0b_0000_0000_0000_0001;            
+            if (!RegexControl.IsValidValues(IDToCheck))             
+                errorFlag ^= 0b_0000_0000_0000_0010;            
+            if (!RegexControl.IsValidLettersLower(IDToCheck))             
+                errorFlag ^= 0b_0000_0000_0000_0100;            
+            if (!RegexControl.IsValidLettersUpper(IDToCheck))            
+                errorFlag ^= 0b_0000_0000_0000_1000;            
+            if(!RegexControl.IsValidSpecial(IDToCheck))             
+                errorFlag ^= 0b_0000_0000_0001_0000;          
+            if(!RegexControl.IsValidCharsOnly(IDToCheck)) 
+                errorFlag ^= 0b_0000_0000_0010_0000;
             return errorFlag;
         }
 

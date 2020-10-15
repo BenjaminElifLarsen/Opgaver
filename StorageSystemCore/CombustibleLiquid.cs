@@ -114,10 +114,12 @@ namespace StorageSystemCore
             this.flashPoint = flashPoint;
         }
 
-        [WareSeacheable("Category","dangerCategory")]
+
         /// <summary>
         /// Gets the category of the liquid. Null indicates the category has not been set.
         /// </summary>
+        /// <value></value>
+        [WareSeacheable("Category", "dangerCategory")]
         public byte? Category 
         { get => category; 
             set 
@@ -129,10 +131,12 @@ namespace StorageSystemCore
             }
         }
 
-        [WareSeacheable("Flash Point","flashPoint")]
+
         /// <summary>
         /// Gets the flash point of the liquid. Null indicates the flashpoint has not been set. 
         /// </summary>
+        /// <value></value>
+        [WareSeacheable("Flash Point", "flashPoint")]
         public float[] FlashPoint { get => flashPoint; set => flashPoint = value; }
 
 

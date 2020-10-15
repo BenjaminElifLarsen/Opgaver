@@ -65,28 +65,36 @@ namespace StorageSystemCore
             this.information = information;
         }
 
-        [WareSeacheable("Name", "name")]
+
         /// <summary>
         /// Gets the name of the ware.
         /// </summary>
+        /// <value></value>
+        [WareSeacheable("Name", "name")]
         public string Name { get => name; set => name = value; }
 
-        [WareSeacheable("Amount", "amount")]
+
         /// <summary>
         /// Gets the amount of the ware.
         /// </summary>
+        /// <value></value>
+        [WareSeacheable("Amount", "amount")]
         public int Amount { get => amount; set => amount = value; }
 
-        [WareSeacheable("Information","information")]
+
         /// <summary>
         /// Gets the ware information
         /// </summary>
+        /// <value>Test</value>
+        [WareSeacheable("Information", "information")]
         public string Information { get => information; set => information = value; }
 
-        [WareSeacheable("ID","id"), ValueUniqueness(true)]
+
         /// <summary>
         /// Gets the ID of the ware.
         /// </summary>
+        /// <value></value>
+        [WareSeacheable("ID", "id"), ValueUniqueness(true)]
         public string ID { get => id; set => id = value; }
 
         /// <summary>
