@@ -145,13 +145,13 @@ namespace StorageSystemCore
         {
             int value;
             string valueString;
-            VisualDisplay.clearFull();
+            VisualDisplay.ClearFull();
             VisualDisplay.writeOut(message,true);
             //Console.WriteLine(message);
             ActiveCursor();
             do
             {
-                valueString = Console.ReadLine(); //delegate the ReadLine at some point
+                valueString = Input.GetString(); //delegate the ReadLine at some point
             } while (!int.TryParse(valueString, out value));
             DeactiveCursor();
             return value;
@@ -165,14 +165,14 @@ namespace StorageSystemCore
         public static string CollectString(string message)
         {
             string name;
-            VisualDisplay.clearFull();
+            VisualDisplay.ClearFull();
             VisualDisplay.writeOut(message,true);
             //Console.Clear();
             //Console.WriteLine(message);
             ActiveCursor();
             do
             {
-                name = Console.ReadLine().Trim();
+                name = Input.GetString().Trim();
             } while (name == null || name == "");
             DeactiveCursor();
             return name;
@@ -238,11 +238,11 @@ namespace StorageSystemCore
             List<char> text = new List<char>(); ;
             ConsoleKeyInfo keyPressed;
             if (title != null)
-                Console.WriteLine(title);
+                VisualDisplay.writeOut(title);//Console.WriteLine(title);
             ActiveCursor();
             do
             {
-                keyPressed = Console.ReadKey(true);
+                keyPressed = Input.GetKey();//Console.ReadKey(true);
                 if (keyPressed.Key != ConsoleKey.Backspace)
                 {
                     if (keyPressed.Key != ConsoleKey.Enter)
@@ -274,7 +274,7 @@ namespace StorageSystemCore
         {
             //Console.Clear();
             //Console.WriteLine("Please Enter {0}", information);
-            VisualDisplay.clearFull();
+            VisualDisplay.ClearFull();
             VisualDisplay.writeOut(String.Format("Please Enter {0}", information),true);
             string value = Input.GetString();//Console.ReadLine(); //delegate
             try
@@ -319,7 +319,7 @@ namespace StorageSystemCore
             //Console.WriteLine(message);
             //Publisher.PubVisual.ClearAllText();
             //Publisher.PubVisual.WriteOut(message);
-            VisualDisplay.clearFull();
+            VisualDisplay.ClearFull();
             VisualDisplay.writeOut(message);
             WaitOnKeyInput();
         }

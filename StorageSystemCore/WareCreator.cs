@@ -138,7 +138,7 @@ namespace StorageSystemCore
         {
             string baseMessage = "The following is missing: {0}";
             string missingInfo = "";
-            Console.WriteLine(Convert.ToString(missingValues, toBase: 2));
+            //Console.WriteLine(Convert.ToString(missingValues, toBase: 2));
             if ((missingValues & 0b_0000_0001) == 0b_0000_0001)
                 missingInfo += "ID ";
             if ((missingValues & 0b_0000_0010) == 0b_0000_0010)
@@ -147,8 +147,8 @@ namespace StorageSystemCore
                 missingInfo += "Type ";
             if ((missingValues & 0b_0000_1000) == 0b_0000_1000)
                 missingInfo += "Amount ";
-            Console.Clear();
-            Console.WriteLine(baseMessage, missingInfo);
+            VisualDisplay.ClearFull();
+            VisualDisplay.writeOut(string.Format(baseMessage, missingInfo));//Console.WriteLine(baseMessage, missingInfo);
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace StorageSystemCore
         /// <returns>Returns the byte that belongs to the entry in <paramref name="options"/> that was selected. </returns>
         private byte SelectConstructor(string[] options)
         {
-            Console.Clear();
+            //Console.Clear();
             return VisualCalculator.MenuRun(options, "Select more information");
         }
 
@@ -220,9 +220,9 @@ namespace StorageSystemCore
                     catch (Exception e)
                     {
                         Reporter.Report(e);
-                        Console.Clear();
+                        VisualDisplay.ClearFull();//Console.Clear();
                         parameterValues[i] = Support.GetDefaultValueFromValueType(parameterType.Name); //figure out a good way to reenter value
-                        Console.WriteLine($"Could not convert. Value set to {parameterValues[i]}. Value can be modified using the Modify menu: {Environment.NewLine}" + e.InnerException.Message);
+                        VisualDisplay.writeOut($"Could not convert. Value set to {parameterValues[i]}. Value can be modified using the Modify menu: {Environment.NewLine}" + e.InnerException.Message, true);//Console.WriteLine($"Could not convert. Value set to {parameterValues[i]}. Value can be modified using the Modify menu: {Environment.NewLine}" + e.InnerException.Message);
                         Support.WaitOnKeyInput();
                     }
                 }
@@ -230,9 +230,9 @@ namespace StorageSystemCore
                 {
                     if(parameterType.FullName == "System.String") 
                     {
-                        Console.Clear();
-                        Console.WriteLine("Please Enter {0}", parameterNames[i]);
-                        parameterValues[i] = Console.ReadLine();
+                        VisualDisplay.ClearFull();//Console.Clear();
+                        VisualDisplay.writeOut(String.Format("Please Enter {0}", parameterNames[i]));//Console.WriteLine("Please Enter {0}", parameterNames[i]);
+                        parameterValues[i] = Input.GetString();//Console.ReadLine();
                     }
                     else if (parameterType.BaseType.Name == "Array")
                     {
@@ -258,25 +258,26 @@ namespace StorageSystemCore
                                         catch (Exception e)
                                         {
                                             Reporter.Report(e);
-                                            Console.Clear();
-                                            Console.WriteLine("Could not convert. Please reenter: " + e.InnerException.Message);
+                                            //Console.Clear();
+                                            VisualDisplay.ClearFull();
+                                            VisualDisplay.writeOut(String.Format("Could not convert. Please reenter: {0}", e.InnerException.Message));//Console.WriteLine("Could not convert. Please reenter: " + e.InnerException.Message);
                                             Support.WaitOnKeyInput();
                                         }
                                     }
                                     catch (Exception e)
                                     {
                                         Reporter.Report(e);
-                                        Console.Clear();
-                                        Console.WriteLine("Could not convert." + e.Message);
+                                        VisualDisplay.ClearFull();//Console.Clear();
+                                        VisualDisplay.writeOut(string.Format("Could not convert: {0}", e.Message));//Console.WriteLine("Could not convert." + e.Message);
                                         Support.WaitOnKeyInput();
 
                                     }
                                 }
                                 else
                                 { //string
-                                    Console.Clear();
-                                    Console.WriteLine();
-                                    objectList.Add(Console.ReadLine());
+                                    VisualDisplay.ClearFull();//Console.Clear();
+                                    VisualDisplay.writeOut("Enter Value: ", true);//Console.WriteLine();
+                                    objectList.Add(Input.GetString());
                                 }
                             }
                         } while (valueAnswer != addValueOptions.Length - 1);
@@ -325,17 +326,17 @@ namespace StorageSystemCore
                                 catch (Exception e)
                                 {
                                     Reporter.Report(e);
-                                    Console.Clear();
-                                    Console.WriteLine("Could not convert. Value set to 0: " + e.InnerException.Message);
-                                    nameAndValues.Add(info.SQLName, 0); //figure out a good way to reenter value
+                                    VisualDisplay.ClearFull();//Console.Clear();
+                                    VisualDisplay.writeOut(String.Format("Could not convert. Value set to 0: {0}", e.InnerException.Message));//Console.WriteLine("Could not convert. Value set to 0: " + e.InnerException.Message);
+                                    nameAndValues.Add(info.SQLName, Support.GetDefaultValueFromValueType(keyValuePairs[info.SQLName].Name.ToString())); //needs some testing
                                     Support.WaitOnKeyInput();
                                 }
                             }
                             else
                             {
-                                Console.Clear();
-                                Console.WriteLine("Please Enter {0}", info.Name);
-                                string value = Console.ReadLine();
+                                VisualDisplay.ClearFull();//Console.Clear();
+                                VisualDisplay.writeOut(String.Format("Please Enter {0}", info.Name));//Console.WriteLine("Please Enter {0}", info.Name);
+                                string value = Input.GetString();//Console.ReadLine();
                                 nameAndValues.Add(info.SQLName, value);
                             }
                         }
@@ -456,7 +457,7 @@ namespace StorageSystemCore
         private string CreateID()
         {
             string ID_;
-            VisualDisplay.clearFull();
+            VisualDisplay.ClearFull();
             VisualDisplay.writeOut("Enter Valid Product ID", true);
             //Console.Clear();
             //Console.WriteLine("Enter Valid Product ID"); 
@@ -466,7 +467,7 @@ namespace StorageSystemCore
             {
                 do
                 {
-                    ID_ = Console.ReadLine().Trim();
+                    ID_ = Input.GetString();//Console.ReadLine().Trim();
                     binaryFlag = ValidID(ID_);
                     if (binaryFlag != 0)
                         WriteOutIDErrors(binaryFlag);
@@ -485,7 +486,7 @@ namespace StorageSystemCore
         {
             if (!Support.UniqueID(IDToCheck, SQLCode.SQLControl.DatabaseInUse))
             {
-                Console.WriteLine("ID is not unique. Enter a new ID");
+                VisualDisplay.writeOut("ID is not unique. Enter a new ID", true);//Console.WriteLine("ID is not unique. Enter a new ID");
                 return false;
             }
             return true;
@@ -539,7 +540,7 @@ namespace StorageSystemCore
                 stringBuilder.Append($"No special symbols: \"{RegexControl.GetSpecialSigns}\". ");
             if ((errorFlag & 0b_0000_0000_0010_00000) == 0b_0000_0000_0010_0000)
                 stringBuilder.Append("Contains invalid symbols or letter. ");
-            Console.WriteLine(baseMessage, stringBuilder.ToString());
+            VisualDisplay.writeOut(String.Format(baseMessage, stringBuilder.ToString()));
             Support.WaitOnKeyInput();
         }
 

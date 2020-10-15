@@ -17,7 +17,7 @@ namespace StorageSystemCore
         }
 
         public delegate void WriteOutDelegateTitle(string message, VisualCalculator.Colours colour, bool newLine = false);
-        public static WriteOutDelegateTitle writeOutColour = writeOutMessage;
+        public static WriteOutDelegateTitle WriteMessageColoured = writeOutMessage;
         private static void writeOutMessage(string message, VisualCalculator.Colours colour, bool newLine = false)
         {
             Console.ForegroundColor = (ConsoleColor)(int)colour;
@@ -27,7 +27,7 @@ namespace StorageSystemCore
         }
 
         public delegate void WriteOutDelegateComplex(string message, int x, int y, VisualCalculator.Colours colour1, bool newLine = false);
-        public static WriteOutDelegateComplex writeOutComplex = writeOutMessage;
+        public static WriteOutDelegateComplex WriteMessageComplex = writeOutMessage;
 
         private static void writeOutMessage(string message, int x, int y, VisualCalculator.Colours colour1, bool newLine = false)
         {
@@ -39,7 +39,7 @@ namespace StorageSystemCore
         }
 
         public delegate void ClearPartDelegate(byte length, int y);
-        public static ClearPartDelegate clearPart = clearPartText;
+        public static ClearPartDelegate ClearPart = clearPartText;
         private static void clearPartText(byte length, int y)
         {
             Console.CursorLeft = 0;
@@ -48,7 +48,7 @@ namespace StorageSystemCore
         }
 
         public delegate void FullClearDelegate();
-        public static FullClearDelegate clearFull = fullClear;
+        public static FullClearDelegate ClearFull = fullClear;
         private static void fullClear()
         {
             Console.Clear();

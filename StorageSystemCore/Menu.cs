@@ -114,7 +114,7 @@ namespace StorageSystemCore
             {
                 //Console.Clear();
                 //Console.WriteLine(message, part); //figure out how to do this better. 
-                VisualDisplay.clearFull();
+                VisualDisplay.ClearFull();
                 string text = String.Format(message, part);
                 VisualDisplay.writeOut(text);
                 Support.WaitOnKeyInput();
