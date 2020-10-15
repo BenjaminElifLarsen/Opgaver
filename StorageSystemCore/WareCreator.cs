@@ -497,22 +497,27 @@ namespace StorageSystemCore
             }
             if (!RegexControl.IsValidValues(IDToCheck))
             {
-                Console.WriteLine("Invalid: No numbers");
+                Console.WriteLine("Invalid: No numbers.");
                 return false;
             }
             if (!RegexControl.IsValidLettersLower(IDToCheck))
             {
-                Console.WriteLine("Invalid: No lowercase letters");
+                Console.WriteLine("Invalid: No lowercase letters.");
                 return false;
             }
             if (!RegexControl.IsValidLettersUpper(IDToCheck))
             {
-                Console.WriteLine("Invalid: No uppercase letters");
+                Console.WriteLine("Invalid: No uppercase letters.");
                 return false;
             }
             if(!RegexControl.IsValidSpecial(IDToCheck))
             {
                 Console.WriteLine("Invalid: No special symbols: {0}", RegexControl.GetSpecialSigns);
+                return false;
+            }
+            if(!RegexControl.IsValidCharsOnly(IDToCheck))
+            {
+                Console.WriteLine("Invalid: Contains invalid symbols or letter.");
                 return false;
             }
             return true;

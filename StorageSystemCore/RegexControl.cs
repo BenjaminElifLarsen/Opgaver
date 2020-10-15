@@ -12,9 +12,9 @@ namespace StorageSystemCore
         private static string allowedSigns = "^[a-z A-Z 0-9" + specialSigns + "]$";
         private static Regex rgSpeical = new Regex(@"[" + specialSigns + "]{1,}");
         private static Regex rgValues = new Regex("[0-9]{1,}");
-        private static Regex rgLettersLower = new Regex("[a-z]{1,}");
-        private static Regex rgLettersUpper = new Regex("[A-Z]{1,}");
-        private static Regex rgLength = new Regex("^[a-z A-Z 0-9" + specialSigns + "]{6,16}$"); //if a string contain information not checked by this the length will not reflect those extra values, so e.g. a string could have a "length" of 7, but a real lenght of 20
+        private static Regex rgLettersLower = new Regex(@"\p{Ll}{1,}");
+        private static Regex rgLettersUpper = new Regex(@"\p{Lu}{1,}");
+        private static Regex rgLength = new Regex("^.{6,16}$"); //if a string contain information not checked by this the length will not reflect those extra values, so e.g. a string could have a "length" of 7, but a real lenght of 20
         private static Regex rgUnallowedSigns = new Regex(@"[^a-z ^A-Z ^0-9 ^_ ^\- ^\= ^\+ ^\. ^\,]");
         /// <summary>
         /// Gets the specials that, at least one, need to be in the string.
