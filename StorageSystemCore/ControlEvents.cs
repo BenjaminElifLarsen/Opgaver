@@ -90,9 +90,21 @@ namespace StorageSystemCore
             }
             public string ID { get; }
 
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="ID"></param>
+            /// <returns></returns>
+            /// <exception cref="KeyNotFoundException"></exception>
             public Type GetType(string ID)
             {
-                return _types[ID];
+                try { 
+                    return _types[ID];
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
             }
 
             public void Add(string ID, Type type)
