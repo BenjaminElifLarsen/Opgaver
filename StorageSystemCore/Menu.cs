@@ -37,7 +37,7 @@ namespace StorageSystemCore
 
                     case 4:
                         Publisher.PubWare.RemoveWareCreator();
-                        Environment.Exit(0);
+                        Environment.Exit((int)Program.ExitCode.Ordinary);
                         break;
 
                     case 1:

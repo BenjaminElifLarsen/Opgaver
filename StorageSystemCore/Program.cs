@@ -18,6 +18,13 @@ namespace StorageSystemCore
 
     class Program //multiple of the functions that returns a list should return an array instead.
     {
+        public enum ExitCode : int //move out of program
+        {
+            Ordinary = 0,
+            OutOfMemory = 8,
+            UnknownException = 16000
+        }
+
         static void Main(string[] args) 
         {
             Menu menu = new Menu();
@@ -31,9 +38,9 @@ namespace StorageSystemCore
                 Support.WaitOnKeyInput();
                 int exitCode;
                 if (e is OutOfMemoryException)
-                    exitCode = 8;
+                    exitCode = (int)ExitCode.OutOfMemory;
                 else
-                    exitCode = 16000;
+                    exitCode = (int)ExitCode.UnknownException;
                 Environment.Exit(exitCode);
             }
             menu.DatabaseSelectionMenu();
