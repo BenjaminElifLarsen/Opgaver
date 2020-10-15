@@ -12,6 +12,7 @@ namespace StorageSystemCore
     public static class Support
     {
         private static ConsoleKey key;
+        
 
         static Support()
         {
