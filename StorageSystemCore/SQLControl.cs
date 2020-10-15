@@ -355,7 +355,7 @@ namespace SQLCode
             {
                 sqlConnection = null;
                 //Console.WriteLine(e);
-                StorageSystemCore.Reporter.Report(e);
+                //StorageSystemCore.Reporter.Report(e);
                 throw e;
             }
         }
@@ -421,7 +421,7 @@ namespace SQLCode
             }
             catch (SqlException e)
             {
-                StorageSystemCore.Reporter.Report(e);
+                //StorageSystemCore.Reporter.Report(e);
                 throw e;
             }
         }

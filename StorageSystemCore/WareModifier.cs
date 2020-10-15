@@ -85,7 +85,7 @@ namespace StorageSystemCore
                     byte? answer;
                     do
                     {
-                        answer = Visual.MenuRun(options, "Select entry to modify"); 
+                        answer = VisualCalculator.MenuRun(options, "Select entry to modify"); 
                         if (answer != options.Length - 1) { 
                             object oldValue = informations[options[(byte)answer]];
                             if (valueTypes[(byte)answer].IsValueType)
@@ -136,7 +136,7 @@ namespace StorageSystemCore
                     byte? answer;
                     do
                     {
-                        answer = Visual.MenuRun(options, "Select entry to modify");
+                        answer = VisualCalculator.MenuRun(options, "Select entry to modify");
                         if(answer != options.Length - 1) { 
                             string oldValue = values[(byte)answer] != "" ? values[(byte)answer] : "Null";
                             Console.Clear();
@@ -197,7 +197,7 @@ namespace StorageSystemCore
                 byte? valueAnswer;
                 do
                 {
-                    valueAnswer = Visual.MenuRun(addValueOptions, "Add Data Entry");
+                    valueAnswer = VisualCalculator.MenuRun(addValueOptions, "Add Data Entry");
                     if (valueAnswer == 0)
                     {
                         if (!valueTypes[(byte)answer].Name.Contains("String") /*&& !valueTypes[(byte)answer].Name.Contains("Char")*/)

@@ -20,7 +20,7 @@ namespace StorageSystemCore
             string[] menuOptions = new string[] {"Basic Storage View", "Expanded Storage View", "Add Ware","Change Ware", "Exit", /*" SQL Test"*/ };
             do
             {
-                byte answer = Visual.MenuRun(menuOptions, title);
+                byte answer = VisualCalculator.MenuRun(menuOptions, title);
                 switch (answer)
                 {
                     case 0:
@@ -62,7 +62,7 @@ namespace StorageSystemCore
             string[] options = new string[] { "Remove Ware", "Add To Ware", "Remove From Ware", "Modify Ware", "Back" };
             do
             {
-                byte response = Visual.MenuRun(options, title);
+                byte response = VisualCalculator.MenuRun(options, title);
                 switch (response)
                 {
                     case 0:
@@ -105,14 +105,18 @@ namespace StorageSystemCore
                 }
             else
             {
-                Console.WriteLine("ID does not exist");
+                VisualDisplay.writeOut("ID does not exist");
+                //Console.WriteLine("ID does not exist");
                 Support.WaitOnKeyInput();
             }
 
             void ProgressInformer(string message, string part)
             {
-                Console.Clear();
-                Console.WriteLine(message, part); //figure out how to do this better. 
+                //Console.Clear();
+                //Console.WriteLine(message, part); //figure out how to do this better. 
+                VisualDisplay.clearFull();
+                string text = String.Format(message, part);
+                VisualDisplay.writeOut(text);
                 Support.WaitOnKeyInput();
             }
         }
@@ -127,7 +131,8 @@ namespace StorageSystemCore
                 WareModifier.ModifyWare(ID);
             else
             {
-                Console.WriteLine("ID does not exist");
+                VisualDisplay.writeOut("ID does not exist");
+                //Console.WriteLine("ID does not exist");
                 Support.WaitOnKeyInput();
             }
         }
@@ -142,7 +147,8 @@ namespace StorageSystemCore
                 WareModifier.AddToWare(ID,CollectAmount());
             else
             {
-                Console.WriteLine("ID does not exist");
+                VisualDisplay.writeOut("ID does not exist");
+                //Console.WriteLine("ID does not exist");
                 Support.WaitOnKeyInput();
             }
         }
@@ -157,7 +163,8 @@ namespace StorageSystemCore
                 WareModifier.RemoveFromWare(ID, CollectAmount());
             else
             {
-                Console.WriteLine("ID does not exist");
+                VisualDisplay.writeOut("ID does not exist");
+                //Console.WriteLine("ID does not exist");
                 Support.WaitOnKeyInput();
             }
         }
@@ -194,7 +201,7 @@ namespace StorageSystemCore
         private void WareViewBasicMenu()
         {
             if(!SQLCode.SQLControl.DatabaseInUse)
-                Visual.WareDisplay(WareInformation.GetWareInformation());
+                VisualCalculator.WareDisplay(WareInformation.GetWareInformation());
             else
             { //testing purposes, have a minor functon for this, since data generation is not really a menu thing. 
                 try 
@@ -203,7 +210,7 @@ namespace StorageSystemCore
                     List<string[]> informationReady = new List<string[]>();
                     foreach (List<string> arrayData in information)
                         informationReady.Add(arrayData.ToArray());
-                    Visual.WareDisplay(informationReady);
+                    VisualCalculator.WareDisplay(informationReady);
                 }
                 catch (Exception e)
                 {
@@ -229,7 +236,7 @@ namespace StorageSystemCore
             byte selected;
             do 
             {
-                selected = Visual.MenuRun(searchAttributes.ToArray(), "Select Information To Find");
+                selected = VisualCalculator.MenuRun(searchAttributes.ToArray(), "Select Information To Find");
                 if (selected != searchAttributes.Count - 1 && !selectedAttributes.Contains(searchAttributes[selected]))
                     selectedAttributes.Add(searchAttributes[selected]);
             } while (selected != searchAttributes.Count-1);
@@ -240,7 +247,7 @@ namespace StorageSystemCore
                     try 
                     { 
                         attributesAndValues = WareInformation.GetWareInformation(selectedAttributes);
-                        Visual.WareDisplay(selectedAttributes, attributesAndValues);
+                        VisualCalculator.WareDisplay(selectedAttributes, attributesAndValues);
                     }
                     catch (NullReferenceException e)
                     {
@@ -252,7 +259,7 @@ namespace StorageSystemCore
                     try 
                     { 
                         List<List<string>> wareValues = SQLCode.SQLControl.GetValuesAllWare(selectedAttributes.ToArray()); 
-                        Visual.WareDisplay(selectedAttributes.ToArray(), wareValues);
+                        VisualCalculator.WareDisplay(selectedAttributes.ToArray(), wareValues);
                     }
                     catch (Exception e)
                     {
@@ -275,7 +282,7 @@ namespace StorageSystemCore
             Reporter.Log("Program starting");
             do
             {
-                byte answer = Visual.MenuRun(options, "Database");
+                byte answer = VisualCalculator.MenuRun(options, "Database");
                 switch (answer) //do this until they either connect or uses the non-sql database
                 {
                     case 0:
@@ -367,7 +374,7 @@ namespace StorageSystemCore
         private bool ShallDatabaseInitialiseMenu()
         {
             string[] options = new string[] {"Yes","No" };
-            byte answer = Visual.MenuRun(options, "Initialise Database Creation?");
+            byte answer = VisualCalculator.MenuRun(options, "Initialise Database Creation?");
             return answer == 1;
         }
 

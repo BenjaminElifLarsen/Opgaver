@@ -11,7 +11,7 @@ namespace StorageSystemCore
     /// <summary>
     /// Class that deals with the visual part of the storage system. 
     /// </summary>
-    public static class Visual
+    public static class VisualCalculator
     {
         public enum Colours
         {
@@ -25,9 +25,8 @@ namespace StorageSystemCore
         /// <summary>
         /// The basic, static, constructor. Will always have been called before the first run-time call to any of the class's functions. 
         /// </summary>
-        static Visual()
+        static VisualCalculator()
         {
-            
             Publisher.PubKey.RaiseKeyPressEvent += KeyEvnetHandler;
         }
 
@@ -89,7 +88,7 @@ namespace StorageSystemCore
             Console.Clear();
             if (title != null)
             {
-                Publisher.PubVisual.WriteOut(title, Colours.White);
+                VisualDisplay.writeOutColour(title, Colours.White);
             }
             Console.CursorTop = 1;
             Colours colour;
@@ -104,7 +103,7 @@ namespace StorageSystemCore
                     colour = Colours.White;
                     indent = 1;
                 }
-                Publisher.PubVisual.WriteOut(options[n], indent, n + 1, colour, true);
+                VisualDisplay.writeOutComplex(options[n], indent, n + 1, colour, true);
             }
         }
 
@@ -128,8 +127,8 @@ namespace StorageSystemCore
             void Paint(byte indent, byte y, Colours colour, string text)
             {
                 byte length = (byte)text.Length;
-                Publisher.PubVisual.ClearNextText((byte)(length+4),y + optionDisplayLowering);
-                Publisher.PubVisual.WriteOut(text, indent, y + optionDisplayLowering, colour);
+                VisualDisplay.clearPart((byte)(length+4),y + optionDisplayLowering);
+                VisualDisplay.writeOutComplex(text, indent, y + optionDisplayLowering, colour);
             }
         }
 
@@ -139,7 +138,7 @@ namespace StorageSystemCore
         /// <param name="information">Contains the information to display. Each string[] should be a seperate object</param>
         public static void WareDisplay(List<string[]> information) 
         {
-            Publisher.PubVisual.ClearAllText();
+            VisualDisplay.clearFull();
             Support.DeactiveCursor();
             int y = 0;
             string[] titles = new string[] { "Name", "ID", "Amount", "Type" };
@@ -149,7 +148,7 @@ namespace StorageSystemCore
                 xLocation[n] = increasement * n;
             for(int n = 0; n < titles.Length; n++) //displays the titles and '|'
             {
-                Publisher.PubVisual.WriteOut("| " + titles[n], xLocation[n], 0, Colours.White);
+                VisualDisplay.writeOutComplex("| " + titles[n], xLocation[n], 0, Colours.White);
             }
             y += 2;
             string underline = "|"; 
@@ -161,11 +160,11 @@ namespace StorageSystemCore
                 string[] wareInfo = information[n];
                 for (int m = 0; m < wareInfo.Length; m++) 
                 {
-                    Publisher.PubVisual.WriteOut("| " + wareInfo[m], xLocation[m], y, Colours.White);
+                    VisualDisplay.writeOutComplex("| " + wareInfo[m], xLocation[m], y, Colours.White);
                 }
                 y++;
-                Publisher.PubVisual.WriteOut(Pad(increasement - wareInfo[wareInfo.Length - 1].Length - 2) + "|");;
-                Publisher.PubVisual.WriteOut(underline,0,y++,Colours.White);
+                VisualDisplay.writeOut(Pad(increasement - wareInfo[wareInfo.Length - 1].Length - 2) + "|");;
+                VisualDisplay.writeOutComplex(underline,0,y++,Colours.White);
             }
             Support.ActiveCursor();
 
@@ -229,24 +228,17 @@ namespace StorageSystemCore
             byte maxLength = (byte)textToDisplay.GetLength(0); //function from here to the end
             while (columnStartLocation[maxLength-1] > Console.BufferWidth)
                 maxLength--;
-            Publisher.PubVisual.ClearAllText();
+            VisualDisplay.clearFull();
             string underscore = "|".PadRight(totalLength, '-');
             int y = 1;
-            Publisher.PubVisual.WriteOut(underscore, 0, y, Colours.White);
-            //Console.Write(underscore);
-            for (int n = 0; n < maxLength/*textToDisplay.GetLength(0)*/; n++) //displays all information in the 2D array textToDisplay
+            VisualDisplay.writeOutComplex(underscore, 0, y, Colours.White);
+            for (int n = 0; n < maxLength; n++) //displays all information in the 2D array textToDisplay
             {
-                //Console.CursorTop = 0;
-                //Console.CursorLeft = columnStartLocation[n]; //System.ArgumentOutOfRangeException, buffer size in y is to small. Check beforehand if there is a n value that is same or bigger than the buffer size. If true, lower the GetLength to smaller than it
-                //Console.Write("|"+columnNames[n]);
                 y = 0;
-                Publisher.PubVisual.WriteOut("|" + columnNames[n], columnStartLocation[n], y, Colours.White);
+                VisualDisplay.writeOutComplex("|" + columnNames[n], columnStartLocation[n], y, Colours.White);
                 for (int m = 0; m < textToDisplay.GetLength(1); m++)
                 {
-                    //Console.CursorLeft = columnStartLocation[n];
-                    //Console.CursorTop = m + 2;
-                    //Console.Write("|"+textToDisplay[n, m]);
-                    Publisher.PubVisual.WriteOut("|" + textToDisplay[n, m], columnStartLocation[n], m + 2, Colours.White);
+                    VisualDisplay.writeOutComplex("|" + textToDisplay[n, m], columnStartLocation[n], m + 2, Colours.White);
                 }
             }
             Support.WaitOnKeyInput();
@@ -289,20 +281,17 @@ namespace StorageSystemCore
             while (columnStartLocation[maxLength - 1] > Console.BufferWidth)
                 maxLength--;
 
-            Console.Clear();
+            VisualDisplay.clearFull();
             string underscore = "|".PadRight(totalLength, '-');
-            Console.CursorTop = 1;
-            Console.Write(underscore);
+            int y = 1;
+            VisualDisplay.writeOutComplex(underscore, 0, y, Colours.White);
             for (int n = 0; n < maxLength; n++) //displays all information in the 2D array textToDisplay
             {
-                Console.CursorTop = 0;
-                Console.CursorLeft = columnStartLocation[n];
-                Console.Write("|" + columnNames[n]);
+                y = 0;
+                VisualDisplay.writeOutComplex("|" + columnNames[n], columnStartLocation[n], y, Colours.White);
                 for (int m = 0; m < textToDisplay.GetLength(1); m++)
                 {
-                    Console.CursorLeft = columnStartLocation[n];
-                    Console.CursorTop = m + 2;
-                    Console.Write("|" + textToDisplay[n, m]);
+                    VisualDisplay.writeOutComplex("|" + textToDisplay[n, m], columnStartLocation[n], m + 2, Colours.White);
                 }
             }
 
@@ -310,11 +299,11 @@ namespace StorageSystemCore
             Support.ActiveCursor();
         }
 
-        public static void SetScreenSize(int x, int y)
-        {
-            Console.WindowWidth = x;
-            Console.WindowHeight = y;
-        }
+        //public static void SetScreenSize(int x, int y)
+        //{
+        //    Console.WindowWidth = x;
+        //    Console.WindowHeight = y;
+        //}
 
         /// <summary>
         /// Function subscribed to the key event. When the event is called it will add what key has been pressed to <c>key</c>. Needed to interact with the class and its functions. 

@@ -31,7 +31,7 @@ namespace StorageSystemCore
             string[] displayOptions = Support.DeepCopy(options);
             do
             {
-                byte answer = Visual.MenuRun(displayOptions, title);
+                byte answer = VisualCalculator.MenuRun(displayOptions, title);
                 switch (answer)
                 {
                     case 0:
@@ -84,7 +84,7 @@ namespace StorageSystemCore
                     {
                         Dictionary<string, Type> propertyNamesAndTypes = FindSQLProperties(Type.GetType("StorageSystemCore." + Support.RemoveSpace(type)));
                         if (propertyNamesAndTypes.Count > 0)
-                            if (Visual.MenuRun(new string[] { "Yes", "No" }, "Do you want to enter extra information?") == 0)//will be moved into methods when finalised the code
+                            if (VisualCalculator.MenuRun(new string[] { "Yes", "No" }, "Do you want to enter extra information?") == 0)//will be moved into methods when finalised the code
                             {
                                 List<string> selectedOptions = new List<string>(); //perhaps the displayed names should be Name rather than SQLName and later find the property with the attribute with Name and get its SQLName
                                 List<string> sqlOptions = propertyNamesAndTypes.Keys.ToList(); //find a better option for collection, at some point. 
@@ -92,7 +92,7 @@ namespace StorageSystemCore
                                 byte selected;
                                 do
                                 {
-                                    selected = Visual.MenuRun(sqlOptions.ToArray(), "Select information to add");
+                                    selected = VisualCalculator.MenuRun(sqlOptions.ToArray(), "Select information to add");
                                     if (selected != sqlOptions.Count - 1)
                                         if (!selectedOptions.Contains(sqlOptions[selected]))
                                             selectedOptions.Add(sqlOptions[selected]);
@@ -159,7 +159,7 @@ namespace StorageSystemCore
         private byte SelectConstructor(string[] options)
         {
             Console.Clear();
-            return Visual.MenuRun(options, "Select more information");
+            return VisualCalculator.MenuRun(options, "Select more information");
         }
 
         /// <summary>
@@ -241,7 +241,7 @@ namespace StorageSystemCore
                         byte? valueAnswer;
                         do
                         {
-                            valueAnswer = Visual.MenuRun(addValueOptions, "Add Data Entry");
+                            valueAnswer = VisualCalculator.MenuRun(addValueOptions, "Add Data Entry");
                             if (valueAnswer == 0)
                             {
                                 if (!parameterType.Name.Contains("String") )
@@ -354,7 +354,7 @@ namespace StorageSystemCore
         {
             string title = "Do you want to add more information?";
             string[] options = new string[] {"Yes","No" };
-            byte answer = Visual.MenuRun(options, title);
+            byte answer = VisualCalculator.MenuRun(options, title);
             return answer == 0;
         }
 
@@ -456,8 +456,10 @@ namespace StorageSystemCore
         private string CreateID()
         {
             string ID_;
-            Console.Clear();
-            Console.WriteLine("Enter Valid Product ID"); 
+            VisualDisplay.clearFull();
+            VisualDisplay.writeOut("Enter Valid Product ID", true);
+            //Console.Clear();
+            //Console.WriteLine("Enter Valid Product ID"); 
             Support.ActiveCursor();
             int binaryFlag;
             do
@@ -503,7 +505,7 @@ namespace StorageSystemCore
         /// <param name="IDToCheck">The ID to validate.</param>
         /// <returns>Returns a binary flag with a value indicating errors in <paramref name="IDToCheck"/>.</returns>
         private int ValidID(string IDToCheck) //it does not mater sense that this method writes out the error.
-        {
+        { //have enums for this and the other one
             int errorFlag = 0b_0000_0000_0000_0000;
             if (!RegexControl.IsValidLength(IDToCheck))             
                 errorFlag ^= 0b_0000_0000_0000_0001;            
@@ -549,7 +551,7 @@ namespace StorageSystemCore
         {
             string[] possibleTypes = WareInformation.FindWareTypes().ToArray(); //should handle an empty list
 
-            return possibleTypes[Visual.MenuRun(possibleTypes,"Select Type")];
+            return possibleTypes[VisualCalculator.MenuRun(possibleTypes,"Select Type")];
         }
 
         /// <summary>

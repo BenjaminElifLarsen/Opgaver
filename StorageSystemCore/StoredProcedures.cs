@@ -40,9 +40,11 @@ namespace SQLCode
                 }
                 catch (Exception e) 
                 {
+                    StorageSystemCore.Reporter.Log("Failed in running.");
                     throw e;
                 }
             }
+            StorageSystemCore.Reporter.Log("Creation of stored procedures finalised");
         }
 
         private static string CreateFullView()
@@ -215,10 +217,11 @@ namespace SQLCode
             }
             catch (Exception e)
             {
-                StorageSystemCore.Reporter.Report(e);
-                Console.WriteLine($"Could not find the type: {e.Message}");
-                StorageSystemCore.Support.WaitOnKeyInput();
-                return null;
+                throw e;
+                //StorageSystemCore.Reporter.Report(e);
+                //Console.WriteLine($"Could not find the type: {e.Message}");
+                //StorageSystemCore.Support.WaitOnKeyInput();
+                //return null;
             }
         }
 
@@ -240,10 +243,11 @@ namespace SQLCode
             }
             catch (Exception e)
             {
-                StorageSystemCore.Reporter.Report(e);
-                Console.WriteLine($"Could not get information: {e.Message}");
-                StorageSystemCore.Support.WaitOnKeyInput();
-                return null;
+                //StorageSystemCore.Reporter.Report(e);
+                //Console.WriteLine($"Could not get information: {e.Message}");
+                //StorageSystemCore.Support.WaitOnKeyInput();
+                //return null;
+                throw e;
             }
         }
 
@@ -270,10 +274,11 @@ namespace SQLCode
             }
             catch (Exception e)
             {
-                StorageSystemCore.Reporter.Report(e);
-                Console.WriteLine($"Could not get information: {e.Message}");
-                StorageSystemCore.Support.WaitOnKeyInput();
-                return null;
+                //StorageSystemCore.Reporter.Report(e);
+                //Console.WriteLine($"Could not get information: {e.Message}");
+                //StorageSystemCore.Support.WaitOnKeyInput();
+                //return null;
+                throw e;
             }
         }
 
@@ -299,10 +304,11 @@ namespace SQLCode
             }
             catch (Exception e)
             {
-                StorageSystemCore.Reporter.Report(e);
-                Console.WriteLine($"Could not get information: {e.Message}");
-                StorageSystemCore.Support.WaitOnKeyInput();
-                return null;
+                //StorageSystemCore.Reporter.Report(e);
+                //Console.WriteLine($"Could not get information: {e.Message}");
+                //StorageSystemCore.Support.WaitOnKeyInput();
+                //return null;
+                throw e;
             }
         }
 
@@ -329,10 +335,11 @@ namespace SQLCode
             }
             catch (Exception e)
             {
-                StorageSystemCore.Reporter.Report(e);
-                Console.WriteLine($"Could not get information: {e.Message}");
-                StorageSystemCore.Support.WaitOnKeyInput();
-                return null;
+                //StorageSystemCore.Reporter.Report(e);
+                //Console.WriteLine($"Could not get information: {e.Message}");
+                //StorageSystemCore.Support.WaitOnKeyInput();
+                //return null;
+                throw e;
             }
         }
 
@@ -385,9 +392,10 @@ namespace SQLCode
             }
             catch (Exception e)
             {
-                StorageSystemCore.Reporter.Report(e);
-                Console.WriteLine($"Could not add to ware: {e.Message}");
-                StorageSystemCore.Support.WaitOnKeyInput();
+                //StorageSystemCore.Reporter.Report(e);
+                //Console.WriteLine($"Could not add to ware: {e.Message}");
+                //StorageSystemCore.Support.WaitOnKeyInput();
+                throw e;
             }
         }
 
@@ -414,9 +422,10 @@ namespace SQLCode
             }
             catch (Exception e)
             {
-                StorageSystemCore.Reporter.Report(e);
-                Console.WriteLine($"Could not add to ware: {e.Message}");
-                StorageSystemCore.Support.WaitOnKeyInput();
+                //StorageSystemCore.Reporter.Report(e);
+                //Console.WriteLine($"Could not add to ware: {e.Message}");
+                //StorageSystemCore.Support.WaitOnKeyInput();
+                throw e;
             }
         }
 
@@ -444,9 +453,10 @@ namespace SQLCode
             }
             catch (Exception e)
             {
-                StorageSystemCore.Reporter.Report(e);
-                Console.WriteLine($"Could not insert: {e.Message}");
-                StorageSystemCore.Support.WaitOnKeyInput();
+                //StorageSystemCore.Reporter.Report(e);
+                //Console.WriteLine($"Could not insert: {e.Message}");
+                //StorageSystemCore.Support.WaitOnKeyInput();
+                throw e;
             }
         }
 
@@ -480,9 +490,10 @@ namespace SQLCode
             }
             catch (Exception e)
             {
-                StorageSystemCore.Reporter.Report(e);
-                Console.WriteLine($"Could not insert: {e.Message}");
-                StorageSystemCore.Support.WaitOnKeyInput();
+                //StorageSystemCore.Reporter.Report(e);
+                //Console.WriteLine($"Could not insert: {e.Message}");
+                //StorageSystemCore.Support.WaitOnKeyInput();
+                throw e;
             }
         }
 

@@ -40,7 +40,8 @@ namespace StorageSystemCore
                 {
                     if (Console.KeyAvailable)
                     {
-                        ConsoleKey key = Console.ReadKey(true).Key;
+                        //ConsoleKey key = Console.ReadKey(true).Key;
+                        ConsoleKey key = GetKey().Key;
                         Publisher.PubKey.PressKey(key);
                         Support.BufferFlush();
                     }
@@ -51,6 +52,27 @@ namespace StorageSystemCore
             {
                 throw e;
             }
+        }
+
+        public delegate string InputStringDelegate();
+        public static InputStringDelegate GetString = getInput;
+        private static string getInput()
+        {
+            return Console.ReadLine();
+        }
+
+        public delegate ConsoleKeyInfo InputSingleKeyDelegate();
+        public static InputSingleKeyDelegate GetKey = getKey;
+        private static ConsoleKeyInfo getKey()
+        {
+            return Console.ReadKey(true);
+        }
+
+        public delegate bool KeyAvaliable();
+        public static KeyAvaliable IskeyAvaliable = keyAvaliable;
+        private static bool keyAvaliable()
+        {
+            return Console.KeyAvailable;
         }
 
     }

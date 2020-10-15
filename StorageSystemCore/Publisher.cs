@@ -13,7 +13,6 @@ namespace StorageSystemCore
     {
         private static WarePublisher warePublisher = new WarePublisher();
         private static KeyPublisher keyPublisher = new KeyPublisher();
-        private static VisualPublisher visualPublisher = new VisualPublisher();
 
         /// <summary>
         /// The default constructor.
@@ -33,7 +32,5 @@ namespace StorageSystemCore
         /// Gets the key publisher class instant 
         /// </summary>
         public static KeyPublisher PubKey { get => keyPublisher; }
-
-        public static VisualPublisher PubVisual { get => visualPublisher; }
     }
 }

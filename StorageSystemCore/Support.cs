@@ -99,8 +99,8 @@ namespace StorageSystemCore
         /// </summary>
         public static void BufferFlush()
         {
-            while (Console.KeyAvailable)
-                Console.ReadKey(true);
+            while (Input.IskeyAvaliable())
+                Input.GetKey();//Console.ReadKey(true);
         }
 
         /// <summary>
@@ -145,12 +145,13 @@ namespace StorageSystemCore
         {
             int value;
             string valueString;
-            Console.Clear();
-            Console.WriteLine(message);
+            VisualDisplay.clearFull();
+            VisualDisplay.writeOut(message,true);
+            //Console.WriteLine(message);
             ActiveCursor();
             do
             {
-                valueString = Console.ReadLine();
+                valueString = Console.ReadLine(); //delegate the ReadLine at some point
             } while (!int.TryParse(valueString, out value));
             DeactiveCursor();
             return value;
@@ -164,8 +165,10 @@ namespace StorageSystemCore
         public static string CollectString(string message)
         {
             string name;
-            Console.Clear();
-            Console.WriteLine(message);
+            VisualDisplay.clearFull();
+            VisualDisplay.writeOut(message,true);
+            //Console.Clear();
+            //Console.WriteLine(message);
             ActiveCursor();
             do
             {
@@ -182,7 +185,7 @@ namespace StorageSystemCore
         public static bool Confirmation() 
         {
             string message = "Are you sure?";
-            byte response = Visual.MenuRun(new string[] { "Yes", "No" }, message);
+            byte response = VisualCalculator.MenuRun(new string[] { "Yes", "No" }, message);
             return response == 0;
         }
 
@@ -230,7 +233,7 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="title"></param>
         /// <returns></returns>
-        public static string HiddenText(string title = null)
+        public static string HiddenText(string title = null) //find a good way to delegate this one
         {
             List<char> text = new List<char>(); ;
             ConsoleKeyInfo keyPressed;
@@ -269,9 +272,11 @@ namespace StorageSystemCore
         /// <returns></returns>
         private static t EnterExtraInformation<t>(string information)
         {
-            Console.Clear();
-            Console.WriteLine("Please Enter {0}", information);
-            string value = Console.ReadLine();
+            //Console.Clear();
+            //Console.WriteLine("Please Enter {0}", information);
+            VisualDisplay.clearFull();
+            VisualDisplay.writeOut(String.Format("Please Enter {0}", information),true);
+            string value = Input.GetString();//Console.ReadLine(); //delegate
             try
             {
                 return (t)Convert.ChangeType(value, typeof(t));
@@ -310,8 +315,12 @@ namespace StorageSystemCore
         public static void ErrorHandling(Exception e, string message)
         {
             Reporter.Report(e);
-            Console.Clear();
-            Console.WriteLine(message);
+            //Console.Clear();
+            //Console.WriteLine(message);
+            //Publisher.PubVisual.ClearAllText();
+            //Publisher.PubVisual.WriteOut(message);
+            VisualDisplay.clearFull();
+            VisualDisplay.writeOut(message);
             WaitOnKeyInput();
         }
     }
