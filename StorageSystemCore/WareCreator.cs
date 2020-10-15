@@ -457,12 +457,16 @@ namespace StorageSystemCore
             Console.Clear();
             Console.WriteLine("Enter Valid Product ID"); 
             Support.ActiveCursor();
+            int binaryFlag = 0;
             do
             {
                 do
                 {
-                    ID_ = Console.ReadLine().Trim(); 
-                } while (!ValidID(ID_));
+                    ID_ = Console.ReadLine().Trim();
+                    binaryFlag = ValidID(ID_);
+                    if (binaryFlag != 0)
+                        WriteOutIDErrors(binaryFlag);
+                } while (binaryFlag != 0);
             } while (!UniqueID(ID_)); 
             Support.DeactiveCursor();
             return ID_;
@@ -488,39 +492,67 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="IDToCheck"></param>
         /// <returns></returns>
-        private bool ValidID(string IDToCheck)
+        private int ValidID(string IDToCheck) //it does not mater sense that this method writes out the error.
         {
-            if (!RegexControl.IsValidLength(IDToCheck))
+            int errorFlag = 0b_0000_0000_0000_0000;
+            if (!RegexControl.IsValidLength(IDToCheck)) //0000_0000_0000_0001
             {
-                Console.WriteLine("Invalid: Wrong Length, min = 6, max = 16");
-                return false;
+                errorFlag = errorFlag ^ 0b_0000_0000_0000_0001;
+                //Console.WriteLine("Invalid: Wrong Length, min = 6, max = 16");
+                //return false;
             }
-            if (!RegexControl.IsValidValues(IDToCheck))
+            if (!RegexControl.IsValidValues(IDToCheck)) //0000_0000_0000_0010
             {
-                Console.WriteLine("Invalid: No numbers.");
-                return false;
+                errorFlag = errorFlag ^ 0b_0000_0000_0000_0010;
+                //Console.WriteLine("Invalid: No numbers.");
+                //return false;
             }
-            if (!RegexControl.IsValidLettersLower(IDToCheck))
+            if (!RegexControl.IsValidLettersLower(IDToCheck)) //0000_0000_0000_0100
             {
-                Console.WriteLine("Invalid: No lowercase letters.");
-                return false;
+                errorFlag = errorFlag ^ 0b_0000_0000_0000_0100;
+                //Console.WriteLine("Invalid: No lowercase letters.");
+                //return false;
             }
-            if (!RegexControl.IsValidLettersUpper(IDToCheck))
+            if (!RegexControl.IsValidLettersUpper(IDToCheck)) //0000_0000_0000_1000
             {
-                Console.WriteLine("Invalid: No uppercase letters.");
-                return false;
+                errorFlag = errorFlag ^ 0b_0000_0000_0000_1000;
+                //Console.WriteLine("Invalid: No uppercase letters."); 
+                //return false;
             }
-            if(!RegexControl.IsValidSpecial(IDToCheck))
+            if(!RegexControl.IsValidSpecial(IDToCheck)) //0000_0000_0001_0000
             {
-                Console.WriteLine("Invalid: No special symbols: {0}", RegexControl.GetSpecialSigns);
-                return false;
+                errorFlag = errorFlag ^ 0b_0000_0000_0001_0000;
+                //Console.WriteLine("Invalid: No special symbols: {0}", RegexControl.GetSpecialSigns);
+                //return false;
             }
-            if(!RegexControl.IsValidCharsOnly(IDToCheck))
+            if(!RegexControl.IsValidCharsOnly(IDToCheck)) //0000_0000_0010_0000
             {
-                Console.WriteLine("Invalid: Contains invalid symbols or letter.");
-                return false;
+                errorFlag = errorFlag ^ 0b_0000_0000_0010_0000;
+                //Console.WriteLine("Invalid: Contains invalid symbols or letter.");
+                //return false;
             }
-            return true;
+            return errorFlag;
+        }
+
+        private void WriteOutIDErrors(int errorFlag)
+        {
+            string baseMessage = "Invalid: {0}";
+            string errors = "";
+            StringBuilder stringBuilder = new StringBuilder(errors);
+            if ((errorFlag & 0b_0000_0000_0000_00001) == 0b_0000_0000_0000_0001)
+                stringBuilder.Append("Wrong Length, min = 6, max = 16. ");
+            if ((errorFlag & 0b_0000_0000_0000_00010) == 0b_0000_0000_0000_0010)
+                stringBuilder.Append("No numbers. ");
+            if ((errorFlag & 0b_0000_0000_0000_00100) == 0b_0000_0000_0000_0100)
+                stringBuilder.Append("No lowercase letters. ");
+            if ((errorFlag & 0b_0000_0000_0000_1000) == 0b_0000_0000_0000_1000)
+                stringBuilder.Append("No uppercase letters. ");
+            if ((errorFlag & 0b_0000_0000_0001_0000) == 0b_0000_0000_0001_0000)
+                stringBuilder.Append($"No special symbols: \"{RegexControl.GetSpecialSigns}\". ");
+            if ((errorFlag & 0b_0000_0000_0010_00000) == 0b_0000_0000_0010_0000)
+                stringBuilder.Append("Contains invalid symbols or letter. ");
+            Console.WriteLine(baseMessage, stringBuilder.ToString());
+            Support.WaitOnKeyInput();
         }
 
         /// <summary>
