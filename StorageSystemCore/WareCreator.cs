@@ -231,7 +231,7 @@ namespace StorageSystemCore
                     if(parameterType.FullName == "System.String") 
                     {
                         VisualDisplay.ClearFull();//Console.Clear();
-                        VisualDisplay.writeOut(String.Format("Please Enter {0}", parameterNames[i]));//Console.WriteLine("Please Enter {0}", parameterNames[i]);
+                        VisualDisplay.writeOut(String.Format("Please Enter {0}", parameterNames[i]),true);//Console.WriteLine("Please Enter {0}", parameterNames[i]);
                         parameterValues[i] = Input.GetString();//Console.ReadLine();
                     }
                     else if (parameterType.BaseType.Name == "Array")
