@@ -9,6 +9,27 @@ namespace StorageSystemCore
 {
     sealed public class WareCreator
     {
+        [Flags]
+        private enum Information : byte
+        {
+            Missing_ID = 0b_0000_0001, //1
+            Missing_Name = 0b_0000_0010, //2
+            Missing_Type = 0b_0000_0100, //4
+            Missing_Amount = 0b_0000_1000 //8
+        }
+
+        [Flags]
+        private enum Validation : int
+        {
+            Invalid_Length = 0b_0000_0000_0000_0001, //1
+            Invalid_Values = 0b_0000_0000_0000_0010, //2
+            Invalid_Lowercase = 0b_0000_0000_0000_0100, //4
+            Invalid_Uppercase = 0b_0000_0000_0000_1000, //8
+            Invalid_Special = 0b_0000_0000_0001_0000, //16
+            Invalid_ValidCharsOnly = 0b_0000_0000_0010_0000 //32
+        }
+
+
         private readonly WarePublisher warePublisher;
         private WareCreator() { }
         public WareCreator(WarePublisher warePublisher)
@@ -139,13 +160,13 @@ namespace StorageSystemCore
             string baseMessage = "The following is missing: {0}";
             string missingInfo = "";
             //Console.WriteLine(Convert.ToString(missingValues, toBase: 2));
-            if ((missingValues & 0b_0000_0001) == 0b_0000_0001)
+            if ((missingValues & (byte)Information.Missing_ID) == (byte)Information.Missing_ID)
                 missingInfo += "ID ";
-            if ((missingValues & 0b_0000_0010) == 0b_0000_0010)
+            if ((missingValues & (byte)Information.Missing_Name) == (byte)Information.Missing_Name)
                 missingInfo += "Name ";
-            if ((missingValues & 0b_0000_0100) == 0b_0000_0100)
+            if ((missingValues & (byte)Information.Missing_Type) == (byte)Information.Missing_Type)
                 missingInfo += "Type ";
-            if ((missingValues & 0b_0000_1000) == 0b_0000_1000)
+            if ((missingValues & (byte)Information.Missing_Amount) == (byte)Information.Missing_Amount)
                 missingInfo += "Amount ";
             VisualDisplay.ClearFull();
             VisualDisplay.writeOut(string.Format(baseMessage, missingInfo));//Console.WriteLine(baseMessage, missingInfo);
@@ -415,13 +436,13 @@ namespace StorageSystemCore
         {
             missingValue = 0b_0000_0000;
             if (id == null)
-                missingValue = (byte)(missingValue ^ 0b_0000_0001);
+                missingValue = (byte)(missingValue ^ (byte)Information.Missing_ID);
             if (name == null)
-                missingValue = (byte)(missingValue ^ 0b_0000_0010);
+                missingValue = (byte)(missingValue ^ (byte)Information.Missing_Name);
             if (type == null)
-                missingValue = (byte)(missingValue ^ 0b_0000_0100);
+                missingValue = (byte)(missingValue ^ (byte)Information.Missing_Type);
             if (amount == null)
-                missingValue = (byte)(missingValue ^ 0b_0000_1000);
+                missingValue = (byte)(missingValue ^ (byte)Information.Missing_Amount);
             if (missingValue == 0)
                 return false;
             else
@@ -509,17 +530,17 @@ namespace StorageSystemCore
         { //have enums for this and the other one
             int errorFlag = 0b_0000_0000_0000_0000;
             if (!RegexControl.IsValidLength(IDToCheck))             
-                errorFlag ^= 0b_0000_0000_0000_0001;            
+                errorFlag ^= (int)Validation.Invalid_Length;            
             if (!RegexControl.IsValidValues(IDToCheck))             
-                errorFlag ^= 0b_0000_0000_0000_0010;            
+                errorFlag ^= (int)Validation.Invalid_Values;            
             if (!RegexControl.IsValidLettersLower(IDToCheck))             
-                errorFlag ^= 0b_0000_0000_0000_0100;            
+                errorFlag ^= (int)Validation.Invalid_Lowercase;            
             if (!RegexControl.IsValidLettersUpper(IDToCheck))            
-                errorFlag ^= 0b_0000_0000_0000_1000;            
+                errorFlag ^= (int)Validation.Invalid_Uppercase;            
             if(!RegexControl.IsValidSpecial(IDToCheck))             
-                errorFlag ^= 0b_0000_0000_0001_0000;          
+                errorFlag ^= (int)Validation.Invalid_Special;          
             if(!RegexControl.IsValidCharsOnly(IDToCheck)) 
-                errorFlag ^= 0b_0000_0000_0010_0000;
+                errorFlag ^= (int)Validation.Invalid_ValidCharsOnly;
             return errorFlag;
         }
 
@@ -528,20 +549,20 @@ namespace StorageSystemCore
             string baseMessage = "Invalid: {0}";
             string errors = "";
             StringBuilder stringBuilder = new StringBuilder(errors);
-            if ((errorFlag & 0b_0000_0000_0000_00001) == 0b_0000_0000_0000_0001)
+            if ((errorFlag & (int)Validation.Invalid_Length) == (int)Validation.Invalid_Length)
                 stringBuilder.Append("Wrong Length, min = 6, max = 16. ");
-            if ((errorFlag & 0b_0000_0000_0000_00010) == 0b_0000_0000_0000_0010)
+            if ((errorFlag & (int)Validation.Invalid_Values) == (int)Validation.Invalid_Values)
                 stringBuilder.Append("No numbers. ");
-            if ((errorFlag & 0b_0000_0000_0000_00100) == 0b_0000_0000_0000_0100)
+            if ((errorFlag & (int)Validation.Invalid_Lowercase) == (int)Validation.Invalid_Lowercase)
                 stringBuilder.Append("No lowercase letters. ");
-            if ((errorFlag & 0b_0000_0000_0000_1000) == 0b_0000_0000_0000_1000)
+            if ((errorFlag & (int)Validation.Invalid_Uppercase) == (int)Validation.Invalid_Uppercase)
                 stringBuilder.Append("No uppercase letters. ");
-            if ((errorFlag & 0b_0000_0000_0001_0000) == 0b_0000_0000_0001_0000)
+            if ((errorFlag & (int)Validation.Invalid_Special) == (int)Validation.Invalid_Special)
                 stringBuilder.Append($"No special symbols: \"{RegexControl.GetSpecialSigns}\". ");
-            if ((errorFlag & 0b_0000_0000_0010_00000) == 0b_0000_0000_0010_0000)
+            if ((errorFlag & (int)Validation.Invalid_ValidCharsOnly) == (int)Validation.Invalid_ValidCharsOnly)
                 stringBuilder.Append("Contains invalid symbols or letter. ");
-            VisualDisplay.writeOut(String.Format(baseMessage, stringBuilder.ToString()));
-            Support.WaitOnKeyInput();
+            VisualDisplay.writeOut(String.Format(baseMessage, stringBuilder.ToString()),true);
+            //Support.WaitOnKeyInput();
         }
 
         /// <summary>
