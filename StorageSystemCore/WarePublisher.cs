@@ -32,7 +32,7 @@ namespace StorageSystemCore
         public event alterWareEventHandler RaiseAlterWareEvent;
 
         /// <summary>
-        /// Creates an event that all classes that are subscriben to RaiseCreateWareEvent will trigger on.
+        /// Creates an event that all classes that are subscribed to RaiseCreateWareEvent will trigger on.
         /// </summary>
         public void CreateWare()
         {

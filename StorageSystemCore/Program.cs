@@ -21,7 +21,21 @@ namespace StorageSystemCore
         static void Main(string[] args) 
         {
             Menu menu = new Menu();
-            Input.RunInputThread();
+            try
+            {
+                Input.RunInputThread();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Program Encountered an error under upstart: {e.Message}");
+                Support.WaitOnKeyInput();
+                int exitCode;
+                if (e is OutOfMemoryException)
+                    exitCode = 8;
+                else
+                    exitCode = 16000;
+                Environment.Exit(exitCode);
+            }
             menu.DatabaseSelectionMenu();
             new WareCreator(Publisher.PubWare); 
             menu.MainMenu();

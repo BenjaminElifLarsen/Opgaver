@@ -14,7 +14,6 @@ namespace StorageSystemCore
         /// </summary>
         /// <exception cref="ThreadStateException"></exception>
         /// <exception cref="OutOfMemoryException"></exception>
-        /// <exception cref="InvalidOperationException"></exception>
         public static void RunInputThread()
         {
             Thread inputThread = new Thread(InputRun);
