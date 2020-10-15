@@ -29,6 +29,7 @@ namespace StorageSystemCore
         /// Wrties <paramref name="log"/> to the log file.
         /// </summary>
         /// <param name="log">Message to log.</param>
+        /// <exception cref="IOException"></exception>
         public static void Log(string log)
         {
             try

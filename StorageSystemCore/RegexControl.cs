@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace StorageSystemCore
@@ -21,8 +22,16 @@ namespace StorageSystemCore
         /// </summary>
         public static string GetSpecialSigns { get => specialSigns.Replace("\\",""); }
 
+        /// <summary>
+        /// Test
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        /// <exception cref="NullReferenceException"
         public static bool IsValidCharsOnly(string text)
         {
+            if (text == null)
+                throw new NullReferenceException();
             return !rgUnallowedSigns.IsMatch(text);
         }
 
@@ -31,8 +40,11 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
+        /// <exception cref="NullReferenceException"
         public static bool IsValidLength(string text)
         {
+            if (text == null)
+                throw new NullReferenceException();
             return rgLength.IsMatch(text);
         }
 
@@ -41,8 +53,11 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
+        /// <exception cref="NullReferenceException"
         public static bool IsValidValues(string text)
         {
+            if (text == null)
+                throw new NullReferenceException();
             return rgValues.IsMatch(text);
         }
 
@@ -51,8 +66,11 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
+        /// <exception cref="NullReferenceException"
         public static bool IsValidLettersLower(string text)
-        { 
+        {
+            if (text == null)
+                throw new NullReferenceException();
             return rgLettersLower.IsMatch(text);
         }
 
@@ -61,8 +79,11 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
+        /// <exception cref="NullReferenceException"
         public static bool IsValidLettersUpper(string text)
         {
+            if (text == null)
+                throw new NullReferenceException();
             return rgLettersUpper.IsMatch(text);
         }
 
@@ -71,8 +92,11 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
+        /// <exception cref="NullReferenceException"
         public static bool IsValidSpecial(string text)
         {
+            if (text == null)
+                throw new NullReferenceException();
             return rgSpeical.IsMatch(text);
         }
 

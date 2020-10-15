@@ -23,15 +23,25 @@ namespace SQLCode
         /// <summary>
         /// Gets and sets the SQL Connection to a specific database.
         /// </summary>
+        /// <value></value>
         public static SqlConnection SQLConnection { get => sqlConnection; set => sqlConnection = value; }
 
         /// <summary>
         /// Gets and sets the name of the database.
         /// </summary>
+        /// <value></value>
         public static string DataBase { get => database; set => database = value; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
         public static string[][] TablesAndColumns { get => tablesAndColumns; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
         public static bool DatabaseInUse { get; set; }
 
         /// <summary>
@@ -39,8 +49,11 @@ namespace SQLCode
         /// </summary>
         /// <param name="queryToSanitise"></param>
         /// <returns></returns>
+        /// <exception cref="NullReferenceException"></exception>
         public static string SanitiseSingleQuotes(string queryToSanitise)
         {
+            if (queryToSanitise == null)
+                throw new NullReferenceException();
             List<char> sanitised = new List<char>();
             foreach (char chr in queryToSanitise)
             {
@@ -58,8 +71,11 @@ namespace SQLCode
         /// Creates a trusted connection string and returns it.
         /// </summary>
         /// <returns></returns>
+        /// <exception cref="NullReferenceException"></exception>
         public static string CreateConnectionString(string server, string database)
         {
+            if (server == null || database == null)
+                throw new NullReferenceException();
             SqlConnectionStringBuilder sqlCnt = new SqlConnectionStringBuilder();
             sqlCnt["Server"] = server;
             sqlCnt.InitialCatalog = database;
@@ -71,8 +87,11 @@ namespace SQLCode
         /// Creates a connection string and returns it.
         /// </summary>
         /// <returns></returns>
+        /// <exception cref="NullReferenceException"></exception>
         public static string CreateConnectionString(string server, string username, string password, string database)
         {
+            if (server == null || username == null || password == null || database == null)
+                throw new NullReferenceException();
             SqlConnectionStringBuilder sqlCnt = new SqlConnectionStringBuilder();
             sqlCnt["Server"] = server;
             sqlCnt["User Id"] = username;
@@ -86,8 +105,16 @@ namespace SQLCode
         /// Runs a query and reads the output.
         /// </summary>
         /// <param name="query"></param>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         private static void CommandAndRead(string query)
         {
+            if (query == null)
+                throw new NullReferenceException();
             SqlCommand command = new SqlCommand(query, SQLConnection);
             SQLConnection.Open();
             using (SqlDataReader reader = command.ExecuteReader())
@@ -107,8 +134,16 @@ namespace SQLCode
         /// Removes a ware from from the database.
         /// </summary>
         /// <param name="sqlRemove"></param>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         public static void RemoveWare(string table, string sqlRemove)
         {
+            if(table == null || sqlRemove == null)
+                throw new NullReferenceException();
             string sqlCommand = $"Use {database}; Delete From {table} Where {sqlRemove}";
             RunCommand(sqlCommand);
         }
@@ -118,8 +153,15 @@ namespace SQLCode
         /// </summary>
         /// <param name="table"></param>
         /// <param name="obj"></param>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
         public static void AddWare(string table, Dictionary<string, object> obj)
         {
+            if (table == null || obj == null)
+                throw new NullReferenceException();
             string[] sqlColumns = new string[obj.Count];
             string[] sqlValues = new string[obj.Count];
             int pos = 0;
@@ -138,8 +180,17 @@ namespace SQLCode
         /// </summary>
         /// <param name="sqlColumn"></param>
         /// <param name="sqlAddValues"></param>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
+        /// <exception cref="IndexOutOfRangeException"></exception>
         public static void AddWare(string table, string[] sqlColumn, string[] sqlAddValues) //needs to deal with exceptions, like violating the primary key or ware already existing
         {
+            if(table == null || sqlColumn == null || sqlAddValues == null)
+                throw new NullReferenceException();
             string columns = $"Use {database}; Insert Into {table} (";
             for(int i = 0; i < sqlColumn.Length; i++)
             {
@@ -164,6 +215,12 @@ namespace SQLCode
         /// Runs a query.
         /// </summary>
         /// <param name="sqlCommand"></param>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         public static void RunCommand(string sqlCommand)
         {
             try { 
@@ -186,8 +243,16 @@ namespace SQLCode
         /// <param name="obj"></param>
         /// <param name="whereCondition"></param>
         /// <returns></returns>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         public static bool ModifyWare(string table, Dictionary<string, object> obj, string whereCondition)
         {
+            if(table == null || obj == null || whereCondition == null)
+                throw new NullReferenceException();
             string[] sqlColumns = new string[obj.Count];
             string[] sqlValues = new string[obj.Count];
             int pos = 0;
@@ -197,8 +262,13 @@ namespace SQLCode
                 sqlValues[pos] = entry.Value.ToString();
                 pos++;
             }
-
-            return ModifyWare(table, sqlColumns, sqlValues, whereCondition);
+            try { 
+                return ModifyWare(table, sqlColumns, sqlValues, whereCondition);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         /// <summary>
@@ -209,6 +279,13 @@ namespace SQLCode
         /// <param name="valuesToUpdateToo"></param>
         /// <param name="whereCondition"></param>
         /// <returns></returns>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
+        /// <exception cref="IndexOutOfRangeException"></exception>
         public static bool ModifyWare(string table, string[] columnsToUpdate, string[] valuesToUpdateToo, string whereCondition)
         {
             if (columnsToUpdate.Length != valuesToUpdateToo.Length)
@@ -236,10 +313,23 @@ namespace SQLCode
         /// Selects a ware and writes it out. 
         /// </summary>
         /// <param name="sqlSelect"></param>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         public static void SelectWare(string sqlSelect)
         {
             string sqlCommand = sqlSelect;
-            CommandAndRead(sqlCommand);
+            try
+            {
+                CommandAndRead(sqlCommand);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         /// <summary>
@@ -247,6 +337,9 @@ namespace SQLCode
         /// </summary>
         /// <param name="connectionString">The sql datbase connection string</param>
         /// <returns>Returns the sql connection</returns>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         private static SqlConnection CreateConnection(string connectionString)
         {
             try
@@ -258,7 +351,7 @@ namespace SQLCode
                     return connection;
                 
             }
-            catch (SqlException e)
+            catch (Exception e)
             {
                 sqlConnection = null;
                 //Console.WriteLine(e);
@@ -273,6 +366,9 @@ namespace SQLCode
         /// <param name="sqlInfo">Contains the information needed to create a database connection string</param>
         /// <param name="window">If true the connection will be using Window login, else SQL Server login</param>
         /// <returns>Returns true if it could establish a connection, else false.</returns>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public static bool CreateConnection(string[] sqlInfo, bool window) 
         {
             try
@@ -285,7 +381,7 @@ namespace SQLCode
                 CreateConnection(connect);
                 return true;
             }
-            catch (SqlException e)
+            catch (Exception e)
             {
                 StorageSystemCore.Reporter.Report(e);
                 throw e;
@@ -297,6 +393,12 @@ namespace SQLCode
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         public static List<List<string>> GetValuesMultiWares(string query)
         {
             try { 
@@ -330,6 +432,12 @@ namespace SQLCode
         /// <param name="sqlColumn"></param>
         /// <param name="ID"></param>
         /// <returns></returns>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         public static List<string> GetValuesSingleWare(string[] sqlColumn, string ID)
         {
             if (sqlColumn == null || ID == null)
@@ -363,8 +471,22 @@ namespace SQLCode
                 throw e;
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sqlColumn"></param>
+        /// <returns></returns>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         public static List<List<string>> GetValuesAllWare(string[] sqlColumn)
         {
+            if (sqlColumn == null)
+                throw new NullReferenceException();
             try 
             { 
                 List<List<string>> information = new List<List<string>>();
@@ -397,7 +519,18 @@ namespace SQLCode
             }
         }
 
-        public static List<string> GetColumnNames(string query)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
+        public static List<string> GetColumnNames(string query) //needs try catch
         {
             List<string> information = new List<string>();
             SqlCommand command = new SqlCommand(query, SQLConnection);
@@ -417,10 +550,16 @@ namespace SQLCode
 
 
         /// <summary>
-        /// Runs <paramref name="query"/> in the sql database and returns a List<string> with the values.
+        /// Runs <paramref name="query"/> in the sql database and returns a string list with the values.
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         public static List<string> GetValuesSingleWare(string query)
         {
             try { 
@@ -449,6 +588,18 @@ namespace SQLCode
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="types"></param>
+        /// <returns></returns>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         public static string[] GetColumnNamesAndTypes(string query, out string[] types)
         {
             try
@@ -487,6 +638,8 @@ namespace SQLCode
         /// <param name="masterConnection"></param>
         /// <param name="window"></param>
         /// <returns></returns>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="NullReferenceException"></exception>
         public static bool InitalitionOfDatabase(string[] sqlInfo, string masterConnection, bool window)
         {
             try

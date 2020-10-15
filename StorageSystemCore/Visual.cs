@@ -16,7 +16,7 @@ namespace StorageSystemCore
         private static ConsoleKey key;
 
         /// <summary>
-        /// The basic, static, constructor. Will always have been called before the first run-time call to any of its functions. 
+        /// The basic, static, constructor. Will always have been called before the first run-time call to any of the class's functions. 
         /// </summary>
         static Visual()
         {
@@ -27,9 +27,12 @@ namespace StorageSystemCore
         /// Runs the menu and retuns the selected entry point of <paramref name="options"/>.
         /// </summary>
         /// <param name="options"></param>
-        /// <returns></returns>
+        /// <returns>Returns the number of the selected index.</returns>
+        /// <exception cref="NullReferenceException">Thrown when <paramref name="options"/> is null.</exception>
         public static byte MenuRun(string[] options, string title = null)
         {
+            if (options == null)
+                throw new NullReferenceException();
             byte hoveredOver = 0;
             byte oldHoveredOver = 0;
             bool selected;

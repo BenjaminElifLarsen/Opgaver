@@ -13,6 +13,18 @@ namespace SQLCode
         /// <summary>
         /// Creates all stored procedures in the database that the program will need.
         /// </summary>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="System.Data.SqlClient.SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
+        /// <exception cref="TargetException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="TargetInvocationException"></exception>
+        /// <exception cref="TargetParameterCountException"></exception>
+        /// <exception cref="MethodAccessException"></exception>
+        /// <exception cref="NotSupportedException"></exception>
         public static void CreateAllStoredProcedures()
         {
             StorageSystemCore.Reporter.Log("Starting creation of stored procedures");
@@ -156,8 +168,16 @@ namespace SQLCode
         /// <param name="id">Ware ID to update</param>
         /// <param name="column">The Column to update</param>
         /// <param name="newValue">The new value</param>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         public static void UpdateWareSP(string id, string column, string newValue)
         {
+            if (id == null || column == null || newValue == null)
+                throw new NullReferenceException();
             string sqlString =
                 $"EXEC UpdateWare @WareID = {id}, @Column = {column}, @NewValue = {newValue}";
             try { 
@@ -176,8 +196,17 @@ namespace SQLCode
         /// </summary>
         /// <param name="id">The ware id to retrive the type of</param>
         /// <returns>Returns the type of <paramref name="id"/> in a string list.</returns>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         public static List<string> GetTypeSP(string id)
         {
+            if (id == null)
+                throw new NullReferenceException();
+
             string sqlString =
                 $"EXEC FindWareType @WareID = {id};";
             try
@@ -197,6 +226,11 @@ namespace SQLCode
         /// Uses the Select all data stored procedure to collect all ware information in the database.
         /// </summary>
         /// <returns>Returns all information of all wares in the database as a list of lists of strings.</returns>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         public static List<List<string>> GetAllInformation()
         {
             string sqlString =
@@ -218,8 +252,16 @@ namespace SQLCode
         /// </summary>
         /// <param name="columns"></param>
         /// <returns>Returns information from <paramref name="columns"/> of all wares in the database as a list of lists of strings.</returns>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         public static List<List<string>> GetPartlyInformation(string columns)
         {
+            if(columns == null)
+                throw new NullReferenceException();
             string sqlString =
                 $"EXEC SelectPartlyData @Columns = {columns};";
             try
@@ -240,8 +282,16 @@ namespace SQLCode
         /// </summary>
         /// <param name="id">The id of the ware to collect information from</param>
         /// <returns>Returns a list of strings, each string containg a column of data.</returns>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         public static List<string> GetInformationFromOneWareSP(string id)
         {
+            if(id == null)
+                throw new NullReferenceException();
             string sqlString =
                 $"EXEC SelectValuesFromOneWare @WareID = {id};";
             try { 
@@ -262,8 +312,16 @@ namespace SQLCode
         /// <param name="id">The ID of the ware to collect information from. </param>
         /// <param name="columns">The column(s) to get information(s) from. </param>
         /// <returns>Returns a list of strings, each string containg a column of data.</returns>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         public static List<string> GetPartlyInformationFromOneWareSP(string id, string columns)
         {
+            if(id == null || columns == null)
+                throw new NullReferenceException();
             string sqlString =
                 $"EXEC SelectPartValuesFromOneWare @WareID = {id}, @Columns = {columns};";
             try { 
@@ -282,8 +340,16 @@ namespace SQLCode
         /// Uses the delete ware stored procedure to delete the ware with the <paramref name="id"/>.
         /// </summary>
         /// <param name="id">The ID of the ware to delete.</param>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         public static void RunDeleteWareSP(string id)
         {
+            if(id == null)
+                throw new NullReferenceException();
             string sqslString =
                 $"EXEC DeleteWare @WareToDelete = {id};";
             try
@@ -301,8 +367,16 @@ namespace SQLCode
         /// </summary>
         /// <param name="id">The ID of the ware.</param>
         /// <param name="amount">The amount to add</param>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         public static void AddToWareAmountSP(string id, int amount)
         {
+            if(id == null)
+                throw new NullReferenceException();
             string sqlString =
                 $"EXEC AddToWareAmount @WareID = {id}, @Value = {amount}";
             try
@@ -322,8 +396,16 @@ namespace SQLCode
         /// </summary>
         /// <param name="id">The ID of the ware.</param>
         /// <param name="amount">The amount to remove</param>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         public static void RemoveFromWareAmountSP(string id, int amount)
         {
+            if(id == null)
+                throw new NullReferenceException();
             string sqlString =
                 $"EXEC RemoveFromWareAmount @WareID = {id}, @Value = {amount}";
             try
@@ -345,8 +427,16 @@ namespace SQLCode
         /// <param name="name">The name of the ware.</param>
         /// <param name="amount">The amount of the ware.</param>
         /// <param name="type">The type of the ware.</param>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         public static void InsertWareSP(string id, string name, int amount, string type)
         {
+            if(id == null || name == null || type == null)
+                throw new NullReferenceException();
             string sqlString =
                 $"EXEC InsertWareBasic @ID = {id}, @Name = {name}, @Amount = {amount}, @Type = {type}";
             try { 
@@ -374,6 +464,11 @@ namespace SQLCode
         /// <param name="minTemp">The minimum temperature of the ware.</param>
         /// <param name="boilingPoint">The boiling point of the ware.</param>
         /// <param name="volatile">Whether the ware is volatile or not.</param>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         public static void InsertWareSP(string id, string name, int amount, string type, string information, string dangerCategory, string flashPoint, string minTemp, string boilingPoint, string @volatile)
         {
             string sqlString =
@@ -391,8 +486,21 @@ namespace SQLCode
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="table"></param>
+        /// <returns></returns>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         public static List<string> GetColumnNamesSP(string table)
         {
+            if(table == null)
+                throw new NullReferenceException();
             string sqlString =
                 $"EXEC GetColumnNames @Table = {table}";
             try
@@ -409,6 +517,16 @@ namespace SQLCode
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="types"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="SqlException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="System.IO.IOException"></exception>
+        /// <exception cref="ObjectDisposedException"></exception>
         public static string[] GetColumnNamesAndTypesSP(out string[] types)
         {
             string sqlString =

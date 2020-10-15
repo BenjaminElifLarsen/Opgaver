@@ -142,11 +142,27 @@ namespace StorageSystemCore
                 Remove(e.AmountToRemove);
         }
 
+        /// <summary>
+        /// Get the type of the instance via an event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void GetTypeEventHandler(object sender, ControlEvents.GetTypeEventArgs e)
         {
             e.Add(id, GetType());
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="FormatException"></exception>
+        /// <exception cref="OverflowException"></exception>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="TargetException"></exception>
+        /// <exception cref="TargetInvocationException"></exception>
         protected void AlterWareEventHandler(object sender, ControlEvents.AlterValueEventArgs e)
         {
             if(e.ID == id)

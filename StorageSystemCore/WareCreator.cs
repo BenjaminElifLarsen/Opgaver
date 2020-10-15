@@ -397,11 +397,13 @@ namespace StorageSystemCore
         /// <summary>
         /// Checks if any of the parameters are null. Returns true if information is missing, else false.
         /// If any inforamtion is missing returns a combined binary value, <paramref name="missingValue"/>, that indicates which values are missing:
-        /// 0000_0001 = <paramref name="id"/> (1),
-        /// 0000_0010 = <paramref name="name"/> (2),
-        /// 0000_0100 = <paramref name="type"/> (4),
-        /// 0000_1000 = <paramref name="amount"/> (8). 
         /// </summary>
+        /// <remarks>
+        /// <para>0000_0001 = <paramref name="id"/> (1), </para>
+        /// <para>0000_0010 = <paramref name="name"/> (2), </para>
+        /// <para>0000_0100 = <paramref name="type"/> (4), </para>
+        /// <para>0000_1000 = <paramref name="amount"/> (8). </para>
+        /// </remarks>
         /// <param name="id">ID to check</param>
         /// <param name="name">Name to check</param>
         /// <param name="type">Type to check</param>
@@ -457,7 +459,7 @@ namespace StorageSystemCore
             Console.Clear();
             Console.WriteLine("Enter Valid Product ID"); 
             Support.ActiveCursor();
-            int binaryFlag = 0;
+            int binaryFlag;
             do
             {
                 do
@@ -491,12 +493,12 @@ namespace StorageSystemCore
         /// Checks if <paramref name="IDToCheck"/> is valid. If any parts of <paramref name="IDToCheck"/> it will add a value to the return result using binary.
         /// </summary>
         /// <remarks>
-        /// Length invalid: 0b_0000_0001 = 1.
-        /// Number invalid: 0b_0000_0010 = 2.
-        /// Lowercase invalid: 0b_0000_0100 = 4.
-        /// Uppercase invalid: 0b_0000_1000 = 8.
-        /// Special Chars invalid: 0b_0001_0000 = 16.
-        /// Valid Chars invalid: 0b_0010_0000 = 32.
+        /// <para>Length invalid: 0b_0000_0001 = 1.</para>
+        /// <para>Number invalid: 0b_0000_0010 = 2.</para>
+        /// <para>Lowercase invalid: 0b_0000_0100 = 4.</para>
+        /// <para>Uppercase invalid: 0b_0000_1000 = 8.</para>
+        /// <para>Special Chars invalid: 0b_0001_0000 = 16.</para>
+        /// <para>Valid Chars invalid: 0b_0010_0000 = 32.</para>
         /// </remarks>
         /// <param name="IDToCheck">The ID to validate.</param>
         /// <returns>Returns a binary flag with a value indicating errors in <paramref name="IDToCheck"/>.</returns>

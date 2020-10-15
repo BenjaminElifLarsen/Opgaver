@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace StorageSystemCore
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [WareType("Liquid")]
     class Liquid : Ware
     {

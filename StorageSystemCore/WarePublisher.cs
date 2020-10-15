@@ -44,7 +44,7 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="e"></param>
         protected virtual void OnCreatingWare(ControlEvents.CreateWareEventArgs e)
-        { //calls a function/class that creates a new class 
+        {
             createWareEventHandler eventHandler = RaiseCreateWareEvent;
             if (eventHandler != null)
                 eventHandler.Invoke(this, e);
@@ -104,6 +104,12 @@ namespace StorageSystemCore
                 eventHandler.Invoke(this, e);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        /// <exception cref="KeyNotFoundException"></exception>
         public Type GetTypeFromWare(string ID)
         {
             try 
@@ -116,6 +122,12 @@ namespace StorageSystemCore
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        /// <exception cref="KeyNotFoundException"></exception>
         protected Type OnGetTypeFromWare(ControlEvents.GetTypeEventArgs e)
         {
             getTypeEventHandler eventHandler = RaiseGetTypeEvent;
@@ -134,8 +146,23 @@ namespace StorageSystemCore
             return null;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="newValue"></param>
+        /// <param name="propertyName"></param>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="FormatException"></exception>
+        /// <exception cref="OverflowException"></exception>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="System.Reflection.TargetException"></exception>
+        /// <exception cref="System.Reflection.TargetInvocationException"></exception>
         public void AlterWare(string ID, object newValue, string propertyName)
         {
+            if (ID == null || newValue == null || propertyName == null)
+                throw new NullReferenceException();
             try
             {
                 OnAlterWare(new ControlEvents.AlterValueEventArgs(ID, newValue, propertyName));
@@ -146,8 +173,23 @@ namespace StorageSystemCore
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="newValues"></param>
+        /// <param name="propertyName"></param>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="FormatException"></exception>
+        /// <exception cref="OverflowException"></exception>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="System.Reflection.TargetException"></exception>
+        /// <exception cref="System.Reflection.TargetInvocationException"></exception>
         public void AlterWare(string ID, object[] newValues, string propertyName)
         {
+            if (ID == null || newValues == null || propertyName == null)
+                throw new NullReferenceException();
             try 
             { 
             OnAlterWare(new ControlEvents.AlterValueEventArgs(ID, newValues, propertyName));
@@ -158,6 +200,16 @@ namespace StorageSystemCore
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="FormatException"></exception>
+        /// <exception cref="OverflowException"></exception>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="System.Reflection.TargetException"></exception>
+        /// <exception cref="System.Reflection.TargetInvocationException"></exception>
         protected void OnAlterWare(ControlEvents.AlterValueEventArgs e)
         {
             try
