@@ -271,7 +271,7 @@ namespace StorageSystemCore
         /// <exception cref="FormatException"></exception>
         /// <exception cref="OverflowException"></exception>
         /// <exception cref="ArgumentNullException"></exception>
-        private static t EnterExtraInformation<t>(string value)
+        private static t ConvertStringToVariableType<t>(string value)
         {
             try
             {

@@ -238,7 +238,7 @@ namespace StorageSystemCore
                 if (parameterType.IsValueType)
                 {
                     Type support = typeof(Support);
-                    MethodInfo foundMethod = support.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static);
+                    MethodInfo foundMethod = support.GetMethod("ConvertStringToVariableType", BindingFlags.NonPublic | BindingFlags.Static);
                     MethodInfo genericVersion = foundMethod.MakeGenericMethod(parameterType);
                     try
                     {
@@ -279,7 +279,7 @@ namespace StorageSystemCore
                                     try
                                     {
                                         Type support = typeof(Support); 
-                                        MethodInfo foundMethod = support.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static);
+                                        MethodInfo foundMethod = support.GetMethod("ConvertStringToVariableType", BindingFlags.NonPublic | BindingFlags.Static);
                                         MethodInfo genericVersion = foundMethod.MakeGenericMethod(Type.GetType(parameterType.FullName.Remove(parameterType.FullName.Length - 2)));
                                         try
                                         {
@@ -350,9 +350,10 @@ namespace StorageSystemCore
                             if (keyValuePairs[info.SQLName].IsValueType) 
                             { 
                                 Type support = typeof(Support);
-                                MethodInfo foundMethod = support.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static);
+                                MethodInfo foundMethod = support.GetMethod("ConvertStringToVariableType", BindingFlags.NonPublic | BindingFlags.Static);
                                 MethodInfo genericVersion = foundMethod.MakeGenericMethod(keyValuePairs[info.SQLName]);
-                                try {
+                                try 
+                                {
                                     OutPut.FullScreenClear();
                                     OutPut.DisplayMessage(String.Format("Please Enter {0}", info.Name), true);
                                     string value = Input.GetString();

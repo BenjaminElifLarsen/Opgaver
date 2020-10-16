@@ -287,7 +287,7 @@ namespace StorageSystemCore
         private static object CollectValue(Type type, object oldValue)
         {
             Type support = typeof(Support);
-            MethodInfo foundMethod = support.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static);
+            MethodInfo foundMethod = support.GetMethod("ConvertStringToVariableType", BindingFlags.NonPublic | BindingFlags.Static);
             MethodInfo genericVersion = foundMethod.MakeGenericMethod(type); 
             try
             {
