@@ -10,6 +10,19 @@ namespace StorageSystemCore
     static public class Input
     {
         /// <summary>
+        /// Enum that contains the keys that are used in the software. 
+        /// </summary>
+        public enum Keys
+        {
+            Enter = 13,
+            BackSpace = 8,
+            UpArray = 38,
+            DownArray = 40
+        }
+
+        private static ConsoleKeyInfo key;
+
+        /// <summary>
         /// Ensures that the input system is always working by running it on another thread. 
         /// </summary>
         /// <exception cref="ThreadStateException"></exception>
@@ -34,16 +47,15 @@ namespace StorageSystemCore
         /// <exception cref="InvalidOperationException"></exception>
         static private void InputRun()
         {
+
             try
             {
                 do
                 {
                     if (Console.KeyAvailable)
                     {
-                        //ConsoleKey key = Console.ReadKey(true).Key;
-                        ConsoleKey key = GetKey().Key;
-                        Publisher.PubKey.PressKey(key);
-                        Support.BufferFlush();
+                        key = KeyInput();
+                        BufferFlush();
                     }
 
                 } while (true);
@@ -54,18 +66,63 @@ namespace StorageSystemCore
             }
         }
 
+        /// <summary>
+        /// Reads and return a key without displaying it.
+        /// </summary>
+        /// <returns>Reads and return a key.</returns>
+        private static ConsoleKeyInfo KeyInput()
+        {
+            return Console.ReadKey(true);
+        }
+
         public delegate string InputStringDelegate();
+        /// <summary>
+        /// 
+        /// </summary>
         public static InputStringDelegate GetString = getInput;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private static string getInput()
         {
             return Console.ReadLine();
         }
 
-        public delegate ConsoleKeyInfo InputSingleKeyDelegate();
-        public static InputSingleKeyDelegate GetKey = getKey;
-        private static ConsoleKeyInfo getKey()
+        public delegate ConsoleKeyInfo InputSingleKeyInfoDelegate();
+        /// <summary>
+        /// 
+        /// </summary>
+        public static InputSingleKeyInfoDelegate GetKeyInfo = KeyInfo;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private static ConsoleKeyInfo KeyInfo()
         {
-            return Console.ReadKey(true);
+            if (key == new ConsoleKeyInfo()) 
+                return new ConsoleKeyInfo();
+            ConsoleKeyInfo key_ = key;
+            key = new ConsoleKeyInfo();
+            return key_;
+        }
+
+        public delegate ConsoleKey InputSingleKeyDelegate();
+        /// <summary>
+        /// 
+        /// </summary>
+        public static InputSingleKeyDelegate InputSingleKey = Key;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private static ConsoleKey Key()
+        {
+            if (key == new ConsoleKeyInfo())
+                return new ConsoleKey();
+            ConsoleKey key_ = key.Key;
+            key = new ConsoleKeyInfo();
+            return key_;
         }
 
         public delegate bool KeyAvaliable();
@@ -73,6 +130,32 @@ namespace StorageSystemCore
         private static bool keyAvaliable()
         {
             return Console.KeyAvailable;
+        }
+
+        /// <summary>
+        /// Flushes the Console.Key buffer.
+        /// </summary>
+        private static void BufferFlush()
+        {
+            while (IskeyAvaliable())
+                KeyInput();
+        }
+
+        public delegate bool KeyCompareDelegate(ConsoleKey pressedKey, Keys key_);
+        /// <summary>
+        /// 
+        /// </summary>
+        public static KeyCompareDelegate KeyCompare = KeyComparision;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key_"></param>
+        /// <returns></returns>
+        private static bool KeyComparision(ConsoleKey pressedKey, Keys key_)
+        {
+            bool result = (int)key_ == (int)pressedKey;
+            //BufferFlush();
+            return result;
         }
 
     }

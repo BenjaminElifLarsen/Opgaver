@@ -19,17 +19,8 @@ namespace StorageSystemCore
             White = 15
         }
 
-        private static ConsoleKey key;
         private static readonly int optionDisplayLowering = 1; //1 because of the possiblity of tiles
         
-        /// <summary>
-        /// The basic, static, constructor. Will always have been called before the first run-time call to any of the class's functions. 
-        /// </summary>
-        static VisualCalculator()
-        {
-            Publisher.PubKey.RaiseKeyPressEvent += KeyEvnetHandler;
-        }
-
         /// <summary>
         /// Runs the menu and retuns the selected entry point of <paramref name="options"/>.
         /// </summary>
@@ -61,18 +52,17 @@ namespace StorageSystemCore
         /// <returns>Returns the currently hovered over array position. Comnbined with the ref parameter <c>selected</c> to check if enter key has been pressed. </returns>
         private static byte MenuSelection(out bool selected, int optionAmount, byte currentHoveredOver = 0)
         {
-            key = new ConsoleKey();
-            while (key == new ConsoleKey()) ;
-            Support.BufferFlush();
-            if(key == ConsoleKey.Enter)
+            ConsoleKey key = new ConsoleKey();
+            while (key == new ConsoleKey()) key = Input.InputSingleKey();
+            if(Input.KeyCompare(key,Input.Keys.Enter))
             {
                 selected = true;
                 return currentHoveredOver;
             }
             selected = false;
-            if (key == ConsoleKey.DownArrow && currentHoveredOver < optionAmount - 1)
+            if (Input.KeyCompare(key, Input.Keys.DownArray) && currentHoveredOver < optionAmount - 1)
                 return ++currentHoveredOver;
-            else if (key == ConsoleKey.UpArrow && currentHoveredOver > 0)
+            else if (Input.KeyCompare(key, Input.Keys.UpArray) && currentHoveredOver > 0)
                 return --currentHoveredOver;
             else
                 return currentHoveredOver;
@@ -90,7 +80,6 @@ namespace StorageSystemCore
             {
                 OutPut.DisplayColouredMessage(title, Colours.White);
             }
-            //Console.CursorTop = 1;
             Colours colour;
             byte indent;
             for (int n = 0; n < options.Length; n++) { 
@@ -283,16 +272,5 @@ namespace StorageSystemCore
             Support.WaitOnKeyInput();
             Support.ActiveCursor();
         }
-
-        /// <summary>
-        /// Function subscribed to the key event. When the event is called it will add what key has been pressed to <c>key</c>. Needed to interact with the class and its functions. 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private static void KeyEvnetHandler(object sender, ControlEvents.KeyEventArgs e)
-        {
-            key = e.Key;
-        }
-
     }
 }

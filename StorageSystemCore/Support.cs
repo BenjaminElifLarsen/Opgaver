@@ -10,13 +10,10 @@ namespace StorageSystemCore
     /// Support class. Contains functions designed to be used by other classes.
     /// </summary>
     public static class Support
-    {
-        private static ConsoleKey key;
-        
-
+    {     
         static Support()
         {
-            Publisher.PubKey.RaiseKeyPressEvent += KeyEvnetHandler;
+            
         }
 
         /// <summary>
@@ -90,20 +87,10 @@ namespace StorageSystemCore
         /// </summary>
         public static void WaitOnKeyInput()
         {
-            key = new ConsoleKey();
-            while (key == new ConsoleKey()) ;
-            key = new ConsoleKey();
-            BufferFlush();
+            ConsoleKey key = new ConsoleKey();
+            while (key == new ConsoleKey()) key = Input.InputSingleKey();
         }
 
-        /// <summary>
-        /// Flushes the Console.Key buffer.
-        /// </summary>
-        public static void BufferFlush()
-        {
-            while (Input.IskeyAvaliable())
-                Input.GetKey();
-        }
 
         /// <summary>
         /// Activate the cursor visibility.
@@ -189,16 +176,6 @@ namespace StorageSystemCore
         }
 
         /// <summary>
-        /// Functions that is subscribed to the KeyEvent.
-        /// </summary>
-        /// <param name="sender">The sender of the event.</param>
-        /// <param name="e">Parameters of the event.</param>
-        private static void KeyEvnetHandler(object sender, ControlEvents.KeyEventArgs e)
-        {
-            key = e.Key;
-        }
-
-        /// <summary>
         /// Returns the default value of the ValueType in <paramref name="type"/>, else null. The return type will be packed into dynamic
         /// </summary>
         /// <param name="type"></param>
@@ -241,10 +218,11 @@ namespace StorageSystemCore
             ActiveCursor();
             do
             {
-                keyPressed = Input.GetKey();
-                if (keyPressed.Key != ConsoleKey.Backspace)
+                keyPressed = new ConsoleKeyInfo(); //sometimes keys needs to be pressed mutliple times to be registrated. 
+                while (keyPressed == new ConsoleKeyInfo()) keyPressed = Input.GetKeyInfo();
+                if (!Input.KeyCompare(keyPressed.Key,Input.Keys.BackSpace)) 
                 {
-                    if (keyPressed.Key != ConsoleKey.Enter)
+                    if (!Input.KeyCompare(keyPressed.Key, Input.Keys.Enter))
                     {
                         text.Add(keyPressed.KeyChar);
                         OutPut.DisplayMessage("*");
@@ -257,7 +235,7 @@ namespace StorageSystemCore
                     OutPut.MoveCursor(-1);
                     text.RemoveAt(text.Count - 1);
                 }
-            } while (keyPressed.Key != ConsoleKey.Enter);
+            } while (!Input.KeyCompare(keyPressed.Key, Input.Keys.Enter)); 
             DeactiveCursor();
             return new string(text.ToArray());
         }

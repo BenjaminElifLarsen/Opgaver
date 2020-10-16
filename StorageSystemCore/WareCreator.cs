@@ -401,7 +401,7 @@ namespace StorageSystemCore
                             else
                             {
                                 OutPut.FullScreenClear();
-                                OutPut.DisplayMessage(String.Format("Please Enter {0}", info.Name));
+                                OutPut.DisplayMessage(String.Format("Please Enter {0}", info.Name),true);
                                 string value = Input.GetString();
                                 nameAndValues.Add(info.SQLName, value);
                             }
@@ -436,10 +436,10 @@ namespace StorageSystemCore
         }
 
         /// <summary>
-        /// Under development: Purpose is to act as the "select constructor, add name and type of its "parameters"" functions version for the sql database.
+        /// Acts as the "select constructor, add name and type of its "parameters"" functions version for the sql database.
         /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
+        /// <param name="type">The type to find sql properties of.</param>
+        /// <returns>Returns a dictionary where each string is a sql column name and each value is the datatype of the column.</returns>
         private Dictionary<string,Type> FindSQLProperties(Type type) 
         { 
             Dictionary<string, Type> namesAndValues = new Dictionary<string, Type>();

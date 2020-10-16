@@ -10,7 +10,6 @@ namespace StorageSystemCore
     /// </summary>
     public class OutPut 
     {
-
         public delegate void WriteOutDelegate(string message, bool newLine = false);
         /// <summary>
         /// Displays a basic message and adds either a newline or not.
@@ -130,11 +129,11 @@ namespace StorageSystemCore
 
         public delegate void MoveCursorDelegate(int x = 0, int y = 0);
         /// <summary>
-        /// 
+        /// Moves the current x coordinate of the cursor with the amount given in the parameters or the maximum/minimum values in case of over/underflow.
         /// </summary>
         public static MoveCursorDelegate MoveCursor = CursorMove;
         /// <summary>
-        /// Moves the current x coordinate of the cursor to the left <paramref name="amount"/> units or zero if <paramref name="amount"/> is bigger than the current x coordinate.
+        /// Moves the current x coordinate of the cursor with the amount given in <paramref name="xAmount"/> and <paramref name="yAmount"/> or the maximum/minimum values in case of over/underflow.
         /// </summary>
         /// <param name="xAmount">The amount to move the cursor with on the x axi.</param>
         /// <param name="yAmount">The amount to move the cursor with on the y axi.</param>
@@ -153,17 +152,18 @@ namespace StorageSystemCore
             }
             if (xAmount != 0)
             {
-                if (Console.CursorLeft + xAmount < Console.WindowHeight - 1 && Console.CursorLeft + xAmount >= 0)
+                if (Console.CursorLeft + xAmount < Console.WindowWidth - 1 && Console.CursorLeft + xAmount >= 0)
                     Console.CursorLeft += xAmount;
                 else
                 {
                     if (yAmount > 0)
-                        Console.CursorLeft = Console.WindowHeight - 1;
+                        Console.CursorLeft = Console.WindowWidth - 1;
                     else
                         Console.CursorLeft = 0;
                 }
             }
         }
+
 
     }
 }
