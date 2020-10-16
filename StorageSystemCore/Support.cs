@@ -51,6 +51,7 @@ namespace StorageSystemCore
         /// Checks if <paramref name="IDToCheck"/> is already in use. Returns false if it does, else true.
         /// </summary>
         /// <param name="IDToCheck">The ID to check against other wares' ID.</param>
+        /// <param name="sql">True if a sql database is in use, false otherwise.</param>
         /// <returns>Returns false if <paramref name="IDToCheck"/> is not unique else true.</returns>
         public static bool UniqueID(string IDToCheck, bool sql = false)
         {
@@ -77,6 +78,7 @@ namespace StorageSystemCore
         /// Checks if <paramref name="IDToCheck"/> exist and returns true if it does. 
         /// </summary>
         /// <param name="IDToCheck">The ID to check if its exist.</param>
+        /// <param name="sql">True if a sql database is in use, false otherwise.</param>
         /// <returns>Returns true if ID exist, else false.</returns>
         public static bool IDExist(string IDToCheck, bool sql = false)
         {
@@ -100,7 +102,7 @@ namespace StorageSystemCore
         public static void BufferFlush()
         {
             while (Input.IskeyAvaliable())
-                Input.GetKey();//Console.ReadKey(true);
+                Input.GetKey();
         }
 
         /// <summary>
@@ -122,36 +124,35 @@ namespace StorageSystemCore
         /// <summary>
         /// Removes any spaces between words for the ware type. 
         /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public static string RemoveSpace(string type)
+        /// <param name="str">String to remove all spaces from.</param>
+        /// <returns>Returns <paramref name="str"/> without any spaces.</returns>
+        public static string RemoveSpace(string str)
         {
-            if (type.Split(' ').Length != 1) 
+            if (str.Split(' ').Length != 1) 
             {
-                string[] split = type.Split(' ');
-                type = "";
+                string[] split = str.Split(' ');
+                str = "";
                 foreach (string typing in split)
-                    type += typing;
+                    str += typing;
             }
-            return type;
+            return str;
         }
 
         /// <summary>
         /// Ask the user to enter a value and returns it if it is not null or empty.
         /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
+        /// <param name="message">Message that should be displayed.</param>
+        /// <returns>Returns the user's input as an int.</returns>
         public static int CollectValue(string message)
         {
             int value;
             string valueString;
-            VisualDisplay.ClearFull();
-            VisualDisplay.writeOut(message,true);
-            //Console.WriteLine(message);
+            OutPut.FullScreenClear();
+            OutPut.DisplayMessage(message,true);
             ActiveCursor();
             do
             {
-                valueString = Input.GetString(); //delegate the ReadLine at some point
+                valueString = Input.GetString();
             } while (!int.TryParse(valueString, out value));
             DeactiveCursor();
             return value;
@@ -160,15 +161,13 @@ namespace StorageSystemCore
         /// <summary>
         /// Ask the user to enter a string and returns it if it is not null or empty.
         /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
+        /// <param name="message">Message that should be displayed.</param>
+        /// <returns>Returns the user's input as a string.</returns>
         public static string CollectString(string message)
         {
             string name;
-            VisualDisplay.ClearFull();
-            VisualDisplay.writeOut(message,true);
-            //Console.Clear();
-            //Console.WriteLine(message);
+            OutPut.FullScreenClear();
+            OutPut.DisplayMessage(message,true);
             ActiveCursor();
             do
             {
@@ -233,30 +232,29 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="title"></param>
         /// <returns></returns>
-        public static string HiddenText(string title = null) //find a good way to delegate this one
+        public static string HiddenText(string title = null) 
         {
             List<char> text = new List<char>(); ;
             ConsoleKeyInfo keyPressed;
             if (title != null)
-                VisualDisplay.writeOut(title);//Console.WriteLine(title);
+                OutPut.DisplayMessage(title,true);
             ActiveCursor();
             do
             {
-                keyPressed = Input.GetKey();//Console.ReadKey(true);
+                keyPressed = Input.GetKey();
                 if (keyPressed.Key != ConsoleKey.Backspace)
                 {
                     if (keyPressed.Key != ConsoleKey.Enter)
                     {
                         text.Add(keyPressed.KeyChar);
-                        Console.Write('*');
+                        OutPut.DisplayMessage("*");
                     }
                 }
-                else
-                    if (Console.CursorLeft != 0)
+                else if (OutPut.CursorLocation()[0] != 0)
                 {
-                    Console.CursorLeft -= 1;
-                    Console.Write(' ');
-                    Console.CursorLeft -= 1;
+                    OutPut.MoveCursor(-1);
+                    OutPut.DisplayMessage(" ");
+                    OutPut.MoveCursor(-1);
                     text.RemoveAt(text.Count - 1);
                 }
             } while (keyPressed.Key != ConsoleKey.Enter);
@@ -267,21 +265,19 @@ namespace StorageSystemCore
         /// <summary>
         /// Generic method to convert a string to a value type. Conversion for nullables does not work if the string contains a non-null value, rather the underlying type is returned. 
         /// </summary>
-        /// <param name="primaryParameters"></param>
-        /// <param name="secundaryParameters"></param>
-        /// <returns></returns>
-        private static t EnterExtraInformation<t>(string information)
+        /// <typeparam name="t">A generic type.</typeparam>
+        /// <returns>Returns a variable, of type <typeparamref name="t"/> or its underlying type, that has been converted from a string</returns>
+        /// <exception cref="InvalidCastException"></exception>
+        /// <exception cref="FormatException"></exception>
+        /// <exception cref="OverflowException"></exception>
+        /// <exception cref="ArgumentNullException"></exception>
+        private static t EnterExtraInformation<t>(string value)
         {
-            //Console.Clear();
-            //Console.WriteLine("Please Enter {0}", information);
-            VisualDisplay.ClearFull();
-            VisualDisplay.writeOut(String.Format("Please Enter {0}", information),true);
-            string value = Input.GetString();//Console.ReadLine(); //delegate
             try
             {
                 return (t)Convert.ChangeType(value, typeof(t));
             }
-            catch
+            catch (Exception e)
             {
                 if (Nullable.GetUnderlyingType(typeof(t)) != null)
                 {
@@ -289,9 +285,9 @@ namespace StorageSystemCore
                     {
                         return (t)Convert.ChangeType(value, Nullable.GetUnderlyingType(typeof(t)));
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        throw new InvalidCastException();
+                        throw ex;
                     }
                 }
                 else if (typeof(t).Name.Contains("[]"))
@@ -300,7 +296,7 @@ namespace StorageSystemCore
                     return (t)Convert.ChangeType(value, actualType);
                 }
                 else
-                    throw new InvalidCastException();
+                    throw e;
             }
         }
 
@@ -315,12 +311,8 @@ namespace StorageSystemCore
         public static void ErrorHandling(Exception e, string message)
         {
             Reporter.Report(e);
-            //Console.Clear();
-            //Console.WriteLine(message);
-            //Publisher.PubVisual.ClearAllText();
-            //Publisher.PubVisual.WriteOut(message);
-            VisualDisplay.ClearFull();
-            VisualDisplay.writeOut(message);
+            OutPut.FullScreenClear();
+            OutPut.DisplayMessage(message);
             WaitOnKeyInput();
         }
     }

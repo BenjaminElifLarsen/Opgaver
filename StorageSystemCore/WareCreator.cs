@@ -9,6 +9,9 @@ namespace StorageSystemCore
 {
     sealed public class WareCreator
     {
+        /// <summary>
+        /// Enum that contains binary flags used for missing fields regarding ware creation.
+        /// </summary>
         [Flags]
         private enum Information : byte
         {
@@ -18,6 +21,9 @@ namespace StorageSystemCore
             Missing_Amount = 0b_0000_1000 //8
         }
 
+        /// <summary>
+        /// Enum that contains binary flags used for checking validation regarding ID. Each flag is an invalid validation.
+        /// </summary>
         [Flags]
         private enum Validation : int
         {
@@ -31,6 +37,7 @@ namespace StorageSystemCore
 
 
         private readonly WarePublisher warePublisher;
+
         private WareCreator() { }
         public WareCreator(WarePublisher warePublisher)
         {
@@ -39,7 +46,7 @@ namespace StorageSystemCore
             this.warePublisher = warePublisher;
         }
 
-        private void CreateWare() //at some point, either after all information has been added or after each, ask if it/they is/are correct and if they want to reenter information.
+        private void CreateWare()
         {
 
             string ID = null;
@@ -90,13 +97,12 @@ namespace StorageSystemCore
 
             } while (!goBack);
 
-            //RemoveFromSubscription(warePublisher);
         }
 
         private void Creation(ref bool goBack, string ID, string name, string type, int? amount)
         {
             byte missingValues;
-            if (!MissingInformation(ID, name, type, amount, out missingValues)) //put this if/if-else-statment and its content into a function
+            if (!MissingInformation(ID, name, type, amount, out missingValues)) 
             {
                 goBack = Support.Confirmation();
                 if (goBack)
@@ -105,9 +111,9 @@ namespace StorageSystemCore
                     {
                         Dictionary<string, Type> propertyNamesAndTypes = FindSQLProperties(Type.GetType("StorageSystemCore." + Support.RemoveSpace(type)));
                         if (propertyNamesAndTypes.Count > 0)
-                            if (VisualCalculator.MenuRun(new string[] { "Yes", "No" }, "Do you want to enter extra information?") == 0)//will be moved into methods when finalised the code
+                            if (VisualCalculator.MenuRun(new string[] { "Yes", "No" }, "Do you want to enter extra information?") == 0)
                             {
-                                List<string> selectedOptions = new List<string>(); //perhaps the displayed names should be Name rather than SQLName and later find the property with the attribute with Name and get its SQLName
+                                List<string> selectedOptions = new List<string>(); 
                                 List<string> sqlOptions = propertyNamesAndTypes.Keys.ToList(); //find a better option for collection, at some point. 
                                 sqlOptions.Add("Done");
                                 byte selected;
@@ -168,8 +174,8 @@ namespace StorageSystemCore
                 missingInfo += "Type ";
             if ((missingValues & (byte)Information.Missing_Amount) == (byte)Information.Missing_Amount)
                 missingInfo += "Amount ";
-            VisualDisplay.ClearFull();
-            VisualDisplay.writeOut(string.Format(baseMessage, missingInfo));//Console.WriteLine(baseMessage, missingInfo);
+            OutPut.FullScreenClear();
+            OutPut.DisplayMessage(string.Format(baseMessage, missingInfo));//Console.WriteLine(baseMessage, missingInfo);
         }
 
         /// <summary>
@@ -234,16 +240,19 @@ namespace StorageSystemCore
                     Type support = typeof(Support);
                     MethodInfo foundMethod = support.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static);
                     MethodInfo genericVersion = foundMethod.MakeGenericMethod(parameterType);
-                    try 
-                    { 
-                        parameterValues[i] = genericVersion.Invoke(null, new object[] { parameterNames[i] });
+                    try
+                    {
+                        OutPut.FullScreenClear();
+                        OutPut.DisplayMessage(String.Format("Please Enter {0}", parameterNames[i]), true);
+                        string value = Input.GetString();
+                        parameterValues[i] = genericVersion.Invoke(null, new object[] { value });
                     }
                     catch (Exception e)
                     {
                         Reporter.Report(e);
-                        VisualDisplay.ClearFull();//Console.Clear();
-                        parameterValues[i] = Support.GetDefaultValueFromValueType(parameterType.Name); //figure out a good way to reenter value
-                        VisualDisplay.writeOut($"Could not convert. Value set to {parameterValues[i]}. Value can be modified using the Modify menu: {Environment.NewLine}" + e.InnerException.Message, true);//Console.WriteLine($"Could not convert. Value set to {parameterValues[i]}. Value can be modified using the Modify menu: {Environment.NewLine}" + e.InnerException.Message);
+                        OutPut.FullScreenClear();
+                        parameterValues[i] = Support.GetDefaultValueFromValueType(parameterType.Name); //figure out a good way to reenter value... could use a goTo back to the try part
+                        OutPut.DisplayMessage($"Could not convert. Value set to {parameterValues[i]}. Value can be modified using the Modify menu: {Environment.NewLine}" + e.InnerException.Message, true);//Console.WriteLine($"Could not convert. Value set to {parameterValues[i]}. Value can be modified using the Modify menu: {Environment.NewLine}" + e.InnerException.Message);
                         Support.WaitOnKeyInput();
                     }
                 }
@@ -251,9 +260,9 @@ namespace StorageSystemCore
                 {
                     if(parameterType.FullName == "System.String") 
                     {
-                        VisualDisplay.ClearFull();//Console.Clear();
-                        VisualDisplay.writeOut(String.Format("Please Enter {0}", parameterNames[i]),true);//Console.WriteLine("Please Enter {0}", parameterNames[i]);
-                        parameterValues[i] = Input.GetString();//Console.ReadLine();
+                        OutPut.FullScreenClear();
+                        OutPut.DisplayMessage(String.Format("Please Enter {0}", parameterNames[i]),true);
+                        parameterValues[i] = Input.GetString();
                     }
                     else if (parameterType.BaseType.Name == "Array")
                     {
@@ -274,30 +283,32 @@ namespace StorageSystemCore
                                         MethodInfo genericVersion = foundMethod.MakeGenericMethod(Type.GetType(parameterType.FullName.Remove(parameterType.FullName.Length - 2)));
                                         try
                                         {
-                                            objectList.Add(genericVersion.Invoke(null, new object[] { parameterNames[i] }));
+                                            OutPut.FullScreenClear(); 
+                                            OutPut.DisplayMessage(String.Format("Please Enter {0}", parameterNames[i]), true);
+                                            string value = Input.GetString();
+                                            objectList.Add(genericVersion.Invoke(null, new object[] { value }));
                                         }
                                         catch (Exception e)
                                         {
                                             Reporter.Report(e);
-                                            //Console.Clear();
-                                            VisualDisplay.ClearFull();
-                                            VisualDisplay.writeOut(String.Format("Could not convert. Please reenter: {0}", e.InnerException.Message));//Console.WriteLine("Could not convert. Please reenter: " + e.InnerException.Message);
+                                            OutPut.FullScreenClear();
+                                            OutPut.DisplayMessage(String.Format("Could not convert. Please reenter: {0}", e.InnerException.Message));
                                             Support.WaitOnKeyInput();
                                         }
                                     }
                                     catch (Exception e)
                                     {
                                         Reporter.Report(e);
-                                        VisualDisplay.ClearFull();//Console.Clear();
-                                        VisualDisplay.writeOut(string.Format("Could not convert: {0}", e.Message));//Console.WriteLine("Could not convert." + e.Message);
+                                        OutPut.FullScreenClear();
+                                        OutPut.DisplayMessage(string.Format("Could not convert: {0}", e.Message));
                                         Support.WaitOnKeyInput();
 
                                     }
                                 }
                                 else
                                 { //string
-                                    VisualDisplay.ClearFull();//Console.Clear();
-                                    VisualDisplay.writeOut("Enter Value: ", true);//Console.WriteLine();
+                                    OutPut.FullScreenClear();
+                                    OutPut.DisplayMessage("Enter Value: ", true);
                                     objectList.Add(Input.GetString());
                                 }
                             }
@@ -341,23 +352,26 @@ namespace StorageSystemCore
                                 Type support = typeof(Support);
                                 MethodInfo foundMethod = support.GetMethod("EnterExtraInformation", BindingFlags.NonPublic | BindingFlags.Static);
                                 MethodInfo genericVersion = foundMethod.MakeGenericMethod(keyValuePairs[info.SQLName]);
-                                try { 
-                                    nameAndValues.Add(info.SQLName, genericVersion.Invoke(null, new object[] { info.Name }));
+                                try {
+                                    OutPut.FullScreenClear();
+                                    OutPut.DisplayMessage(String.Format("Please Enter {0}", info.Name), true);
+                                    string value = Input.GetString();
+                                    nameAndValues.Add(info.SQLName, genericVersion.Invoke(null, new object[] { value }));
                                 }
                                 catch (Exception e)
                                 {
                                     Reporter.Report(e);
-                                    VisualDisplay.ClearFull();//Console.Clear();
-                                    VisualDisplay.writeOut(String.Format("Could not convert. Value set to 0: {0}", e.InnerException.Message));//Console.WriteLine("Could not convert. Value set to 0: " + e.InnerException.Message);
-                                    nameAndValues.Add(info.SQLName, Support.GetDefaultValueFromValueType(keyValuePairs[info.SQLName].Name.ToString())); //needs some testing
+                                    OutPut.FullScreenClear();
+                                    OutPut.DisplayMessage(String.Format("Could not convert. Value set to 0: {0}", e.InnerException.Message));
+                                    nameAndValues.Add(info.SQLName, Support.GetDefaultValueFromValueType(keyValuePairs[info.SQLName].Name.ToString())); //needs some more testing
                                     Support.WaitOnKeyInput();
                                 }
                             }
                             else
                             {
-                                VisualDisplay.ClearFull();//Console.Clear();
-                                VisualDisplay.writeOut(String.Format("Please Enter {0}", info.Name));//Console.WriteLine("Please Enter {0}", info.Name);
-                                string value = Input.GetString();//Console.ReadLine();
+                                OutPut.FullScreenClear();
+                                OutPut.DisplayMessage(String.Format("Please Enter {0}", info.Name));
+                                string value = Input.GetString();
                                 nameAndValues.Add(info.SQLName, value);
                             }
                         }
@@ -478,8 +492,8 @@ namespace StorageSystemCore
         private string CreateID()
         {
             string ID_;
-            VisualDisplay.ClearFull();
-            VisualDisplay.writeOut("Enter Valid Product ID", true);
+            OutPut.FullScreenClear();
+            OutPut.DisplayMessage("Enter Valid Product ID", true);
             //Console.Clear();
             //Console.WriteLine("Enter Valid Product ID"); 
             Support.ActiveCursor();
@@ -507,7 +521,7 @@ namespace StorageSystemCore
         {
             if (!Support.UniqueID(IDToCheck, SQLCode.SQLControl.DatabaseInUse))
             {
-                VisualDisplay.writeOut("ID is not unique. Enter a new ID", true);//Console.WriteLine("ID is not unique. Enter a new ID");
+                OutPut.DisplayMessage("ID is not unique. Enter a new ID", true);//Console.WriteLine("ID is not unique. Enter a new ID");
                 return false;
             }
             return true;
@@ -561,7 +575,7 @@ namespace StorageSystemCore
                 stringBuilder.Append($"No special symbols: \"{RegexControl.GetSpecialSigns}\". ");
             if ((errorFlag & (int)Validation.Invalid_ValidCharsOnly) == (int)Validation.Invalid_ValidCharsOnly)
                 stringBuilder.Append("Contains invalid symbols or letter. ");
-            VisualDisplay.writeOut(String.Format(baseMessage, stringBuilder.ToString()),true);
+            OutPut.DisplayMessage(String.Format(baseMessage, stringBuilder.ToString()),true);
             //Support.WaitOnKeyInput();
         }
 

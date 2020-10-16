@@ -139,8 +139,8 @@ namespace StorageSystemCore
                         answer = VisualCalculator.MenuRun(options, "Select entry to modify");
                         if(answer != options.Length - 1) { 
                             string oldValue = values[(byte)answer] != "" ? values[(byte)answer] : "Null";
-                            Console.Clear();
-                            Console.WriteLine($"Old Value was {oldValue}. Enter new Value: ");
+                            OutPut.FullScreenClear();
+                            OutPut.DisplayMessage($"Old Value was {oldValue}. Enter new Value: ",true);
                             string newValue = Console.ReadLine(); //SQL does not seem like it has arrays as a datatype
                             for(int i = 0; i < allColumns.Length; i++)
                             {
@@ -157,8 +157,8 @@ namespace StorageSystemCore
                             catch (Exception e)
                             {
                                 Reporter.Report(e);
-                                Console.Clear();
-                                Console.WriteLine($"Could not create the ware: {e.Message}");
+                                OutPut.FullScreenClear();
+                                OutPut.DisplayMessage($"Could not create the ware: {e.Message}", true);
                                 Support.WaitOnKeyInput();
                             }
 
@@ -170,15 +170,15 @@ namespace StorageSystemCore
             void ErrorHandling(Exception e)
             {
                 Reporter.Report(e);
-                Console.Clear();
-                Console.WriteLine("Could not convert: " + e.InnerException.Message);
+                OutPut.FullScreenClear();
+                OutPut.DisplayMessage(String.Format("Could not convert: {0}", e.InnerException.Message), true);
                 Support.WaitOnKeyInput();
             }
             void FillOutString(string[] options, byte? answer, object oldValue)
             {
-                Console.Clear();
-                Console.WriteLine($"Old Value was {oldValue ?? "Null"}. Enter new Value: ");
-                string newValue = Console.ReadLine();
+                OutPut.FullScreenClear();
+                OutPut.DisplayMessage($"Old Value was {oldValue ?? "Null"}. Enter new Value: ", true);
+                string newValue = Input.GetString();
                 try 
                 { 
                     Publisher.PubWare.AlterWare(ID, newValue, options[(byte)answer]);
@@ -200,7 +200,7 @@ namespace StorageSystemCore
                     valueAnswer = VisualCalculator.MenuRun(addValueOptions, "Add Data Entry");
                     if (valueAnswer == 0)
                     {
-                        if (!valueTypes[(byte)answer].Name.Contains("String") /*&& !valueTypes[(byte)answer].Name.Contains("Char")*/)
+                        if (!valueTypes[(byte)answer].Name.Contains("String"))
                         { //non-string
                             try
                             {
@@ -211,15 +211,10 @@ namespace StorageSystemCore
                                 ErrorHandling(e);
                             }
                         }
-                        //else if (valueTypes[(byte)answer].Name.Contains("Char")) //might not be needed
-                        //{ //char
-
-                        //}
                         else
                         { //string
-                            Console.Clear();
-                            Console.WriteLine();
-                            objectList.Add(Console.ReadLine());
+                            OutPut.FullScreenClear();
+                            objectList.Add(Input.GetString());
                         }
                     }
                 } while (valueAnswer != addValueOptions.Length - 1);
@@ -278,11 +273,17 @@ namespace StorageSystemCore
 
         /// <summary>
         /// Collects a value via Console.ReadLine and returns it as variable of <paramref name="type"/> wrapped in an object.
-        /// 
         /// </summary>
         /// <param name="type">The type the input should be converted too.</param>
         /// <param name="oldValue">The old value that will be displayed.</param>
         /// <returns></returns>
+        /// <exception cref="TargetException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="TargetInvocationException"></exception>
+        /// <exception cref="TargetParameterCountException"></exception>
+        /// <exception cref="MethodAccessException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="NotSupportedException"></exception>
         private static object CollectValue(Type type, object oldValue)
         {
             Type support = typeof(Support);
@@ -290,7 +291,10 @@ namespace StorageSystemCore
             MethodInfo genericVersion = foundMethod.MakeGenericMethod(type); 
             try
             {
-                object newValue = genericVersion.Invoke(null, new object[] { $"Old Value was {oldValue ?? "Null"}. Enter new Value: " });
+                OutPut.FullScreenClear();
+                OutPut.DisplayMessage(String.Format($"Old Value was {oldValue ?? "Null"}. Enter new Value: "), true);
+                string value = Input.GetString();
+                object newValue = genericVersion.Invoke(null, new object[] {value});
                 return newValue;
             }
             catch (Exception e)

@@ -105,7 +105,7 @@ namespace StorageSystemCore
                 }
             else
             {
-                VisualDisplay.writeOut("ID does not exist");
+                OutPut.DisplayMessage("ID does not exist");
                 //Console.WriteLine("ID does not exist");
                 Support.WaitOnKeyInput();
             }
@@ -114,9 +114,9 @@ namespace StorageSystemCore
             {
                 //Console.Clear();
                 //Console.WriteLine(message, part); //figure out how to do this better. 
-                VisualDisplay.ClearFull();
+                OutPut.FullScreenClear();
                 string text = String.Format(message, part);
-                VisualDisplay.writeOut(text);
+                OutPut.DisplayMessage(text);
                 Support.WaitOnKeyInput();
             }
         }
@@ -131,7 +131,7 @@ namespace StorageSystemCore
                 WareModifier.ModifyWare(ID);
             else
             {
-                VisualDisplay.writeOut("ID does not exist");
+                OutPut.DisplayMessage("ID does not exist");
                 //Console.WriteLine("ID does not exist");
                 Support.WaitOnKeyInput();
             }
@@ -147,7 +147,7 @@ namespace StorageSystemCore
                 WareModifier.AddToWare(ID,CollectAmount());
             else
             {
-                VisualDisplay.writeOut("ID does not exist");
+                OutPut.DisplayMessage("ID does not exist");
                 //Console.WriteLine("ID does not exist");
                 Support.WaitOnKeyInput();
             }
@@ -163,7 +163,7 @@ namespace StorageSystemCore
                 WareModifier.RemoveFromWare(ID, CollectAmount());
             else
             {
-                VisualDisplay.writeOut("ID does not exist");
+                OutPut.DisplayMessage("ID does not exist");
                 //Console.WriteLine("ID does not exist");
                 Support.WaitOnKeyInput();
             }

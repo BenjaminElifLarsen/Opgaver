@@ -20,7 +20,7 @@ namespace StorageSystemCore
         }
 
         private static ConsoleKey key;
-        private static int optionDisplayLowering = 1; //1 because of the possiblity of tiles
+        private static readonly int optionDisplayLowering = 1; //1 because of the possiblity of tiles
         
         /// <summary>
         /// The basic, static, constructor. Will always have been called before the first run-time call to any of the class's functions. 
@@ -85,10 +85,10 @@ namespace StorageSystemCore
         /// <param name="currentHoveredOver"></param>
         private static void MenuDisplay(string[] options, byte currentHoveredOver = 0, string title = null) 
         {
-            VisualDisplay.ClearFull();
+            OutPut.FullScreenClear();
             if (title != null)
             {
-                VisualDisplay.WriteMessageColoured(title, Colours.White);
+                OutPut.DisplayColouredMessage(title, Colours.White);
             }
             //Console.CursorTop = 1;
             Colours colour;
@@ -103,7 +103,7 @@ namespace StorageSystemCore
                     colour = Colours.White;
                     indent = 1;
                 }
-                VisualDisplay.WriteMessageComplex(options[n], indent, n + 1, colour, true);
+                OutPut.DisplayColouredMessageAtLocation(options[n], indent, n + 1, colour, true);
             }
         }
 
@@ -115,8 +115,6 @@ namespace StorageSystemCore
         /// <param name="currentHoveredOver"></param>
         private static void MenuDisplayUpdater(string[] options, ref byte oldHoveredOver, byte currentHoveredOver = 0)
         {
-            //Console.CursorTop = 1; 
-            
             if(oldHoveredOver != currentHoveredOver)
             {
                 Paint(2, currentHoveredOver, Colours.Red, options[currentHoveredOver]);
@@ -127,8 +125,8 @@ namespace StorageSystemCore
             void Paint(byte indent, byte y, Colours colour, string text)
             {
                 byte length = (byte)text.Length;
-                VisualDisplay.ClearPart((byte)(length+4),y + optionDisplayLowering);
-                VisualDisplay.WriteMessageComplex(text, indent, y + optionDisplayLowering, colour);
+                OutPut.ClearPart((byte)(length+4),y + optionDisplayLowering);
+                OutPut.DisplayColouredMessageAtLocation(text, indent, y + optionDisplayLowering, colour);
             }
         }
 
@@ -138,7 +136,7 @@ namespace StorageSystemCore
         /// <param name="information">Contains the information to display. Each string[] should be a seperate object</param>
         public static void WareDisplay(List<string[]> information) 
         {
-            VisualDisplay.ClearFull();
+            OutPut.FullScreenClear();
             Support.DeactiveCursor();
             int y = 0;
             string[] titles = new string[] { "Name", "ID", "Amount", "Type" };
@@ -148,23 +146,23 @@ namespace StorageSystemCore
                 xLocation[n] = increasement * n;
             for(int n = 0; n < titles.Length; n++) //displays the titles and '|'
             {
-                VisualDisplay.WriteMessageComplex("| " + titles[n], xLocation[n], 0, Colours.White);
+                OutPut.DisplayColouredMessageAtLocation("| " + titles[n], xLocation[n], 0, Colours.White);
             }
             y += 2;
             string underline = "|"; 
             foreach (int xloc in xLocation) //calculates the line seperator
                 underline += Pad(increasement, '-', "|");
-            VisualDisplay.writeOut(Pad(increasement - titles[titles.Length - 1].Length - 2, ' ') + "|" + Environment.NewLine + underline,true);//Console.WriteLine(Pad(increasement - titles[titles.Length-1].Length-2,' ') + "|" + Environment.NewLine + underline);
+            OutPut.DisplayMessage(Pad(increasement - titles[titles.Length - 1].Length - 2, ' ') + "|" + Environment.NewLine + underline,true);//Console.WriteLine(Pad(increasement - titles[titles.Length-1].Length-2,' ') + "|" + Environment.NewLine + underline);
             for (int n = 0; n < information.Count; n++) //writes out the information of each string array
             {
                 string[] wareInfo = information[n];
                 for (int m = 0; m < wareInfo.Length; m++) 
                 {
-                    VisualDisplay.WriteMessageComplex("| " + wareInfo[m], xLocation[m], y, Colours.White);
+                    OutPut.DisplayColouredMessageAtLocation("| " + wareInfo[m], xLocation[m], y, Colours.White);
                 }
                 y++;
-                VisualDisplay.writeOut(Pad(increasement - wareInfo[wareInfo.Length - 1].Length - 2) + "|");;
-                VisualDisplay.WriteMessageComplex(underline,0,y++,Colours.White);
+                OutPut.DisplayMessage(Pad(increasement - wareInfo[wareInfo.Length - 1].Length - 2) + "|");;
+                OutPut.DisplayColouredMessageAtLocation(underline,0,y++,Colours.White);
             }
             Support.ActiveCursor();
 
@@ -224,7 +222,7 @@ namespace StorageSystemCore
                 totalLength += currentLongestRowValue[n] + 2;              
             }
 
-            RunNonBasicDisplayInformation(textToDisplay, columnNames.ToArray(), columnStartLocation, totalLength);
+            RunNonBasicInformationDisplay(textToDisplay, columnNames.ToArray(), columnStartLocation, totalLength);
         }
 
         /// <summary>
@@ -259,26 +257,26 @@ namespace StorageSystemCore
                 totalLength += currentLongestRowValue[n] + 2;
 
             }
-            RunNonBasicDisplayInformation(textToDisplay, columnNames, columnStartLocation, totalLength);
+            RunNonBasicInformationDisplay(textToDisplay, columnNames, columnStartLocation, totalLength);
         }
 
-        private static void RunNonBasicDisplayInformation(string[,] textToDisplay, string[] columnNames, int[] columnStartLocation, int totalLength) //rename
+        private static void RunNonBasicInformationDisplay(string[,] textToDisplay, string[] columnNames, int[] columnStartLocation, int totalLength) //rename
         {
             byte maxLength = (byte)textToDisplay.GetLength(0); 
-            while (columnStartLocation[maxLength - 1] > Console.BufferWidth) //delegate this or something like that
+            while (columnStartLocation[maxLength - 1] > OutPut.UIWidth())
                 maxLength--;
 
-            VisualDisplay.ClearFull();
+            OutPut.FullScreenClear();
             string underscore = "|".PadRight(totalLength, '-');
             int y = 1;
-            VisualDisplay.WriteMessageComplex(underscore, 0, y, Colours.White);
+            OutPut.DisplayColouredMessageAtLocation(underscore, 0, y, Colours.White);
             for (int n = 0; n < maxLength; n++) //displays all information in the 2D array textToDisplay
             {
                 y = 0;
-                VisualDisplay.WriteMessageComplex("|" + columnNames[n], columnStartLocation[n], y, Colours.White);
+                OutPut.DisplayColouredMessageAtLocation("|" + columnNames[n], columnStartLocation[n], y, Colours.White);
                 for (int m = 0; m < textToDisplay.GetLength(1); m++)
                 {
-                    VisualDisplay.WriteMessageComplex("|" + textToDisplay[n, m], columnStartLocation[n], m + 2, Colours.White);
+                    OutPut.DisplayColouredMessageAtLocation("|" + textToDisplay[n, m], columnStartLocation[n], m + 2, Colours.White);
                 }
             }
 
