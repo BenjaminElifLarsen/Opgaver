@@ -301,11 +301,13 @@ namespace StorageSystemCore
         }
 
         /// <summary>
-        /// Default error handling regarding reporting and informating the user.
-        /// 1) Writes the error. <paramref name="e"/>, to the report file.
-        /// 2) Writes out <paramref name="message"/> to the console.
-        /// 3) Waits on user input.
+        /// Default error handling regarding reporting and informing the user.
         /// </summary>
+        /// <remarks>
+        /// <para>1) Writes the error. <paramref name="e"/>, to the report file.</para>
+        /// <para>2) Writes out <paramref name="message"/> to the console.</para>
+        /// <para>3) Waits on user input.</para>
+        /// </remarks>
         /// <param name="e">The exception that was casted.</param>
         /// <param name="message">The message to display for the user.</param>
         public static void ErrorHandling(Exception e, string message)

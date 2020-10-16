@@ -101,7 +101,7 @@ namespace StorageSystemCore
                                 }
                             }
                             else
-                            { //string and arrays goes here. Most likely also lists and such
+                            { //string and arrays goes here. 
                                 if(valueTypes[(byte)answer].FullName == "System.String") {
                                     FillOutString(options, answer, oldValue);
                                 }
@@ -288,7 +288,8 @@ namespace StorageSystemCore
         {
             Type support = typeof(Support);
             MethodInfo foundMethod = support.GetMethod("ConvertStringToVariableType", BindingFlags.NonPublic | BindingFlags.Static);
-            MethodInfo genericVersion = foundMethod.MakeGenericMethod(type); 
+            MethodInfo genericVersion = foundMethod.MakeGenericMethod(type);
+            tryAgain:;
             try
             {
                 OutPut.FullScreenClear();
@@ -299,7 +300,17 @@ namespace StorageSystemCore
             }
             catch (Exception e)
             {
-                throw e;
+                if (e.InnerException.Message == "Input string was not in a correct format.")
+                {
+                    Reporter.Report(e);
+                    OutPut.FullScreenClear();
+                    OutPut.DisplayMessage("Could not convert. Reenter value.", true);
+                    goto tryAgain;
+                }
+                else
+                {
+                    throw e;
+                }
             }
         }
     }

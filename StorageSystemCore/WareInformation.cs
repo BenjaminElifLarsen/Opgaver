@@ -228,10 +228,10 @@ namespace StorageSystemCore
         }
 
         /// <summary>
-        /// Finds and returns the name of all parameters belogning to each constructor of type <paramref name="type"/>
+        /// Finds and returns the name of all parameters belogning to each constructor of type <paramref name="type"/> that is not the basic constructor.
         /// </summary>
         /// <param name="type">The type to find all constructors of.</param>
-        public static List<List<string>> FindConstructorsParameterNames(Type type)
+        public static List<List<string>> FindExtraConstructorsParameterNames(Type type)
         {
             List<List<string>> constructors = new List<List<string>>();
             ConstructorInfo[] constructorInfos = type.GetConstructors();

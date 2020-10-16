@@ -138,8 +138,8 @@ namespace StorageSystemCore
                         //only if not using a database
                         object[] filledOutParameters = null;
                         type = Support.RemoveSpace(type);
-                        if (ConstructorsExist(Type.GetType("StorageSystemCore." + type))) //Does multiple constructor exist?
-                            if (ExtraConstructorMenu())  //asks if the user wants to input more information
+                        if (DoesMultipleConstructorsExist(Type.GetType("StorageSystemCore." + type))) //Does multiple constructor exist?
+                            if (AddMoreInformation())  //asks if the user wants to input more information
                             {
                                 string[] extraParameters = CreateSelectableConstructorList(Type.GetType("StorageSystemCore." + type));
                                 byte selectedCtor = SelectConstructor(extraParameters);
@@ -165,7 +165,6 @@ namespace StorageSystemCore
         {
             string baseMessage = "The following is missing: {0}";
             string missingInfo = "";
-            //Console.WriteLine(Convert.ToString(missingValues, toBase: 2));
             if ((missingValues & (byte)Information.Missing_ID) == (byte)Information.Missing_ID)
                 missingInfo += "ID ";
             if ((missingValues & (byte)Information.Missing_Name) == (byte)Information.Missing_Name)
@@ -175,7 +174,7 @@ namespace StorageSystemCore
             if ((missingValues & (byte)Information.Missing_Amount) == (byte)Information.Missing_Amount)
                 missingInfo += "Amount ";
             OutPut.FullScreenClear();
-            OutPut.DisplayMessage(string.Format(baseMessage, missingInfo));//Console.WriteLine(baseMessage, missingInfo);
+            OutPut.DisplayMessage(string.Format(baseMessage, missingInfo));
         }
 
         /// <summary>
@@ -196,7 +195,7 @@ namespace StorageSystemCore
         /// <returns>Returns a string array. Each index consist of a string with the names of all parameters of a specific constructor.</returns>
         private string[] CreateSelectableConstructorList(Type type) 
         {
-            List<List<string>> ctorsFromClass = WareInformation.FindConstructorsParameterNames(type);
+            List<List<string>> ctorsFromClass = WareInformation.FindExtraConstructorsParameterNames(type);
             List<string> baseCtorVariables = WareInformation.BasicConstructorVariableNames;
             List<string> tempCtors = new List<string>();
             string[] ctorArray;
@@ -240,6 +239,7 @@ namespace StorageSystemCore
                     Type support = typeof(Support);
                     MethodInfo foundMethod = support.GetMethod("ConvertStringToVariableType", BindingFlags.NonPublic | BindingFlags.Static);
                     MethodInfo genericVersion = foundMethod.MakeGenericMethod(parameterType);
+                    tryAgain:;
                     try
                     {
                         OutPut.FullScreenClear();
@@ -249,11 +249,20 @@ namespace StorageSystemCore
                     }
                     catch (Exception e)
                     {
-                        Reporter.Report(e);
-                        OutPut.FullScreenClear();
-                        parameterValues[i] = Support.GetDefaultValueFromValueType(parameterType.Name); //figure out a good way to reenter value... could use a goTo back to the try part
-                        OutPut.DisplayMessage($"Could not convert. Value set to {parameterValues[i]}. Value can be modified using the Modify menu: {Environment.NewLine}" + e.InnerException.Message, true);//Console.WriteLine($"Could not convert. Value set to {parameterValues[i]}. Value can be modified using the Modify menu: {Environment.NewLine}" + e.InnerException.Message);
-                        Support.WaitOnKeyInput();
+                        if(e.InnerException.Message == "Input string was not in a correct format."){
+                            Reporter.Report(e);
+                            OutPut.FullScreenClear();
+                            OutPut.DisplayMessage("Could not convert. Reenter value.", true);
+                            goto tryAgain;
+                        }
+                        else 
+                        { 
+                            Reporter.Report(e);
+                            OutPut.FullScreenClear();
+                            parameterValues[i] = Support.GetDefaultValueFromValueType(parameterType.Name); //figure out a good way to reenter value... could use a goTo back to the try part
+                            OutPut.DisplayMessage($"Could not convert. Value set to {parameterValues[i]}. Value can be modified using the Modify menu: {Environment.NewLine}" + e.InnerException.Message, true);
+                            Support.WaitOnKeyInput();
+                        }
                     }
                 }
                 else
@@ -261,7 +270,7 @@ namespace StorageSystemCore
                     if(parameterType.FullName == "System.String") 
                     {
                         OutPut.FullScreenClear();
-                        OutPut.DisplayMessage(String.Format("Please Enter {0}", parameterNames[i]),true);
+                        OutPut.DisplayMessage(String.Format("Please Enter {0}", parameterNames[i]), true);
                         parameterValues[i] = Input.GetString();
                     }
                     else if (parameterType.BaseType.Name == "Array")
@@ -276,8 +285,9 @@ namespace StorageSystemCore
                             {
                                 if (!parameterType.Name.Contains("String") )
                                 { //non-string
-                                    try
+                                    try //try catch if the makeGenericMethod fails.
                                     {
+                                        tryAgain:;
                                         Type support = typeof(Support); 
                                         MethodInfo foundMethod = support.GetMethod("ConvertStringToVariableType", BindingFlags.NonPublic | BindingFlags.Static);
                                         MethodInfo genericVersion = foundMethod.MakeGenericMethod(Type.GetType(parameterType.FullName.Remove(parameterType.FullName.Length - 2)));
@@ -290,10 +300,20 @@ namespace StorageSystemCore
                                         }
                                         catch (Exception e)
                                         {
-                                            Reporter.Report(e);
-                                            OutPut.FullScreenClear();
-                                            OutPut.DisplayMessage(String.Format("Could not convert. Please reenter: {0}", e.InnerException.Message));
-                                            Support.WaitOnKeyInput();
+                                            if (e.InnerException.Message == "Input string was not in a correct format.")
+                                            {
+                                                Reporter.Report(e);
+                                                OutPut.FullScreenClear();
+                                                OutPut.DisplayMessage("Could not convert. Reenter value.", true);
+                                                goto tryAgain;
+                                            }
+                                            else
+                                            {
+                                                Reporter.Report(e);
+                                                OutPut.FullScreenClear();
+                                                OutPut.DisplayMessage(String.Format("Could not convert. Please reenter: {0}", e.InnerException.Message));
+                                                Support.WaitOnKeyInput();
+                                            }
                                         }
                                     }
                                     catch (Exception e)
@@ -302,7 +322,6 @@ namespace StorageSystemCore
                                         OutPut.FullScreenClear();
                                         OutPut.DisplayMessage(string.Format("Could not convert: {0}", e.Message));
                                         Support.WaitOnKeyInput();
-
                                     }
                                 }
                                 else
@@ -348,7 +367,8 @@ namespace StorageSystemCore
                         if (sqlColumns.Contains(info.SQLName))
                         {
                             if (keyValuePairs[info.SQLName].IsValueType) 
-                            { 
+                            {
+                                tryAgain:;
                                 Type support = typeof(Support);
                                 MethodInfo foundMethod = support.GetMethod("ConvertStringToVariableType", BindingFlags.NonPublic | BindingFlags.Static);
                                 MethodInfo genericVersion = foundMethod.MakeGenericMethod(keyValuePairs[info.SQLName]);
@@ -361,11 +381,21 @@ namespace StorageSystemCore
                                 }
                                 catch (Exception e)
                                 {
-                                    Reporter.Report(e);
-                                    OutPut.FullScreenClear();
-                                    OutPut.DisplayMessage(String.Format("Could not convert. Value set to 0: {0}", e.InnerException.Message));
-                                    nameAndValues.Add(info.SQLName, Support.GetDefaultValueFromValueType(keyValuePairs[info.SQLName].Name.ToString())); //needs some more testing
-                                    Support.WaitOnKeyInput();
+                                    if (e.InnerException.Message == "Input string was not in a correct format.")
+                                    {
+                                        Reporter.Report(e);
+                                        OutPut.FullScreenClear();
+                                        OutPut.DisplayMessage("Could not convert. Reenter value.", true);
+                                        goto tryAgain;
+                                    }
+                                    else
+                                    {
+                                        Reporter.Report(e);
+                                        OutPut.FullScreenClear();
+                                        OutPut.DisplayMessage(String.Format("Could not convert. Value set to 0: {0}", e.InnerException.Message));
+                                        nameAndValues.Add(info.SQLName, Support.GetDefaultValueFromValueType(keyValuePairs[info.SQLName].Name.ToString())); //needs some more testing
+                                        Support.WaitOnKeyInput();
+                                    }
                                 }
                             }
                             else
@@ -387,7 +417,7 @@ namespace StorageSystemCore
         /// Asks if the user wants to input more information or not. Returns true if they want too.
         /// </summary>
         /// <returns>Returns true if the user wants to input more information else false.</returns>
-        private bool ExtraConstructorMenu()
+        private bool AddMoreInformation()
         {
             string title = "Do you want to add more information?";
             string[] options = new string[] {"Yes","No" };
@@ -400,9 +430,9 @@ namespace StorageSystemCore
         /// </summary>
         /// <param name="type">The type to check.</param>
         /// <returns>Returns true if more than 1 constructor exist, else false.</returns>
-        private bool ConstructorsExist(Type type)
+        private bool DoesMultipleConstructorsExist(Type type)
         {
-            return WareInformation.FindConstructorsParameterNames(type).Count > 1;
+            return WareInformation.FindExtraConstructorsParameterNames(type).Count > 1;
         }
 
         /// <summary>
@@ -644,15 +674,9 @@ namespace StorageSystemCore
         /// <param name="type">The type of the ware.</param>
         /// <param name="amount">The amount of the ware.</param>
         /// <param name="extra">Extra information for the constructor of <paramref name="type"/>.</param>
-        public void AddWare(string name, string id, string type, int amount, object[] extra) //move later to its final class, the WareCreator (after all, that is the calls that creates wares)
+        public void AddWare(string name, string id, string type, int amount, object[] extra)
         {
-            if (type.Split(' ').Length != 1)
-            {
-                string[] split = type.Split(' ');
-                type = "";
-                foreach (string typing in split)
-                    type += typing;
-            }
+            type = Support.RemoveSpace(type);
             Type test = Type.GetType("StorageSystemCore." + type);
             int lengthToAdd = extra != null ? extra.Length : 0;
             object[] dataObject = new object[4 + lengthToAdd];
