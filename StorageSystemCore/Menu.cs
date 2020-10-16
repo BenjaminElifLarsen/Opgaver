@@ -27,6 +27,10 @@ namespace StorageSystemCore
                         WareViewBasicMenu();
                         break;
 
+                    case 1:
+                        WareViewMenu();
+                        break;
+
                     case 2:
                         WareCreateMenu();
                         break;
@@ -38,10 +42,6 @@ namespace StorageSystemCore
                     case 4:
                         Publisher.PubWare.RemoveWareCreator();
                         Environment.Exit((int)Program.ExitCode.Ordinary);
-                        break;
-
-                    case 1:
-                        WareViewMenu();
                         break;
 
                     case 5:
@@ -94,7 +94,7 @@ namespace StorageSystemCore
         private void WareRemoveMenu()
         {
             string ID = CollectID();
-            if (Support.IDExist(ID,SQLCode.SQLControl.DatabaseInUse))
+            if (Support.IDExist(ID, SQLCode.SQLControl.DatabaseInUse))
                 if(WareModifier.RemoveWare(ID))
                 {
                     ProgressInformer("{0} was removed.", ID);
@@ -106,14 +106,11 @@ namespace StorageSystemCore
             else
             {
                 OutPut.DisplayMessage("ID does not exist");
-                //Console.WriteLine("ID does not exist");
                 Support.WaitOnKeyInput();
             }
 
             void ProgressInformer(string message, string part)
             {
-                //Console.Clear();
-                //Console.WriteLine(message, part); //figure out how to do this better. 
                 OutPut.FullScreenClear();
                 string text = String.Format(message, part);
                 OutPut.DisplayMessage(text);
@@ -132,7 +129,6 @@ namespace StorageSystemCore
             else
             {
                 OutPut.DisplayMessage("ID does not exist");
-                //Console.WriteLine("ID does not exist");
                 Support.WaitOnKeyInput();
             }
         }
@@ -148,7 +144,6 @@ namespace StorageSystemCore
             else
             {
                 OutPut.DisplayMessage("ID does not exist");
-                //Console.WriteLine("ID does not exist");
                 Support.WaitOnKeyInput();
             }
         }
@@ -164,7 +159,6 @@ namespace StorageSystemCore
             else
             {
                 OutPut.DisplayMessage("ID does not exist");
-                //Console.WriteLine("ID does not exist");
                 Support.WaitOnKeyInput();
             }
         }
@@ -227,23 +221,23 @@ namespace StorageSystemCore
         {
             Console.Clear();
             List<string> searchAttributes = WareInformation.FindAllSearchableAttributesNames(SQLCode.SQLControl.DatabaseInUse);
-            if (!SQLCode.SQLControl.DatabaseInUse)
+            if (!SQLCode.SQLControl.DatabaseInUse) //get attributes
                 searchAttributes.Add("Type");
             else
                 searchAttributes.Add("type");
             searchAttributes.Add("Done");
             List<string> selectedAttributes = new List<string>(); 
             byte selected;
-            do 
+            do //select attributes to view
             {
                 selected = VisualCalculator.MenuRun(searchAttributes.ToArray(), "Select Information To Find");
                 if (selected != searchAttributes.Count - 1 && !selectedAttributes.Contains(searchAttributes[selected]))
                     selectedAttributes.Add(searchAttributes[selected]);
             } while (selected != searchAttributes.Count-1);
             List<Dictionary<string, object>> attributesAndValues;
-            if (selectedAttributes.Count != 0) 
-            {
-                if (!SQLCode.SQLControl.DatabaseInUse) {
+            if (selectedAttributes.Count != 0)
+            { //get the data and display it
+                if (!SQLCode.SQLControl.DatabaseInUse) { 
                     try 
                     { 
                         attributesAndValues = WareInformation.GetWareInformation(selectedAttributes);
@@ -272,7 +266,7 @@ namespace StorageSystemCore
         /// <summary>
         /// Function used to set database (or no database).
         /// </summary>
-        public void DatabaseSelectionMenu() 
+        public void DatabaseSelectionMenu() //maybe move to another class...
         {
             string[] options = new string[] { "Window login Authentication", "SQL Server Authentication", "No SQL Database" };
             string[] sqlInfo = new string[4];
@@ -283,7 +277,7 @@ namespace StorageSystemCore
             do
             {
                 byte answer = VisualCalculator.MenuRun(options, "Database");
-                switch (answer) //do this until they either connect or uses the non-sql database
+                switch (answer) 
                 {
                     case 0:
                         sqlInfo[0] = Support.CollectString("Enter Servername");

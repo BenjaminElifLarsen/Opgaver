@@ -77,13 +77,13 @@ namespace StorageSystemCore
 
         public delegate string InputStringDelegate();
         /// <summary>
-        /// 
+        /// Collects and returns a user inputted string.
         /// </summary>
         public static InputStringDelegate GetString = getInput;
         /// <summary>
-        /// 
+        /// Collects and returns a user inputted string.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a string the user has inputted.</returns>
         private static string getInput()
         {
             return Console.ReadLine();
@@ -91,13 +91,13 @@ namespace StorageSystemCore
 
         public delegate ConsoleKeyInfo InputSingleKeyInfoDelegate();
         /// <summary>
-        /// 
+        /// Returns a ConsoleKeyInfo, if no key is avaliable it will return the default value.
         /// </summary>
         public static InputSingleKeyInfoDelegate GetKeyInfo = KeyInfo;
         /// <summary>
-        /// 
+        /// Returns a ConsoleKeyInfo, if no key is avaliable it will return the default value.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a ConsoleKeyInfo.</returns>
         private static ConsoleKeyInfo KeyInfo()
         {
             if (key == new ConsoleKeyInfo()) 
@@ -109,13 +109,13 @@ namespace StorageSystemCore
 
         public delegate ConsoleKey InputSingleKeyDelegate();
         /// <summary>
-        /// 
+        /// Returns a ConsoleKey, if no key is avaliable it will return the default value.
         /// </summary>
         public static InputSingleKeyDelegate InputSingleKey = Key;
         /// <summary>
-        /// 
+        /// Returns a ConsoleKey, if no key is avaliable it will return the default value.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a ConsoleKey.</returns>
         private static ConsoleKey Key()
         {
             if (key == new ConsoleKeyInfo())
@@ -126,7 +126,14 @@ namespace StorageSystemCore
         }
 
         public delegate bool KeyAvaliable();
+        /// <summary>
+        /// Returns true if there is a key avaliable in the buffer.
+        /// </summary>
         public static KeyAvaliable IskeyAvaliable = keyAvaliable;
+        /// <summary>
+        /// Returns true if there is a key avaliable in the buffer
+        /// </summary>
+        /// <returns>Returns true if there is a key avaliable in the buffer</returns>
         private static bool keyAvaliable()
         {
             return Console.KeyAvailable;
@@ -143,18 +150,18 @@ namespace StorageSystemCore
 
         public delegate bool KeyCompareDelegate(ConsoleKey pressedKey, Keys key_);
         /// <summary>
-        /// 
+        /// Compares two keys and return true if they are the same.
         /// </summary>
         public static KeyCompareDelegate KeyCompare = KeyComparision;
         /// <summary>
-        /// 
+        /// Compares two keys and return true if they are the same.
         /// </summary>
-        /// <param name="key_"></param>
-        /// <returns></returns>
+        /// <param name="pressedKey">The pressed key.</param>
+        /// <param name="key_">The key to compare too.</param>
+        /// <returns>Returns true if the keys are the samen, else false.</returns>
         private static bool KeyComparision(ConsoleKey pressedKey, Keys key_)
         {
             bool result = (int)key_ == (int)pressedKey;
-            //BufferFlush();
             return result;
         }
 
