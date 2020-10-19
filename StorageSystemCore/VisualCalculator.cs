@@ -13,18 +13,22 @@ namespace StorageSystemCore
     /// </summary>
     public static class VisualCalculator
     {
+        /// <summary>
+        /// The colours used by the software.
+        /// </summary>
         public enum Colours
         {
             Red = 12,
             White = 15
         }
 
-        private static readonly int optionDisplayLowering = 1; //1 because of the possiblity of tiles
+        private static readonly int optionDisplayLowering = 1; //1 because of the possiblity of titles
         
         /// <summary>
         /// Runs the menu and retuns the selected entry point of <paramref name="options"/>.
         /// </summary>
-        /// <param name="options"></param>
+        /// <param name="options">The options of the menu.</param>
+        /// <param name="title">The title of the menu.</param>
         /// <returns>Returns the number of the selected index.</returns>
         /// <exception cref="NullReferenceException">Thrown when <paramref name="options"/> is null.</exception>
         public static byte MenuRun(string[] options, string title = null)
@@ -48,7 +52,9 @@ namespace StorageSystemCore
         /// <summary>
         /// Allows the interaction with the menu.
         /// </summary>
-        /// <param name="selected"></param>
+        /// <param name="selected">The selected option's index.</param>
+        /// <param name="currentHoveredOver">The currently hovered over option's index.</param>
+        /// <param name="optionAmount">The amount of options.</param>
         /// <returns>Returns the currently hovered over array position. Comnbined with the ref parameter <c>selected</c> to check if enter key has been pressed. </returns>
         private static byte MenuSelection(out bool selected, int optionAmount, byte currentHoveredOver = 0)
         {
@@ -71,8 +77,9 @@ namespace StorageSystemCore
         /// <summary>
         /// Displays the visual part of the menu.
         /// </summary>
-        /// <param name="options"></param>
-        /// <param name="currentHoveredOver"></param>
+        /// <param name="options">The options to display.</param>
+        /// <param name="currentHoveredOver">The option to highlight.</param>
+        /// <param name="title">Title to display.</param>
         private static void MenuDisplay(string[] options, byte currentHoveredOver = 0, string title = null) 
         {
             OutPut.FullScreenClear();
@@ -99,9 +106,9 @@ namespace StorageSystemCore
         /// <summary>
         /// Ensures only the part of the menu that should be changed is updated. 
         /// </summary>
-        /// <param name="options"></param>
-        /// <param name="oldHoveredOver"></param>
-        /// <param name="currentHoveredOver"></param>
+        /// <param name="options">The options of the menu.</param>
+        /// <param name="oldHoveredOver">The currently highlighted option's index.</param>
+        /// <param name="currentHoveredOver">The last highlighted option's index.</param>
         private static void MenuDisplayUpdater(string[] options, ref byte oldHoveredOver, byte currentHoveredOver = 0)
         {
             if(oldHoveredOver != currentHoveredOver)
@@ -114,7 +121,7 @@ namespace StorageSystemCore
             void Paint(byte indent, byte y, Colours colour, string text)
             {
                 byte length = (byte)text.Length;
-                OutPut.ClearPart((byte)(length+4),y + optionDisplayLowering);
+                OutPut.ClearPart((byte)(length + indent + 2), y + optionDisplayLowering);
                 OutPut.DisplayColouredMessageAtLocation(text, indent, y + optionDisplayLowering, colour);
             }
         }

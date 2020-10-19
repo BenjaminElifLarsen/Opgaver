@@ -66,9 +66,8 @@ namespace StorageSystemCore
         /// 
         /// </summary>
         /// <param name="ID"></param>
-        public static void ModifyWare(string ID) //move a lot of this function into smaller functions to make it easier to read
+        public static void ModifyWare(string ID) 
         {
-            //Type type; 
             if (!SQLCode.SQLControl.DatabaseInUse)
             {
                 string[] options = null;

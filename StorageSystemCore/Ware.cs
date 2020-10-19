@@ -39,7 +39,7 @@ namespace StorageSystemCore
         /// <param name="name">The name of the ware.</param>
         /// <param name="id">The ID of the ware.</param>
         /// <param name="amount">The unit amount of the ware.</param>
-        /// <param name="warePublisher">The ...</param>
+        /// <param name="warePublisher">The event publisher class.</param>
         public Ware(string name, string id, int amount, WarePublisher warePublisher)
         {
             this.name = name;
@@ -59,7 +59,7 @@ namespace StorageSystemCore
         /// <param name="id">The ID of the ware.</param>
         /// <param name="information">Information about the ware.</param>
         /// <param name="amount">The unit amount of the ware.</param>
-        /// <param name="warePublisher">...</param>
+        /// <param name="warePublisher">The event publisher class.</param>
         public Ware(string name, string id, int amount, string information, WarePublisher warePublisher) : this(name, id, amount, warePublisher)
         {
             this.information = information;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace StorageSystemCore
 {
     /// <summary>
-    /// 
+    /// The electronic ware class.
     /// </summary>
     [WareType("Electronic")]
     sealed class Electronic : Ware
@@ -18,7 +18,7 @@ namespace StorageSystemCore
         /// <param name="name">The name of the ware.</param>
         /// <param name="id">The ID of the ware.</param>
         /// <param name="amount">The unit amount of the ware.</param>
-        /// <param name="warePublisher"></param>
+        /// <param name="warePublisher">The event publisher class.</param>
         public Electronic(string name, string id, int amount, WarePublisher warePublisher) : base(name, id, amount, warePublisher)
         {
         }

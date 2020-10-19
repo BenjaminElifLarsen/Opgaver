@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StorageSystemCore
 {
@@ -25,7 +22,7 @@ namespace StorageSystemCore
         }
 
         /// <summary>
-        /// 
+        /// Class taht holds event data of the remove ware creator event system.
         /// </summary>
         public class RemoveWareCreatorEventArgs
         {
