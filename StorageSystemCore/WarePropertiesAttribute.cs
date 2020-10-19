@@ -51,6 +51,9 @@ namespace StorageSystemCore
         {
             IsUnique = isUnique;
         }
+        /// <summary>
+        /// Gets and sets the bool of the attribute.
+        /// </summary>
         public bool IsUnique { get; }
     }
 }

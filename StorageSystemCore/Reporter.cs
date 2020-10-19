@@ -66,7 +66,7 @@ namespace StorageSystemCore
         {
             DateTime time = DateTime.Now;
             string timePoint = $"{time.Year}-{time.Month}-{time.Day}-{time.Hour}-{time.Minute}-{time.Second}-{time.Millisecond}";
-            CreateFolder(pathwayError); //no reason to this each time a report or log happens
+            CreateFolder(pathwayError); 
             CreateFile(pathwayError, filenameError + filetypeError);
             string pathFile = Path.Combine(pathwayError, filenameError + filetypeError);
             while (FileInUse(pathwayError, filenameError, filetypeError)) ;
