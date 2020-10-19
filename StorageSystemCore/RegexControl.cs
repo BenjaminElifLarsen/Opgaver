@@ -9,24 +9,25 @@ namespace StorageSystemCore
     /// </summary>
     public static class RegexControl
     {
-        private static string specialSigns = @"_ \- \= \+ \. \,"; //needs to also check for any other signs, right now e.g. %- will return true
+        private static string specialSigns = @"_ \- \= \+ \. \,"; 
         private static string allowedSigns = "^[a-z A-Z 0-9" + specialSigns + "]$";
         private static Regex rgSpeical = new Regex(@"[" + specialSigns + "]{1,}");
         private static Regex rgValues = new Regex("[0-9]{1,}");
         private static Regex rgLettersLower = new Regex(@"\p{Ll}{1,}");
         private static Regex rgLettersUpper = new Regex(@"\p{Lu}{1,}");
-        private static Regex rgLength = new Regex("^.{6,16}$"); //if a string contain information not checked by this the length will not reflect those extra values, so e.g. a string could have a "length" of 7, but a real lenght of 20
+        private static Regex rgLength = new Regex("^.{6,16}$"); 
         private static Regex rgUnallowedSigns = new Regex(@"[^a-z ^A-Z ^0-9 ^_ ^\- ^\= ^\+ ^\. ^\,]");
+        
         /// <summary>
-        /// Gets the specials that, at least one, need to be in the string.
+        /// Gets the specials that, at least one, need to be in the string to be valid.
         /// </summary>
         public static string GetSpecialSigns { get => specialSigns.Replace("\\",""); }
 
         /// <summary>
-        /// Test
+        /// Uses Regex to ensure <paramref name="text"/> only contains valid chars.
         /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
+        /// <param name="text">The text to check.</param>
+        /// <returns>Returns true if <paramref name="text"/> only contains valid chars.</returns>
         /// <exception cref="NullReferenceException"
         public static bool IsValidCharsOnly(string text)
         {
@@ -38,8 +39,8 @@ namespace StorageSystemCore
         /// <summary>
         /// Uses Regex to ensure <paramref name="text"/> is of a specific length of valid signs.
         /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
+        /// <param name="text">The text to check.</param>
+        /// <returns>Returns true if <paramref name="text"/> is widthin a given length.</returns>
         /// <exception cref="NullReferenceException"
         public static bool IsValidLength(string text)
         {
@@ -51,8 +52,8 @@ namespace StorageSystemCore
         /// <summary>
         /// Uses Regex to ensure <paramref name="text"/> contains at least 1 number.
         /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
+        /// <param name="text">The text to check.</param>
+        /// <returns>Returns true if <paramref name="text"/> contains a minimum of 1 number.</returns>
         /// <exception cref="NullReferenceException"
         public static bool IsValidValues(string text)
         {
@@ -64,8 +65,8 @@ namespace StorageSystemCore
         /// <summary>
         /// Uses Regex to ensure <paramref name="text"/> contains at least 1 lowercase letter.
         /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
+        /// <param name="text">The text to check.</param>
+        /// <returns>Returns true if <paramref name="text"/> contains a minimum of 1 lowercase letter.</returns>
         /// <exception cref="NullReferenceException"
         public static bool IsValidLettersLower(string text)
         {
@@ -77,8 +78,8 @@ namespace StorageSystemCore
         /// <summary>
         /// Uses Regex to ensure <paramref name="text"/> contains at least 1 uppercase letter.
         /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
+        /// <param name="text">The text to check.</param>
+        /// <returns>Returns true if <paramref name="text"/> contains a minimum of 1 uppercase letter.</returns>
         /// <exception cref="NullReferenceException"
         public static bool IsValidLettersUpper(string text)
         {
@@ -90,8 +91,8 @@ namespace StorageSystemCore
         /// <summary>
         /// Uses Regex to ensure <paramref name="text"/> contains at least 1 special symbol.
         /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
+        /// <param name="text">The text to check.</param>
+        /// <returns>Returns true if <paramref name="text"/> contains a minimum of 1 special symbol.</returns>
         /// <exception cref="NullReferenceException"
         public static bool IsValidSpecial(string text)
         {

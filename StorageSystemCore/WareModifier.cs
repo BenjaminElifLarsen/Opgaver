@@ -141,7 +141,7 @@ namespace StorageSystemCore
                             string oldValue = values[(byte)answer] != "" ? values[(byte)answer] : "Null";
                             OutPut.FullScreenClear();
                             OutPut.DisplayMessage($"Old Value was {oldValue}. Enter new Value: ",true);
-                            string newValue = Console.ReadLine(); //SQL does not seem like it has arrays as a datatype
+                            string newValue = Console.ReadLine(); //MSSQL does not seem like it has arrays as a datatype
                             for(int i = 0; i < allColumns.Length; i++)
                             {
                                 if (allColumns[i] == options[(byte)answer])
@@ -151,8 +151,9 @@ namespace StorageSystemCore
                                         break;
                                     }
                             }
-                            try { 
-                            SQLCode.SQLControl.ModifyWare("Inventory", new string[] { options[(byte)answer] }, new string[] { newValue }, $"id = '{ID}'");
+                            try 
+                            { 
+                                SQLCode.SQLControl.ModifyWare("Inventory", new string[] { options[(byte)answer] }, new string[] { newValue }, $"id = '{ID}'");
                             }
                             catch (Exception e)
                             {

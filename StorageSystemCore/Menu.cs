@@ -175,7 +175,7 @@ namespace StorageSystemCore
         /// <summary>
         /// Asks the user to enter an ID and returns it.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns the inputted ID.</returns>
         private string CollectID()
         {
             return Support.CollectString("Enter ID");
@@ -197,13 +197,10 @@ namespace StorageSystemCore
             if(!SQLCode.SQLControl.DatabaseInUse)
                 VisualCalculator.WareDisplay(WareInformation.GetWareInformation());
             else
-            { //testing purposes, have a minor functon for this, since data generation is not really a menu thing. 
+            { 
                 try 
-                { 
-                    List<List<string>> information = SQLCode.SQLControl.GetValuesAllWare(new string[] { "name", "id", "amount", "type" });
-                    List<string[]> informationReady = new List<string[]>();
-                    foreach (List<string> arrayData in information)
-                        informationReady.Add(arrayData.ToArray());
+                {
+                    List<string[]> informationReady = SQLDataCollection();
                     VisualCalculator.WareDisplay(informationReady);
                 }
                 catch (Exception e)
@@ -212,6 +209,14 @@ namespace StorageSystemCore
                 }
             }
             Support.WaitOnKeyInput();
+
+            List<string[]> SQLDataCollection(){
+                List<List<string>> information = SQLCode.SQLControl.GetValuesAllWare(new string[] { "name", "id", "amount", "type" });
+                List<string[]> informationReady = new List<string[]>();
+                foreach (List<string> arrayData in information)
+                    informationReady.Add(arrayData.ToArray());
+                return informationReady;
+            }
         }
 
         /// <summary>
@@ -266,10 +271,10 @@ namespace StorageSystemCore
         /// <summary>
         /// Function used to set database (or no database).
         /// </summary>
-        public void DatabaseSelectionMenu() //maybe move to another class...
+        public void DatabaseSelectionMenu() 
         {
             string[] options = new string[] { "Window login Authentication", "SQL Server Authentication", "No SQL Database" };
-            string[] sqlInfo = new string[4];
+            string[] sqlInfo;
             string firstConnection;
             
             bool run = true;
@@ -280,6 +285,7 @@ namespace StorageSystemCore
                 switch (answer) 
                 {
                     case 0:
+                        sqlInfo = new string[2];
                         sqlInfo[0] = Support.CollectString("Enter Servername");
                         sqlInfo[1] = Support.CollectString("Enter database");
                         if (!ShallDatabaseInitialiseMenu())
@@ -289,6 +295,7 @@ namespace StorageSystemCore
                                 SQLCode.SQLControl.DataBase = sqlInfo[1];
                                 firstConnection = SQLCode.SQLControl.CreateConnectionString(sqlInfo[0], "master");
                                 run = !SQLCode.SQLControl.InitalitionOfDatabase(sqlInfo, firstConnection, true);
+                                SQLCode.SQLControl.DatabaseInUse = true;
                             }
                             catch (Exception e)
                             {
@@ -299,8 +306,9 @@ namespace StorageSystemCore
                         else
                             try
                             {
-                                SQLCode.SQLControl.DataBase = sqlInfo[3];
+                                SQLCode.SQLControl.DataBase = sqlInfo[1];
                                 run = !SQLCode.SQLControl.CreateConnection(sqlInfo, true);
+                                SQLCode.SQLControl.DatabaseInUse = true;
                             }
                             catch (Exception e)
                             {
@@ -310,6 +318,7 @@ namespace StorageSystemCore
                         break;
 
                     case 1:
+                        sqlInfo = new string[4];
                         sqlInfo[0] = Support.CollectString("Enter Servername");
                         sqlInfo[1] = Support.CollectString("Enter SQL Username");
                         sqlInfo[2] = Support.HiddenText("Enter Password");
@@ -364,7 +373,7 @@ namespace StorageSystemCore
         /// <summary>
         /// Small menu that asks the user if the user wants to initialise database creation.
         /// </summary>
-        /// <returns>Returns true if the user selects yes to the database exist, else false.</returns>
+        /// <returns>Returns true if the user selects yes to the database initialisation, else false.</returns>
         private bool ShallDatabaseInitialiseMenu()
         {
             string[] options = new string[] {"Yes","No" };
